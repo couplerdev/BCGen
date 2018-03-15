@@ -1,8 +1,53 @@
 <coupler>
-	<use src="./model1.xml">model1</use>
-        <use src="./model2.xml">model2</use>
-
-	<links></links>
-
-
+	<attrVect>  <!--describe how attrVect in cpl are computed-->
+		<name></name>
+		<src>
+			<attrVect></attrVect>
+			<field></field>
+			<mapper></mapper>
+		</src>
+		<src>
+			<attrVect></attrVect>
+			<field></field>
+			<mapper></mapper>
+		</src>
+		<mrg>
+			<name></name>
+			<argList></argList>
+		</mrg>
+	</attrVect><!--what field input need-->
+	<attrVect>
+		<name></name>
+		<src>
+			<attrVect></attrVect>
+			<field></field>
+			<mapper></mapper>
+		</src>
+		<src>
+			<attrVect></attrVect>
+			<field></field>
+			<mapper></mapper>
+		</src>
+		<mrg>
+			<name></name>
+			<argList></argList>
+		</mrg>
+	</attrVect>
+	<attrVect>
+		<name></name>
+		<src>
+			<attrVect></attrVect>
+			<field></field>
+			<mapper></mapper>
+		</src>
+		<src>
+			<attrVect></attrVect>
+			<field></field>
+			<mapper></mapper>
+		</src>
+		<mrg>
+			<name></name>
+			<argList></argList>
+		</mrg>
+	</attrVect>
 </coupler>
