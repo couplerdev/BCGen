@@ -24,12 +24,17 @@ class parser:
 			self.__models__.append(model)
 	def deploy_parse(self):
 		pass
+
+        def schedule(self):
+		#sort seq
 	
 	def coupler_parse(self):
 		pass
 
+	def parse()
+
 class check:
-	def __init__():
+	def __init__(self):
 		pass
 
 class subroutine_parser:
