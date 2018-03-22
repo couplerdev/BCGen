@@ -1,19 +1,20 @@
 <coupler>
 	<attrVect>  <!--describe how attrVect in cpl are computed-->
-		<name></name>
+		<name>x2a_ax</name> <!--optional-->
+     		<model>a</model>
 		<src>
-			<attrVect></attrVect>
-			<field></field>
-			<mapper></mapper>
+			<attrVect>a2x_ax</attrVect>  <!--need modify to support model name src-->
+			<field></field> <!--optional-->
+			<mapper>mapper_Ca2x</mapper> <!--optional-->
 		</src>
 		<src>
 			<attrVect></attrVect>
-			<field></field>
-			<mapper></mapper>
+			<field></field> <!--optional if not def can be check or all the fields-->
+			<mapper>mapper_Sc2a</mapper>
 		</src>
 		<mrg>
 			<name></name>
-			<argList></argList>
+			<argList></argList><!--optional: only none standard API need this-->
 		</mrg>
 	</attrVect><!--what field input need-->
 	<attrVect>

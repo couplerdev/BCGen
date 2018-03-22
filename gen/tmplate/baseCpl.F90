@@ -48,7 +48,7 @@ subroutine cpl_init()
     integer :: comm_rank
     call pm_init(my_proc)
     call clock_init(EClock)
-	
+
     !-------------------------------------------------------------------
     ! variables comp2x_yy point to 
     !  !TODO add comments
@@ -138,14 +138,100 @@ end subroutine cpl_init
 
 subroutine cpl_run()
 
+    implicit none
+    integer :: ierr
+    call triger(EClock, stop_clock, "stop_clock")
+    do while(.not. stop_clock)
+
+        call clock_advance(EClock)
+        call triger(EClock, a_run, "a_run")
+        call triger(EClock, b_run, "b_run")
+        call triger(EClock, c_run, "c_run")
+        call triger(EClock, stop_clock, "stop_clock")
+
+        !-----------------------------------------------------------------
+        !   prep phase
+        !-----------------------------------------------------------------
+        if(a_run)then
+                  if(my_proc%iamin_modela2cpl)then
+                      call mapper_comp_map(my_proc%mapper_Cx2a, x2a_ax, x2a_aa, 100+10+2, ierr)
+                  end if
+        end if
+        if(b_run)then
+                  if(my_proc%iamin_modelb2cpl)then
+                      call mapper_comp_map(my_proc%mapper_Cx2b, x2b_bx, x2b_bb, 100+10+2, ierr)
+                  end if
+        end if
+        if(c_run)then
+                  if(my_proc%iamin_modelc2cpl)then
+                      call mapper_comp_map(my_proc%mapper_Cx2c, x2c_cx, x2c_cc, 100+10+2, ierr)
+                  end if
+        end if
+
+        call MPI_Barrier(MPI_COMM_WORLD, ierr)
+
+        !-----------------------------------------------------------------------
+        !   run phase
+        !-----------------------------------------------------------------------
+        if(a_run)then
+            if(my_proc%iamin_modela)then
+                call a_run_mct(my_proc, my_proc%modela_id, EClock, a2x_aa, x2a_aa, ierr)
+            end if
+        end if
+        if(b_run)then
+            if(my_proc%iamin_modelb)then
+                call b_run_mct(my_proc, my_proc%modelb_id, EClock, b2x_bb, x2b_bb, ierr)
+            end if
+        end if
+        if(c_run)then
+            if(my_proc%iamin_modelc)then
+                call c_run_mct(my_proc, my_proc%modelc_id, EClock, c2x_cc, x2c_cc, ierr)
+            end if
+        end if
+
+        call MPI_Barrier(MPI_COMM_WORLD, ierr)
+        !-----------------------------------------------------------------------
+        !   update phase
+        !-----------------------------------------------------------------------
+   
+        if(a_run)then
+            if(my_proc%iamin_modela2cpl)then
+                 call mapper_comp_map(my_proc%mapper_Ca2x, a2x_aa, a2x_aa, 100+10+3, ierr)
+            end if
+        end if
+        if(b_run)then
+            if(my_proc%iamin_modelb2cpl)then
+                 call mapper_comp_map(my_proc%mapper_Cb2x, b2x_bb, b2x_bb, 100+10+3, ierr)
+            end if
+        end if
+        if(c_run)then
+            if(my_proc%iamin_modelc2cpl)then
+                 call mapper_comp_map(my_proc%mapper_Cc2x, c2x_cc, c2x_cc, 100+10+3, ierr)
+            end if
+        end if
+    end do
 
 end subroutine cpl_run
 
 subroutine cpl_final()
 
+    implicit none
+
+    !----------------------------------------------------------------------
+    !     end component
+    !----------------------------------------------------------------------
+    if(my_proc%iamin_modela)then
+         call a_final_mct()
+    end if
+    if(my_proc%iamin_modelb)then
+         call b_final_mct()
+    end if
+    if(my_proc%iamin_modelc)then
+         call c_final_mct()
+    end if
+
+    call clean(my_proc)
 
 end subroutine cpl_final
-
-
 
 end module baseCpl
