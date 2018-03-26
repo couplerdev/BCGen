@@ -3,11 +3,11 @@
 # intermediate representation
 
 class Subroutine:
-    __slots__=['__subroutineName','__argList']
-    def __init__(self, subroutineName="func",argList=[] ):
+    __slots__=['__subroutineName','__argList', '__lineCharacter']
+    def __init__(self, subroutineName="func",argList=[], lineCharacter=50):
 	self.__subroutineName = subroutineName
 	self.__argList = argList
-        self.__lineCharacter = 50       
+        self.__lineCharacter = lineCharacter
  
     @property
     def argList(self):
@@ -33,7 +33,16 @@ class Subroutine:
             string = string[:-2] + ")"
         return string 
            
-	
+class MergeSubroutine(Subroutine):
+    __slots__=["__name","default","__argList",,"__subroutineName"]	
+    def __init__(self, pattern=True, name=""):
+        self.__name = name
+        self.__subroutineName = "mrg_" + self.__name
+        self.__argList = []
+
+    def append(self, arg):
+        self.__argList.append(arg)
+
 
 class ModelSubroutine(subroutine):
 
@@ -66,6 +75,9 @@ class ModelSubroutine(subroutine):
 	    self.__argList = _list
 	else
 	    raise TypeError("_list must be list type")
+   
+    def toString(self):
+        return super(ModelSubroutine,self).toString()
 	
 class CoupleEntity:
     __slots__ = ['__name','__manager','__type', "__bind"]
@@ -244,9 +256,4 @@ class sMat(CoupleEntity):
         super(sMat, self).__init__(name, "sMat")
         
 
-class ir:
-    def __init__():
-		
-    def code():
-	pass
 

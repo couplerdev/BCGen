@@ -7,8 +7,13 @@
 			<field></field> <!--optional-->
 			<mapper>mapper_Ca2x</mapper> <!--optional-->
 		</src>
+                </src>
+			<attrVect>b2x_bx</attrVect>
+			<field></field>
+                        <mapper>mapper_Sb2a</mapper>
+                </src>
 		<src>
-			<attrVect></attrVect>
+			<attrVect>c2x_bx</attrVect>
 			<field></field> <!--optional if not def can be check or all the fields-->
 			<mapper>mapper_Sc2a</mapper>
 		</src>

@@ -4,7 +4,8 @@
 # TODO using ir generate names: model name, attrVect, gsMap, sMat, if these name unset
 #    
 #  reversion history:	
-#        2018,3,21        alex add the module
+#        2018,3,21        alex: add the module
+#        2018,3,26        alex: finish v0.0
 #!/usr/bin/python
 from ir import AttrVect, mapper, gsMap, sMat, Model  
 
