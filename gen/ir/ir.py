@@ -67,12 +67,37 @@ class ModelSubroutine(subroutine):
 	else
 	    raise TypeError("_list must be list type")
 	
-    
+class CoupleEntity:
+    __slots__ = ['__name','__manager','__type', "__bind"]
+    def __init__(self, name="", _type="Entity"):
+         self.__name = name    
+         self.__type = _type
+         self.__bind = False
+
+    def BindToManager(self, manager):
+        self.__manager = manager
+        self.__bind = True    
+
+    @property
+    def name(self):
+        if not self.__bind:
+            raise BindError("not Bind Entities")
+        if self.__name == "":
+            self.__name = self.__manager.CheckName(self)
+        return self.__name
+    @name.setter
+    def name(self, nameValue):
+        if not self.__bind:
+            raise BindError("not Bind Entities")
+        self.__name = nameValue
+        self.__name = self.__manager.CheckName(self)
+
 # this only used for intermediate attrVect? no!!!
-class AttrVect:
+class AttrVect(CoupleEntity):
     __slots__ = ['lsize', '__field', '__name', '__nx', '__ny', '__atype', \
                  '__src', '__dst', '__grid', '__pes', '__manager']
     def __init__(self, lsize=0, field="", name="", nx=0, ny=0, src="", dst="", grid="",pes=""):
+        super(AttrVect, self).__init__(name, "AttrVect")
         self.lsize = lsize
         self.__field = field
         self.__name = name
@@ -93,32 +118,28 @@ class AttrVect:
     @field.setter
     def field(self, fieldValue):
 	self.__field = fieldValue
-    @property
-    def name(self):
-        if self.__name = "":
-            self.__name = getManagerName()
-	return self.__name
-    @name.setter
-    def name(self, nameValue):
-        self.__name = nameValue
+ 
     @property
     def src(self):
 	return self.__src
     @src.setter
     def src(self, srcValue):
 	self.__src = srcValue
+ 
     @property
     def dst(self):
         return self.__dst
     @dst.setter
     def dst(self, dstValue):
         self.__dst = dstValue
+ 
     @property
     def grid(self):
         return self.__grid
     @grid.setter
     def grid(self, gridValue):
         self.__grid = gridValue
+ 
     @property
     def pes(self):
         return self.__pes
@@ -128,19 +149,12 @@ class AttrVect:
     @property
     def atype(self):
         return self.__atype
-    
-    def bindToManager(self, manager):
-        self.__manager = manager
-
-    def getManageName(self):
-        return self.__manager.AddAttrVect(self)
         
 
-
 class Model:
-    __slots__ = ['__model_name','__model_init','__model_run','__model_final', '__manager']
-    def __init__(self):
-	self.__name=""
+    __slots__ = ['__name','__model_init','__model_run','__model_final', '__manager', '__type']
+    def __init__(self,name=""):
+	super(Model, self).__init__(name, "Model")
 	self.__model_init = ModelSubroutine() #optional?
 	self.__model_run = ModelSubroutine()		
 	self.__model_final = ModelSubroutine()
@@ -168,34 +182,20 @@ class Model:
     @model_final.setter
     def model_final(self, final_subroutine):
 	self.__model_final = final_subroutine
-	
-    @property
-    def name(self):
-	return self.__name
-
-    @name.setter
-    def name(self,name)
-	self.__name = name
-
-    def bindToManger(self, manager):
-        self.__manager = manager
 
 
 #
 #   Mapper intermediate representation
 #   subroutine ?
 #
-class Mapper:
+class Mapper(CoupleEntity):
     __slots__ = ["__mapType", "__src", "__dst", "__name"]
     def __init__(self, src, dst, name="", mapType="copy"):
+        super(Mapper, self).__init__(name, "Mapper")
         self.__name = name
         self.__mapType = mapType
         self.__src = src
 	self.__dst = dst
-	
-    @property
-    def name(self):
-        return self.__name
 
     @property
     def src(self):
@@ -217,10 +217,32 @@ class Mapper:
         else
             raise TypeError("dst must be Model type")
 
-class Gsmap:
-    __slots__=['__gird', '__pes', '__manager']
-    
+class Gsmap(CoupleEntity):
+    __slots__=['__name','__gird', '__pes', '__manager','__type','__bind']
+    def __init__(self, name="",grid="", pes=""):
+        super(Gsmap,self).__init__(name, "gsMap")
+        self.__grid = grid
+        self.__pes = pes
 
+    @property
+    def grid(self):
+        return self.__grid
+    @grid.setter(self, gridValue):
+        self.__grid = gridValue
+
+    @property
+    def pes(self):
+        return self.__pes
+    @pes.setter
+    def pes(self, pesValue):
+        self.__pes = pesValue
+
+
+class sMat(CoupleEntity):
+    __slots__  = ["__name", "__type","__bind","__manager" ]
+    def __init__(self, name=""):
+        super(sMat, self).__init__(name, "sMat")
+        
 
 class ir:
     def __init__():

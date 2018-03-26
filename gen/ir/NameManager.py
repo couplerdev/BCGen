@@ -6,10 +6,7 @@
 #  reversion history:	
 #        2018,3,21        alex add the module
 #!/usr/bin/python
-from ir import AttrVect
-from ir import Model
-from ir import Mapper
-  
+from ir import AttrVect, mapper, gsMap, sMat, Model  
 
 
 class NameManager:
@@ -22,43 +19,54 @@ class NameManager:
         self.__gsMapDict = {}
         self.__sMatDict = {}
         self.__modelDict = {}
-	
-    
-    def CheckAttrVect(self, attrVect):
-        myName = ""
-        if attrVect.name != "":
-            if self.__attrVectDict.has_key(attrVect.name):
-                raise ValueError("user define attrVect name conflict!")
-            else:
-                self.__attrVectDict[attrVect.name]=1
-                myName = attrVect.name
-        else:
-            myName = attrVect.src + "2" + attrVect.dst + "_" + attrVect.grid + attrVect.pes
-            if self.__attrVectDict.has_key(myName):
-                # TODO may add some way to generate different name, but I think we should 
-                # TODO just raise error
-                raise ValueError("generate same attrVect name, please check your config")
-            else:
-                self.__attrVectDict[attrVect.name]=1
-        return myName
-		
-    def CheckModelName(self, Model):
-        myName = ""
-        if Model.name != "":
-            if self.__modelDict.has_key(model.name):
-                raise ValueError("user define model name conflict")
-            else:
-                self.__modelDict[Model.name]=1
-                myName = Model.name
-        else:
-            myName = model.name
-            if self.__modelDict.has_key(myName):
-                # TODO
-                # TODO
-                raise ValueError("generate same model name, please check your config")
-            else:
-                self.__modelDict[Model.name]=1
-        return myName
+	self.__checkObject = [self.__attrVectDict, self.__modelDict, self.__gsMapDict, \
+                              self.__sMatDict, self.__mapperDict]
 
-    def CheckMapperName(self, Mapper):
+    def CheckName(self, obj):
+        if obj.type == "AttrVect":
+            return CheckObjVect(obj,0)
+        elif obj.type == "Model":
+            return CheckObjVect(obj,1)
+        elif obj.type == "gsMap":
+            return CheckObjVect(obj,2)
+        elif obj.type == "sMat":
+            return CheckObjVect(obj,3)
+        else:
+            return CheckObjVect(obj,4)
+
+
+    def CheckObjVect(self, obj, index):
+        myName = ""
+        if obj.name != "":
+            if self.__checkObject[index].has_key(obj.name):
+                errorInfo = "user define " +obj.type +"name conflict!"
+                raise ValueError(errorInfo)
+            else:
+                self.__checkObject[index][obj.name]=1
+                myName = obj.name
+        else:
+            myName = GetName(obj, obj.type)
+            if self.__checkObject[index].has_key(myName)
+                errorInfo = "generate same "+ obj.name + "name. please check your config"
+                raise ValueError(errorInfo)
+            else:
+                self.__checkObject[index][obj.name]=1
+        return myName    
+		
+    def GetName(obj, objType):
+        name = ""
+        if objType == 'AttrVect':
+            name = obj.src + "2" + obj.dst + "_" + obj.grid + obj.pes
+        elif objType == "Model":
+            name = obj.name
+        elif objType == "gsMap":
+            name = "gsMap_" + self.grid + self.pes
+        elif objType == "Mapper":
+            mapType = "C"
+            if objType.mapType != "rearr":
+                mapType = "S"
+            name = "Mapper_"+ mapType + objType.src + "2" +objType.dst 
+        else:
+            name = obj.name
+        return name     
                 
