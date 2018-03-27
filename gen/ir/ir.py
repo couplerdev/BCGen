@@ -1,3 +1,11 @@
+#
+#    Intermediate representation : include Subroutine class and child class ModelSubroutine
+#    class MergeSubroutine; CoupleEntity Class, its child class Model, AttrVect, sMat, Mapper,
+#    gsMap, parser  parses xml and generates the intermediate representation 
+#
+#    reversion history:
+#        2018,3,3              alex: add the module
+#        2018,3,27             alex: finish version v0.0
 #!/usr/bin/python
 
 # intermediate representation
@@ -170,6 +178,9 @@ class Model:
 	self.__model_init = ModelSubroutine() #optional?
 	self.__model_run = ModelSubroutine()		
 	self.__model_final = ModelSubroutine()
+        self.__attrVects = []   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
+        self.__gsMaps = []
+        self.__mappers = []       
 
     @property
     def model_init(self):
@@ -195,6 +206,15 @@ class Model:
     def model_final(self, final_subroutine):
 	self.__model_final = final_subroutine
 
+    def append(self, obj):
+        if obj.type == "AttrVect":
+            self.__attrVects.append(obj)
+        elif obj.type == "Mapper":
+            self.__mappers.append(obj)
+        elif obj.type == "GsMap";
+            self.__gsMaps.append(obj)
+        else:
+            raise TypeError("no such type!!!")
 
 #
 #   Mapper intermediate representation

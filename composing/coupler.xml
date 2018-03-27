@@ -1,6 +1,6 @@
 <coupler>
 	<attrVect>  <!--describe how attrVect in cpl are computed-->
-		<name>x2a_ax</name> <!--optional-->
+		<name>a2x_ax</name> <!--optional-->
      		<model>a</model>
 		<src>
 			<attrVect>a2x_ax</attrVect>  <!--need modify to support model name src-->

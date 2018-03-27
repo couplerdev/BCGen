@@ -6,6 +6,7 @@
 #  reversion history:	
 #        2018,3,21        alex: add the module
 #        2018,3,26        alex: finish v0.0
+#        2018,3,27        alex: add FindName to check whether a name is defined
 #!/usr/bin/python
 from ir import AttrVect, mapper, gsMap, sMat, Model  
 
@@ -20,6 +21,7 @@ class NameManager:
         self.__gsMapDict = {}
         self.__sMatDict = {}
         self.__modelDict = {}
+        self.__totalDict = 5
 	self.__checkObject = [self.__attrVectDict, self.__modelDict, self.__gsMapDict, \
                               self.__sMatDict, self.__mapperDict]
 
@@ -54,7 +56,7 @@ class NameManager:
                 self.__checkObject[index][obj.name]=1
         return myName    
 		
-    def GetName(obj, objType):
+    def GetName(self,obj, objType):
         name = ""
         if objType == 'AttrVect':
             name = obj.src + "2" + obj.dst + "_" + obj.grid + obj.pes
@@ -70,4 +72,17 @@ class NameManager:
         else:
             name = obj.name
         return name     
-                
+
+    def FindName(self, obj):
+        if obj.type == "AttrVect":
+            return FindObject(obj,0)                  
+        else:
+            return False
+
+    def FindObject(self, obj, index):
+         if index<0 .or. index >= self.__totalDict:
+             raise ValueError("index out of range")
+         if self.__checkObject[index].has_key(obj.name):
+             return True
+         else:
+             return False

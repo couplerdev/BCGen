@@ -1,6 +1,13 @@
 <models>
 	<model>
 		<name>a</name>
+                <attrVect>  <!--local attrVect-->
+			<name></name><!--optional-->
+			<lsize></lsize>
+			<nx></nx>
+			<ny></ny>
+     			<field></field>
+		</attrVect>
 		<init> <!--if user not define the optional tag then generate default subroutine-->
 			<subroutine>a_init_mct</subroutine><!--optional-->
                         <arg>gsMap_aa</arg><!--optional-->

@@ -12,12 +12,13 @@ import xml.etree.ElementTree as ET
 from ir import Model, AttrVect, Mapper, GsMap
 from ir import ModelSubroutine
 
-
+DEBUG = 1
 
 class Parser:
     def __init__(self):
         self.__models = []
-		
+        self.__attrVectCouple = []
+
     def load(self,filename):
         tree = ET.parse(filename)
         root = tree.getroot()
@@ -26,7 +27,6 @@ class Parser:
         root = self.load('models.xml')
         modelParser = ModelParser()
         for child in root:
-            modelParser = ModelParser()
             modelParser.setRoot(child)
             model = modelParser.model
             self.__models.append(model)
@@ -38,11 +38,21 @@ class Parser:
         #sort seq
         pass
 	
-    def couplerParse(self):
-        pass
+    def coupleAttrVectParse(self):
+        root = self.load('coupler.xml')
+        avParser = CoupleAttrVectParser()
+        for child in root:
+            avParser.setRoot(child)
+            attrVect = avParser.attrVect
+            self.__attrVect.append(attrVect)
 
     def parse(self):
-        pass
+        self.modelsParse()
+        if DEBUG == 1:
+            print 'model parsed'
+        self.coupleAttrVectParse()
+        if DEBUG == 1:
+            print 'couple AttrVect parsed'
 
 #
 #    ModelParser uses SubroutineParser to parse the subroutine 
@@ -74,32 +84,48 @@ class SubroutineParser:
         self.subroutine_parse()
         return self.__subrt
 		
-class ModelParser:
-    __slots__=['__root', '__model','__attrVects', '__gsMaps','__mappers','__name']
-    def __init__(self, root=""):
+class ModelParser:e
+    __slots__=['__root', '__model', '__name', '__isParsed', \
+               '__lsize','__nx','__ny','__field']
+    def __init__(self, root="",lsize=0,nx=0,ny=0,field=""):
         self.__root = root
         self.__name = ""
-        self.__attrVects = []
-        self.__mappers = []
-        self.__gsMaps = []
+        self.__isParsed = False
+        self.__lsize = lsize
+        self.__nx = nx
+        self.__ny = ny
+        self.__field = field
 
     def setRoot(self, root):
         self.__root = root
+        self.__isParsed = False
 	
     def __setGsMap(self):
         srcGsMap = GsMap(name=self.__name, grid=self.__name, pes=self.__name)
         dstGsMap = GsMap(name=self.__name, grid=self.__name, pes="x")
-        self.__gsMap.append(srcGsMap)
-        self.__gsMap.append(dstGsMap)
+        self.__model.append(srcGsMap)
+        self.__model.append(dstGsMap)
 
+    # get attrVect that local in model
     def __setAttrVect(self):
-        pass # some change may be here
+        comp2x_aa = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, \
+                             src=self.__name, dst="x", grid=self.__name, pes=self.__name)
+        x2comp_aa = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, \
+                             src="x", dst=self.__name, grid=self.__name, pes=self.__name)
+        comp2x_ax = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, \
+                             src=self.__name, dst="x", grid=self.__name, pes="x")
+        x2comp_ax = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, \
+                             src="x", dst=self.__name, grid=self.__name, pes="x")
+        self.__model.append(comp2x_aa)
+        self.__model.append(x2comp_aa)
+        self.__model.append(comp2x_ax)
+        self.__model.append(x2comp_ax)
   
     def __setMapper(self):
         srcMapper = Mapper(self.__name, "x", mapType="rearr")
         dstMapper = Mapper("x", self.__name, mapType="rearr")
-        self.__mappers.append(srcMapper)
-        self.__mappers.append(dstMapper)
+        self.__model.append(srcMapper)
+        self.__model.append(dstMapper)
 
     def modelParse(self):
         if self.__root = "":
@@ -113,27 +139,48 @@ class ModelParser:
         self.model.modelRun(subroutine.subroutine())
         subroutine.setRoot(root.find('final'))
         self.model.modelFinal(subroutine.subroutine())
+        root = root.find('attrVect')
+        #if root.find('name')? how to handle optional 
+        self.__lsize = root.find("lsize").text
+        self.__nx = root.find("nx").text
+        self.__ny = root.find("ny").text
+        self.__field = root.find("field").text
         self.__setMapper()
         self.__setAttrVect()
         self.__setGsMap()
+        self.__isParsed = True
 	
     @property
     def model(self):
-        self.modelParse()
+        if not self.__isParsed:
+            self.modelParse()
         return self.__model
 
 #
-#  This class uses to parse couple.xml 
+#  This class used to parse couple.xml 
 #
-class AttrVectParser:
-    __slots__ = ['__root']
+class CoupleAttrVectParser:
+    __slots__ = ['__root', '__attrVect', '__isParsed']
     def __init__(self):
-        pass
+        self.__root = ""
+        self.__isParsed = False
+    
+    
+    @property
+    def attrVect(self):
+        if not self.__isParsed:
+            self.attrVectParse()
+        return self.__attrVect
+
     def setRoot(self, root):
         self.__root = root
+        self.__isParsed = False
     
     def attrVectParse(self):
-        pass
+        if self.__root == "":
+            raise UnSetError("self.__root not set! Please try setRoot method")
+
+        
 
 class ScheduleParser:
     pass
