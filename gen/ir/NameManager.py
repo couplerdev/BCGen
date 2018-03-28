@@ -27,18 +27,18 @@ class NameManager:
 
     def CheckName(self, obj):
         if obj.type == "AttrVect":
-            return CheckObjVect(obj,0)
+            return self.__CheckObjVect(obj,0)
         elif obj.type == "Model":
-            return CheckObjVect(obj,1)
+            return self.__CheckObjVect(obj,1)
         elif obj.type == "gsMap":
-            return CheckObjVect(obj,2)
+            return self.__CheckObjVect(obj,2)
         elif obj.type == "sMat":
-            return CheckObjVect(obj,3)
+            return self.__CheckObjVect(obj,3)
         else:
-            return CheckObjVect(obj,4)
+            return self.__CheckObjVect(obj,4)
 
 
-    def CheckObjVect(self, obj, index):
+    def __CheckObjVect(self, obj, index):
         myName = ""
         if obj.name != "":
             if self.__checkObject[index].has_key(obj.name):
@@ -48,7 +48,7 @@ class NameManager:
                 self.__checkObject[index][obj.name]=1
                 myName = obj.name
         else:
-            myName = GetName(obj, obj.type)
+            myName = self.GetName(obj, obj.type)
             if self.__checkObject[index].has_key(myName)
                 errorInfo = "generate same "+ obj.name + "name. please check your config"
                 raise ValueError(errorInfo)
@@ -75,11 +75,11 @@ class NameManager:
 
     def FindName(self, obj):
         if obj.type == "AttrVect":
-            return FindObject(obj,0)                  
+            return __FindObject(obj,0)                  
         else:
             return False
 
-    def FindObject(self, obj, index):
+    def __FindObject(self, obj, index):
          if index<0 .or. index >= self.__totalDict:
              raise ValueError("index out of range")
          if self.__checkObject[index].has_key(obj.name):

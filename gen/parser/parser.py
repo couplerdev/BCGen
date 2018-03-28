@@ -16,8 +16,10 @@ DEBUG = 1
 
 class Parser:
     def __init__(self):
-        self.__models = []
-        self.__attrVectCouple = []
+        self.__models = {}
+        self.__attrVectCouple = {}
+        self.__subroutine = {}
+        self.__sMapper = {}
 
     def load(self,filename):
         tree = ET.parse(filename)
@@ -29,7 +31,7 @@ class Parser:
         for child in root:
             modelParser.setRoot(child)
             model = modelParser.model
-            self.__models.append(model)
+            self.__models[model.name] = model
 
     def deployParse(self):
         pass
@@ -54,18 +56,31 @@ class Parser:
         if DEBUG == 1:
             print 'couple AttrVect parsed'
 
+    def append(self, obj):
+        if obj.atype == 'AttrVect':
+            self.__attrVectCouple[obj.name] = obj
+        elif obj.atype == 'Model':
+            self.__model[obj.name] = obj
+        elif obj.atype == 'Mrg':
+            self.__subroutine[obj.name] = obj
+        elif obj.atype == "Mapper":
+            self.__sMapper[obj.name] = obj
+        else:
+            raise TypeError("Undefine atype of obj")
+
 #
 #    ModelParser uses SubroutineParser to parse the subroutine 
 #
 class SubroutineParser:
-    __slots__=['__root', '__subroutine', '__']
+    __slots__=['__root', '__subroutine', '__isParsed']
     def __init__(self):
         self.__subroutine = ModelSubroutine()
-        self.__parsed = False
+        self.__isParsed = False
         self.__root = ""
 
     def setRoot(self, root):
         self.__root = root
+        self.__isParsed = False
 
     def subroutineParse(self):
                 if self.__root == "":
@@ -78,13 +93,15 @@ class SubroutineParser:
                         self.__subroutine.append(child.text)
                     else:
                         raise NoTagError("no such tag"+child.tag)
+                self.__isParsed = True
 
     @property
     def subroutine(self):
-        self.subroutine_parse()
-        return self.__subrt
+        if self.__isParsed == False:
+            self.subroutine_parse()
+        return self.__subroutine
 		
-class ModelParser:e
+class ModelParser:
     __slots__=['__root', '__model', '__name', '__isParsed', \
                '__lsize','__nx','__ny','__field']
     def __init__(self, root="",lsize=0,nx=0,ny=0,field=""):
@@ -159,27 +176,48 @@ class ModelParser:e
 #
 #  This class used to parse couple.xml 
 #
-class CoupleAttrVectParser:
-    __slots__ = ['__root', '__attrVect', '__isParsed']
+class CouplerParser: ###!!!!
+    __slots__ = ['__root', '__attrVect', '__isParsed', '__NameManager']
     def __init__(self):
         self.__root = ""
         self.__isParsed = False
-    
-    
-    @property
-    def attrVect(self):
-        if not self.__isParsed:
-            self.attrVectParse()
-        return self.__attrVect
 
     def setRoot(self, root):
         self.__root = root
         self.__isParsed = False
-    
-    def attrVectParse(self):
+
+    def bindToNameManager(self, nameManager):
+        self.__NameManager = nameManager   
+
+    def couplerParse(self, parser):
         if self.__root == "":
             raise UnSetError("self.__root not set! Please try setRoot method")
-
+        for child in root:
+            if child.find("name")!= None and child.find("name")!= None:
+                name = child.find("name").text
+                av = AttrVect(name=name)
+                if not self.__nameManager.findName(av):
+                    raise ConfigError("try to mrg to a unexist attrVect")
+            srcs = child.find("srcs")
+            for src in srcs:
+                name = src.find("name").text
+                field = src.find("field").text
+                attrVect = AttrVect(name=name, field=field)
+                if not self.__nameManager.findName(attrVect):
+                    parser.append(attrVect)
+                mapperRoot = src.find("mapper")
+                mapperName = mapperRoot.find('name')
+                srvAttrVect = mapperRoot.find("src")
+                mapper = Mapper(src=srcAttrVect,dst=name,name=mapperName)
+                parser.append(mapper)
+            mrg = child.find("mrg")
+            name = mrg.find("name")
+            argListroot = mrg.find("argList")
+            argList = []
+            for arg in argListroot:
+                 argList.append(arg.text)
+            mrg = MrgSubroutine(name=name, argList=argList)
+            parser.append(mrg)
         
 
 class ScheduleParser:

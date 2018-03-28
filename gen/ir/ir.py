@@ -221,7 +221,7 @@ class Model:
 #   subroutine ?
 #
 class Mapper(CoupleEntity):
-    __slots__ = ["__mapType", "__src", "__dst", "__name"]
+    __slots__ = ["__mapType", "__src", "__dst", "__name"] # do we need init subroutine object?
     def __init__(self, src, dst, name="", mapType="copy"):
         super(Mapper, self).__init__(name, "Mapper")
         self.__name = name

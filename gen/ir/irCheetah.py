@@ -19,10 +19,10 @@ class CheetahSearchList:
         self.gsmap = []
         self.mapper = []
         self.sMat = []
-        self.
+       
 
     @comp_set.setter
     def comp_setter(self, models):
-	for 
+	pass
 
         
