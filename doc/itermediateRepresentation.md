@@ -24,6 +24,7 @@ MergSubroutine attrbutes : __subroutineName
 ```
 MergSubroutine methods
 ```
+
 ```
 ### derived class ModelSubroutine
 ModelSubroutine class is a class describe model subroutine. In our definition, a model subroutine is a set of subroutine provided by component developers including model_init, model_run, model_final etc.
@@ -41,7 +42,38 @@ ModelSubroutine methods
 ## CoupleEntity class
 ### parent class CoupleEntity
 
+CoupleEntity class implement some basic attribute and methods for Couple Entities and bound the behavior of Model, Mapper, etc
+
+```
+CoupleEntity attributes:self.__name : the name of this entity
+                        self.__type : the type of this entity, used for check which func to call
+                        self.__bind : whether this entity has bind to NameManager, if not, its                           name is not legal
+```
+
+CoupleEntity methods
+
+```
+def BindToManager(self,manager): bind this entity to a NameManager
+```
+
 ### derived class Model
+
+Model class describe the model. Model is a combination of model subroutine, relavent couple entities like attrVect.
+
+```
+Model attributes: self.__model_init : model init subroutine
+       		      self.__model_run : model run subroutine
+       		      self.__model_final : model final subroutine
+       		      self.__attrVects : relevant attrVect, which only used for trans between                          coupler and used in model subroutine
+       		      self.__gsMaps : relevant gsMap
+       		      self.__mappers : relevant mappers, only the mapper_Cs are included
+```
+
+Model class methods
+
+```
+def append(self, obj): append obj to relevant obj list,(for example, attrVect to self.__attrVects)
+```
 
 ### derived class AttrVect
 
