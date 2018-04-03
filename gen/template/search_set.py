@@ -1,7 +1,7 @@
 
-model_c_cfg = {
+model_c_cfg = { # Model M's cfg
 'model_unique_name': 'c',
-'mx_av_set' : {
+'mx_av_set' : { # Av between model M and Cpl
     'mx_mm':{
         'name': 'c2x_cc',
     },
@@ -17,22 +17,24 @@ model_c_cfg = {
 },
 
 
-'mn_av_set': [
+'mn_av_set': [ # Av between Model M and Model N
     {
         'n_name': 'a',
         'n_rAv': 'c2x_ax',
         'n_rField': 'x',
         'n_gm': 'gsmap_ax',
+        'transform_method': '',
     },
     {
         'n_name': 'b',
         'n_rAv': 'c2x_bx',
         'n_rField': 'x',
         'n_gm': 'gsmap_bx',
+        'transform_method': '',
     },
 ],
 
-'mx_gsmap_set':  {
+'mx_gsmap_set':  { # gsMap of Model M
     'mx': {
         'name':'gsMap_cx'
     },
@@ -69,12 +71,14 @@ model_b_cfg = {
         'n_rAv': 'b2x_ax',
         'n_rField': 'x',
         'n_gm': 'gsmap_ax',
+        'transform_method': '',
     },
     {
         'n_name': 'c',
         'n_rAv': 'b2x_cx',
         'n_rField': 'x',
         'n_gm': 'gsmap_cx',
+        'transform_method': '',
     },
 ],
 
@@ -116,12 +120,14 @@ model_a_cfg = {
         'n_rAv': 'a2x_bx',
         'n_rField': 'x',
         'n_gm': 'gsmap_bx',
+        'transform_method': '',
     },
     {
         'n_name': 'c',
         'n_rAv': 'a2x_cx',
         'n_rField': 'x',
         'n_gm': 'gsmap_cx',
+        'transform_method': '',
     },
 ],
 
