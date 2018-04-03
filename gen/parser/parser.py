@@ -9,8 +9,12 @@
 #import ir
 # parser: parse xml to generate intermediate representation
 import xml.etree.ElementTree as ET
+import sys
+sys.path.append('../ir')
 from ir import Model, AttrVect, Mapper, GsMap
 from ir import ModelSubroutine
+sys.path.append('../ErrorHandle')
+from ErrorHandle import *
 
 DEBUG = 1
 
@@ -21,12 +25,17 @@ class Parser:
         self.__subroutine = {}
         self.__sMapper = {}
 
+    @property
+    def models(self):
+        return self.__models
+
     def load(self,filename):
         tree = ET.parse(filename)
         root = tree.getroot()
+        return root
 
     def modelsParse(self):
-        root = self.load('models.xml')
+        root = self.load('../../composing/models.xml')
         modelParser = ModelParser()
         for child in root:
             modelParser.setRoot(child)
@@ -92,13 +101,13 @@ class SubroutineParser:
                     elif child.tag == "arg":
                         self.__subroutine.append(child.text)
                     else:
-                        raise NoTagError("no such tag"+child.tag)
+                        raise NoTagError("No such tag "+child.tag)
                 self.__isParsed = True
 
     @property
     def subroutine(self):
         if self.__isParsed == False:
-            self.subroutine_parse()
+            self.subroutineParse()
         return self.__subroutine
 		
 class ModelParser:
@@ -112,6 +121,7 @@ class ModelParser:
         self.__nx = nx
         self.__ny = ny
         self.__field = field
+        self.__model = Model(self.__name)
 
     def setRoot(self, root):
         self.__root = root
@@ -145,17 +155,20 @@ class ModelParser:
         self.__model.append(dstMapper)
 
     def modelParse(self):
-        if self.__root = "":
+        if self.__root == "":
             raise UnSetError("self.__root not set! Try setRoot method!") 
-        name = root.find('name').text
-        self.model = ir.model(name=name)
-        subroutine = subroutineParser()
+        name = self.__root.find('name').text
+        root = self.__root
+        self.model = Model(name=name)
+
+        subroutine = SubroutineParser()
         subroutine.setRoot(root.find('init'))   ## need ErrorHandle
-        self.model.modelInit(soubroutine.subroutine())
+        self.model.model_init = subroutine.subroutine
         subroutine.setRoot(root.find('run'))
-        self.model.modelRun(subroutine.subroutine())
+        self.model.model_run = subroutine.subroutine
         subroutine.setRoot(root.find('final'))
-        self.model.modelFinal(subroutine.subroutine())
+        self.model.model_final = subroutine.subroutine
+
         root = root.find('attrVect')
         #if root.find('name')? how to handle optional 
         self.__lsize = root.find("lsize").text

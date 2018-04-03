@@ -6,7 +6,8 @@
 #  reversion history:
 #      2018,3,26        alex: add module
 #!/usr/bin/python
-import Parser
+from parser import Parser
 
-class test:
-    pass
+parser = Parser()
+parser.modelsParse()
+print parser.models

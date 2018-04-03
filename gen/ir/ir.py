@@ -9,8 +9,12 @@
 #!/usr/bin/python
 
 # intermediate representation
+import sys
+sys.path.append("../ErrorHandle")
+from ErrorHandle import *
 
-class Subroutine:
+
+class Subroutine(object):
     __slots__=['__subroutineName','__argList', '__lineCharacter']
     def __init__(self, subroutineName="func",argList=[], lineCharacter=50):
 	self.__subroutineName = subroutineName
@@ -23,6 +27,13 @@ class Subroutine:
     @argList.setter
     def argList(self, argListValue):
         self.__argList = argListValue
+
+    def append(self, arg):
+        print 'haha', arg
+        if not isinstance(arg, str):
+            raise  TypeError("arg not a string")
+        print type(self.__argList)
+        self.__argList.append(arg)
 
     def toString(self):
 	string = self.__subroutineName + "("
@@ -42,17 +53,19 @@ class Subroutine:
         return string 
            
 class MergeSubroutine(Subroutine):
-    __slots__=["__name","default","__argList",,"__subroutineName"]	
+    __slots__=["__name","default","__argList","__subroutineName"]	
     def __init__(self, pattern=True, name=""):
         self.__name = name
         self.__subroutineName = "mrg_" + self.__name
         self.__argList = []
 
-    def append(self, arg):
-        self.__argList.append(arg)
+    #def append(self, arg):
+    #    super(MergerSubroutine, self).append(arg)
 
+    #def toString(self):
+    #    return super(MergeSubroutine, self).toString()
 
-class ModelSubroutine(subroutine):
+class ModelSubroutine(Subroutine):
 
     __slots__=["__name","default","__argList","__wrapper", "__subroutineName"]
     def __init__(self, pattern=True, name="", wrapper="mct", subroutineName="init"):
@@ -69,9 +82,9 @@ class ModelSubroutine(subroutine):
     @name.setter
     def name(self, name):
 	if isinstance(name, str):
-	    self.__name = model_name
-	else
-	    raise TypeError("model_name must be str type")
+	    self.__name = name
+	else:
+	    raise TypeError("name must be str type")
 
     @property
     def argList(self):
@@ -81,13 +94,16 @@ class ModelSubroutine(subroutine):
     def argList(self, _list):
 	if isinstance(__argList, list):
 	    self.__argList = _list
-	else
+	else:
 	    raise TypeError("_list must be list type")
    
-    def toString(self):
-        return super(ModelSubroutine,self).toString()
+    def append(self, arg):
+        self.__argList.append(arg)
+ 
+    #def toString(self):
+    #    return super(ModelSubroutine,self).toString()
 	
-class CoupleEntity:
+class CoupleEntity(object):
     __slots__ = ['__name','__manager','__type', "__bind"]
     def __init__(self, name="", _type="Entity"):
          self.__name = name    
@@ -112,6 +128,10 @@ class CoupleEntity:
         self.__name = nameValue
         self.__name = self.__manager.CheckName(self)
 
+    @property
+    def type(self):
+        return self.__type
+
 # this only used for intermediate attrVect? no!!!
 class AttrVect(CoupleEntity):
     __slots__ = ['lsize', '__field', '__name', '__nx', '__ny', '__atype', \
@@ -127,7 +147,7 @@ class AttrVect(CoupleEntity):
         self.__dst = dst
         self.__grid = grid
         self.__pes = pes
-        if (self.__grid == self.__src) .or. (self.__grid == self.__dst):
+        if (self.__grid == self.__src) or (self.__grid == self.__dst):
             self.__atype = 0 #"rearr"
         else:
             self.__atype = 1 #"smat"
@@ -171,8 +191,9 @@ class AttrVect(CoupleEntity):
         return self.__atype
         
 
-class Model:
-    __slots__ = ['__name','__model_init','__model_run','__model_final', '__manager', '__type']
+class Model(CoupleEntity):
+    __slots__ = ['__name','__model_init','__model_run','__model_final',\
+                 '__manager', '__type', '__attrVects','__gsMaps', '__mappers']
     def __init__(self,name=""):
 	super(Model, self).__init__(name, "Model")
 	self.__model_init = ModelSubroutine() #optional?
@@ -211,9 +232,10 @@ class Model:
             self.__attrVects.append(obj)
         elif obj.type == "Mapper":
             self.__mappers.append(obj)
-        elif obj.type == "GsMap";
+        elif obj.type == "GsMap":
             self.__gsMaps.append(obj)
         else:
+            print obj.type
             raise TypeError("no such type!!!")
 
 #
@@ -221,7 +243,7 @@ class Model:
 #   subroutine ?
 #
 class Mapper(CoupleEntity):
-    __slots__ = ["__mapType", "__src", "__dst", "__name"] # do we need init subroutine object?
+    __slots__ = ["__mapType", "__src", "__dst", "__name","__type"] # do we need init subroutine object?
     def __init__(self, src, dst, name="", mapType="copy"):
         super(Mapper, self).__init__(name, "Mapper")
         self.__name = name
@@ -236,7 +258,7 @@ class Mapper(CoupleEntity):
     def src(self, srcValue):
 	if isinstance(srcValue, type(Model)):
 	    self.__src = srcValue
-	else
+	else:
 	    raise TypeError("src must be Model type")
   
     @property
@@ -246,20 +268,21 @@ class Mapper(CoupleEntity):
     def dst(self, dstValue):
         if isinstance(dstValue, type(Model)):
             self.__dst = dstValue
-        else
+        else:
             raise TypeError("dst must be Model type")
 
-class Gsmap(CoupleEntity):
-    __slots__=['__name','__gird', '__pes', '__manager','__type','__bind']
+class GsMap(CoupleEntity):
+    __slots__=['__name','__grid', '__pes', '__manager','__type','__bind']
     def __init__(self, name="",grid="", pes=""):
-        super(Gsmap,self).__init__(name, "gsMap")
+        super(GsMap,self).__init__(name, "GsMap")
         self.__grid = grid
         self.__pes = pes
 
     @property
     def grid(self):
         return self.__grid
-    @grid.setter(self, gridValue):
+    @grid.setter
+    def grid(self, gridValue):
         self.__grid = gridValue
 
     @property

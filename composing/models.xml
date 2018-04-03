@@ -1,0 +1,58 @@
+<models>
+	<model>
+		<name>a</name>
+                <attrVect>  <!--local attrVect-->
+			<name></name><!--optional-->
+			<lsize></lsize>
+			<nx></nx>
+			<ny></ny>
+     			<field></field>
+		</attrVect>
+		<init> <!--if user not define the optional tag then generate default subroutine-->
+			<name>a_init_mct</name><!--optional-->
+                        <arg>gsMap_aa</arg><!--optional-->
+			<arg>a2x_aa</arg>    <!-- optional-->
+			<arg>x2a_aa</arg>   <!--optional-->
+		</init>
+		<run>
+			<name>a_run_mct</name>
+			<arg>gsMap_aa</arg>
+                        <arg>a2x_aa</arg>
+                        <arg>x2a_aa</arg>
+		</run>
+		<final>
+			<name>a_final_mct</name>	
+			<arg>gsMap_aa</arg>
+ 			<arg>a2x_aa</arg>
+			<arg>x2a_aa</arg>
+		</final>
+	</model>
+	<model>
+		<name>b</name>
+		<attrVect>
+			<name></name>
+			<lsize></lsize>
+			<nx></nx>
+			<ny></ny>
+			<field></field>
+    		</attrVect>
+		<init> <!--subroutine optional-->
+			<name>b_init_mct</name>
+			<arg>gsMap_bb</arg>
+			<arg>b2x_bb</arg>
+        		<arg>x2b_bb</arg>
+		</init>
+		<run>
+			<name>b_run_mct</name>
+			<arg>gsMap_bb</arg>
+			<arg>b2x_bb</arg>
+			<arg>x2b_bb</arg>
+		</run>
+		<final>
+			<name>b_final_mct</name>
+			<arg>gsMap_bb</arg>
+			<arg>b2x_bb</arg>
+			<arg>x2b_bb</arg>
+		</final>
+	</model>
+</models>
