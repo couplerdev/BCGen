@@ -23,15 +23,14 @@ use comp_${comp}
      type(AttrVect),pointer   :: ${comp}2x_${comp}x
      type(AttrVect),pointer   :: x2${comp}_${comp}x
      #end for
-
-    #for comp in $comp_set
-            #for comp_t in $comp_set
-                #if comp_t == comp:
-                    #continue
-                #end if
-                type(AttrVect)  :: ${comp}2x_${comp_t}x
-            #end for
-    #end for
+	
+	#for $cfg in $model_cfgs
+		#set $av_mn = $cfg['mn_av_set']
+		#for $mn_av in $av_mn
+			#set $av_mx_nx = $mn_av['n_rAv']
+			type(AttrVect):: $av_mx_nx
+		#end for
+	#end for
 
      #for comp in $comp_set
      logical :: ${comp}_run
@@ -61,24 +60,35 @@ subroutine cpl_init()
     ! variables comp2x_yy point to 
     !  !TODO add comments
     !-------------------------------------------------------------------
-    #for comp in $comp_set
-    ${comp}2x_${comp}${comp} => my_proc%${comp}2x_${comp}${comp}
-    ${comp}2x_${comp}x => my_proc%${comp}2x_${comp}x
-    x2${comp}_${comp}${comp} => my_proc%x2${comp}_${comp}${comp}
-    x2${comp}_${comp}x => my_proc%x2${comp}_${comp}x
-    #end for
+    
+	#for $cfg in $model_cfgs
+		#set $mx = $cfg['mx_av_set']
+		$mx['mx_mm']['name']=> my_proc%$mx['mx_mm']['name']
+		$mx['mx_mx']['name']=> my_proc%$mx['mx_mx']['name']
+		$mx['xm_mm']['name']=> my_proc%$mx['xm_mm']['name']
+		$mx['xm_mx']['name']=> my_proc%$mx['xm_mx']['name']
+	#end for
 
     !-------------------------------------------------------------------
     ! !TODO add comments
     !-------------------------------------------------------------------
     call MPI_Comm_rank(MPI_COMM_WORLD, comm_rank, ierr)
-    #for comp in $comp_set
-    if(my_proc%iamin_model${comp})then
-        write(*,*)'a Init: Im:', comm_rank
-        call ${comp}_init_mct(my_proc, my_proc%model${comp}_id, EClock, gsMap_${comp}${comp}, &
-                              ${comp}2x_${comp}${comp}, x2${comp}_${comp}${comp}, ierr)
-    end if
-    #end for
+
+	#for $cfg in $model_cfgs
+		#set $av_mx = $cfg['mx_av_set']
+		#set $gm = $cfg['mx_gsmap_set']
+		#set $name = $cfg['model_unique_name']
+		#set $av_mx_mm = $av_mx['mx_mm']['name']
+		#set $av_xm_mm = $av_mx['xm_mm']['name']
+		#set $gm_mx = $gm['mx']['name']  
+		#set $gm_mm = $gm['mm']['name']  
+		if(my_proc%iamin_model${name})then
+			call ${name}_init_mct(my_proc, my_proc%model${name}_id,& 
+				EClock, $gm_mm, &
+                $av_mx_mm,$av_xm_mm, ierr)
+		end if
+	#end for
+
     
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
             write(*,*) '<<==== All Model Init Rank:', comm_rank, " Over ====>>"
@@ -86,40 +96,46 @@ subroutine cpl_init()
             write(*,*) ' '
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     
-    #for comp in $comp_set
-    if(my_proc%iamin_model${comp}2cpl)then
-        call gsmap_init_ext(my_proc, gsmap_${comp}${comp}, my_proc%model${comp}_id, gsmap_${comp}x, &
-                            my_proc%cplid, my_proc%model${comp}2cpl_id )
+	
+	#for $cfg in $model_cfgs
+		#set $av_mx = $cfg['mx_av_set']
+		#set $gm = $cfg['mx_gsmap_set']
+		#set $name = $cfg['model_unique_name']
+		#set $av_mx_mm = $av_mx['mx_mm']['name']
+		#set $av_xm_mm = $av_mx['xm_mm']['name']
+		#set $av_mx_mx = $av_mx['mx_mx']['name']
+		#set $av_xm_mx = $av_mx['xm_mx']['name']
+		#set $gm_mx = $gm['mx']['name']  
+		#set $gm_mm = $gm['mm']['name']  
+		if(my_proc%iamin_model${name}2cpl)then
+			call gsmap_init_ext(my_proc, $gm_mm, my_proc%model${name}_id, &
+								$gm_mx, my_proc%cplid, &
+								my_proc%model${name}2cpl_id )
 
-        call avect_init_ext(my_proc, ${comp}2x_${comp}${comp},&
-my_proc%model${comp}_id, ${comp}2x_${comp}x, &
-                            my_proc%cplid, gsmap_${comp}x, my_proc%model${comp}2cpl_id)
+			call avect_init_ext(my_proc, $av_mx_mm,&
+						my_proc%model${name}_id, $av_mx_mx, &
+						my_proc%cplid, $gm_mx, &
+						my_proc%model${name}2cpl_id)
 
-        call avect_init_ext(my_proc, x2${comp}_${comp}${comp},&
-my_proc%model${comp}_id, x2${comp}_${comp}x, &
-                            my_proc%cplid, gsmap_${comp}x, my_proc%model${comp}2cpl_id)
+			call avect_init_ext(my_proc, $av_xm_mm,&
+						my_proc%model${name}_id, $av_xm_mx, &
+						my_proc%cplid, $gm_mx, &
+						my_proc%model${name}2cpl_id)
+			call mapper_rearrsplit_init(my_proc%mapper_C${name}2x, &
+					my_proc, $gm_mm, my_proc%model${name}_id, &
+					$gm_mx, my_proc%cplid, &
+					my_proc%model${name}2cpl_id, ierr)
 
-        call MPI_Barrier(my_proc%mpi_model${comp}2cpl, ierr)
-            write(*,*) '<<========Model${comp}2X Rank:', comm_rank,  &
-"${comp}x_lsize:", avect_lsize(${comp}2x_${comp}x),"&
-${comp}${comp}_lsize:", avect_lsize(${comp}2x_${comp}${comp}),&
-            ' ===========>>'
-        call MPI_Barrier(my_proc%mpi_model${comp}2cpl, ierr)
+			call mapper_rearrsplit_init(my_proc%mapper_Cx2${name}, &
+					my_proc, $gm_mx, my_proc%cplid, &
+					$gm_mm, my_proc%model${name}_id, &
+					my_proc%model${name}2cpl_id, ierr)
 
-        call MPI_Barrier(my_proc%mpi_model${comp}2cpl, ierr)
-            write(*,*) '<<========Model${comp}2X Rank:', comm_rank,  'AV GSMap Init Over ===========>>'
-        call MPI_Barrier(my_proc%mpi_model${comp}2cpl, ierr)
-
-        call mapper_rearrsplit_init(my_proc%mapper_C${comp}2x, my_proc, gsmap_${comp}${comp}, my_proc%model${comp}_id, &
-                                    gsmap_${comp}x, my_proc%cplid, my_proc%model${comp}2cpl_id, ierr)
-
-        call mapper_rearrsplit_init(my_proc%mapper_Cx2${comp}, my_proc, gsmap_${comp}x, my_proc%cplid, &
-                                    gsmap_${comp}${comp}, my_proc%model${comp}_id, my_proc%model${comp}2cpl_id, ierr)
-
-        call MPI_Barrier(my_proc%mpi_model${comp}2cpl, ierr)
-        call mapper_comp_map(my_proc%mapper_C${comp}2x, ${comp}2x_${comp}${comp}, ${comp}2x_${comp}x, 100+10+1, ierr)
-    end if
-    #end for    
+			call MPI_Barrier(my_proc%mpi_model${name}2cpl, ierr)
+			call mapper_comp_map(my_proc%mapper_C${name}2x, &
+					$av_mx_mm, $av_mx_mx, 100+10+1, ierr)
+		end if
+	#end for
 
 
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
@@ -128,25 +144,32 @@ ${comp}${comp}_lsize:", avect_lsize(${comp}2x_${comp}${comp}),&
             write(*,*) ' '
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
+	
     if(my_proc%iamin_cpl) then
-        #for comp in $comp_set
-            #for comp_t in $comp_set
-                #if comp_t == comp:
-                    #continue
-                #end if
-                
-                call avect_init_ext(my_proc, ${comp}2x_${comp}x, my_proc%cplid, &
-                            ${comp}2x_${comp_t}x, my_proc%cplid, &
-                            gsmap_${comp_t}x, my_proc%model${comp_t}2cpl_id)
+	#for $cfg in $model_cfgs
+		#set $name = $cfg['model_unique_name']
+		#set $av_mx = $cfg['mx_av_set']
+		#set $av_mx_mx = $av_mx['mx_mx']['name']
+		#set $gm = $cfg['mx_gsmap_set']
+		#set $gm_mx = $gm['mx']['name']  
+		#set $av_mn = $cfg['mn_av_set']
+		#for $mn_av in $av_mn
+			#set $n_name = $mn_av['n_name']
+			#set $av_mx_nx = $mn_av['n_rAv']
+			#set $gm_nx = $mn_av['n_gm']
+			call avect_init_ext(my_proc, $av_mx_mx,&
+						 my_proc%cplid, $av_mx_nx,&
+						 my_proc%cplid, $gm_nx,&
+						 my_proc%model${n_name}2cpl_id)
 
-                call mapper_spmat_init(my_proc,&
-my_proc%mapper_SMat${comp}2${comp_t}, &
-                my_proc%cplid, &
-                my_proc%${comp_t}_gsize, my_proc%${comp}_gsize, 8,&
-                gsmap_${comp}x, gsmap_${comp_t}x)
+			call mapper_spmat_init(my_proc,&
+			my_proc%mapper_SMat${name}2${n_name}, &
+			my_proc%cplid, &
+			my_proc%${n_name}_gsize, my_proc%${name}_gsize, 8,&
+			$gm_mx, $gm_nx)
 
-            #end for
-        #end for
+		#end for
+	#end for
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
         write(*,*) "<<=== Rank:" , comm_rank, &
             " lb2x_ax:", avect_lsize(b2x_ax),&
@@ -159,10 +182,9 @@ my_proc%mapper_SMat${comp}2${comp_t}, &
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
         write(*,*) " "
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
+	end if
 
-    end if    
-
-    write(*,*)'init end'
+    write(*,*)'<========= Init End  ===========>'
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
 end subroutine cpl_init
