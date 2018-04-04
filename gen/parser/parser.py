@@ -4,6 +4,7 @@
 # reversion history
 #      2018.3.1    alex: add the module
 #      2018.3.26   alex: modify 
+#      2018.4.3    alex: fixed some bugs
 #!/usr/bin/python
 
 #import ir
@@ -15,11 +16,13 @@ from ir import Model, AttrVect, Mapper, GsMap
 from ir import ModelSubroutine
 sys.path.append('../ErrorHandle')
 from ErrorHandle import *
+from NameManager import *
 
 DEBUG = 1
 
 class Parser:
     def __init__(self):
+        self.__NameManager = NameManager()
         self.__models = {}
         self.__attrVectCouple = {}
         self.__subroutine = {}
@@ -36,7 +39,7 @@ class Parser:
 
     def modelsParse(self):
         root = self.load('../../composing/models.xml')
-        modelParser = ModelParser()
+        modelParser = ModelParser(self.__NameManager)
         for child in root:
             modelParser.setRoot(child)
             model = modelParser.model
@@ -111,17 +114,17 @@ class SubroutineParser:
         return self.__subroutine
 		
 class ModelParser:
-    __slots__=['__root', '__model', '__name', '__isParsed', \
-               '__lsize','__nx','__ny','__field']
-    def __init__(self, root="",lsize=0,nx=0,ny=0,field=""):
+    __slots__=['__root', '__model', '__isParsed', '__name',\
+               '__lsize','__nx','__ny','__field','__NameManager']
+    def __init__(self, NameManager,root="",lsize=0,nx=0,ny=0,field=""):
         self.__root = root
-        self.__name = ""
         self.__isParsed = False
         self.__lsize = lsize
         self.__nx = nx
         self.__ny = ny
         self.__field = field
-        self.__model = Model(self.__name)
+        self.__name = ""
+        self.__NameManager = NameManager
 
     def setRoot(self, root):
         self.__root = root
@@ -130,6 +133,8 @@ class ModelParser:
     def __setGsMap(self):
         srcGsMap = GsMap(name=self.__name, grid=self.__name, pes=self.__name)
         dstGsMap = GsMap(name=self.__name, grid=self.__name, pes="x")
+        srcGsMap.BindToManager(self.__NameManager)
+        dstGsMap.BindToManager(self.__NameManager)
         self.__model.append(srcGsMap)
         self.__model.append(dstGsMap)
 
@@ -143,6 +148,10 @@ class ModelParser:
                              src=self.__name, dst="x", grid=self.__name, pes="x")
         x2comp_ax = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, \
                              src="x", dst=self.__name, grid=self.__name, pes="x")
+        comp2x_aa.BindToManager(self.__NameManager)
+        x2comp_aa.BindToManager(self.__NameManager)
+        comp2x_ax.BindToManager(self.__NameManager)
+        x2comp_ax.BindToManager(self.__NameManager)
         self.__model.append(comp2x_aa)
         self.__model.append(x2comp_aa)
         self.__model.append(comp2x_ax)
@@ -151,6 +160,8 @@ class ModelParser:
     def __setMapper(self):
         srcMapper = Mapper(self.__name, "x", mapType="rearr")
         dstMapper = Mapper("x", self.__name, mapType="rearr")
+        srcMapper.BindToManager(self.__NameManager)
+        dstMapper.BindToManager(self.__NameManager)
         self.__model.append(srcMapper)
         self.__model.append(dstMapper)
 
@@ -159,15 +170,17 @@ class ModelParser:
             raise UnSetError("self.__root not set! Try setRoot method!") 
         name = self.__root.find('name').text
         root = self.__root
-        self.model = Model(name=name)
+        self.__name = name
+        self.__model = Model(name=name)
+        self.__model.BindToManager(self.__NameManager)
 
         subroutine = SubroutineParser()
         subroutine.setRoot(root.find('init'))   ## need ErrorHandle
-        self.model.model_init = subroutine.subroutine
+        self.__model.model_init = subroutine.subroutine
         subroutine.setRoot(root.find('run'))
-        self.model.model_run = subroutine.subroutine
+        self.__model.model_run = subroutine.subroutine
         subroutine.setRoot(root.find('final'))
-        self.model.model_final = subroutine.subroutine
+        self.__model.model_final = subroutine.subroutine
 
         root = root.find('attrVect')
         #if root.find('name')? how to handle optional 

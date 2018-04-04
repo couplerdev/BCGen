@@ -1,6 +1,7 @@
 #
-#       Name Manager Module
-# TODO dict to check whether exists conflict names
+#       Name Manager Module: only used for manage the name of CoupleEntities , the identity of subroutine name 
+#   are guaranteed by CoupleEntities because their names are formed by CoupleEntities at present. In next version
+#   we will add support for subroutine name check because in some case user may need some names that are not formed#   by the form of modelxmodel 
 # TODO using ir generate names: model name, attrVect, gsMap, sMat, if these name unset
 #    
 #  reversion history:	
@@ -8,7 +9,7 @@
 #        2018,3,26        alex: finish v0.0
 #        2018,3,27        alex: add FindName to check whether a name is defined
 #!/usr/bin/python
-from ir import AttrVect, mapper, gsMap, sMat, Model  
+from ir import AttrVect, Mapper, GsMap, sMat, Model  
 
 
 class NameManager:
@@ -49,7 +50,7 @@ class NameManager:
                 myName = obj.name
         else:
             myName = self.GetName(obj, obj.type)
-            if self.__checkObject[index].has_key(myName)
+            if self.__checkObject[index].has_key(myName):
                 errorInfo = "generate same "+ obj.name + "name. please check your config"
                 raise ValueError(errorInfo)
             else:
@@ -80,7 +81,7 @@ class NameManager:
             return False
 
     def __FindObject(self, obj, index):
-         if index<0 .or. index >= self.__totalDict:
+         if index<0 or index >= self.__totalDict:
              raise ValueError("index out of range")
          if self.__checkObject[index].has_key(obj.name):
              return True
