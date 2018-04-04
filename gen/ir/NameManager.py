@@ -26,52 +26,51 @@ class NameManager:
 	self.__checkObject = [self.__attrVectDict, self.__modelDict, self.__gsMapDict, \
                               self.__sMatDict, self.__mapperDict]
 
-    def CheckName(self, obj):
-        if obj.type == "AttrVect":
-            return self.__CheckObjVect(obj,0)
-        elif obj.type == "Model":
-            return self.__CheckObjVect(obj,1)
-        elif obj.type == "gsMap":
-            return self.__CheckObjVect(obj,2)
-        elif obj.type == "sMat":
-            return self.__CheckObjVect(obj,3)
+    def CheckName(self, objName, objType):
+        if objType == "AttrVect":
+            return self.__CheckObjVect(objName,objType,0)
+        elif objType == "Model":
+            return self.__CheckObjVect(objName,objType,1)
+        elif objType == "gsMap":
+            return self.__CheckObjVect(objName,objType,2)
+        elif objType == "sMat":
+            return self.__CheckObjVect(objName,objType,3)
         else:
-            return self.__CheckObjVect(obj,4)
+            return self.__CheckObjVect(objName,objType,4)
 
 
-    def __CheckObjVect(self, obj, index):
+    def __CheckObjVect(self, objName, objType, index):
         myName = ""
-        if obj.name != "":
-            if self.__checkObject[index].has_key(obj.name):
-                errorInfo = "user define " +obj.type +"name conflict!"
+        if objName != "":
+            if self.__checkObject[index].has_key(objName):
+                errorInfo = "user define " +objType +"name conflict!"
                 raise ValueError(errorInfo)
             else:
-                self.__checkObject[index][obj.name]=1
-                myName = obj.name
+                self.__checkObject[index][objName]=1
+                myName = objName
         else:
-            myName = self.GetName(obj, obj.type)
-            if self.__checkObject[index].has_key(myName):
-                errorInfo = "generate same "+ obj.name + "name. please check your config"
-                raise ValueError(errorInfo)
-            else:
-                self.__checkObject[index][obj.name]=1
-        return myName    
+            raise ValueError("check \"\" name")
+        return False    
 		
     def GetName(self,obj, objType):
         name = ""
         if objType == 'AttrVect':
             name = obj.src + "2" + obj.dst + "_" + obj.grid + obj.pes
         elif objType == "Model":
+            if obj.name == "":
+                raise ValueError("Model name not provided")
             name = obj.name
-        elif objType == "gsMap":
-            name = "gsMap_" + self.grid + self.pes
+        elif objType == "GsMap":
+            name = "gsMap_" + obj.grid + obj.pes
         elif objType == "Mapper":
             mapType = "C"
-            if objType.mapType != "rearr":
+            if obj.mapType != "rearr":
                 mapType = "S"
-            name = "Mapper_"+ mapType + objType.src + "2" +objType.dst 
+            name = "Mapper_"+ mapType + obj.src + "2" +obj.dst 
         else:
-            name = obj.name
+            raise TypeError("Undefined type")
+        if self.CheckName(name, objType):
+            raise ValueError("name conflict")  
         return name     
 
     def FindName(self, obj):

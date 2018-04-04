@@ -40,8 +40,20 @@ ModelSubroutine methods
 ```
 ## CoupleEntity class
 ### parent class CoupleEntity
-
+CoupleEntity class is a class describe the entities used in couple procedure, these entities include attrVect, mapper, model, gsmap and so on. Typically, CoupleEntity class only define as less attributes as possible.Another important thing is that every CoupleEntity needs to bind to a NameManager in case that no instance of a class will have the same name.
+```
+CoupleEntity attrbutes: __name: the name of the Entity
+                        __type: the type of the Entity (Model, Mapper, AttrVect)
+                        __bind: has been bind to manager or not
+```
+CoupleEntity methods
+```
+def BindToManager(manager): bind this Entity to NameManager
+properties:
+          type, name
+```
 ### derived class Model
+The Model class 
 
 ### derived class AttrVect
 

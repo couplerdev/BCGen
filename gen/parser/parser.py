@@ -131,8 +131,8 @@ class ModelParser:
         self.__isParsed = False
 	
     def __setGsMap(self):
-        srcGsMap = GsMap(name=self.__name, grid=self.__name, pes=self.__name)
-        dstGsMap = GsMap(name=self.__name, grid=self.__name, pes="x")
+        srcGsMap = GsMap(grid=self.__name, pes=self.__name)
+        dstGsMap = GsMap(grid=self.__name, pes="x")
         srcGsMap.BindToManager(self.__NameManager)
         dstGsMap.BindToManager(self.__NameManager)
         self.__model.append(srcGsMap)

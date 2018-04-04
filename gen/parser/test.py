@@ -10,4 +10,11 @@ from parser import Parser
 
 parser = Parser()
 parser.modelsParse()
-print parser.models
+for model in parser.models:
+    for av in parser.models[model].attrVects:
+        print av.name
+    #print parser.models[model].model_init.toString()
+    for gsmap in parser.models[model].gsMaps:
+        print gsmap.name
+    for mapper in parser.models[model].mappers:
+        print mapper.name

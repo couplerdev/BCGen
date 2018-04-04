@@ -20,7 +20,7 @@ class Subroutine(object):
 	self.__subroutineName = subroutineName
 	self.__argList = argList
         self.__lineCharacter = lineCharacter
- 
+
     @property
     def argList(self):
         return self.__argList
@@ -36,7 +36,9 @@ class Subroutine(object):
         self.__argList.append(arg)
 
     def toString(self):
-	string = self.__subroutineName + "("
+        print self.__argList
+	string = self.__subroutineName
+        string += "("
         lenString = len(string)
         lenSpace = lenString
         for arg in self.__argList:
@@ -55,6 +57,7 @@ class Subroutine(object):
 class MergeSubroutine(Subroutine):
     __slots__=["__name","default","__argList","__subroutineName"]	
     def __init__(self, pattern=True, name=""):
+        super(MergeSubroutineName, self).__init__()
         self.__name = name
         self.__subroutineName = "mrg_" + self.__name
         self.__argList = []
@@ -67,11 +70,13 @@ class MergeSubroutine(Subroutine):
 
 class ModelSubroutine(Subroutine):
 
-    __slots__=["__name","default","__argList","__wrapper", "__subroutineName"]
+    __slots__=["__name","default","__argList","__wrapper", "__subroutineName", "__type"]
     def __init__(self, pattern=True, name="", wrapper="mct", subroutineName="init"):
+        super(ModelSubroutine, self).__init__()
         self.__name = name
         self.__wrapper = wrapper  # identify the wrapper API
-        self.__subroutineName = self.__name + subroutineName+ "_" + self.__wrapper
+        self.__type = subroutineName
+        self.__subroutineName = self.__name + self.__type+ "_" + self.__wrapper
 	self.default = pattern
 	self.__argList = []		
 
@@ -85,6 +90,7 @@ class ModelSubroutine(Subroutine):
 	    self.__name = name
 	else:
 	    raise TypeError("name must be str type")
+        self.__subroutineName = self.__name + self.__type + "_" + self.__wrapper
 
     @property
     def argList(self):
@@ -100,13 +106,15 @@ class ModelSubroutine(Subroutine):
     def append(self, arg):
         self.__argList.append(arg)
  
-    #def toString(self):
-    #    return super(ModelSubroutine,self).toString()
-	
+    def toString(self):
+        return super(ModelSubroutine,self).toString()
+
+#   a bug: init with name not checked by NameManager
+#   present solution: init phase name not allowed ?	
 class CoupleEntity(object):
     __slots__ = ['__name','__manager','__type', "__bind"]
-    def __init__(self, name="", _type="Entity"):
-         self.__name = name    
+    def __init__(self, name="",_type="Entity"):
+         self.__name = name
          self.__type = _type
          self.__bind = False
 
@@ -119,7 +127,11 @@ class CoupleEntity(object):
         if not self.__bind:
             raise BindError("not Bind Entities")
         if self.__name == "":
-            self.__name = self.__manager.CheckName(self)
+            self.__name = self.__manager.GetName(self, self.__type)
+        else:
+            duplicate = self.__manager.CheckName(self.__name, self.__type)
+            if duplicate:
+                raise ValueError("name conflict")
         return self.__name
     @name.setter
     def name(self, nameValue):
@@ -136,8 +148,8 @@ class CoupleEntity(object):
 class AttrVect(CoupleEntity):
     __slots__ = ['lsize', '__field', '__name', '__nx', '__ny', '__atype', \
                  '__src', '__dst', '__grid', '__pes', '__manager']
-    def __init__(self, lsize=0, field="", name="", nx=0, ny=0, src="", dst="", grid="",pes=""):
-        super(AttrVect, self).__init__(name, "AttrVect")
+    def __init__(self, lsize=0, field="", nx=0, ny=0, src="", dst="", grid="",pes="",name=""):
+        super(AttrVect, self).__init__(name=name,_type="AttrVect")
         self.lsize = lsize
         self.__field = field
         self.__name = name
@@ -195,14 +207,27 @@ class Model(CoupleEntity):
     __slots__ = ['__name','__model_init','__model_run','__model_final',\
                  '__manager', '__type', '__attrVects','__gsMaps', '__mappers']
     def __init__(self,name=""):
-	super(Model, self).__init__(name, "Model")
+	super(Model, self).__init__(name=name,_type="Model")
 	self.__model_init = ModelSubroutine() #optional?
 	self.__model_run = ModelSubroutine()		
 	self.__model_final = ModelSubroutine()
         self.__attrVects = []   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
         self.__gsMaps = []
         self.__mappers = []       
+### debug region
+    @property
+    def attrVects(self):
+        return self.__attrVects
 
+    @property
+    def gsMaps(self):
+        return self.__gsMaps
+
+    @property
+    def mappers(self):
+        return self.__mappers
+
+### debug region
     @property
     def model_init(self):
 	return self.__model_init
@@ -244,8 +269,8 @@ class Model(CoupleEntity):
 #
 class Mapper(CoupleEntity):
     __slots__ = ["__mapType", "__src", "__dst", "__name","__type"] # do we need init subroutine object?
-    def __init__(self, src, dst, name="", mapType="copy"):
-        super(Mapper, self).__init__(name, "Mapper")
+    def __init__(self, src, dst, mapType="copy",name=""):
+        super(Mapper, self).__init__(name=name,_type="Mapper")
         self.__name = name
         self.__mapType = mapType
         self.__src = src
@@ -260,7 +285,10 @@ class Mapper(CoupleEntity):
 	    self.__src = srcValue
 	else:
 	    raise TypeError("src must be Model type")
-  
+    @property
+    def mapType(self):
+        return self.__mapType 
+ 
     @property
     def dst(self):
         return self.__dst
@@ -273,8 +301,8 @@ class Mapper(CoupleEntity):
 
 class GsMap(CoupleEntity):
     __slots__=['__name','__grid', '__pes', '__manager','__type','__bind']
-    def __init__(self, name="",grid="", pes=""):
-        super(GsMap,self).__init__(name, "GsMap")
+    def __init__(self,grid="", pes="", name=""):
+        super(GsMap,self).__init__(name=name, _type="GsMap")
         self.__grid = grid
         self.__pes = pes
 
@@ -296,7 +324,7 @@ class GsMap(CoupleEntity):
 class sMat(CoupleEntity):
     __slots__  = ["__name", "__type","__bind","__manager" ]
     def __init__(self, name=""):
-        super(sMat, self).__init__(name, "sMat")
+        super(sMat, self).__init__(name=name, _type="sMat")
         
 
 
