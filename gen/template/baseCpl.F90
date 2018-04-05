@@ -88,19 +88,34 @@ subroutine cpl_init()
     ! !Model Init
     !-------------------------------------------------------------------
 		if(my_proc%iamin_modela)then
-			call a_init_mct(my_proc, my_proc%modela_id,& 
-				EClock, gsMap_aa, &
-                a2x_aa,x2a_aa, ierr)
+					
+					
+					
+					
+					
+					
+					
+				call a_init_mct(gsMap_aa=gsMap_aa,my_proc=my_proc,x2a_aa=x2a_aa,ierr=ierr,a2x_aa=a2x_aa,ID=my_proc%modela_id,EClock=EClock)
 		end if
 		if(my_proc%iamin_modelb)then
-			call b_init_mct(my_proc, my_proc%modelb_id,& 
-				EClock, gsMap_bb, &
-                b2x_bb,x2b_bb, ierr)
+					
+					
+					
+					
+					
+					
+					
+				call b_init_mct(my_proc=my_proc,ierr=ierr,ID=my_proc%modelb_id,b2x_bb=b2x_bb,gsMap_bb=gsMap_bb,x2b_bb=x2b_bb,EClock=EClock)
 		end if
 		if(my_proc%iamin_modelc)then
-			call c_init_mct(my_proc, my_proc%modelc_id,& 
-				EClock, gsMap_cc, &
-                c2x_cc,x2c_cc, ierr)
+					
+					
+					
+					
+					
+					
+					
+				call c_init_mct(my_proc=my_proc,x2c_cc=x2c_cc,gsMap_cc=gsMap_cc,c2x_cc=c2x_cc,ierr=ierr,ID=my_proc%modelc_id,EClock=EClock)
 		end if
 
     
@@ -342,10 +357,15 @@ subroutine cpl_run()
 					enddo
 				endif
                     
-				call mapper_comp_map(my_proc%mapper_Cx2a,&
-				 x2a_ax, x2a_aa,&
-				 100+10+2, ierr)
                 
+						
+						
+						
+						
+						
+						
+					call mapper_comp_map(mapper=my_proc%mapper_Cx2a,rList='',src=x2a_ax,dst=x2a_aa,msgtag=100+10+2,ierr=ierr)
+
                 if(s == 3 .and. my_proc%iamin_modela2cpl) then
                     call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
                     write(*,*) '<<===X2A_AA_VALUE Rank:',comm_rank, x2a_aa%rAttr(1,:)
@@ -366,10 +386,15 @@ subroutine cpl_run()
 					enddo
 				endif
                     
-				call mapper_comp_map(my_proc%mapper_Cx2b,&
-				 x2b_bx, x2b_bb,&
-				 100+10+2, ierr)
                 
+						
+						
+						
+						
+						
+						
+					call mapper_comp_map(mapper=my_proc%mapper_Cx2b,rList='',src=x2b_bx,dst=x2b_bb,msgtag=100+10+2,ierr=ierr)
+
                 if(s == 3 .and. my_proc%iamin_modela2cpl) then
                     call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
                     write(*,*) '<<===X2A_AA_VALUE Rank:',comm_rank, x2a_aa%rAttr(1,:)
@@ -390,10 +415,15 @@ subroutine cpl_run()
 					enddo
 				endif
                     
-				call mapper_comp_map(my_proc%mapper_Cx2c,&
-				 x2c_cx, x2c_cc,&
-				 100+10+2, ierr)
                 
+						
+						
+						
+						
+						
+						
+					call mapper_comp_map(mapper=my_proc%mapper_Cx2c,rList='',src=x2c_cx,dst=x2c_cc,msgtag=100+10+2,ierr=ierr)
+
                 if(s == 3 .and. my_proc%iamin_modela2cpl) then
                     call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
                     write(*,*) '<<===X2A_AA_VALUE Rank:',comm_rank, x2a_aa%rAttr(1,:)
@@ -410,25 +440,46 @@ subroutine cpl_run()
         !  (M is Model, X is CPL)
         !------------------------------------------------------------
 
+
         if(a_run)then
             if(my_proc%iamin_modela)then
-                call a_run_mct(my_proc, my_proc%modela_id,&
-				 EClock, a2x_aa, &
-				 x2a_aa, ierr)
+
+					
+					
+					
+					
+					
+					
+				call a_run_mct(my_proc=my_proc,a2x=a2x_aa,x2a=x2a_aa,ierr=ierr,ID=my_proc%modela_id,EClock=EClock)
+
             end if
         end if
+
         if(b_run)then
             if(my_proc%iamin_modelb)then
-                call b_run_mct(my_proc, my_proc%modelb_id,&
-				 EClock, b2x_bb, &
-				 x2b_bb, ierr)
+
+					
+					
+					
+					
+					
+					
+				call b_run_mct(my_proc=my_proc,b2x=b2x_bb,ierr=ierr,x2b=x2b_bb,ID=my_proc%modelb_id,EClock=EClock)
+
             end if
         end if
+
         if(c_run)then
             if(my_proc%iamin_modelc)then
-                call c_run_mct(my_proc, my_proc%modelc_id,&
-				 EClock, c2x_cc, &
-				 x2c_cc, ierr)
+
+					
+					
+					
+					
+					
+					
+				call c_run_mct(my_proc=my_proc,c2x=c2x_cc,ierr=ierr,x2c=x2c_cc,ID=my_proc%modelc_id,EClock=EClock)
+
             end if
         end if
 
@@ -449,55 +500,85 @@ subroutine cpl_run()
         ! (a2x_bx,a2x_cx) (b2x_cx,b2x_a2) (c2x_ax,c2x_bx)
         !
    
+
         if(a_run)then
             if(my_proc%iamin_modela2cpl)then
-                call mapper_comp_map(my_proc%mapper_Ca2x,&
-						a2x_aa, a2x_ax, &
-						100+10+3, ierr)
-                call mapper_comp_map(&
-					my_proc%mapper_SMata2b, &
-					a2x_ax, &
-					a2x_bx,& 
-					100+10+3, ierr, 'x')
-                call mapper_comp_map(&
-					my_proc%mapper_SMata2c, &
-					a2x_ax, &
-					a2x_cx,& 
-					100+10+3, ierr, 'x')
+		
+					
+					
+					
+					
+					
+					
+				call mapper_comp_map(mapper=my_proc%mapper_Ca2x,rList='',src=a2x_aa,dst=a2x_ax,msgtag=100+10+3,ierr=ierr)
+					
+					
+					
+					
+					
+					
+				call mapper_comp_map(mapper=my_proc%mapper_SMata2b,rList='x',src=a2x_ax,dst=a2x_bx,msgtag=100+10+3,ierr=ierr)
+					
+					
+					
+					
+					
+					
+				call mapper_comp_map(mapper=my_proc%mapper_SMata2c,rList='x',src=a2x_ax,dst=a2x_cx,msgtag=100+10+3,ierr=ierr)
             end if
         end if
+
         if(b_run)then
             if(my_proc%iamin_modelb2cpl)then
-                call mapper_comp_map(my_proc%mapper_Cb2x,&
-						b2x_bb, b2x_bx, &
-						100+10+3, ierr)
-                call mapper_comp_map(&
-					my_proc%mapper_SMatb2a, &
-					b2x_bx, &
-					b2x_ax,& 
-					100+10+3, ierr, 'x')
-                call mapper_comp_map(&
-					my_proc%mapper_SMatb2c, &
-					b2x_bx, &
-					b2x_cx,& 
-					100+10+3, ierr, 'x')
+		
+					
+					
+					
+					
+					
+					
+				call mapper_comp_map(mapper=my_proc%mapper_Cb2x,rList='',src=b2x_bb,dst=b2x_bx,msgtag=100+10+3,ierr=ierr)
+					
+					
+					
+					
+					
+					
+				call mapper_comp_map(mapper=my_proc%mapper_SMatb2a,rList='x',src=b2x_bx,dst=b2x_ax,msgtag=100+10+3,ierr=ierr)
+					
+					
+					
+					
+					
+					
+				call mapper_comp_map(mapper=my_proc%mapper_SMatb2c,rList='x',src=b2x_bx,dst=b2x_cx,msgtag=100+10+3,ierr=ierr)
             end if
         end if
+
         if(c_run)then
             if(my_proc%iamin_modelc2cpl)then
-                call mapper_comp_map(my_proc%mapper_Cc2x,&
-						c2x_cc, c2x_cx, &
-						100+10+3, ierr)
-                call mapper_comp_map(&
-					my_proc%mapper_SMatc2a, &
-					c2x_cx, &
-					c2x_ax,& 
-					100+10+3, ierr, 'x')
-                call mapper_comp_map(&
-					my_proc%mapper_SMatc2b, &
-					c2x_cx, &
-					c2x_bx,& 
-					100+10+3, ierr, 'x')
+		
+					
+					
+					
+					
+					
+					
+				call mapper_comp_map(mapper=my_proc%mapper_Cc2x,rList='',src=c2x_cc,dst=c2x_cx,msgtag=100+10+3,ierr=ierr)
+					
+					
+					
+					
+					
+					
+				call mapper_comp_map(mapper=my_proc%mapper_SMatc2a,rList='x',src=c2x_cx,dst=c2x_ax,msgtag=100+10+3,ierr=ierr)
+					
+					
+					
+					
+					
+					
+				call mapper_comp_map(mapper=my_proc%mapper_SMatc2b,rList='x',src=c2x_cx,dst=c2x_bx,msgtag=100+10+3,ierr=ierr)
             end if
         end if
 	

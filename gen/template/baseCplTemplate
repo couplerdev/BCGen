@@ -82,17 +82,21 @@ subroutine cpl_init()
     ! !Model Init
     !-------------------------------------------------------------------
 	#for $cfg in $model_cfgs
-		#set $av_mx = $cfg['mx_av_set']
-		#set $gm = $cfg['mx_gsmap_set']
 		#set $name = $cfg['model_unique_name']
-		#set $av_mx_mm = $av_mx['mx_mm']['name']
-		#set $av_xm_mm = $av_mx['xm_mm']['name']
-		#set $gm_mx = $gm['mx']['name']  
-		#set $gm_mm = $gm['mm']['name']  
+		#set $subroutine = $cfg['subroutine']
+		#set $init_method = $subroutine['init_method']
 		if(my_proc%iamin_model${name})then
-			call ${name}_init_mct(my_proc, my_proc%model${name}_id,& 
-				EClock, $gm_mm, &
-                $av_mx_mm,$av_xm_mm, ierr)
+			#for $method in $init_method
+				#set $init_method_name = $method['method_name']
+				#set $params = $method['params']
+				#set $args = []
+				#for $key in $params
+					#set item = $key + '=' + $params[$key]
+					$args.append(str(item))
+				#end for
+				#set $args = ",".join(args)
+				call ${init_method_name}(${args})
+			#end for
 		end if
 	#end for
 
@@ -236,9 +240,8 @@ subroutine cpl_run()
 
 	#for $cfg in $model_cfgs
 		#set $name = $cfg['model_unique_name']
-		#set $av_mx = $cfg['mx_av_set']
-		#set $av_xm_mm = $av_mx['xm_mm']['name']
-		#set $av_xm_mx = $av_mx['xm_mx']['name']
+		#set $run_method = $cfg['subroutine']['run_method']
+		#set $run_phase1_method = $run_method['run_phase1_method']
         if(${name}_run)then
             if(my_proc%iamin_model${name}2cpl)then
 				if(s == 3 .and. my_proc%iamin_modela2cpl) then
@@ -252,10 +255,22 @@ subroutine cpl_run()
 					enddo
 				endif
                     
-				call mapper_comp_map(my_proc%mapper_Cx2${name},&
-				 $av_xm_mx, $av_xm_mm,&
-				 100+10+2, ierr)
                 
+				#for $method in $run_phase1_method
+					#set $run_method_name = $method['method_name']
+					#set $params = $method['params']
+					#set $args = []
+					#for $key in $params
+						#set item = $key + '=' + $params[$key]
+						#if $key=='rList'
+							#set item = $key + '=\'' + $params[$key]+ '\''
+						#end if
+						$args.append(str(item))
+					#end for
+					#set $args = ",".join(args)
+					call ${run_method_name}(${args})
+				#end for
+
                 if(s == 3 .and. my_proc%iamin_modela2cpl) then
                     call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
                     write(*,*) '<<===X2A_AA_VALUE Rank:',comm_rank, x2a_aa%rAttr(1,:)
@@ -278,11 +293,24 @@ subroutine cpl_run()
 		#set $av_mx = $cfg['mx_av_set']
 		#set $av_mx_mm = $av_mx['mx_mm']['name']
 		#set $av_xm_mm = $av_mx['xm_mm']['name']
+
+		#set $run_method = $cfg['subroutine']['run_method']
+		#set $run_phase2_method = $run_method['run_phase2_method']
         if(${name}_run)then
             if(my_proc%iamin_model${name})then
-                call ${name}_run_mct(my_proc, my_proc%model${name}_id,&
-				 EClock, $av_mx_mm, &
-				 $av_xm_mm, ierr)
+
+			#for $method in $run_phase2_method
+				#set $run_method_name = $method['method_name']
+				#set $params = $method['params']
+				#set $args = []
+				#for $key in $params
+					#set item = $key + '=' + $params[$key]
+					$args.append(str(item))
+				#end for
+				#set $args = ",".join(args)
+				call ${run_method_name}(${args})
+			#end for
+
             end if
         end if
 	#end for
@@ -310,21 +338,26 @@ subroutine cpl_run()
 		#set $av_mx_mm = $av_mx['mx_mm']['name']
 		#set $av_mx_mx = $av_mx['mx_mx']['name']
 		#set $av_mn = $cfg['mn_av_set']
+
+		#set $run_method = $cfg['subroutine']['run_method']
+		#set $run_phase3_method = $run_method['run_phase3_method']
         if(${name}_run)then
             if(my_proc%iamin_model${name}2cpl)then
-                call mapper_comp_map(my_proc%mapper_C${name}2x,&
-						$av_mx_mm, $av_mx_mx, &
-						100+10+3, ierr)
-				#for $mn_av in $av_mn
-					#set $n_name = $mn_av['n_name']
-					#set $av_mx_nx = $mn_av['n_rAv']
-					#set $field = $mn_av['n_rField']
-                call mapper_comp_map(&
-					my_proc%mapper_SMat${name}2${n_name}, &
-					$av_mx_mx, &
-					$av_mx_nx,& 
-					100+10+3, ierr, '${field}')
+		
+			#for $method in $run_phase3_method
+				#set $run_method_name = $method['method_name']
+				#set $params = $method['params']
+				#set $args = []
+				#for $key in $params
+					#set item = $key + '=' + $params[$key]
+					#if $key=='rList'
+						#set item = $key + '=\'' + $params[$key]+ '\''
+					#end if
+					$args.append(str(item))
 				#end for
+				#set $args = ",".join(args)
+				call ${run_method_name}(${args})
+			#end for
             end if
         end if
 	#end for
