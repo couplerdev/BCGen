@@ -356,7 +356,6 @@ subroutine cpl_run()
 						x2b_bx%rAttr(1,i) = x2b_bx%rAttr(1,i) + (comm_rank+1)*10+i
 					enddo
 				endif
-                    
                 
 						
 						
@@ -385,7 +384,6 @@ subroutine cpl_run()
 						x2b_bx%rAttr(1,i) = x2b_bx%rAttr(1,i) + (comm_rank+1)*10+i
 					enddo
 				endif
-                    
                 
 						
 						
@@ -414,7 +412,6 @@ subroutine cpl_run()
 						x2b_bx%rAttr(1,i) = x2b_bx%rAttr(1,i) + (comm_rank+1)*10+i
 					enddo
 				endif
-                    
                 
 						
 						
@@ -440,10 +437,8 @@ subroutine cpl_run()
         !  (M is Model, X is CPL)
         !------------------------------------------------------------
 
-
         if(a_run)then
             if(my_proc%iamin_modela)then
-
 					
 					
 					
@@ -451,13 +446,10 @@ subroutine cpl_run()
 					
 					
 				call a_run_mct(my_proc=my_proc,a2x=a2x_aa,x2a=x2a_aa,ierr=ierr,ID=my_proc%modela_id,EClock=EClock)
-
             end if
         end if
-
         if(b_run)then
             if(my_proc%iamin_modelb)then
-
 					
 					
 					
@@ -465,13 +457,10 @@ subroutine cpl_run()
 					
 					
 				call b_run_mct(my_proc=my_proc,b2x=b2x_bb,ierr=ierr,x2b=x2b_bb,ID=my_proc%modelb_id,EClock=EClock)
-
             end if
         end if
-
         if(c_run)then
             if(my_proc%iamin_modelc)then
-
 					
 					
 					
@@ -479,7 +468,6 @@ subroutine cpl_run()
 					
 					
 				call c_run_mct(my_proc=my_proc,c2x=c2x_cc,ierr=ierr,x2c=x2c_cc,ID=my_proc%modelc_id,EClock=EClock)
-
             end if
         end if
 
@@ -500,7 +488,6 @@ subroutine cpl_run()
         ! (a2x_bx,a2x_cx) (b2x_cx,b2x_a2) (c2x_ax,c2x_bx)
         !
    
-
         if(a_run)then
             if(my_proc%iamin_modela2cpl)then
 		
@@ -527,7 +514,6 @@ subroutine cpl_run()
 				call mapper_comp_map(mapper=my_proc%mapper_SMata2c,rList='x',src=a2x_ax,dst=a2x_cx,msgtag=100+10+3,ierr=ierr)
             end if
         end if
-
         if(b_run)then
             if(my_proc%iamin_modelb2cpl)then
 		
@@ -554,7 +540,6 @@ subroutine cpl_run()
 				call mapper_comp_map(mapper=my_proc%mapper_SMatb2c,rList='x',src=b2x_bx,dst=b2x_cx,msgtag=100+10+3,ierr=ierr)
             end if
         end if
-
         if(c_run)then
             if(my_proc%iamin_modelc2cpl)then
 		
@@ -610,13 +595,13 @@ subroutine cpl_final()
     !     end component
     !----------------------------------------------------------------------
     if(my_proc%iamin_modela)then
-         call a_final_mct()
+			call a_final_mct()
     end if
     if(my_proc%iamin_modelb)then
-         call b_final_mct()
+			call b_final_mct()
     end if
     if(my_proc%iamin_modelc)then
-         call c_final_mct()
+			call c_final_mct()
     end if
     call clean(my_proc)
 

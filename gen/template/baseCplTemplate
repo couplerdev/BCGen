@@ -254,7 +254,6 @@ subroutine cpl_run()
 						x2b_bx%rAttr(1,i) = x2b_bx%rAttr(1,i) + (comm_rank+1)*10+i
 					enddo
 				endif
-                    
                 
 				#for $method in $run_phase1_method
 					#set $run_method_name = $method['method_name']
@@ -290,15 +289,10 @@ subroutine cpl_run()
 
 	#for $cfg in $model_cfgs
 		#set $name = $cfg['model_unique_name']
-		#set $av_mx = $cfg['mx_av_set']
-		#set $av_mx_mm = $av_mx['mx_mm']['name']
-		#set $av_xm_mm = $av_mx['xm_mm']['name']
-
 		#set $run_method = $cfg['subroutine']['run_method']
 		#set $run_phase2_method = $run_method['run_phase2_method']
         if(${name}_run)then
             if(my_proc%iamin_model${name})then
-
 			#for $method in $run_phase2_method
 				#set $run_method_name = $method['method_name']
 				#set $params = $method['params']
@@ -310,7 +304,6 @@ subroutine cpl_run()
 				#set $args = ",".join(args)
 				call ${run_method_name}(${args})
 			#end for
-
             end if
         end if
 	#end for
@@ -334,11 +327,6 @@ subroutine cpl_run()
    
 	#for $cfg in $model_cfgs
 		#set $name = $cfg['model_unique_name']
-		#set $av_mx = $cfg['mx_av_set']
-		#set $av_mx_mm = $av_mx['mx_mm']['name']
-		#set $av_mx_mx = $av_mx['mx_mx']['name']
-		#set $av_mn = $cfg['mn_av_set']
-
 		#set $run_method = $cfg['subroutine']['run_method']
 		#set $run_phase3_method = $run_method['run_phase3_method']
         if(${name}_run)then
@@ -391,8 +379,20 @@ subroutine cpl_final()
     !----------------------------------------------------------------------
 	#for $cfg in $model_cfgs
 		#set $name = $cfg['model_unique_name']
+		#set $subroutine = $cfg['subroutine']
+		#set $final_method = $subroutine['final_method']
     if(my_proc%iamin_model${name})then
-         call ${name}_final_mct()
+		#for $method in $final_method
+			#set $final_method_name = $method['method_name']
+			#set $params = $method['params']
+			#set $args = []
+			#for $key in $params
+				#set item = $key + '=' + $params[$key]
+				$args.append(str(item))
+			#end for
+			#set $args = ",".join(args)
+			call ${final_method_name}(${args})
+		#end for
     end if
 	#end for
     call clean(my_proc)

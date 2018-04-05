@@ -124,8 +124,13 @@ model_c_cfg = { # Model M's cfg
                 },
             ]
         },
-        'final_method':{
-        }
+        'final_method':[
+            {
+                'method_name':'c_final_mct',
+                'params':{
+                }
+            }
+        ]
     }
 
 }
@@ -253,8 +258,13 @@ model_b_cfg = {
                 },
             ]
         },
-        'final_method':{
-        }
+        'final_method':[
+            {
+                'method_name':'b_final_mct',
+                'params':{
+                }
+            }
+        ]
     }
 }
 model_a_cfg = {
@@ -383,8 +393,13 @@ model_a_cfg = {
             'run_phase4_method': {
             },
         },
-        'final_method':{
-        }
+        'final_method':[
+            {
+                'method_name':'a_final_mct',
+                'params':{
+                }
+            }
+        ]
     }
 }
 
