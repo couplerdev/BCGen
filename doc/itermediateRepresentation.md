@@ -54,8 +54,6 @@ def BindToManager(manager): bind this Entity to NameManager
 properties:
           type, name
 ```
-=======
-
 CoupleEntity class implement some basic attribute and methods for Couple Entities and bound the behavior of Model, Mapper, etc
 
 ```
@@ -70,9 +68,8 @@ CoupleEntity methods
 def BindToManager(self,manager): bind this entity to a NameManager
 ```
 
->>>>>>> d7441221b14cf188d9d52b99cadc21ce5ee08cd5
 ### derived class Model
-The Model class 
+The Model class
 
 Model class describe the model. Model is a combination of model subroutine, relavent couple entities like attrVect.
 
@@ -93,6 +90,48 @@ def append(self, obj): append obj to relevant obj list,(for example, attrVect to
 
 ### derived class AttrVect
 
+attrVect class describe the attrVect. In our grammer attrVects have two forms: inside component attrVects, exchange atrrVects. The first one is described by models.xml, another is described by the coupler.xml.
+```
+AttrVect attributes: self.__field: attrVect fields
+                     self.__name : user defined attrVect Name
+                     self.__nx : size in x axis
+                     self.__ny : size in y axis
+                     self.__src : src component
+                     self.__dst : dst component
+                     self.__grid : grid __type
+                     self.__pes : where this attrVect located
+```
+properties of AttrVect class
+```
+def field(self)
+def src(self)
+def dst(self)
+def grid(self)
+def pes(self)
+def atype(self)
+```
 ### derived class Mapper
-
+Mapper class describe mappers. Mappers are used to describe an Entity which transform data from pes set to pes set. Nomatter the two pes sets are unique, of different process set or even those describe different grid pes set.
+```
+Mapper attrbutes:self_name : user defined mapper name(may be discard in new version)
+                 self.__mapType: the type of mapper, "copy", "rearr", "spmat"
+                 self.__src : src pes set
+                 self.__dst : dst pes set
+```  
+properties of Mapper class
+```
+def src(self)
+def mapType(self)
+def dst(self)
+```
 ### derived class GsMap
+GsMap class describe gsmap. Gsmap describes how an attrVect is distributed among many processes.
+```
+GsMap attrbutes: self.__grid : describe the grid of gsMap
+                 self.__pes : describe where the attrVect located
+```
+properties of GsMap
+```
+def grid(self)
+def pes(self)
+```
