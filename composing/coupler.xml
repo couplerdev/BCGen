@@ -1,71 +1,26 @@
 <coupler>
-	<attrVect>  <!--describe how attrVect in cpl are computed-->
-		<name>a2x_ax</name> <!--optional-->
-     		<model>a</model>
-		<srcs>
+	<attrVect>
+		<name>a2x_ax</name>
+   		<model>a</model>
+                <field></field>
+ 		<srcs>
 			<src>
-				<attrVect>a2x_ax</attrVect>  <!--need modify to support model name src-->
-				<field></field> <!--optional-->
-				<mapper>mapper_Ca2x</mapper> <!--optional-->
-			</src>
-                	</src>
-				<attrVect>b2x_bx</attrVect>
+                         	<attrVect>b2x_bx</attrVect>
 				<field></field>
-                        	<mapper>mapper_Sb2a</mapper>
-                	</src>
+                     		<mapper></mapper>
+                        </src>
 			<src>
-				<attrVect>c2x_bx</attrVect>
-				<field></field> <!--optional if not def can be check or all the fields-->
-				<mapper>
-					<name>mapper_Sc2a</name>
-					<src>c2x_cx</src>
-           			</mapper>
-			</src>
+				<attrVect>c2x_cx</attrVect>
+				<field></field>
+				<mapper></mapper>
+  			</src>
 		</srcs>
 		<mrg>
-			<name></name>
-			<argList>
+			<name>mrg_a</name>
+			<args>
 				<arg></arg>
-              			<arg></arg>
-                        </argList><!--optional: only none standard API need this-->
+				<arg></arg>
+			</args>
 		</mrg>
-	</attrVect><!--what field input need-->
-	<attrVect>
-		<name></name>
-		<srcs>
-			<src>
-				<attrVect></attrVect>
-				<field></field>
-				<mapper></mapper>
-			</src>
-			<src>
-				<attrVect></attrVect>
-				<field></field>
-				<mapper></mapper>
-			</src>
-		</srcs>
-		<mrg>
-			<name></name>
-			<argList></argList>
-		</mrg>
-	</attrVect>
-	<attrVect>
-		<name></name>
-		<srcs>
-			<src>
-				<attrVect></attrVect>
-				<field></field>
-				<mapper></mapper>
-			</src>
-			<src>
-				<attrVect></attrVect>
-				<field></field>
-				<mapper></mapper>
-			</src>
-		</srcs>
-		<mrg>
-			<name></name>
-			<argList></argList>
-		</mrg>
-	</attrVect>
+        </attrVect>
 </coupler>

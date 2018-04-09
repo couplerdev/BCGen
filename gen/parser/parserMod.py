@@ -21,16 +21,32 @@ from NameManager import *
 DEBUG = 1
 
 class Parser:
-    def __init__(self):
+    def __init__(self, couplerFile="../../composing/coupler.xml",  modelFile="../../composing/models.xml", \
+                 scheduleFile="../composing/schedule.xml"):
         self.__NameManager = NameManager()
         self.__models = {}
         self.__attrVectCouple = {}
         self.__subroutine = {}
         self.__sMapper = {}
+        self.__couplerFile = couplerFile
+        self.__modelFile = modelFile
+        self.__scheduleFile = scheduleFile
 
     @property
     def models(self):
         return self.__models
+
+    @property
+    def attrVectCouple(self):
+        return self.__attrVectCouple
+
+    @property
+    def subroutine(self):
+        return self.__subroutine
+        
+    @property
+    def sMapper(self):
+        return self.__sMapper     
 
     def load(self,filename):
         tree = ET.parse(filename)
@@ -38,7 +54,7 @@ class Parser:
         return root
 
     def modelsParse(self):
-        root = self.load('../../composing/models.xml')
+        root = self.load(self.__modelFile)
         modelParser = ModelParser(self.__NameManager)
         for child in root:
             modelParser.setRoot(child)
@@ -53,12 +69,14 @@ class Parser:
         pass
 	
     def coupleAttrVectParse(self):
-        root = self.load('coupler.xml')
-        avParser = CoupleAttrVectParser()
+        root = self.load(self.__couplerFile)
+        avParser = CouplerParser(self.__NameManager)  ## not implemented now
         for child in root:
             avParser.setRoot(child)
+            avParser.couplerParse(self)
             attrVect = avParser.attrVect
-            self.__attrVect.append(attrVect)
+            #print attrVect.name, attrVect.atype
+            self.__attrVectCouple.append(attrVect)
 
     def parse(self):
         self.modelsParse()
@@ -100,12 +118,13 @@ class SubroutineParser:
 		self.__subroutine =  ModelSubroutine()
 		for child in self.__root:
                     if child.tag == "name":
-                        self.__subroutine.name = child.text
+                        self.__subroutine.subroutineName = child.text
                     elif child.tag == "arg":
                         self.__subroutine.append(child.text)
                     else:
                         raise NoTagError("No such tag "+child.tag)
                 self.__isParsed = True
+                #print self.__subroutine.subroutineName
 
     @property
     def subroutine(self):
@@ -204,46 +223,71 @@ class ModelParser:
 #
 class CouplerParser: ###!!!!
     __slots__ = ['__root', '__attrVect', '__isParsed', '__NameManager']
-    def __init__(self):
+    def __init__(self, nameManager):
         self.__root = ""
         self.__isParsed = False
+        self.__NameManager = nameManager
+        self.__attrVect = AttrVect()    
+    
+    @property
+    def attrVect(self):
+        return self.__attrVect
+
+    @attrVect.setter
+    def attrVect(self, attrVectValue):
+        if not isinstance(type(attrVect),attrVectValue):
+            raise TypeError("attrVectValue not attrVect type")
+        self.__attrVect = attrVectValue
 
     def setRoot(self, root):
         self.__root = root
         self.__isParsed = False
 
-    def bindToNameManager(self, nameManager):
-        self.__NameManager = nameManager   
-
     def couplerParse(self, parser):
         if self.__root == "":
             raise UnSetError("self.__root not set! Please try setRoot method")
-        for child in root:
-            if child.find("name")!= None and child.find("name")!= None:
-                name = child.find("name").text
-                av = AttrVect(name=name)
-                if not self.__nameManager.findName(av):
-                    raise ConfigError("try to mrg to a unexist attrVect")
-            srcs = child.find("srcs")
+        root = self.__root
+        if root.find("name")!= None:
+            name = root.find("name").text
+            print name
+            av = AttrVect(name=name)
+            self.__attrVect = av
+            av.BindToManager(self.__NameManager)
+            if not self.__NameManager.FindName(av):
+                raise ConfigError("try to mrg to a unexist attrVect")
+        if root.find("srcs") != None:
+            srcs = root.find("srcs")
             for src in srcs:
-                name = src.find("name").text
+                attrVectName = src.find("attrVect").text
                 field = src.find("field").text
                 attrVect = AttrVect(name=name, field=field)
-                if not self.__nameManager.findName(attrVect):
+                attrVect.BindToManager(self.__NameManager)
+                if not self.__NameManager.FindName(attrVect):
                     parser.append(attrVect)
                 mapperRoot = src.find("mapper")
                 mapperName = mapperRoot.find('name')
                 srvAttrVect = mapperRoot.find("src")
                 mapper = Mapper(src=srcAttrVect,dst=name,name=mapperName)
                 parser.append(mapper)
-            mrg = child.find("mrg")
-            name = mrg.find("name")
-            argListroot = mrg.find("argList")
+        if root.find("mrg") != None:
+            mrg = root.find("mrg")
+            name = ""
             argList = []
-            for arg in argListroot:
-                 argList.append(arg.text)
+            if mrg.find("name") != None:
+                name = mrg.find("name")
+            else:
+                name = "mrg"
+            if mrg.find("args") != None:
+                argListRoot = mrg.find("args") 
+                for arg in argListRoot:
+                    argList.append(arg.text)
+            else:
+                argList = []
             mrg = MrgSubroutine(name=name, argList=argList)
             parser.append(mrg)
+        else:
+            print "no mrg"
+            #parser.append(mrg)   ## bugy
         
 
 class ScheduleParser:

@@ -75,7 +75,7 @@ class NameManager:
 
     def FindName(self, obj):
         if obj.type == "AttrVect":
-            return __FindObject(obj,0)                  
+            return self.__FindObject(obj,0)                  
         else:
             return False
 

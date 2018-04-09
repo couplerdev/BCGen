@@ -29,25 +29,24 @@ class Subroutine(object):
         self.__argList = argListValue
 
     def append(self, arg):
-        print 'haha', arg
         if not isinstance(arg, str):
             raise  TypeError("arg not a string")
         print type(self.__argList)
         self.__argList.append(arg)
 
-    def toString(self):
-        print self.__argList
-	string = self.__subroutineName
+    def toString(self, argList, subroutineName):
+	string = subroutineName
         string += "("
         lenString = len(string)
         lenSpace = lenString
-        for arg in self.__argList:
+        for arg in argList:
             argStr = arg + ", "
             string += argStr
             lenString += len(argStr)
             if lenString > self.__lineCharacter:
                 lenString =lineSpace
                 string += "&\n" + lenSpace*' '
+        #print string
         if string[-2:] == "&\n":
             string = string[:-4] + ")"
         else:
@@ -77,8 +76,19 @@ class ModelSubroutine(Subroutine):
         self.__wrapper = wrapper  # identify the wrapper API
         self.__type = subroutineName
         self.__subroutineName = self.__name + self.__type+ "_" + self.__wrapper
-	self.default = pattern
+        self.default = pattern
 	self.__argList = []		
+
+    @property
+    def subroutineName(self):
+        return self.__subroutineName
+    @subroutineName.setter
+    def subroutineName(self, name):
+        if isinstance(name, str):
+            self.__subroutineName = name
+        else:
+            raise TypeError("name not str type")
+
 
     @property
     def name(self):
@@ -107,7 +117,7 @@ class ModelSubroutine(Subroutine):
         self.__argList.append(arg)
  
     def toString(self):
-        return super(ModelSubroutine,self).toString()
+        return super(ModelSubroutine,self).toString(self.__argList, self.__subroutineName)
 
 #   a bug: init with name not checked by NameManager
 #   present solution: init phase name not allowed ?	
@@ -163,6 +173,14 @@ class AttrVect(CoupleEntity):
             self.__atype = 0 #"rearr"
         else:
             self.__atype = 1 #"smat"
+    
+    @property
+    def nx(self):
+        return self.__nx
+
+    @property
+    def ny(self):
+        return self.__ny
 
     @property
     def field(self):
