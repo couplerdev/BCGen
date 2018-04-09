@@ -86,17 +86,7 @@ subroutine cpl_init()
 		#set $subroutine = $cfg['subroutine']
 		#set $init_method = $subroutine['init_method']
 		if(my_proc%iamin_model${name})then
-			#for $method in $init_method
-				#set $init_method_name = $method['method_name']
-				#set $params = $method['params']
-				#set $args = []
-				#for $key in $params
-					#set item = $key + '=' + $params[$key]
-					$args.append(str(item))
-				#end for
-				#set $args = ",".join(args)
-				call ${init_method_name}(${args})
-			#end for
+			$init_method.getFuncFormat()
 		end if
 	#end for
 
@@ -255,20 +245,7 @@ subroutine cpl_run()
 					enddo
 				endif
                 
-				#for $method in $run_phase1_method
-					#set $run_method_name = $method['method_name']
-					#set $params = $method['params']
-					#set $args = []
-					#for $key in $params
-						#set item = $key + '=' + $params[$key]
-						#if $key=='rList'
-							#set item = $key + '=\'' + $params[$key]+ '\''
-						#end if
-						$args.append(str(item))
-					#end for
-					#set $args = ",".join(args)
-					call ${run_method_name}(${args})
-				#end for
+					$run_phase1_method.getFuncFormat()
 
                 if(s == 3 .and. my_proc%iamin_modela2cpl) then
                     call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
@@ -293,17 +270,7 @@ subroutine cpl_run()
 		#set $run_phase2_method = $run_method['run_phase2_method']
         if(${name}_run)then
             if(my_proc%iamin_model${name})then
-			#for $method in $run_phase2_method
-				#set $run_method_name = $method['method_name']
-				#set $params = $method['params']
-				#set $args = []
-				#for $key in $params
-					#set item = $key + '=' + $params[$key]
-					$args.append(str(item))
-				#end for
-				#set $args = ",".join(args)
-				call ${run_method_name}(${args})
-			#end for
+				$run_phase2_method.getFuncFormat()
             end if
         end if
 	#end for
@@ -331,21 +298,7 @@ subroutine cpl_run()
 		#set $run_phase3_method = $run_method['run_phase3_method']
         if(${name}_run)then
             if(my_proc%iamin_model${name}2cpl)then
-		
-			#for $method in $run_phase3_method
-				#set $run_method_name = $method['method_name']
-				#set $params = $method['params']
-				#set $args = []
-				#for $key in $params
-					#set item = $key + '=' + $params[$key]
-					#if $key=='rList'
-						#set item = $key + '=\'' + $params[$key]+ '\''
-					#end if
-					$args.append(str(item))
-				#end for
-				#set $args = ",".join(args)
-				call ${run_method_name}(${args})
-			#end for
+				$run_phase3_method.getFuncFormat()
             end if
         end if
 	#end for
