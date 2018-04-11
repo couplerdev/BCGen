@@ -1,3 +1,5 @@
+from model_set import *
+
 class Temp:
     mix = False
     subroutine = []
@@ -426,4 +428,16 @@ model_cfgs = [
     model_a_cfg,
     model_b_cfg,
     model_c_cfg
+]
+
+deploy_cfgs = [
+    model_a_cfg,
+    model_b_cfg,
+    model_c_cfg
+]
+
+proc_cfgs = [
+    model_a,
+    model_b,
+    model_c
 ]

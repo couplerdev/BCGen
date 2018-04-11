@@ -165,6 +165,10 @@ class AttrVect(CoupleEntity):
             self.__atype = 1 #"smat"
 
     @property
+    def name(self):
+	return self.__name        
+
+    @property
     def field(self):
 	return self.__field        
     @field.setter
@@ -214,7 +218,13 @@ class Model(CoupleEntity):
         self.__attrVects = []   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
         self.__gsMaps = []
         self.__mappers = []       
+
+        self.__name = name
 ### debug region
+    @property
+    def name(self):
+        return self.__name
+
     @property
     def attrVects(self):
         return self.__attrVects
@@ -275,6 +285,10 @@ class Mapper(CoupleEntity):
         self.__mapType = mapType
         self.__src = src
 	self.__dst = dst
+
+    @property
+    def name(self):
+        return self.__name
 
     @property
     def src(self):
