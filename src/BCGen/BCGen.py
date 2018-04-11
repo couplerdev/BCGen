@@ -23,7 +23,7 @@ from irCheetah import *
 if __name__ == "__main__":
     models = {}
     attrVectCouple = {}
-    sMapper = {}
+    Mapper = {}
     subroutine = {}
     couplerFile = "../../composing/coupler.xml"
     modelFile = "../../composing/models.xml"
@@ -34,9 +34,9 @@ if __name__ == "__main__":
     parser.modelsParse()    
 
     models = parser.models
-    #attrVectCouple = parser.attrVectCouple
-    #subroutine = parser.subroutine
-    #sMapper = parser.sMapper
-    #for subrt in subroutine:
-    #    print subrt
-
+    attrVectCouple = parser.attrVectCouple
+    subroutine = parser.subroutine
+    Mapper = parser.sMapper
+    for av in models["a"].attrVects:
+            print av.name
+    

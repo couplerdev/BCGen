@@ -229,9 +229,9 @@ class Model(CoupleEntity):
 	self.__model_init = ModelSubroutine() #optional?
 	self.__model_run = ModelSubroutine()		
 	self.__model_final = ModelSubroutine()
-        self.__attrVects = []   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
-        self.__gsMaps = []
-        self.__mappers = []       
+        self.__attrVects = {}   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
+        self.__gsMaps = {}
+        self.__mappers = {}       
 ### debug region
     @property
     def attrVects(self):
@@ -272,11 +272,25 @@ class Model(CoupleEntity):
 
     def append(self, obj):
         if obj.type == "AttrVect":
-            self.__attrVects.append(obj)
+            key = "c2x_cc"
+            if obj.src == "x":
+                if obj.pes == "x":
+                    key = "x2c_cx"
+                else:
+                    key = "x2c_cc"
+            else:
+                if obj.pes == "x":
+                    key = "c2x_cx"
+                else: 
+                    key = "c2x_cc"
+            self.__attrVects[key] = obj
         elif obj.type == "Mapper":
-            self.__mappers.append(obj)
+            self.__mappers[obj.direction] = obj
         elif obj.type == "GsMap":
-            self.__gsMaps.append(obj)
+            if obj.pes == "x": 
+                self.__gsMaps["cpl"] = obj
+            else: 
+                self.__gsMaps["comp"] = obj
         else:
             print obj.type
             raise TypeError("no such type!!!")
@@ -286,37 +300,46 @@ class Model(CoupleEntity):
 #   subroutine ?
 #
 class Mapper(CoupleEntity):
-    __slots__ = ["__mapType", "__src", "__dst", "__name","__type"] # do we need init subroutine object?
-    def __init__(self, src, dst, mapType="copy",name=""):
+    __slots__ = ["__mapType", "__srcAttrVect", "__dstAttrVect", "__name",\
+                 "__type", "__srcGsMap", "__dstGsMap"]
+    def __init__(self, srcAttrVect, dstAttrVect, srcGsMap, dstGsMap, \
+                 mapType="copy",name=""):
         super(Mapper, self).__init__(name=name,_type="Mapper")
         self.__name = name
         self.__mapType = mapType
-        self.__src = src
-	self.__dst = dst
+        self.__srcAttrVect = srcAttrVect
+	self.__dstAttrVect = dstAttrVect
+        self.__srcGsMap = srcGsMap
+        self.__dstGsMap = dstGsMap
+        self.__direction = "x2c"
+        
+    @property
+    def direction(self):
+        if self.__srcAttrVect.pes != 'x':
+            self.__direction = "c2x"
+        return self.__direction
+    
+    @property
+    def srcGsMap(self):
+        return self.__srcGsMap
 
     @property
-    def src(self):
-        return self.__src
-    @src.setter
-    def src(self, srcValue):
-	if isinstance(srcValue, type(Model)):
-	    self.__src = srcValue
-	else:
-	    raise TypeError("src must be Model type")
+    def dstGsMap(self):
+        return self.__dstGsMap
+
+    @property
+    def srcAttrVect(self): 
+        return self.__srcAttrVect
+
+    @property
+    def dstAttrVect(self):
+        return self.__dstAttrVect
+   
     @property
     def mapType(self):
         return self.__mapType 
  
-    @property
-    def dst(self):
-        return self.__dst
-    @dst.setter
-    def dst(self, dstValue):
-        if isinstance(dstValue, type(Model)):
-            self.__dst = dstValue
-        else:
-            raise TypeError("dst must be Model type")
-
+   
 class GsMap(CoupleEntity):
     __slots__=['__name','__grid', '__pes', '__manager','__type','__bind']
     def __init__(self,grid="", pes="", name=""):
