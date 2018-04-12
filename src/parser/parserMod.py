@@ -26,8 +26,7 @@ class Parser:
         self.__NameManager = NameManager()
         self.__models = {}
         self.__attrVectCouple = {}
-        self.__subroutine = {}
-        self.__sMapper = {}
+        self.__subroutine = {}   ## mrg subroutine
         self.__couplerFile = couplerFile
         self.__modelFile = modelFile
         self.__scheduleFile = scheduleFile
@@ -44,9 +43,15 @@ class Parser:
     def subroutine(self):
         return self.__subroutine
         
-    @property
-    def sMapper(self):
-        return self.__sMapper     
+    def addDict(self, attrVect, name):
+        self.__attrVectCouple[name] = attrVect
+ 
+    def visitByName(self, name):
+        for model in self.__models:
+            for av in self.__models[model].attrVects:
+                if av.name == name:
+                    return av
+        return AttrVect(name=name)               
 
     def load(self,filename):
         tree = ET.parse(filename)
@@ -74,9 +79,9 @@ class Parser:
         for child in root:
             avParser.setRoot(child)
             avParser.couplerParse(self)
-            attrVect = avParser.attrVect
-            #print attrVect.name, attrVect.atype
-            self.__attrVectCouple.append(attrVect)
+            mrg = avParser.mrgSubroutine
+            #print attrVect.name, attrVect.atyp
+            self.__subroutine.append(mrg)
 
     def parse(self):
         self.modelsParse()
@@ -87,9 +92,7 @@ class Parser:
             print 'couple AttrVect parsed'
 
     def append(self, obj):
-        if obj.atype == 'AttrVect':
-            self.__attrVectCouple[obj.name] = obj
-        elif obj.atype == 'Model':
+        if obj.atype == 'Model':
             self.__model[obj.name] = obj
         elif obj.atype == 'Mrg':
             self.__subroutine[obj.name] = obj
@@ -177,8 +180,16 @@ class ModelParser:
         self.__model.append(x2comp_ax)
   
     def __setMapper(self):
-        srcMapper = Mapper(self.__name, "x", mapType="rearr")
-        dstMapper = Mapper("x", self.__name, mapType="rearr")
+        if len(self.__model.attrVects) != 4:
+            raise ValueError("call __setAttrVect first!") 
+        if len(self.__model.gsMaps) != 2:
+            raise ValueError("call __setGsMap first!")
+        srcMapper = Mapper(self.__model.attrVects["c2x_cc"], self.__model.attrVects["c2x_cx"], \
+                           self.__model.gsMaps["comp"].name, self.__model.gsMaps["cpl"].name, \
+                           direction="c2x", mapType="rearr")
+        dstMapper = Mapper(self.__model.attrVects["x2c_cc"], self.__model.attrVects["x2c_cx"], \
+                           self.__model.gsMaps["comp"].name, self.__model.gsMaps["cpl"].name,  \
+                           direction="x2c", mapType="rearr")
         srcMapper.BindToManager(self.__NameManager)
         dstMapper.BindToManager(self.__NameManager)
         self.__model.append(srcMapper)
@@ -207,9 +218,9 @@ class ModelParser:
         self.__nx = root.find("nx").text
         self.__ny = root.find("ny").text
         self.__field = root.find("field").text
-        self.__setMapper()
         self.__setAttrVect()
         self.__setGsMap()
+        self.__setMapper()
         self.__isParsed = True
 	
     @property
@@ -228,6 +239,7 @@ class CouplerParser: ###!!!!
         self.__isParsed = False
         self.__NameManager = nameManager
         self.__attrVect = AttrVect()    
+        self.__mrgSubroutine = MergeSubroutine()
     
     @property
     def attrVect(self):
@@ -258,16 +270,15 @@ class CouplerParser: ###!!!!
         if root.find("srcs") != None:
             srcs = root.find("srcs")
             for src in srcs:
-                attrVectName = src.find("attrVect").text
+                srcAttrVectName = src.find("attrVect").text
+                srcAttrVect = parser.visitByName(srcAttrVectName)
                 field = src.find("field").text
-                attrVect = AttrVect(name=name, field=field)
+                mapperName = src.find("mapper").text
+                attrVect = AttrVectCpl(srcAttrVect, mapperName, field=field)
                 attrVect.BindToManager(self.__NameManager)
                 if not self.__NameManager.FindName(attrVect):
-                    parser.append(attrVect)
-                mapperRoot = src.find("mapper")
-                mapperName = mapperRoot.find('name')
-                srvAttrVect = mapperRoot.find("src")
-                mapper = Mapper(src=srcAttrVect,dst=name,name=mapperName)
+                    parser.addDict(attrVect, name)
+                mapper = Mapper(srcAttrVect,attrVect, mapType="sMat",name=mapperName)
                 parser.append(mapper)
         if root.find("mrg") != None:
             mrg = root.find("mrg")
@@ -277,7 +288,7 @@ class CouplerParser: ###!!!!
                 name = mrg.find("name")
             else:
                 name = "mrg"
-            if mrg.find("args") != None:
+            if mrg.find("args") != None:  # if undefined args using default mod
                 argListRoot = mrg.find("args") 
                 for arg in argListRoot:
                     argList.append(arg.text)

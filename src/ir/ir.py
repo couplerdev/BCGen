@@ -54,12 +54,13 @@ class Subroutine(object):
         return string 
            
 class MergeSubroutine(Subroutine):
-    __slots__=["__name","default","__argList","__subroutineName"]	
-    def __init__(self, pattern=True, name=""):
-        super(MergeSubroutineName, self).__init__()
+    __slots__=["__name","default","__argList","__subroutineName", "__atype"]	
+    def __init__(self, subroutineName="mrg", pattern=True, name=""):
+        super(MergeSubroutine, self).__init__()
         self.__name = name
         self.__subroutineName = "mrg_" + self.__name
         self.__argList = []
+        self.__atype = "Mrg"
 
     #def append(self, arg):
     #    super(MergerSubroutine, self).append(arg)
@@ -302,8 +303,8 @@ class Model(CoupleEntity):
 class Mapper(CoupleEntity):
     __slots__ = ["__mapType", "__srcAttrVect", "__dstAttrVect", "__name",\
                  "__type", "__srcGsMap", "__dstGsMap"]
-    def __init__(self, srcAttrVect, dstAttrVect, srcGsMap, dstGsMap, \
-                 mapType="copy",name=""):
+    def __init__(self, srcAttrVect, dstAttrVect, srcGsMap="", dstGsMap="", \
+                 direction="x2c", mapType="copy", name=""):
         super(Mapper, self).__init__(name=name,_type="Mapper")
         self.__name = name
         self.__mapType = mapType
@@ -311,7 +312,7 @@ class Mapper(CoupleEntity):
 	self.__dstAttrVect = dstAttrVect
         self.__srcGsMap = srcGsMap
         self.__dstGsMap = dstGsMap
-        self.__direction = "x2c"
+        self.__direction = direction
         
     @property
     def direction(self):
@@ -361,11 +362,28 @@ class GsMap(CoupleEntity):
     def pes(self, pesValue):
         self.__pes = pesValue
 
+class AttrVectCpl(AttrVect):
+    __slots__=["__mapperName", "__field","__grid","__srcAttrVect",\
+               "__atype", "__name"]
+    def __init__(self, srcAttrVect, mapper, gird):
+        name = ""
+        super(AttrFVectCpl, self).__init__(name=name, _type="AttrVect")
+        self.__srcAttrVect = srcAttrVect
+        self.__mapperName = mapper
+        self.__field = srcAttrVect.field
 
-class sMat(CoupleEntity):
-    __slots__  = ["__name", "__type","__bind","__manager" ]
-    def __init__(self, name=""):
-        super(sMat, self).__init__(name=name, _type="sMat")
-        
+    @property
+    def name(self): 
+        if self.__name == "":
+            name = self.__srcAttrVect.src + "2" + self.__srcAttrVect.dst + "_" +self.__grid + "x"
+            self.__name = name
+        return self.__name
 
+    @property
+    def mapperName(self):
+        return self.__mapperName
+
+    @property
+    def srcName(self):
+        return self.__srcAttrVect.name
 

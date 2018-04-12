@@ -6,9 +6,9 @@ parser.sMapper 返回网格转换的mapper（逐一Mapper_Cxx不在此类),利�
 parser.subroutine 返回Mrg的dict，提供按照目标attrVect的访问，parser.subroutine[attrVect]返回
     可以toString的过程
 
-Model类的属性：
+Model类的属性:
     gsMap 的dict，按照model.gsMap['comp']返回gsMap_aa, model.gsMap['cpl']返回gsMap_ax
-    mapper 的dict， 按照model.mapper['cx2']返回mapper_Cx2a, model.mapper['c2x']返回mapper_Ca2x
+    mapper 的dict，按照model.mapper['x2c']返回mapper_Cx2a, model.mapper['c2x']返回mapper_Ca2x
     attrVect的dict， 按照model.attrVect['c2x_cc']返回a2x_aa....
 AttrVect的属性（仅限于a2x_cx这一类）：
     init这是一个初始化过程，代表这个attrVect的初始化，有一个src属性，代表这个attrVect是由哪个
