@@ -13,3 +13,16 @@ mapper_Cx2b = Mapper("x", "b", name="mapper_Cx2b")
 
 mapper_Cc2x = Mapper("c", "x", name="mapper_Cc2x")
 mapper_Cx2c = Mapper("x", "c", name="mapper_Cx2c")
+
+
+
+mapper_SMatb2a = Mapper("c", "x", name="mapper_SMatb2a")
+mapper_SMatc2a = Mapper("c", "x", name="mapper_SMatc2a")
+
+
+mapper_SMata2b = Mapper("c", "x", name="mapper_SMata2b")
+mapper_SMatc2b = Mapper("c", "x", name="mapper_SMatc2b")
+
+mapper_SMata2c = Mapper("c", "x", name="mapper_SMata2c")
+mapper_SMatb2c = Mapper("c", "x", name="mapper_SMatb2c")
+

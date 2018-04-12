@@ -209,8 +209,9 @@ class AttrVect(CoupleEntity):
 
 class Model(CoupleEntity):
     __slots__ = ['__name','__model_init','__model_run','__model_final',\
-                 '__manager', '__type', '__attrVects','__gsMaps', '__mappers']
-    def __init__(self,name=""):
+                 '__manager', '__type', '__attrVects','__gsMaps', '__mappers',\
+                 '__gSize']
+    def __init__(self,name="", gSize=8):
 	super(Model, self).__init__(name=name,_type="Model")
 	self.__model_init = ModelSubroutine() #optional?
 	self.__model_run = ModelSubroutine()		
@@ -218,12 +219,15 @@ class Model(CoupleEntity):
         self.__attrVects = []   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
         self.__gsMaps = []
         self.__mappers = []       
-
+        self.__gSize = gSize
         self.__name = name
 ### debug region
     @property
     def name(self):
         return self.__name
+    @property
+    def gSize(self):
+        return self.__gSize
 
     @property
     def attrVects(self):
@@ -319,6 +323,11 @@ class GsMap(CoupleEntity):
         super(GsMap,self).__init__(name=name, _type="GsMap")
         self.__grid = grid
         self.__pes = pes
+        self.__name = name
+
+    @property
+    def name(self):
+        return self.__name
 
     @property
     def grid(self):

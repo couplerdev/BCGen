@@ -54,6 +54,9 @@ use comms_def
         character(len=20) :: rList = "fieldr"
 
         
+        type(map_mod)  :: a
+        type(map_mod)  :: b
+        type(map_mod)  :: c
         !sparse mat 
         type(map_mod)  :: mapper_SMata2b
         type(map_mod)  :: mapper_SMata2c
@@ -66,8 +69,6 @@ use comms_def
 
 
 
-        type(map_mod)  :: mapper_SMatx2a
-        type(map_mod)  :: mapper_SMata2x
 
         !------------------------------------------------------
         ! define relative comm variables

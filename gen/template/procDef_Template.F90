@@ -42,6 +42,10 @@ use comms_def
         character(len=20) :: rList = "fieldr"
 
         
+    #for $model in $proc_cfgs
+        #set $name = $model.name
+        type(map_mod)  :: $name
+    #end for
         !sparse mat 
         type(map_mod)  :: mapper_SMata2b
         type(map_mod)  :: mapper_SMata2c
@@ -54,8 +58,6 @@ use comms_def
 
 
 
-        type(map_mod)  :: mapper_SMatx2a
-        type(map_mod)  :: mapper_SMata2x
 
         !------------------------------------------------------
         ! define relative comm variables

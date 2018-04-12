@@ -5,31 +5,33 @@ use procm, only: pm_init => init, clean
 use comms
 use timeM
 use mct_mod
-#for $cfg in $model_cfgs
-	#set $name = $cfg['model_unique_name']
+#for $model in $proc_cfgs
+	#set $name = $model.name
 use comp_${name}
 #end for
 
      implicit none
      type(proc), target :: my_proc
 	
-	#for $cfg in $model_cfgs
-		#set $mx = $cfg['mx_gsmap_set']
-		#for $ix in $mx
-			#set $gm = $mx[$ix]
-	 type(gsMap) :: $gm['name']
+
+    #for $model in $proc_cfgs
+		#set $gms = $model.gsMaps
+		#for $gm in $gms
+			#set $name = $gm.name
+	 type(gsMap) :: $name
 		#end for
 	#end for
 
-	#for $cfg in $model_cfgs
-		#set $mx = $cfg['mx_av_set']
-	 type(AttrVect),pointer ::$mx['mx_mm']['name']
-	 type(AttrVect),pointer ::$mx['mx_mx']['name']
-	 type(AttrVect),pointer ::$mx['xm_mm']['name']
-	 type(AttrVect),pointer ::$mx['xm_mx']['name']
+    #for $model in $proc_cfgs
+		#set $avs = $model.attrVects
+		#for $av in $avs
+			#set $name = $av.name
+	 type(AttrVect),pointer ::$name
+		#end for
 	#end for
 
-	
+
+    ! todo change to model	
 	#for $cfg in $model_cfgs
 		#set $av_mn = $cfg['mn_av_set']
 		#for $mn_av in $av_mn
@@ -38,10 +40,11 @@ use comp_${name}
 		#end for
 	#end for
 
-	#for $cfg in $model_cfgs
-		#set $name = $cfg['model_unique_name']
+    #for $model in $proc_cfgs
+	    #set $name = $model.name
 	 logical :: ${name}_run
     #end for
+
     
      logical :: stop_clock
      type(clock) :: EClock
@@ -68,13 +71,14 @@ subroutine cpl_init()
     !  !Define Model_AV_MM 
     !-------------------------------------------------------------------
     
-	#for $cfg in $model_cfgs
-		#set $mx = $cfg['mx_av_set']
-		$mx['mx_mm']['name']=> my_proc%$mx['mx_mm']['name']
-		$mx['mx_mx']['name']=> my_proc%$mx['mx_mx']['name']
-		$mx['xm_mm']['name']=> my_proc%$mx['xm_mm']['name']
-		$mx['xm_mx']['name']=> my_proc%$mx['xm_mx']['name']
+    #for $model in $proc_cfgs
+		#set $avs = $model.attrVects
+		#for $av in $avs
+			#set $name = $av.name
+		$name=> my_proc%$name
+		#end for
 	#end for
+
     call MPI_Comm_rank(MPI_COMM_WORLD, comm_rank, ierr)
 
 
