@@ -27,6 +27,7 @@ class Parser:
         self.__models = {}
         self.__attrVectCouple = {}
         self.__subroutine = {}   ## mrg subroutine
+        self.__sMapper = {}
         self.__couplerFile = couplerFile
         self.__modelFile = modelFile
         self.__scheduleFile = scheduleFile
@@ -174,6 +175,7 @@ class ModelParser:
                              src="x", dst=self.__name, grid=self.__name, pes="x")
         comp2x_aa.BindToManager(self.__NameManager)
         comp2x_aa.nameGenerate()
+        print comp2x_aa.name
         x2comp_aa.BindToManager(self.__NameManager)
         x2comp_aa.nameGenerate()
         comp2x_ax.BindToManager(self.__NameManager)

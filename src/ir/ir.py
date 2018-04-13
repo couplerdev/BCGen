@@ -197,11 +197,7 @@ class AttrVect(CoupleEntity):
 
     @property
     def ny(self):
-        return self.__ny
-
-    @property
-    def name(self):
-	return self.__name        
+        return self.__ny        
 
     @property
     def field(self):
@@ -259,10 +255,7 @@ class Model(CoupleEntity):
         self.__gSize = gSize
 
 ### debug region
-    @property
-    def name(self):
-        return self.__name
-
+   
     @property
     def gSize(self):
         return self.__gSize
@@ -305,7 +298,6 @@ class Model(CoupleEntity):
 	self.__model_final = final_subroutine
 
     def append(self, obj):
-        print(obj.type)
         if obj.type == "AttrVect":
             key = "c2x_cc"
             if obj.src == "x":
@@ -360,9 +352,9 @@ class Mapper(CoupleEntity):
     def srcGsMap(self):
         return self.__srcGsMap
 
-    @property
-    def name(self):
-        return self.__name
+    #@property
+    #def name(self):
+    #    return self.__name
 
     @property
     def dstGsMap(self):
@@ -392,9 +384,9 @@ class GsMap(CoupleEntity):
         self.__pes = pes
         self.__name = name
 
-    @property
-    def name(self):
-        return self.__name
+    #@property
+    #def name(self):
+    #    return self.__name
 
     @property
     def grid(self):
