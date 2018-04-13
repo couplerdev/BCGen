@@ -29,25 +29,24 @@ class Subroutine(object):
         self.__argList = argListValue
 
     def append(self, arg):
-        print 'haha', arg
         if not isinstance(arg, str):
             raise  TypeError("arg not a string")
         print type(self.__argList)
         self.__argList.append(arg)
 
-    def toString(self):
-        print self.__argList
-	string = self.__subroutineName
+    def toString(self, subroutineName, argList):
+	string = subroutineName
         string += "("
         lenString = len(string)
         lenSpace = lenString
-        for arg in self.__argList:
+        for arg in argList:
             argStr = arg + ", "
             string += argStr
             lenString += len(argStr)
             if lenString > self.__lineCharacter:
                 lenString =lineSpace
                 string += "&\n" + lenSpace*' '
+        #print string
         if string[-2:] == "&\n":
             string = string[:-4] + ")"
         else:
@@ -55,18 +54,27 @@ class Subroutine(object):
         return string 
            
 class MergeSubroutine(Subroutine):
-    __slots__=["__name","default","__argList","__subroutineName"]	
-    def __init__(self, pattern=True, name=""):
-        super(MergeSubroutineName, self).__init__()
+    __slots__=["__name","default","__argList","__subroutineName", "__atype"]	
+    def __init__(self, subroutineName="mrg",argList=[], pattern=True, name=""):
+        super(MergeSubroutine, self).__init__(argList=argList)
         self.__name = name
-        self.__subroutineName = "mrg_" + self.__name
-        self.__argList = []
+        self.__subroutineName = "mrg_" + str(self.__name)
+        self.__argList = argList
+        self.__atype = "Mrg"
+        print self.__argList
 
+    @property
+    def name(self): 
+        return self.__subroutineName
+ 
+    @property
+    def atype(self):
+        return self.__atype
     #def append(self, arg):
     #    super(MergerSubroutine, self).append(arg)
 
-    #def toString(self):
-    #    return super(MergeSubroutine, self).toString()
+    def toString(self):
+        return super(MergeSubroutine, self).toString(self.__subroutineName, self.__argList)
 
 class ModelSubroutine(Subroutine):
 
@@ -77,8 +85,18 @@ class ModelSubroutine(Subroutine):
         self.__wrapper = wrapper  # identify the wrapper API
         self.__type = subroutineName
         self.__subroutineName = self.__name + self.__type+ "_" + self.__wrapper
-	self.default = pattern
+        self.default = pattern
 	self.__argList = []		
+
+    @property
+    def subroutineName(self):
+        return self.__subroutineName
+    @subroutineName.setter
+    def subroutineName(self, name):
+        if isinstance(name, str):
+            self.__subroutineName = name
+        else:
+            raise TypeError("name not str type")
 
     @property
     def name(self):
@@ -107,16 +125,17 @@ class ModelSubroutine(Subroutine):
         self.__argList.append(arg)
  
     def toString(self):
-        return super(ModelSubroutine,self).toString()
+        return super(ModelSubroutine,self).toString(self.__argList, self.__subroutineName)
 
 #   a bug: init with name not checked by NameManager
 #   present solution: init phase name not allowed ?	
 class CoupleEntity(object):
-    __slots__ = ['__name','__manager','__type', "__bind"]
+    __slots__ = ['__name','__manager','__type', "__bind","__nameSet"]
     def __init__(self, name="",_type="Entity"):
          self.__name = name
          self.__type = _type
          self.__bind = False
+         self.__nameSet = False
 
     def BindToManager(self, manager):
         self.__manager = manager
@@ -126,8 +145,11 @@ class CoupleEntity(object):
     def name(self):
         if not self.__bind:
             raise BindError("not Bind Entities")
+        if self.__nameSet:
+            return self.__name
         if self.__name == "":
             self.__name = self.__manager.GetName(self, self.__type)
+            self.__nameSet = True
         else:
             duplicate = self.__manager.CheckName(self.__name, self.__type)
             if duplicate:
@@ -139,6 +161,7 @@ class CoupleEntity(object):
             raise BindError("not Bind Entities")
         self.__name = nameValue
         self.__name = self.__manager.CheckName(self)
+        self.__nameSet = True
 
     @property
     def type(self):
@@ -163,6 +186,14 @@ class AttrVect(CoupleEntity):
             self.__atype = 0 #"rearr"
         else:
             self.__atype = 1 #"smat"
+    
+    @property
+    def nx(self):
+        return self.__nx
+
+    @property
+    def ny(self):
+        return self.__ny
 
     @property
     def name(self):
@@ -216,15 +247,18 @@ class Model(CoupleEntity):
 	self.__model_init = ModelSubroutine() #optional?
 	self.__model_run = ModelSubroutine()		
 	self.__model_final = ModelSubroutine()
-        self.__attrVects = []   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
-        self.__gsMaps = []
-        self.__mappers = []       
-        self.__gSize = gSize
+
+        self.__attrVects = {}   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
+        self.__gsMaps = {}
+        self.__mappers = {}       
         self.__name = name
+        self.__gSize = gSize
+
 ### debug region
     @property
     def name(self):
         return self.__name
+
     @property
     def gSize(self):
         return self.__gSize
@@ -267,12 +301,27 @@ class Model(CoupleEntity):
 	self.__model_final = final_subroutine
 
     def append(self, obj):
+        print(obj.type)
         if obj.type == "AttrVect":
-            self.__attrVects.append(obj)
+            key = "c2x_cc"
+            if obj.src == "x":
+                if obj.pes == "x":
+                    key = "x2c_cx"
+                else:
+                    key = "x2c_cc"
+            else:
+                if obj.pes == "x":
+                    key = "c2x_cx"
+                else: 
+                    key = "c2x_cc"
+            self.__attrVects[key] = obj
         elif obj.type == "Mapper":
-            self.__mappers.append(obj)
+            self.__mappers[obj.direction] = obj
         elif obj.type == "GsMap":
-            self.__gsMaps.append(obj)
+            if obj.pes == "x": 
+                self.__gsMaps["cpl"] = obj
+            else: 
+                self.__gsMaps["comp"] = obj
         else:
             print obj.type
             raise TypeError("no such type!!!")
@@ -282,41 +331,54 @@ class Model(CoupleEntity):
 #   subroutine ?
 #
 class Mapper(CoupleEntity):
-    __slots__ = ["__mapType", "__src", "__dst", "__name","__type"] # do we need init subroutine object?
-    def __init__(self, src, dst, mapType="copy",name=""):
+    __slots__ = ["__mapType", "__srcAttrVect", "__dstAttrVect", "__name",\
+                 "__type", "__srcGsMap", "__dstGsMap","__direction"]
+    def __init__(self, srcAttrVect, dstAttrVect, srcGsMap="", dstGsMap="", \
+                 direction="x2c", mapType="copy", name=""):
         super(Mapper, self).__init__(name=name,_type="Mapper")
         self.__name = name
         self.__mapType = mapType
-        self.__src = src
-	self.__dst = dst
+        self.__srcAttrVect = srcAttrVect
+	self.__dstAttrVect = dstAttrVect
+        self.__srcGsMap = srcGsMap
+        self.__dstGsMap = dstGsMap
+        self.__direction = direction
+        self.__type = "Mapper"
+        
+    @property
+    def direction(self):
+        if self.__srcAttrVect.pes != 'x':
+            self.__direction = "c2x"
+        return self.__direction
+    
+    @property
+    def srcGsMap(self):
+        return self.__srcGsMap
 
     @property
     def name(self):
         return self.__name
 
     @property
-    def src(self):
-        return self.__src
-    @src.setter
-    def src(self, srcValue):
-	if isinstance(srcValue, type(Model)):
-	    self.__src = srcValue
-	else:
-	    raise TypeError("src must be Model type")
+    def dstGsMap(self):
+        return self.__dstGsMap
+
+    @property
+    def srcAttrVect(self): 
+        return self.__srcAttrVect
+
+    @property
+    def dstAttrVect(self):
+        return self.__dstAttrVect
+   
     @property
     def mapType(self):
         return self.__mapType 
  
     @property
-    def dst(self):
-        return self.__dst
-    @dst.setter
-    def dst(self, dstValue):
-        if isinstance(dstValue, type(Model)):
-            self.__dst = dstValue
-        else:
-            raise TypeError("dst must be Model type")
-
+    def atype(self):
+        return self.__type
+   
 class GsMap(CoupleEntity):
     __slots__=['__name','__grid', '__pes', '__manager','__type','__bind']
     def __init__(self,grid="", pes="", name=""):
@@ -343,11 +405,30 @@ class GsMap(CoupleEntity):
     def pes(self, pesValue):
         self.__pes = pesValue
 
+class AttrVectCpl(AttrVect):
+    __slots__=["__mapperName", "__field","__grid","__srcAttrVect",\
+               "__atype", "__name"]
+    def __init__(self, srcAttrVect, mapper, grid, field=""):
+        name = ""
+        self.__name = ""
+        super(AttrVectCpl, self).__init__(name=name)
+        self.__srcAttrVect = srcAttrVect
+        self.__mapperName = mapper
+        self.__field = field
+        self.__grid = grid
 
-class sMat(CoupleEntity):
-    __slots__  = ["__name", "__type","__bind","__manager" ]
-    def __init__(self, name=""):
-        super(sMat, self).__init__(name=name, _type="sMat")
-        
+    @property
+    def name(self): 
+        if self.__name == "":
+            name = self.__srcAttrVect.src + "2" + self.__srcAttrVect.dst + "_" +self.__grid + "x"
+            self.__name = name
+        return self.__name
 
+    @property
+    def mapperName(self):
+        return self.__mapperName
+
+    @property
+    def srcName(self):
+        return self.__srcAttrVect.name
 

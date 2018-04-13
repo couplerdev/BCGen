@@ -26,8 +26,8 @@ use comms_def
         integer :: a_size
         integer :: a_gsize
         type(AttrVect) :: a2x_aa
-        type(AttrVect) :: x2a_aa
         type(AttrVect) :: a2x_ax
+        type(AttrVect) :: x2a_aa
         type(AttrVect) :: x2a_ax
         type(map_mod)  :: mapper_Ca2x
         type(map_mod)  :: mapper_Cx2a
@@ -35,8 +35,8 @@ use comms_def
         integer :: b_size
         integer :: b_gsize
         type(AttrVect) :: b2x_bb
-        type(AttrVect) :: x2b_bb
         type(AttrVect) :: b2x_bx
+        type(AttrVect) :: x2b_bb
         type(AttrVect) :: x2b_bx
         type(map_mod)  :: mapper_Cb2x
         type(map_mod)  :: mapper_Cx2b
@@ -44,8 +44,8 @@ use comms_def
         integer :: c_size
         integer :: c_gsize
         type(AttrVect) :: c2x_cc
-        type(AttrVect) :: x2c_cc
         type(AttrVect) :: c2x_cx
+        type(AttrVect) :: x2c_cc
         type(AttrVect) :: x2c_cx
         type(map_mod)  :: mapper_Cc2x
         type(map_mod)  :: mapper_Cx2c

@@ -30,12 +30,12 @@ use comms_def
         character(len=20) :: model${name}
         integer :: ${name}_size
         integer :: ${name}_gsize
-        type(AttrVect) :: $avs[0].name
-        type(AttrVect) :: $avs[1].name
-        type(AttrVect) :: $avs[2].name
-        type(AttrVect) :: $avs[3].name
-        type(map_mod)  :: $mappers[0].name
-        type(map_mod)  :: $mappers[1].name
+        #for $av in $avs 
+        type(AttrVect) :: $avs[$av].name
+        #end for
+        #for $mapper in $mappers
+        type(map_mod)  :: $mappers[$mapper].name
+        #end for
     #end for
 
         character(len=20) :: iList = "fieldi"

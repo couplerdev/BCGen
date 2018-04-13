@@ -4,9 +4,9 @@
                 <attrVect>  <!--local attrVect-->
 			<name></name><!--optional-->
 			<lsize></lsize>
-			<nx></nx>
-			<ny></ny>
-     			<field></field>
+			<nx>100</nx>
+			<ny>100</ny>
+     			<field>lon:lat</field>
 		</attrVect>
 		<init> <!--if user not define the optional tag then generate default subroutine-->
 			<name>a_init_mct</name><!--optional-->
