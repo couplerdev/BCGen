@@ -47,8 +47,8 @@ subroutine init(my_proc)
     my_proc%c_size = 10
     ! todo
     my_proc%a_gsize = 8
-    my_proc%b_gsize = 12
-    my_proc%c_gsize = 16
+    my_proc%b_gsize = 8
+    my_proc%c_gsize = 8
     
     !----------------------------------------------------------
     ! set up every comp's comm

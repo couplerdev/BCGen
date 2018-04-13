@@ -18,7 +18,7 @@ code.generate()
 code = codeGenerator("procDef_Template.F90", "proc_def.F90")
 #TODO add 
 code.addList('proc_cfgs',proc_cfgs)
-code.addList('sMat_cfgs',sMat_cfgs)
+#code.addList('sMat_cfgs',sMat_cfgs)
 code.generate()
 
 

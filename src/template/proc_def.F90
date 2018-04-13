@@ -29,8 +29,8 @@ use comms_def
         type(AttrVect) :: a2x_ax
         type(AttrVect) :: x2a_aa
         type(AttrVect) :: x2a_ax
-        type(map_mod)  :: mapper_Ca2x
-        type(map_mod)  :: mapper_Cx2a
+        type(map_mod)  :: Mapper_Ca2x
+        type(map_mod)  :: Mapper_Cx2a
         character(len=20) :: modelb
         integer :: b_size
         integer :: b_gsize
@@ -38,8 +38,8 @@ use comms_def
         type(AttrVect) :: b2x_bx
         type(AttrVect) :: x2b_bb
         type(AttrVect) :: x2b_bx
-        type(map_mod)  :: mapper_Cb2x
-        type(map_mod)  :: mapper_Cx2b
+        type(map_mod)  :: Mapper_Cb2x
+        type(map_mod)  :: Mapper_Cx2b
         character(len=20) :: modelc
         integer :: c_size
         integer :: c_gsize
@@ -47,8 +47,8 @@ use comms_def
         type(AttrVect) :: c2x_cx
         type(AttrVect) :: x2c_cc
         type(AttrVect) :: x2c_cx
-        type(map_mod)  :: mapper_Cc2x
-        type(map_mod)  :: mapper_Cx2c
+        type(map_mod)  :: Mapper_Cc2x
+        type(map_mod)  :: Mapper_Cx2c
 
         character(len=20) :: iList = "fieldi"
         character(len=20) :: rList = "fieldr"
