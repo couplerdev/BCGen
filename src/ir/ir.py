@@ -44,24 +44,25 @@ class Subroutine(object):
             string += argStr
             lenString += len(argStr)
             if lenString > self.__lineCharacter:
-                lenString =lineSpace
+                lenString =lenSpace
                 string += "&\n" + lenSpace*' '
         #print string
         if string[-2:] == "&\n":
             string = string[:-4] + ")"
         else:
-            string = string[:-2] + ")"
+            string = string[:-2]
+            string += ")"
         return string 
            
 class MergeSubroutine(Subroutine):
-    __slots__=["__name","default","__argList","__subroutineName", "__atype"]	
-    def __init__(self, subroutineName="mrg",argList=[], pattern=True, name=""):
-        super(MergeSubroutine, self).__init__(argList=argList)
+    __slots__=["__name","default","__argList","__subroutineName", "__atype", "__lineCharacter"]	
+    def __init__(self, subroutineName="mrg", pattern=True, name=""):
+        super(MergeSubroutine, self).__init__()
         self.__name = name
-        self.__subroutineName = "mrg_" + str(self.__name)
-        self.__argList = argList
+        self.__subroutineName = str(self.__name)
+        self.__argList = []
         self.__atype = "Mrg"
-        print self.__argList
+        self.__lineCharacter = 50
 
     @property
     def name(self): 
@@ -73,8 +74,8 @@ class MergeSubroutine(Subroutine):
     #def append(self, arg):
     #    super(MergerSubroutine, self).append(arg)
 
-    def toString(self):
-        return super(MergeSubroutine, self).toString(self.__subroutineName, self.__argList)
+    #def toString(self):
+    #    return super(MergeSubroutine, self).toString(self.__subroutineName, self.__argList)
 
 class ModelSubroutine(Subroutine):
 
@@ -125,7 +126,7 @@ class ModelSubroutine(Subroutine):
         self.__argList.append(arg)
  
     def toString(self):
-        return super(ModelSubroutine,self).toString(self.__argList, self.__subroutineName)
+        return super(ModelSubroutine,self).toString(self.__subroutineName, self.__argList)
 
 #   a bug: init with name not checked by NameManager
 #   present solution: init phase name not allowed ?	
@@ -139,21 +140,24 @@ class CoupleEntity(object):
 
     def BindToManager(self, manager):
         self.__manager = manager
-        self.__bind = True    
+        self.__bind = True  
+        
+    def nameGenerate(self):
+        if not self.__bind:
+            raise BindError("not Bind Entities")
+        if not self.__nameSet: 
+            if self.__name == "":
+                self.__name = self.__manager.GetName(self, self.__type)
+            else:
+                duplicate = self.__manager.CheckName(self.__name, self.__type)
+                if duplicate:
+                    raise ValueError("name conflict")
+            self.__nameSet = True
 
     @property
     def name(self):
         if not self.__bind:
             raise BindError("not Bind Entities")
-        if self.__nameSet:
-            return self.__name
-        if self.__name == "":
-            self.__name = self.__manager.GetName(self, self.__type)
-            self.__nameSet = True
-        else:
-            duplicate = self.__manager.CheckName(self.__name, self.__type)
-            if duplicate:
-                raise ValueError("name conflict")
         return self.__name
     @name.setter
     def name(self, nameValue):
@@ -161,7 +165,6 @@ class CoupleEntity(object):
             raise BindError("not Bind Entities")
         self.__name = nameValue
         self.__name = self.__manager.CheckName(self)
-        self.__nameSet = True
 
     @property
     def type(self):
@@ -186,6 +189,7 @@ class AttrVect(CoupleEntity):
             self.__atype = 0 #"rearr"
         else:
             self.__atype = 1 #"smat"
+
     
     @property
     def nx(self):
@@ -316,7 +320,7 @@ class Mapper(CoupleEntity):
     __slots__ = ["__mapType", "__srcAttrVect", "__dstAttrVect", "__name",\
                  "__type", "__srcGsMap", "__dstGsMap","__direction"]
     def __init__(self, srcAttrVect, dstAttrVect, srcGsMap="", dstGsMap="", \
-                 direction="x2c", mapType="copy", name=""):
+                 mapType="copy", name=""):
         super(Mapper, self).__init__(name=name,_type="Mapper")
         self.__name = name
         self.__mapType = mapType
@@ -324,13 +328,14 @@ class Mapper(CoupleEntity):
 	self.__dstAttrVect = dstAttrVect
         self.__srcGsMap = srcGsMap
         self.__dstGsMap = dstGsMap
-        self.__direction = direction
+        if srcAttrVect.src == 'x':
+            self.__direction = "x2c"
+        else: 
+            self.__direction = "c2x"
         self.__type = "Mapper"
         
     @property
     def direction(self):
-        if self.__srcAttrVect.pes != 'x':
-            self.__direction = "c2x"
         return self.__direction
     
     @property
@@ -380,7 +385,7 @@ class GsMap(CoupleEntity):
 
 class AttrVectCpl(AttrVect):
     __slots__=["__mapperName", "__field","__grid","__srcAttrVect",\
-               "__atype", "__name"]
+               "__name", "__type", "__nameSet", "__manager", "__bind"]
     def __init__(self, srcAttrVect, mapper, grid, field=""):
         name = ""
         self.__name = ""
@@ -389,12 +394,27 @@ class AttrVectCpl(AttrVect):
         self.__mapperName = mapper
         self.__field = field
         self.__grid = grid
+        self.__nameSet = False
+        self.__bind = False
+        self.__type = "AttrVect"
 
+    def BindToManager(self, manager):
+        self.__manager = manager
+        self.__bind = True  
+
+    def nameGenerate(self):
+        if not self.__bind:
+            raise BindError("not bind entities") 
+        if not self.__nameSet:
+            self.__name = self.__srcAttrVect.src + "2" + self.__srcAttrVect.dst + \
+                          "_" + self.grid + "x"
+            duplicate =  self.__manager.CheckName(self.__name, self.__type)
+            if duplicate:
+                raise ValueError("name conflict!!!")
+            self.__nameSet = True 
+           
     @property
-    def name(self): 
-        if self.__name == "":
-            name = self.__srcAttrVect.src + "2" + self.__srcAttrVect.dst + "_" +self.__grid + "x"
-            self.__name = name
+    def name(self):
         return self.__name
 
     @property
