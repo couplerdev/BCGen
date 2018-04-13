@@ -301,7 +301,6 @@ class Model(CoupleEntity):
 	self.__model_final = final_subroutine
 
     def append(self, obj):
-        print(obj.type)
         if obj.type == "AttrVect":
             key = "c2x_cc"
             if obj.src == "x":
