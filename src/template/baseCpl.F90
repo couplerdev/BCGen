@@ -6,8 +6,8 @@ use comms
 use timeM
 use mct_mod
 use comp_a
-use comp_b
 use comp_c
+use comp_b
 
      implicit none
      type(proc), target :: my_proc
@@ -15,23 +15,23 @@ use comp_c
 
 	 type(gsMap) :: gsMap_aa
 	 type(gsMap) :: gsMap_ax
-	 type(gsMap) :: gsMap_bb
-	 type(gsMap) :: gsMap_bx
 	 type(gsMap) :: gsMap_cc
 	 type(gsMap) :: gsMap_cx
+	 type(gsMap) :: gsMap_bb
+	 type(gsMap) :: gsMap_bx
 
 	 type(AttrVect),pointer ::a2x_aa
 	 type(AttrVect),pointer ::a2x_ax
 	 type(AttrVect),pointer ::x2a_aa
 	 type(AttrVect),pointer ::x2a_ax
-	 type(AttrVect),pointer ::b2x_bb
-	 type(AttrVect),pointer ::b2x_bx
-	 type(AttrVect),pointer ::x2b_bb
-	 type(AttrVect),pointer ::x2b_bx
 	 type(AttrVect),pointer ::c2x_cc
 	 type(AttrVect),pointer ::c2x_cx
 	 type(AttrVect),pointer ::x2c_cc
 	 type(AttrVect),pointer ::x2c_cx
+	 type(AttrVect),pointer ::b2x_bb
+	 type(AttrVect),pointer ::b2x_bx
+	 type(AttrVect),pointer ::x2b_bb
+	 type(AttrVect),pointer ::x2b_bx
 
 
     ! todo change to model	
@@ -43,8 +43,8 @@ use comp_c
 	 type(AttrVect):: c2x_bx
 
 	 logical :: a_run
-	 logical :: b_run
 	 logical :: c_run
+	 logical :: b_run
 
     
      logical :: stop_clock
@@ -76,14 +76,14 @@ subroutine cpl_init()
 		a2x_ax=> my_proc%a2x_ax
 		x2a_aa=> my_proc%x2a_aa
 		x2a_ax=> my_proc%x2a_ax
-		b2x_bb=> my_proc%b2x_bb
-		b2x_bx=> my_proc%b2x_bx
-		x2b_bb=> my_proc%x2b_bb
-		x2b_bx=> my_proc%x2b_bx
 		c2x_cc=> my_proc%c2x_cc
 		c2x_cx=> my_proc%c2x_cx
 		x2c_cc=> my_proc%x2c_cc
 		x2c_cx=> my_proc%x2c_cx
+		b2x_bb=> my_proc%b2x_bb
+		b2x_bx=> my_proc%b2x_bx
+		x2b_bb=> my_proc%x2b_bb
+		x2b_bx=> my_proc%x2b_bx
 
     call MPI_Comm_rank(MPI_COMM_WORLD, comm_rank, ierr)
 

@@ -437,7 +437,5 @@ deploy_cfgs = [
 ]
 
 proc_cfgs = [
-    model_a,
-    model_b,
-    model_c
+    parser.models[m] for m in parser.models 
 ]
