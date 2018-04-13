@@ -27,9 +27,9 @@ class Parser:
         self.__models = {}
         self.__attrVectCouple = {}
         self.__subroutine = {}   ## mrg subroutine
+        self.__sMapper = {}
         self.__couplerFile = couplerFile
         self.__modelFile = modelFile
-        self.__sMapper = {}
         self.__scheduleFile = scheduleFile
 
     @property
@@ -81,8 +81,6 @@ class Parser:
             avParser.setRoot(child)
             avParser.couplerParse(self)
             mrg = avParser.mergeSubroutine
-            print len(mrg.argList)
-            print mrg.toString()
             #print attrVect.name, attrVect.atyp
             self.__subroutine[mrg.name] = mrg
 
@@ -159,7 +157,9 @@ class ModelParser:
         srcGsMap = GsMap(grid=self.__name, pes=self.__name)
         dstGsMap = GsMap(grid=self.__name, pes="x")
         srcGsMap.BindToManager(self.__NameManager)
+        srcGsMap.nameGenerate()
         dstGsMap.BindToManager(self.__NameManager)
+        dstGsMap.nameGenerate()
         self.__model.append(srcGsMap)
         self.__model.append(dstGsMap)
 
@@ -174,9 +174,14 @@ class ModelParser:
         x2comp_ax = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, \
                              src="x", dst=self.__name, grid=self.__name, pes="x")
         comp2x_aa.BindToManager(self.__NameManager)
+        comp2x_aa.nameGenerate()
+        print comp2x_aa.name
         x2comp_aa.BindToManager(self.__NameManager)
+        x2comp_aa.nameGenerate()
         comp2x_ax.BindToManager(self.__NameManager)
+        comp2x_ax.nameGenerate()
         x2comp_ax.BindToManager(self.__NameManager)
+        x2comp_ax.nameGenerate()
         self.__model.append(comp2x_aa)
         self.__model.append(x2comp_aa)
         self.__model.append(comp2x_ax)
@@ -189,12 +194,15 @@ class ModelParser:
             raise ValueError("call __setGsMap first!")
         srcMapper = Mapper(self.__model.attrVects["c2x_cc"], self.__model.attrVects["c2x_cx"], \
                            self.__model.gsMaps["comp"].name, self.__model.gsMaps["cpl"].name, \
-                           direction="c2x", mapType="rearr")
+                           mapType="rearr")
         dstMapper = Mapper(self.__model.attrVects["x2c_cc"], self.__model.attrVects["x2c_cx"], \
                            self.__model.gsMaps["comp"].name, self.__model.gsMaps["cpl"].name,  \
-                           direction="x2c", mapType="rearr")
+                           mapType="rearr")
         srcMapper.BindToManager(self.__NameManager)
+        srcMapper.nameGenerate()
         dstMapper.BindToManager(self.__NameManager)
+        dstMapper.nameGenerate()
+        print srcMapper.name, dstMapper.name
         self.__model.append(srcMapper)
         self.__model.append(dstMapper)
 
@@ -268,7 +276,6 @@ class CouplerParser: ###!!!!
         root = self.__root
         if root.find("name")!= None:
             name = root.find("name").text
-            print name
             av = AttrVect(name=name)
             self.__attrVect = av
             av.BindToManager(self.__NameManager)
@@ -286,27 +293,31 @@ class CouplerParser: ###!!!!
                 mapperName = src.find("mapper").text
                 attrVect = AttrVectCpl(srcAttrVect, mapperName, grid, field=field)
                 attrVect.BindToManager(self.__NameManager)
+                attrVect.nameGenerate()
+                print attrVect.name
                 if not self.__NameManager.FindName(attrVect):
                     parser.addDict(attrVect, name)
                 mapper = Mapper(srcAttrVect,attrVect, mapType="sMat",name=mapperName)
                 mapper.BindToManager(self.__NameManager)
+                mapper.nameGenerate()
                 parser.append(mapper)
         if root.find("mrg") != None:
             mrg = root.find("mrg")
             name = ""
             args = []
             if mrg.find("name") != None:
-                name = mrg.find("name")
+                name = mrg.find("name").text
             else:
-                name = "mrg"
+                name = "mrg"+'_'
+            merge = MergeSubroutine(name=name) 
             if mrg.find("args") != None:  # if undefined args using default mod
                 argListRoot = mrg.find("args") 
                 for arg in argListRoot:
                     args.append(arg.text)
             else:
                 args = []
-            mrg = MergeSubroutine(name=name, argList=args)
-            parser.append(mrg)
+            merge.argList = args
+            self.__mergeSubroutine = merge
         else:
             print "no mrg"
             #parser.append(mrg)   ## bugy

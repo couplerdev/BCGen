@@ -66,7 +66,10 @@ class NameManager:
             mapType = "C"
             if obj.mapType != "rearr":
                 mapType = "S"
-            name = "Mapper_"+ mapType + obj.src + "2" +obj.dst 
+            if mapType == "C":
+                name = "Mapper_C" + obj.srcAttrVect.src + "2" + obj.dstAttrVect.dst
+            else:
+                name = "Mapper_	S"+ obj.srcAttrVect.grid + "2" + obj.dstAttrVect.grid
         else:
             raise TypeError("Undefined type")
         if self.CheckName(name, objType):
