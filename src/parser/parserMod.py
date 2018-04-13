@@ -12,8 +12,8 @@
 import xml.etree.ElementTree as ET
 import sys
 sys.path.append('../ir')
-from ir import Model, AttrVect, Mapper, GsMap
-from ir import ModelSubroutine
+from ir import Model, AttrVect, Mapper, GsMap, AttrVectCpl
+from ir import ModelSubroutine, MergeSubroutine
 sys.path.append('../ErrorHandle')
 from ErrorHandle import *
 from NameManager import *
@@ -29,6 +29,7 @@ class Parser:
         self.__subroutine = {}   ## mrg subroutine
         self.__couplerFile = couplerFile
         self.__modelFile = modelFile
+        self.__sMapper = {}
         self.__scheduleFile = scheduleFile
 
     @property
@@ -49,8 +50,8 @@ class Parser:
     def visitByName(self, name):
         for model in self.__models:
             for av in self.__models[model].attrVects:
-                if av.name == name:
-                    return av
+                if av == name:
+                    return self.__models[model].attrVects[av]
         return AttrVect(name=name)               
 
     def load(self,filename):
@@ -79,9 +80,11 @@ class Parser:
         for child in root:
             avParser.setRoot(child)
             avParser.couplerParse(self)
-            mrg = avParser.mrgSubroutine
+            mrg = avParser.mergeSubroutine
+            print len(mrg.argList)
+            print mrg.toString()
             #print attrVect.name, attrVect.atyp
-            self.__subroutine.append(mrg)
+            self.__subroutine[mrg.name] = mrg
 
     def parse(self):
         self.modelsParse()
@@ -239,7 +242,7 @@ class CouplerParser: ###!!!!
         self.__isParsed = False
         self.__NameManager = nameManager
         self.__attrVect = AttrVect()    
-        self.__mrgSubroutine = MergeSubroutine()
+        self.__mergeSubroutine = MergeSubroutine()
     
     @property
     def attrVect(self):
@@ -250,6 +253,10 @@ class CouplerParser: ###!!!!
         if not isinstance(type(attrVect),attrVectValue):
             raise TypeError("attrVectValue not attrVect type")
         self.__attrVect = attrVectValue
+    
+    @property
+    def mergeSubroutine(self):
+        return self.__mergeSubroutine
 
     def setRoot(self, root):
         self.__root = root
@@ -269,21 +276,25 @@ class CouplerParser: ###!!!!
                 raise ConfigError("try to mrg to a unexist attrVect")
         if root.find("srcs") != None:
             srcs = root.find("srcs")
+            if root.find('model') == None:
+                raise UnsetError("need model be set in composing")
+            grid = root.find('model').text
             for src in srcs:
                 srcAttrVectName = src.find("attrVect").text
                 srcAttrVect = parser.visitByName(srcAttrVectName)
                 field = src.find("field").text
                 mapperName = src.find("mapper").text
-                attrVect = AttrVectCpl(srcAttrVect, mapperName, field=field)
+                attrVect = AttrVectCpl(srcAttrVect, mapperName, grid, field=field)
                 attrVect.BindToManager(self.__NameManager)
                 if not self.__NameManager.FindName(attrVect):
                     parser.addDict(attrVect, name)
                 mapper = Mapper(srcAttrVect,attrVect, mapType="sMat",name=mapperName)
+                mapper.BindToManager(self.__NameManager)
                 parser.append(mapper)
         if root.find("mrg") != None:
             mrg = root.find("mrg")
             name = ""
-            argList = []
+            args = []
             if mrg.find("name") != None:
                 name = mrg.find("name")
             else:
@@ -291,10 +302,10 @@ class CouplerParser: ###!!!!
             if mrg.find("args") != None:  # if undefined args using default mod
                 argListRoot = mrg.find("args") 
                 for arg in argListRoot:
-                    argList.append(arg.text)
+                    args.append(arg.text)
             else:
-                argList = []
-            mrg = MrgSubroutine(name=name, argList=argList)
+                args = []
+            mrg = MergeSubroutine(name=name, argList=args)
             parser.append(mrg)
         else:
             print "no mrg"

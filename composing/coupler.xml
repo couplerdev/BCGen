@@ -2,24 +2,25 @@
 	<attrVect>
 		<name>a2x_ax</name>
    		<model>a</model>
-                <field></field>
+                <field>x:y</field>
  		<srcs>
 			<src>
                          	<attrVect>b2x_bx</attrVect>
-				<field></field>
-                     		<mapper></mapper>
+				<field>x:y</field>
+                     		<mapper>mapper_Sb2a</mapper>
                         </src>
 			<src>
 				<attrVect>c2x_cx</attrVect>
-				<field></field>
-				<mapper></mapper>
+				<field>x:y</field>
+				<mapper>mapper_Sc2a</mapper>
   			</src>
 		</srcs>
 		<mrg>
 			<name>mrg_a</name>
 			<args>
-				<arg></arg>
-				<arg></arg>
+				<arg>a2x_ax</arg>
+				<arg>b2x_ax</arg>
+				<arg>c2x_ax</arg>
 			</args>
 		</mrg>
         </attrVect>

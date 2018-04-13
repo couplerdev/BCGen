@@ -9,7 +9,7 @@
 #        2018,3,26        alex: finish v0.0
 #        2018,3,27        alex: add FindName to check whether a name is defined
 #!/usr/bin/python
-from ir import AttrVect, Mapper, GsMap, sMat, Model  
+from ir import AttrVect, Mapper, GsMap, Model  
 
 
 class NameManager:

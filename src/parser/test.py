@@ -9,12 +9,12 @@
 from parserMod import Parser
 
 parser = Parser()
-parser.parse()
-#for model in parser.models:
-#    print parser.models[model].model_init.toString()
+parser.modelsParse()
+for model in parser.models:
+    print parser.models[model].model_init.toString()
 #    print parser.models[model].model_run.toString()
 #    print parser.models[model].model_final.toString()
-#     for av in parser.models[model].attrVects:
-#         print av.name, av.nx, av.field
+    for av in parser.models[model].attrVects:
+         print av.name, av.nx, av.field
 #    for mapper in parser.models[model].mappers:
 #        print mapper.name

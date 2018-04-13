@@ -34,7 +34,7 @@ class Subroutine(object):
         print type(self.__argList)
         self.__argList.append(arg)
 
-    def toString(self, argList, subroutineName):
+    def toString(self, subroutineName, argList):
 	string = subroutineName
         string += "("
         lenString = len(string)
@@ -55,18 +55,26 @@ class Subroutine(object):
            
 class MergeSubroutine(Subroutine):
     __slots__=["__name","default","__argList","__subroutineName", "__atype"]	
-    def __init__(self, subroutineName="mrg", pattern=True, name=""):
-        super(MergeSubroutine, self).__init__()
+    def __init__(self, subroutineName="mrg",argList=[], pattern=True, name=""):
+        super(MergeSubroutine, self).__init__(argList=argList)
         self.__name = name
-        self.__subroutineName = "mrg_" + self.__name
-        self.__argList = []
+        self.__subroutineName = "mrg_" + str(self.__name)
+        self.__argList = argList
         self.__atype = "Mrg"
+        print self.__argList
 
+    @property
+    def name(self): 
+        return self.__subroutineName
+ 
+    @property
+    def atype(self):
+        return self.__atype
     #def append(self, arg):
     #    super(MergerSubroutine, self).append(arg)
 
-    #def toString(self):
-    #    return super(MergeSubroutine, self).toString()
+    def toString(self):
+        return super(MergeSubroutine, self).toString(self.__subroutineName, self.__argList)
 
 class ModelSubroutine(Subroutine):
 
@@ -89,7 +97,6 @@ class ModelSubroutine(Subroutine):
             self.__subroutineName = name
         else:
             raise TypeError("name not str type")
-
 
     @property
     def name(self):
@@ -123,11 +130,12 @@ class ModelSubroutine(Subroutine):
 #   a bug: init with name not checked by NameManager
 #   present solution: init phase name not allowed ?	
 class CoupleEntity(object):
-    __slots__ = ['__name','__manager','__type', "__bind"]
+    __slots__ = ['__name','__manager','__type', "__bind","__nameSet"]
     def __init__(self, name="",_type="Entity"):
          self.__name = name
          self.__type = _type
          self.__bind = False
+         self.__nameSet = False
 
     def BindToManager(self, manager):
         self.__manager = manager
@@ -137,8 +145,11 @@ class CoupleEntity(object):
     def name(self):
         if not self.__bind:
             raise BindError("not Bind Entities")
+        if self.__nameSet:
+            return self.__name
         if self.__name == "":
             self.__name = self.__manager.GetName(self, self.__type)
+            self.__nameSet = True
         else:
             duplicate = self.__manager.CheckName(self.__name, self.__type)
             if duplicate:
@@ -150,6 +161,7 @@ class CoupleEntity(object):
             raise BindError("not Bind Entities")
         self.__name = nameValue
         self.__name = self.__manager.CheckName(self)
+        self.__nameSet = True
 
     @property
     def type(self):
@@ -302,7 +314,7 @@ class Model(CoupleEntity):
 #
 class Mapper(CoupleEntity):
     __slots__ = ["__mapType", "__srcAttrVect", "__dstAttrVect", "__name",\
-                 "__type", "__srcGsMap", "__dstGsMap"]
+                 "__type", "__srcGsMap", "__dstGsMap","__direction"]
     def __init__(self, srcAttrVect, dstAttrVect, srcGsMap="", dstGsMap="", \
                  direction="x2c", mapType="copy", name=""):
         super(Mapper, self).__init__(name=name,_type="Mapper")
@@ -313,6 +325,7 @@ class Mapper(CoupleEntity):
         self.__srcGsMap = srcGsMap
         self.__dstGsMap = dstGsMap
         self.__direction = direction
+        self.__type = "Mapper"
         
     @property
     def direction(self):
@@ -340,6 +353,9 @@ class Mapper(CoupleEntity):
     def mapType(self):
         return self.__mapType 
  
+    @property
+    def atype(self):
+        return self.__type
    
 class GsMap(CoupleEntity):
     __slots__=['__name','__grid', '__pes', '__manager','__type','__bind']
@@ -365,12 +381,14 @@ class GsMap(CoupleEntity):
 class AttrVectCpl(AttrVect):
     __slots__=["__mapperName", "__field","__grid","__srcAttrVect",\
                "__atype", "__name"]
-    def __init__(self, srcAttrVect, mapper, gird):
+    def __init__(self, srcAttrVect, mapper, grid, field=""):
         name = ""
-        super(AttrFVectCpl, self).__init__(name=name, _type="AttrVect")
+        self.__name = ""
+        super(AttrVectCpl, self).__init__(name=name)
         self.__srcAttrVect = srcAttrVect
         self.__mapperName = mapper
-        self.__field = srcAttrVect.field
+        self.__field = field
+        self.__grid = grid
 
     @property
     def name(self): 
