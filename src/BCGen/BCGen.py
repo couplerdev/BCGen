@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+#
+=======
 
+>>>>>>> master
 #     This module use as the command line tool, user can use it by
 #     >/BCGen --version
 #     There are many optional functions for users
@@ -7,6 +11,17 @@
 #        2018,3,26        alex: add the module
 #!/usr/bin/python
 import argparse
+<<<<<<< HEAD
+
+class BCGen:
+    def __init__(self):
+        pass
+
+
+
+
+if __name__ == "__main__":
+=======
 import sys
 sys.path.append('../ir')
 sys.path.append('../parser')
@@ -40,3 +55,4 @@ if __name__ == "__main__":
     for av in models["a"].attrVects:
             print av.name
     
+>>>>>>> master

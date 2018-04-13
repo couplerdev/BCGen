@@ -200,6 +200,10 @@ class AttrVect(CoupleEntity):
         return self.__ny
 
     @property
+    def name(self):
+	return self.__name        
+
+    @property
     def field(self):
 	return self.__field        
     @field.setter
@@ -240,16 +244,29 @@ class AttrVect(CoupleEntity):
 
 class Model(CoupleEntity):
     __slots__ = ['__name','__model_init','__model_run','__model_final',\
-                 '__manager', '__type', '__attrVects','__gsMaps', '__mappers']
-    def __init__(self,name=""):
+                 '__manager', '__type', '__attrVects','__gsMaps', '__mappers',\
+                 '__gSize']
+    def __init__(self,name="", gSize=8):
 	super(Model, self).__init__(name=name,_type="Model")
 	self.__model_init = ModelSubroutine() #optional?
 	self.__model_run = ModelSubroutine()		
 	self.__model_final = ModelSubroutine()
+
         self.__attrVects = {}   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
         self.__gsMaps = {}
         self.__mappers = {}       
+        self.__name = name
+        self.__gSize = gSize
+
 ### debug region
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def gSize(self):
+        return self.__gSize
+
     @property
     def attrVects(self):
         return self.__attrVects
@@ -288,6 +305,7 @@ class Model(CoupleEntity):
 	self.__model_final = final_subroutine
 
     def append(self, obj):
+        print(obj.type)
         if obj.type == "AttrVect":
             key = "c2x_cc"
             if obj.src == "x":
@@ -343,6 +361,10 @@ class Mapper(CoupleEntity):
         return self.__srcGsMap
 
     @property
+    def name(self):
+        return self.__name
+
+    @property
     def dstGsMap(self):
         return self.__dstGsMap
 
@@ -368,6 +390,11 @@ class GsMap(CoupleEntity):
         super(GsMap,self).__init__(name=name, _type="GsMap")
         self.__grid = grid
         self.__pes = pes
+        self.__name = name
+
+    @property
+    def name(self):
+        return self.__name
 
     @property
     def grid(self):

@@ -11,10 +11,10 @@ from Cheetah.Template import Template
 #import xml.tree.ElementTree as ET
 
 class codeGenerator:
-	def __init__(self):
+	def __init__(self, template, target_file):
 		self.nameList={}
-		self.baseCplTemplate = "baseCplTemplate"
-		self.baseCpl = "baseCpl.F90"
+		self.template = template
+		self.target_file = target_file
 
 	def addList(self, name, _list):
 		self.nameList[name]=_list
@@ -23,10 +23,10 @@ class codeGenerator:
 		self.nameList[name]=item
        
 	def generate(self):
-		fileDescribe = open(self.baseCplTemplate,'rb')
+		fileDescribe = open(self.template,'rb')
 		templateString = fileDescribe.read()
 		output = Template(templateString, searchList=[self.nameList])
-		fileOutput = open(self.baseCpl, 'w')
+		fileOutput = open(self.target_file, 'w')
 		fileOutput.write(str(output))
 		fileOutput.close()
 		
