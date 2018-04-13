@@ -1,0 +1,155 @@
+module baseCpl
+use proc_def 
+use comms_def
+use procm, only: pm_init => init, clean
+use comms
+use timeM
+use mct_mod
+#for comp in $comp_set
+use comp_${comp}
+#end for
+
+     implicit noen
+     type(proc), target :: my_proc
+     ## comp interprete comp_model
+     #for gsMap in $gsMap_set
+     type(gsMap)   :: ${gsMap}
+     #end for
+
+     #for av in $av_set
+     type(AttrVect),pointer   :: ${av}
+     #end for
+
+     #for comp in $comp_set
+     logical :: ${comp}_run
+     #end for
+ 
+     public :: cpl_init
+     public :: cpl_run
+     public :: cpl_final
+
+contains
+
+subroutine cpl_init()
+
+    implicit none
+    integer :: ierr
+    integer :: comm_rank
+    call pm_init(my_proc)
+    call clock_init(EClock)
+	
+    !-------------------------------------------------------------------
+    ! variables comp2x_yy point to 
+    !  !TODO add comments
+    !-------------------------------------------------------------------
+    #for av in $av_set
+    ${av} => my_proc%${av}
+    #end for
+
+    !-------------------------------------------------------------------
+    ! !TODO add comments
+    !-------------------------------------------------------------------
+    call MPI_Comm_rank(MPI_COMM_WORLD, comm_rank, ierr)
+    #for comp in $comp_set
+    if(my_proc%iamin_model${comp})then
+        write(*,*)'a Init: Im:', comm_rank
+        call ${comp}_init_mct(my_proc, my_proc%model${comp}_id, EClock, gsMap_${comp}${comp}, &
+                              ${comp}2x_${comp}${comp}, x2${comp}_${comp}${comp}, ierr)
+    end if
+    #end for
+    
+    write(*,*)'comp init finished'
+    call MPI_Barrier(MPI_COMM_WORLD, ierr)
+    #for comp in $comp_set
+    if(my_proc%iamin_model${comp}_2cpl)then
+        call gsmap_init_ext(my_proc, gsmap_${comp}${comp}, my_proc%model${comp}_id, gsmap_${comp}x, &
+                            my_proc%cplid, my_proc%model${comp}2cpl_id )
+        write(*,*) 'gsmap_init_ext end'
+        call MPI_Barrier(my_proc%mpi_model${comp}2cpl, ierr)
+        call avect_init_ext(my_proc, ${comp}2x_${comp}${comp}, my_proc%model${comp}_id, ${comp}2x_${comp}${comp}, &
+                            my_proc%cplid, gsmap_${comp}x, my_proc%model${comp}2cpl_id)
+        call mapper_rearrsplit_init(my_proc%mapper_C${comp}2x, my_proc, gsmap_${comp}${comp}, my_proc%model${comp}_id, &
+                                    gsmap_${comp}x, my_proc%cplid, my_proc%model${comp}2cpl_id, ierr)
+        call mapper_rearrsplit_init(my_proc%mapper_Cx2${comp}, my_proc, gsmap_${comp}x, my_proc%cplid, &
+                                    gsmap_${comp}${comp}, my_proc%model${comp}_id, my_proc%model${comp}2cpl_id, ierr)
+        call MPI_Barrier(my_proc%mpi_model${comp}2cpl, ierr)
+        call mapper_comp_map(my_proc%mapper_C${comp}2x, ${comp}2x_${comp}${comp}, ${comp}2x_${comp}x, 100+10+1, ierr)
+    end if
+    #end for    
+
+    write(*,*)'init end'
+    call MPI_Barrier(MPI_COMM_WORLD, ierr)
+
+end subroutine cpl_init
+
+subroutine cpl_run()
+
+    implicit none
+    integer :: ierr
+    call triger(EClock, stop_clock, "stop_clock")
+    do while(.not. stop_clock)
+
+        call clock_advance(EClock)
+        #for comp in $comp_set
+        call triger(EClock, ${comp}_run, "${comp}_run")
+        #end for
+        call triger(EClock, stop_clock, "stop_clock")
+
+        !-----------------------------------------------------------------
+        !   prep phase
+        !-----------------------------------------------------------------
+        #for comp in $comp_set
+        if(${comp}_run)then
+                  if(my_proc%iamin_model${comp}2cpl)then
+                      call mapper_comp_map(my_proc%mapper_Cx2${comp}, x2${comp}_${comp}x, x2${comp}_${comp}${comp}, 100+10+2, ierr)
+                  end if
+        end if
+        #end for
+
+        call MPI_Barrier(MPI_COMM_WORLD, ierr)
+
+        !-----------------------------------------------------------------------
+        !   run phase
+        !-----------------------------------------------------------------------
+        #for comp in $comp_set
+        if(${comp}_run)then
+            if(my_proc%iamin_model${comp})then
+                call ${comp}_run_mct(my_proc, my_proc%model${comp}_id, EClock, ${comp}2x_${comp}${comp}, x2${comp}_${comp}${comp}, ierr)
+            end if
+        end if
+        #end for
+
+        call MPI_Barrier(MPI_COMM_WORLD, ierr)
+        !-----------------------------------------------------------------------
+        !   update phase
+        !-----------------------------------------------------------------------
+   
+        #for comp in $comp_set
+        if(${comp}_run)then
+            if(my_proc%iamin_model${comp}2cpl)then
+                 call mapper_comp_map(my_proc%mapper_C${comp}2x, ${comp}2x_${comp}${comp}, ${comp}2x_${comp}${comp}, 100+10+3, ierr)
+            end if
+        end if
+        #end for
+    end do
+
+end subroutine cpl_run
+
+subroutine cpl_final()
+
+    implicit none
+
+    !----------------------------------------------------------------------
+    !     end component
+    !----------------------------------------------------------------------
+    #for comp in $comp_set
+    if(my_proc%iamin_model${comp})then
+         call ${comp}_final_mct()
+    end if
+    #end for
+
+    call clean(my_proc)
+
+end subroutine cpl_final
+
+end module baseCpl

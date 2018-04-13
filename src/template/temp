@@ -1,0 +1,42 @@
+
+	#for $cfg in $model_cfgs
+		#set $name = $cfg['model_unique_name']
+		#set $av_mx = $cfg['mx_av_set']
+		#set $av_mx_mm = $av_mx['mx_mm']['name']
+		#set $av_mx_mx = $av_mx['mx_mx']['name']
+		#set $av_mn = $cfg['mn_av_set']
+        if(${name}_run)then
+            if(my_proc%iamin_model${name})then
+                call mapper_comp_map(my_proc%mapper_C${name}2x,&
+						$av_mx_mm, $av_mx_mx, &
+						100+10+3, ierr)
+				#for $mn_av in $av_mn
+					#set $n_name = $mn_av['n_name']
+					#set $av_mx_nx = $mn_av['n_rAv']
+					#set $field = $mn_av['n_rField']
+                call mapper_comp_map(&
+					my_proc%mapper_SMat${name}2${n_name}, &
+					$av_mx_mx, &
+					$av_mx_nx,& 
+					100+10+3, ierr, '${field}')
+				#end for
+            end if
+        end if
+	#end for
+
+        #for comp in $comp_set
+        if(${comp}_run)then
+            if(my_proc%iamin_model${comp}2cpl)then
+                call mapper_comp_map(my_proc%mapper_C${comp}2x,&
+${comp}2x_${comp}${comp}, ${comp}2x_${comp}x, 100+10+3, ierr)
+                #for comp_t in $comp_set
+                    #if comp_t == comp
+                        #continue
+                    #end if
+                    call mapper_comp_map(&
+                my_proc%mapper_SMat${comp}2${comp_t}, ${comp}2x_${comp}x, &
+            ${comp}2x_${comp_t}x, 100+10+3, ierr, "x")
+                #end for
+            end if
+        end if
+        #end for
