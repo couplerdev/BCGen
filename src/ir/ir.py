@@ -426,7 +426,7 @@ class AttrVectCpl(AttrVect):
             raise BindError("not bind entities") 
         if not self.__nameSet:
             self.__name = self.__srcAttrVect.src + "2" + self.__srcAttrVect.dst + \
-                          "_" + self.grid + "x"
+                          "_" + self.__grid + "x"
             duplicate =  self.__manager.CheckName(self.__name, self.__type)
             if duplicate:
                 raise ValueError("name conflict!!!")

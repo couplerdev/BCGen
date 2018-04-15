@@ -25,7 +25,9 @@ for model in parser.models:
     print '--------------------------------'
 print len(parser.attrVectCouple)
 for av in parser.attrVectCouple:
-    print parser.attrVectCouple[av].name, av
+    print av
+    for attrVect in parser.attrVectCouple[av]:
+        print attrVect.name, attrVect.mapperName
 
 for sbr in parser.subroutine:
     subroutine = parser.subroutine[sbr]
