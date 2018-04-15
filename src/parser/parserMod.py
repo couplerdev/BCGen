@@ -45,14 +45,17 @@ class Parser:
         return self.__subroutine
         
     def addDict(self, attrVect, name):
-        self.__attrVectCouple[name] = attrVect
+        if not self.__attrVectCouple.has_key(name):
+            self.__attrVectCouple[name] = []
+        self.__attrVectCouple[name].append(attrVect)
  
     def visitByName(self, name):
         for model in self.__models:
             for av in self.__models[model].attrVects:
-                if av == name:
+                avName =  self.__models[model].attrVects[av].name
+                if avName == name:
                     return self.__models[model].attrVects[av]
-        return AttrVect(name=name)               
+        return None               
 
     def load(self,filename):
         tree = ET.parse(filename)
@@ -175,7 +178,6 @@ class ModelParser:
                              src="x", dst=self.__name, grid=self.__name, pes="x")
         comp2x_aa.BindToManager(self.__NameManager)
         comp2x_aa.nameGenerate()
-        print comp2x_aa.name
         x2comp_aa.BindToManager(self.__NameManager)
         x2comp_aa.nameGenerate()
         comp2x_ax.BindToManager(self.__NameManager)
@@ -289,13 +291,15 @@ class CouplerParser: ###!!!!
             for src in srcs:
                 srcAttrVectName = src.find("attrVect").text
                 srcAttrVect = parser.visitByName(srcAttrVectName)
+                if srcAttrVect == None:
+                    raise AttributeError("no such attrVect")
                 field = src.find("field").text
                 mapperName = src.find("mapper").text
                 attrVect = AttrVectCpl(srcAttrVect, mapperName, grid, field=field)
                 attrVect.BindToManager(self.__NameManager)
                 attrVect.nameGenerate()
-                print attrVect.name
-                if not self.__NameManager.FindName(attrVect):
+                if self.__NameManager.FindName(attrVect):
+                    print attrVect.name
                     parser.addDict(attrVect, name)
                 mapper = Mapper(srcAttrVect,attrVect, mapType="sMat",name=mapperName)
                 mapper.BindToManager(self.__NameManager)
