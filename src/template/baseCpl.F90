@@ -340,7 +340,7 @@ subroutine cpl_run()
 					enddo
 				endif
                 
-					call mapper_comp_map(mapper=my_proc%mapper_Cx2a,rList='x',src=x2a_ax,dst=x2a_aa,msgtag=100+10+2,ierr=ierr)
+					call mapper_comp_map(mapper=my_proc%Mapper_Cx2a,rList='x',src=x2a_ax,dst=x2a_aa,msgtag=100+10+2,ierr=ierr)
 
                 if(s == 3 .and. my_proc%iamin_modela2cpl) then
                     call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
@@ -362,7 +362,7 @@ subroutine cpl_run()
 					enddo
 				endif
                 
-					call mapper_comp_map(mapper=my_proc%mapper_Cx2b,rList='x',src=x2b_bx,dst=x2b_bb,msgtag=100+10+2,ierr=ierr)
+					call mapper_comp_map(mapper=my_proc%Mapper_Cx2b,rList='x',src=x2b_bx,dst=x2b_bb,msgtag=100+10+2,ierr=ierr)
 
                 if(s == 3 .and. my_proc%iamin_modela2cpl) then
                     call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
@@ -384,7 +384,7 @@ subroutine cpl_run()
 					enddo
 				endif
                 
-					call mapper_comp_map(mapper=my_proc%mapper_Cx2c,rList='x',src=x2c_cx,dst=x2c_cc,msgtag=100+10+2,ierr=ierr)
+					call mapper_comp_map(mapper=my_proc%Mapper_Cx2c,rList='x',src=x2c_cx,dst=x2c_cc,msgtag=100+10+2,ierr=ierr)
 
                 if(s == 3 .and. my_proc%iamin_modela2cpl) then
                     call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
@@ -437,21 +437,21 @@ subroutine cpl_run()
    
         if(a_run)then
             if(my_proc%iamin_modela2cpl)then
-				call mapper_comp_map(mapper=my_proc%mapper_Ca2x,rList='x',src=a2x_aa,dst=a2x_ax,msgtag=100+10+3,ierr=ierr)
+				call mapper_comp_map(mapper=my_proc%Mapper_Ca2x,rList='x',src=a2x_aa,dst=a2x_ax,msgtag=100+10+3,ierr=ierr)
 call mapper_comp_map(mapper=my_proc%mapper_SMata2b,rList='x',src=a2x_ax,dst=a2x_bx,msgtag=100+10+3,ierr=ierr)
 call mapper_comp_map(mapper=my_proc%mapper_SMata2c,rList='x',src=a2x_ax,dst=a2x_cx,msgtag=100+10+3,ierr=ierr)
             end if
         end if
         if(b_run)then
             if(my_proc%iamin_modelb2cpl)then
-				call mapper_comp_map(mapper=my_proc%mapper_Cb2x,rList='x',src=b2x_bb,dst=b2x_bx,msgtag=100+10+3,ierr=ierr)
+				call mapper_comp_map(mapper=my_proc%Mapper_Cb2x,rList='x',src=b2x_bb,dst=b2x_bx,msgtag=100+10+3,ierr=ierr)
 call mapper_comp_map(mapper=my_proc%mapper_SMatb2a,rList='x',src=b2x_bx,dst=b2x_ax,msgtag=100+10+3,ierr=ierr)
 call mapper_comp_map(mapper=my_proc%mapper_SMatb2c,rList='x',src=b2x_bx,dst=b2x_cx,msgtag=100+10+3,ierr=ierr)
             end if
         end if
         if(c_run)then
             if(my_proc%iamin_modelc2cpl)then
-				call mapper_comp_map(mapper=my_proc%mapper_Cc2x,rList='x',src=c2x_cc,dst=c2x_cx,msgtag=100+10+3,ierr=ierr)
+				call mapper_comp_map(mapper=my_proc%Mapper_Cc2x,rList='x',src=c2x_cc,dst=c2x_cx,msgtag=100+10+3,ierr=ierr)
 call mapper_comp_map(mapper=my_proc%mapper_SMatc2a,rList='x',src=c2x_cx,dst=c2x_ax,msgtag=100+10+3,ierr=ierr)
 call mapper_comp_map(mapper=my_proc%mapper_SMatc2b,rList='x',src=c2x_cx,dst=c2x_bx,msgtag=100+10+3,ierr=ierr)
             end if

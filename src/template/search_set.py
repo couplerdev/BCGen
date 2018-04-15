@@ -1,5 +1,4 @@
 from model_set import *
-
 class Temp:
     mix = False
     subroutine = []
@@ -32,6 +31,17 @@ class Temp:
             res.append(func_str)
         return "\n".join(res)
 
+method_name = 'a_init_mct'
+params = {
+        'my_proc':'my_proc', 
+        'ID':'my_proc%modela_id',
+        'EClock':'EClock',
+        'gsMap_aa':'gsMap_aa', 
+        'a2x_aa':'a2x_aa', 
+        'x2a_aa':'x2a_aa', 
+        'ierr':'ierr'
+    }
+a_init = Temp(funcname=method_name, params=params)
 method_name = 'c_init_mct'
 params = {
         'my_proc':'my_proc', 
@@ -43,78 +53,21 @@ params = {
         'ierr':'ierr'
     }
 c_init = Temp(funcname=method_name, params=params)
-method_name='a_init_mct'
+method_name = 'b_init_mct'
 params = {
-    'my_proc':'my_proc', 
-    'ID':'my_proc%modela_id',
-    'EClock':'EClock',
-    'gsMap_aa':'gsMap_aa', 
-    'a2x_aa':'a2x_aa', 
-    'x2a_aa':'x2a_aa', 
-    'ierr':'ierr'
-}
-a_init = Temp(funcname=method_name, params=params)
-method_name='b_init_mct'
-params = {
-    'my_proc':'my_proc', 
-    'ID':'my_proc%modelb_id',
-    'EClock':'EClock',
-    'gsMap_bb':'gsMap_bb', 
-    'b2x_bb':'b2x_bb', 
-    'x2b_bb':'x2b_bb', 
-    'ierr':'ierr'
-}
+        'my_proc':'my_proc', 
+        'ID':'my_proc%modelb_id',
+        'EClock':'EClock',
+        'gsMap_bb':'gsMap_bb', 
+        'b2x_bb':'b2x_bb', 
+        'x2b_bb':'x2b_bb', 
+        'ierr':'ierr'
+    }
 b_init = Temp(funcname=method_name, params=params)
 
-
-
-method_name = 'mapper_comp_map'
+method_name='mapper_comp_map'
 params = {
-    'mapper':'my_proc%mapper_Cx2c',
-    'src':'x2c_cx',
-    'dst':'x2c_cc', 
-    'msgtag':'100+10+2', 
-    'ierr':'ierr',
-    'rList':'',
-}
-c_run_phase1 = Temp(funcname=method_name, params=params)
-
-method_name = 'c_run_mct'
-params = {
-    'my_proc':'my_proc',
-    'ID':'my_proc%modelc_id',
-    'EClock':'EClock', 
-    'c2x':'c2x_cc', 
-    'x2c':'x2c_cc',
-    'ierr':'ierr'
-}
-c_run_phase2 = Temp(funcname=method_name, params=params)
-
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_Cx2b',
-    'src':'x2b_bx',
-    'dst':'x2b_bb', 
-    'msgtag':'100+10+2', 
-    'ierr':'ierr',
-    'rList':'',
-}
-b_run_phase1 = Temp(funcname=method_name, params=params)
-
-method_name = 'b_run_mct'
-params = {
-    'my_proc':'my_proc',
-    'ID':'my_proc%modelb_id',
-    'EClock':'EClock', 
-    'b2x':'b2x_bb', 
-    'x2b':'x2b_bb',
-    'ierr':'ierr'
-}
-b_run_phase2 = Temp(funcname=method_name, params=params)
-
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_Cx2a',
+    'mapper':'my_proc%Mapper_Cx2a',
     'src':'x2a_ax',
     'dst':'x2a_aa', 
     'msgtag':'100+10+2', 
@@ -122,7 +75,6 @@ params = {
     'rList':'',
 }
 a_run_phase1 = Temp(funcname=method_name, params=params)
-
 method_name = 'a_run_mct'
 params = {
     'my_proc':'my_proc',
@@ -133,43 +85,9 @@ params = {
     'ierr':'ierr'
 }
 a_run_phase2 = Temp(funcname=method_name, params=params)
-
 method_name = 'mapper_comp_map'
 params = {
-    'mapper':'my_proc%mapper_Cc2x',
-    'src':'c2x_cc',
-    'dst':'c2x_cx', 
-    'msgtag':'100+10+3', 
-    'ierr':'ierr',
-    'rList':'',
-}
-c_run_phase3_1 = Temp(funcname=method_name, params=params)
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_SMatc2a',
-    'src':'c2x_cx',
-    'dst':'c2x_ax', 
-    'msgtag':'100+10+3', 
-    'ierr':'ierr',
-    'rList':'x',
-}
-c_run_phase3_2 = Temp(funcname=method_name, params=params)
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_SMatc2b',
-    'src':'c2x_cx',
-    'dst':'c2x_bx', 
-    'msgtag':'100+10+3', 
-    'ierr':'ierr',
-    'rList':'x',
-}
-c_run_phase3_3 = Temp(funcname=method_name, params=params)
-c_run_phase3 = Temp(subroutine=[c_run_phase3_1,
-            c_run_phase3_2,c_run_phase3_3], mix=True)
-
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_Ca2x',
+    'mapper':'my_proc%Mapper_Ca2x',
     'src':'a2x_aa',
     'dst':'a2x_ax', 
     'msgtag':'100+10+3', 
@@ -177,6 +95,7 @@ params = {
     'rList':'',
 }
 a_run_phase3_1 = Temp(funcname=method_name, params=params)
+
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%mapper_SMata2b',
@@ -187,6 +106,7 @@ params = {
     'rList':'x',
 }
 a_run_phase3_2 = Temp(funcname=method_name, params=params)
+
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%mapper_SMata2c',
@@ -197,12 +117,91 @@ params = {
     'rList':'x',
 }
 a_run_phase3_3 = Temp(funcname=method_name, params=params)
-a_run_phase3 = Temp(subroutine=[a_run_phase3_1,
-            a_run_phase3_2,a_run_phase3_3], mix=True)
+a_run_phase3 = Temp(subroutine=[
+            a_run_phase3_1,
+            a_run_phase3_2,
+            a_run_phase3_3], mix=True)
+
+method_name='mapper_comp_map'
+params = {
+    'mapper':'my_proc%Mapper_Cx2c',
+    'src':'x2c_cx',
+    'dst':'x2c_cc', 
+    'msgtag':'100+10+2', 
+    'ierr':'ierr',
+    'rList':'',
+}
+c_run_phase1 = Temp(funcname=method_name, params=params)
+method_name = 'c_run_mct'
+params = {
+    'my_proc':'my_proc',
+    'ID':'my_proc%modelc_id',
+    'EClock':'EClock', 
+    'c2x':'c2x_cc', 
+    'x2c':'x2c_cc',
+    'ierr':'ierr'
+}
+c_run_phase2 = Temp(funcname=method_name, params=params)
+method_name = 'mapper_comp_map'
+params = {
+    'mapper':'my_proc%Mapper_Cc2x',
+    'src':'c2x_cc',
+    'dst':'c2x_cx', 
+    'msgtag':'100+10+3', 
+    'ierr':'ierr',
+    'rList':'',
+}
+c_run_phase3_1 = Temp(funcname=method_name, params=params)
 
 method_name = 'mapper_comp_map'
 params = {
-    'mapper':'my_proc%mapper_Cb2x',
+    'mapper':'my_proc%mapper_SMatc2a',
+    'src':'c2x_cx',
+    'dst':'c2x_ax', 
+    'msgtag':'100+10+3', 
+    'ierr':'ierr',
+    'rList':'x',
+}
+c_run_phase3_2 = Temp(funcname=method_name, params=params)
+
+method_name = 'mapper_comp_map'
+params = {
+    'mapper':'my_proc%mapper_SMatc2b',
+    'src':'c2x_cx',
+    'dst':'c2x_bx', 
+    'msgtag':'100+10+3', 
+    'ierr':'ierr',
+    'rList':'x',
+}
+c_run_phase3_3 = Temp(funcname=method_name, params=params)
+c_run_phase3 = Temp(subroutine=[
+            c_run_phase3_1,
+            c_run_phase3_2,
+            c_run_phase3_3], mix=True)
+
+method_name='mapper_comp_map'
+params = {
+    'mapper':'my_proc%Mapper_Cx2b',
+    'src':'x2b_bx',
+    'dst':'x2b_bb', 
+    'msgtag':'100+10+2', 
+    'ierr':'ierr',
+    'rList':'',
+}
+b_run_phase1 = Temp(funcname=method_name, params=params)
+method_name = 'b_run_mct'
+params = {
+    'my_proc':'my_proc',
+    'ID':'my_proc%modelb_id',
+    'EClock':'EClock', 
+    'b2x':'b2x_bb', 
+    'x2b':'x2b_bb',
+    'ierr':'ierr'
+}
+b_run_phase2 = Temp(funcname=method_name, params=params)
+method_name = 'mapper_comp_map'
+params = {
+    'mapper':'my_proc%Mapper_Cb2x',
     'src':'b2x_bb',
     'dst':'b2x_bx', 
     'msgtag':'100+10+3', 
@@ -210,6 +209,7 @@ params = {
     'rList':'',
 }
 b_run_phase3_1 = Temp(funcname=method_name, params=params)
+
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%mapper_SMatb2a',
@@ -220,6 +220,7 @@ params = {
     'rList':'x',
 }
 b_run_phase3_2 = Temp(funcname=method_name, params=params)
+
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%mapper_SMatb2c',
@@ -230,8 +231,75 @@ params = {
     'rList':'x',
 }
 b_run_phase3_3 = Temp(funcname=method_name, params=params)
-b_run_phase3 = Temp(subroutine=[b_run_phase3_1,
-            b_run_phase3_2,b_run_phase3_3], mix=True)
+b_run_phase3 = Temp(subroutine=[
+            b_run_phase3_1,
+            b_run_phase3_2,
+            b_run_phase3_3], mix=True)
+
+
+
+
+model_a_cfg = { # Model M's cfg
+'model_unique_name': 'a',
+    'mx_av_set' : { # Av between model M and Cpl
+        'mx_mm':{
+            'name': 'a2x_aa',
+        },
+        'mx_mx':{
+            'name': 'a2x_ax',
+        },   
+        'xm_mm':{
+            'name': 'x2a_aa',
+        },   
+        'xm_mx':{
+            'name': 'x2a_ax',
+        }   
+    },
+
+
+    'mn_av_set': [ # Av between Model M and Model N
+        {
+            'n_name': 'b',
+            'n_rAv': 'a2x_bx',
+            'n_rField': 'x',
+            'n_gm': 'gsmap_bx',
+            'transform_method': '',
+        },
+        {
+            'n_name': 'c',
+            'n_rAv': 'a2x_cx',
+            'n_rField': 'x',
+            'n_gm': 'gsmap_cx',
+            'transform_method': '',
+        },
+    ],
+
+    'mx_gsmap_set':  { # gsMap of Model M
+        'mx': {
+            'name':'gsMap_ax'
+        },
+        'mm': {
+            'name':'gsMap_aa'
+        }
+    },
+
+    'subroutine': {
+        'init_method': a_init,
+        'run_method': {
+            'run_phase1_method': a_run_phase1,
+            'run_phase2_method': a_run_phase2,
+            'run_phase3_method': a_run_phase3,
+        },
+        'final_method':[
+            {
+                'method_name':'a_final_mct',
+                'params':{
+                }
+            }
+        ]
+    }
+
+}
 
 model_c_cfg = { # Model M's cfg
 'model_unique_name': 'c',
@@ -276,10 +344,7 @@ model_c_cfg = { # Model M's cfg
             'name':'gsMap_cc'
         }
     },
-    'tmp':c_run_phase3,
-    'mapper_set': [
 
-    ],
     'subroutine': {
         'init_method': c_init,
         'run_method': {
@@ -297,9 +362,10 @@ model_c_cfg = { # Model M's cfg
     }
 
 }
-model_b_cfg = {
-    'model_unique_name': 'b',
-    'mx_av_set' : {
+
+model_b_cfg = { # Model M's cfg
+'model_unique_name': 'b',
+    'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'b2x_bb',
         },
@@ -314,7 +380,8 @@ model_b_cfg = {
         }   
     },
 
-    'mn_av_set': [
+
+    'mn_av_set': [ # Av between Model M and Model N
         {
             'n_name': 'a',
             'n_rAv': 'b2x_ax',
@@ -331,7 +398,7 @@ model_b_cfg = {
         },
     ],
 
-    'mx_gsmap_set':  {
+    'mx_gsmap_set':  { # gsMap of Model M
         'mx': {
             'name':'gsMap_bx'
         },
@@ -340,9 +407,6 @@ model_b_cfg = {
         }
     },
 
-    'mapper_set': [
-
-    ],
     'subroutine': {
         'init_method': b_init,
         'run_method': {
@@ -358,70 +422,7 @@ model_b_cfg = {
             }
         ]
     }
-}
-model_a_cfg = {
-    'model_unique_name': 'a',
-    'mx_av_set' : {
-        'mx_mm':{
-            'name': 'a2x_aa',
-        },
-        'mx_mx':{
-            'name': 'a2x_ax',
-        },   
-        'xm_mm':{
-            'name': 'x2a_aa',
-        },   
-        'xm_mx':{
-            'name': 'x2a_ax',
-        }   
-    },
-    'mn_av_set': [
-        {
-            'n_name': 'b',
-            'n_rAv': 'a2x_bx',
-            'n_rField': 'x',
-            'n_gm': 'gsmap_bx',
-            'transform_method': '',
-        },
-        {
-            'n_name': 'c',
-            'n_rAv': 'a2x_cx',
-            'n_rField': 'x',
-            'n_gm': 'gsmap_cx',
-            'transform_method': '',
-        },
-    ],
 
-    'mx_gsmap_set':  {
-        'mx': {
-            'name':'gsMap_ax'
-        },
-        'mm': {
-            'name':'gsMap_aa'
-        }
-    },
-
-    'mapper_set': [
-
-    ],
-
-    'subroutine': {
-        'init_method': a_init,
-        'run_method':{
-            'run_phase1_method': a_run_phase1,
-            'run_phase2_method': a_run_phase2,
-            'run_phase3_method': a_run_phase3,
-            'run_phase4_method': {
-            },
-        },
-        'final_method':[
-            {
-                'method_name':'a_final_mct',
-                'params':{
-                }
-            }
-        ]
-    }
 }
 
 model_cfgs = [
@@ -436,6 +437,3 @@ deploy_cfgs = [
     model_c_cfg
 ]
 
-proc_cfgs = [
-    parser.models[m] for m in parser.models 
-]
