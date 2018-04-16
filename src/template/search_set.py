@@ -275,7 +275,7 @@ model_a_cfg = { # Model M's cfg
         {
             'n_name': 'b',
             'n_rAv': 'a2x_bx',
-            'n_rField': 'x',
+            'n_rField': 'x:y',
             'n_gm': 'gsMap_bx',
             'transform_method': '',
         },
@@ -283,7 +283,7 @@ model_a_cfg = { # Model M's cfg
         {
             'n_name': 'c',
             'n_rAv': 'a2x_cx',
-            'n_rField': 'x',
+            'n_rField': 'x:y',
             'n_gm': 'gsMap_cx',
             'transform_method': '',
         },
@@ -339,7 +339,7 @@ model_c_cfg = { # Model M's cfg
         {
             'n_name': 'b',
             'n_rAv': 'c2x_bx',
-            'n_rField': 'x',
+            'n_rField': 'x:y',
             'n_gm': 'gsMap_bx',
             'transform_method': '',
         },
@@ -347,7 +347,7 @@ model_c_cfg = { # Model M's cfg
         {
             'n_name': 'a',
             'n_rAv': 'c2x_ax',
-            'n_rField': 'x',
+            'n_rField': 'x:y',
             'n_gm': 'gsMap_ax',
             'transform_method': '',
         },
@@ -403,7 +403,7 @@ model_b_cfg = { # Model M's cfg
         {
             'n_name': 'c',
             'n_rAv': 'b2x_cx',
-            'n_rField': 'x',
+            'n_rField': 'x:y',
             'n_gm': 'gsMap_cx',
             'transform_method': '',
         },
@@ -411,7 +411,7 @@ model_b_cfg = { # Model M's cfg
         {
             'n_name': 'a',
             'n_rAv': 'b2x_ax',
-            'n_rField': 'x',
+            'n_rField': 'x:y',
             'n_gm': 'gsMap_ax',
             'transform_method': '',
         },

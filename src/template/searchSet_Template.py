@@ -138,7 +138,6 @@ sub_run_phase_3 = []
     #set $x2c_cc = $avs['x2c_cc']
     #set $x2c_cx = $avs['x2c_cx']
     #set $comps = ['a', 'b', 'c']
-    #set $others = [c for c in $comps if c != $model_name]
     #set $mapper_c2x = $model.mappers['c2x']
     #set $mapper_x2c = $model.mappers['x2c']
 
@@ -167,10 +166,11 @@ model_${model_name}_cfg = { # Model M's cfg
         #set $dst_model_name = $dst_info['dst_model_name']
         #set $mapper_name = $dst_info['dst_mapper']
         #set $smat_size = $dst_info['smat_size']
+        #set $dst_field = $dst_info['dst_field']
         {
             'n_name': '${dst_model_name}',
             'n_rAv': '${d_av.name}',
-            'n_rField': 'x',
+            'n_rField': '${dst_field}',
             'n_gm': '${gm_nx}',
             'transform_method': '',
         },

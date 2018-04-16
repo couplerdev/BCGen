@@ -1,5 +1,4 @@
 from codeGen import codeGenerator
-from coupler_set import *
 from model_set import *
 
 proc_cfgs = [
@@ -37,7 +36,7 @@ def get_SMat_relation(attrVects):
                 'dst_av':src_x_dst_x_av,
                 'dst_gm': dst_gsmap_name,
                 'dst_mapper':src_x_dst_x_av.mapperName,
-                'dst_filed':dst_field,
+                'dst_field':dst_field,
                 # todo set dst_sparse_len
                 'smat_size':8
                     }

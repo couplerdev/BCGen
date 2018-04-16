@@ -5,9 +5,6 @@ import sys
 sys.path.append('../ir')
 sys.path.append('../parser')
 from ir import *
-from av_set import *
-from gsmap_set import *
-from mapper_set import *
 from parserMod import Parser
 
 parser = Parser()
