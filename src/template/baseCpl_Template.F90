@@ -32,7 +32,6 @@ use comp_${name}
 	#end for
 
 
-    ! todo change to model	
     ! Declare Temp Merge AttrVect of each Model(m2x_nx)
 	#for $cfg in $merge_cfgs
 		#set $cfg = $merge_cfgs[$cfg]
