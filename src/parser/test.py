@@ -28,7 +28,7 @@ print parser.attrVectCouple
 for av in parser.attrVectCouple:
     print "merge_dst_av:", av
     for attrVect in parser.attrVectCouple[av]:
-        print attrVect.name, attrVect.mapperName
+        print attrVect.name, attrVect.mapperName, attrVect.field
 
 for sbr in parser.subroutine:
     subroutine = parser.subroutine[sbr]

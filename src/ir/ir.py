@@ -446,6 +446,10 @@ class AttrVectCpl(AttrVect):
     @property
     def mapperName(self):
         return self.__mapperName
+    
+    @property
+    def field(self):
+        return self.__field
 
     @property
     def srcName(self):
