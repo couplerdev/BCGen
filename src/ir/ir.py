@@ -404,7 +404,8 @@ class GsMap(CoupleEntity):
 
 class AttrVectCpl(AttrVect):
     __slots__=["__mapperName", "__field","__grid","__srcAttrVect",\
-               "__name", "__type", "__nameSet", "__manager", "__bind"]
+               "__name", "__type", "__nameSet", "__manager", "__bind", \
+               "__srcModelName", "__dstModelName","__srcModel", "__dstModel"]
     def __init__(self, srcAttrVect, mapper, grid, field=""):
         name = ""
         self.__name = ""
@@ -416,6 +417,10 @@ class AttrVectCpl(AttrVect):
         self.__nameSet = False
         self.__bind = False
         self.__type = "AttrVect"
+        self.__srcModelName = self.__srcAttrVect.grid
+        self.__dstModelName = grid
+        self.__srcModel = Model()
+        self.__dstModel = Model()
 
     def BindToManager(self, manager):
         self.__manager = manager
@@ -430,7 +435,9 @@ class AttrVectCpl(AttrVect):
             duplicate =  self.__manager.CheckName(self.__name, self.__type)
             if duplicate:
                 raise ValueError("name conflict!!!")
-            self.__nameSet = True 
+            self.__nameSet = True
+        self.__srcModel = self.__manager.register.modelDict[self.__srcModelName] 
+        self.__dstModel = self.__manager.register.modelDict[self.__dstModelName]
            
     @property
     def name(self):
@@ -444,3 +451,10 @@ class AttrVectCpl(AttrVect):
     def srcName(self):
         return self.__srcAttrVect.name
 
+    @property
+    def srcModel(self):
+        return self.__srcModel
+   
+    @property
+    def dstModel(self):
+        return self.__dstModel

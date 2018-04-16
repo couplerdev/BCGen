@@ -69,6 +69,7 @@ class Parser:
             modelParser.setRoot(child)
             model = modelParser.model
             self.__models[model.name] = model
+            self.__NameManager.register.modelDict[model.name] = model
 
     def deployParse(self):
         pass

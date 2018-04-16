@@ -25,6 +25,11 @@ class NameManager:
         self.__totalDict = 5
 	self.__checkObject = [self.__attrVectDict, self.__modelDict, self.__gsMapDict, \
                               self.__sMatDict, self.__mapperDict]
+        self.__register = Register()
+
+    @property
+    def register(self):
+        return self.__register
 
     def CheckName(self, objName, objType):
         if objType == "AttrVect":
@@ -73,7 +78,10 @@ class NameManager:
         else:
             raise TypeError("Undefined type")
         if self.CheckName(name, objType):
-            raise ValueError("name conflict")  
+            raise ValueError("name conflict")
+        if objType == "Model" or objType == "AttrVect":
+            print 'oop', objType
+            self.__register.addDict(obj, name)  
         return name     
 
     def FindName(self, obj):
@@ -89,3 +97,24 @@ class NameManager:
              return True
          else:
              return False
+
+class Register:
+    def __init__(self):
+        self.__modelDict = {}
+        self.__attrVectDict = {}
+
+    def addDict(self, obj, name):
+        if obj.type == "Model":
+            self.__modelDict[name] = obj
+        elif obj.type == "AttrVect":
+            self.__attrVectDict[name] = obj
+        else:
+            raise TypeError("undefined type trying to add to Register")
+    
+    @property   
+    def modelDict(self):
+        return self.__modelDict
+
+    @property
+    def attrVectDict(self):
+        return self.__attrVectDict
