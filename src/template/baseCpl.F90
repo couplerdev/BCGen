@@ -35,7 +35,6 @@ use comp_b
 	 type(AttrVect),pointer ::x2b_bx
 
 
-    ! todo change to model	
     ! Declare Temp Merge AttrVect of each Model(m2x_nx)
 	 type(AttrVect):: a2x_bx
 	 type(AttrVect):: a2x_cx
