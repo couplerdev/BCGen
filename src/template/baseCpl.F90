@@ -213,6 +213,7 @@ subroutine cpl_init()
 
 
     if(my_proc%iamin_cpl) then
+
 			call avect_init_ext(my_proc, a2x_ax,&
 						 my_proc%cplid, a2x_bx,&
 						 my_proc%cplid, gsMap_bx,&
@@ -221,7 +222,8 @@ subroutine cpl_init()
 			call mapper_spmat_init(my_proc,&
 					my_proc%mapper_SMata2b, &
 					my_proc%cplid, &
-					my_proc%b_gsize, my_proc%a_gsize, 8,&
+					my_proc%b_gsize, my_proc%a_gsize, &
+                    8,&
 					gsMap_ax, gsMap_bx)
 
 			call avect_init_ext(my_proc, a2x_ax,&
@@ -232,7 +234,8 @@ subroutine cpl_init()
 			call mapper_spmat_init(my_proc,&
 					my_proc%mapper_SMata2c, &
 					my_proc%cplid, &
-					my_proc%c_gsize, my_proc%a_gsize, 8,&
+					my_proc%c_gsize, my_proc%a_gsize, &
+                    8,&
 					gsMap_ax, gsMap_cx)
 
 			call avect_init_ext(my_proc, c2x_cx,&
@@ -243,7 +246,8 @@ subroutine cpl_init()
 			call mapper_spmat_init(my_proc,&
 					my_proc%mapper_SMatc2b, &
 					my_proc%cplid, &
-					my_proc%b_gsize, my_proc%c_gsize, 8,&
+					my_proc%b_gsize, my_proc%c_gsize, &
+                    8,&
 					gsMap_cx, gsMap_bx)
 
 			call avect_init_ext(my_proc, c2x_cx,&
@@ -254,7 +258,8 @@ subroutine cpl_init()
 			call mapper_spmat_init(my_proc,&
 					my_proc%mapper_SMatc2a, &
 					my_proc%cplid, &
-					my_proc%a_gsize, my_proc%c_gsize, 8,&
+					my_proc%a_gsize, my_proc%c_gsize, &
+                    8,&
 					gsMap_cx, gsMap_ax)
 
 			call avect_init_ext(my_proc, b2x_bx,&
@@ -265,7 +270,8 @@ subroutine cpl_init()
 			call mapper_spmat_init(my_proc,&
 					my_proc%mapper_SMatb2c, &
 					my_proc%cplid, &
-					my_proc%c_gsize, my_proc%b_gsize, 8,&
+					my_proc%c_gsize, my_proc%b_gsize, &
+                    8,&
 					gsMap_bx, gsMap_cx)
 
 			call avect_init_ext(my_proc, b2x_bx,&
@@ -276,7 +282,8 @@ subroutine cpl_init()
 			call mapper_spmat_init(my_proc,&
 					my_proc%mapper_SMatb2a, &
 					my_proc%cplid, &
-					my_proc%a_gsize, my_proc%b_gsize, 8,&
+					my_proc%a_gsize, my_proc%b_gsize, &
+                    8,&
 					gsMap_bx, gsMap_ax)
 
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
@@ -447,15 +454,15 @@ call mapper_comp_map(mapper=my_proc%mapper_SMata2c,rList='x',src=a2x_ax,dst=a2x_
         if(b_run)then
             if(my_proc%iamin_modelb2cpl)then
 				call mapper_comp_map(mapper=my_proc%Mapper_Cb2x,rList='x',src=b2x_bb,dst=b2x_bx,msgtag=100+10+3,ierr=ierr)
-call mapper_comp_map(mapper=my_proc%mapper_SMatb2a,rList='x',src=b2x_bx,dst=b2x_ax,msgtag=100+10+3,ierr=ierr)
 call mapper_comp_map(mapper=my_proc%mapper_SMatb2c,rList='x',src=b2x_bx,dst=b2x_cx,msgtag=100+10+3,ierr=ierr)
+call mapper_comp_map(mapper=my_proc%mapper_SMatb2a,rList='x',src=b2x_bx,dst=b2x_ax,msgtag=100+10+3,ierr=ierr)
             end if
         end if
         if(c_run)then
             if(my_proc%iamin_modelc2cpl)then
 				call mapper_comp_map(mapper=my_proc%Mapper_Cc2x,rList='x',src=c2x_cc,dst=c2x_cx,msgtag=100+10+3,ierr=ierr)
-call mapper_comp_map(mapper=my_proc%mapper_SMatc2a,rList='x',src=c2x_cx,dst=c2x_ax,msgtag=100+10+3,ierr=ierr)
 call mapper_comp_map(mapper=my_proc%mapper_SMatc2b,rList='x',src=c2x_cx,dst=c2x_bx,msgtag=100+10+3,ierr=ierr)
+call mapper_comp_map(mapper=my_proc%mapper_SMatc2a,rList='x',src=c2x_cx,dst=c2x_ax,msgtag=100+10+3,ierr=ierr)
             end if
         end if
 	

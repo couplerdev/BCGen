@@ -159,6 +159,7 @@ subroutine cpl_init()
 
 
     if(my_proc%iamin_cpl) then
+
 	#for $cfg in $merge_cfgs
 		#set $name = $cfg
         #set $cfg = $merge_cfgs[$cfg]
@@ -170,15 +171,18 @@ subroutine cpl_init()
 			#set $av_mx_nx = $d_av.name
 			#set $gm_nx = $mn_av['dst_gm']
 			#set $dst_model_name = $mn_av['dst_model_name']
+			#set $mapper_name = $mn_av['dst_mapper']
+			#set $smat_size = $mn_av['smat_size']
 			call avect_init_ext(my_proc, $av_mx_mx,&
 						 my_proc%cplid, $av_mx_nx,&
 						 my_proc%cplid, $gm_nx,&
 						 my_proc%model${dst_model_name}2cpl_id)
 
 			call mapper_spmat_init(my_proc,&
-					my_proc%mapper_SMat${name}2${dst_model_name}, &
+					my_proc%${mapper_name}, &
 					my_proc%cplid, &
-					my_proc%${dst_model_name}_gsize, my_proc%${name}_gsize, 8,&
+					my_proc%${dst_model_name}_gsize, my_proc%${name}_gsize, &
+                    $smat_size,&
 					$gm_mx, $gm_nx)
 
 		#end for

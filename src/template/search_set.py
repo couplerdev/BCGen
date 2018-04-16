@@ -85,6 +85,8 @@ params = {
     'ierr':'ierr'
 }
 a_run_phase2 = Temp(funcname=method_name, params=params)
+
+sub_run_phase_3 = []
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%Mapper_Ca2x',
@@ -95,6 +97,7 @@ params = {
     'rList':'',
 }
 a_run_phase3_1 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(a_run_phase3_1)
 
 method_name = 'mapper_comp_map'
 params = {
@@ -106,7 +109,7 @@ params = {
     'rList':'x',
 }
 a_run_phase3_2 = Temp(funcname=method_name, params=params)
-
+sub_run_phase_3.append(a_run_phase3_2)
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%mapper_SMata2c',
@@ -117,11 +120,11 @@ params = {
     'rList':'x',
 }
 a_run_phase3_3 = Temp(funcname=method_name, params=params)
-a_run_phase3 = Temp(subroutine=[
-            a_run_phase3_1,
-            a_run_phase3_2,
-            a_run_phase3_3], mix=True)
+sub_run_phase_3.append(a_run_phase3_3)
 
+a_run_phase3 = Temp(subroutine=sub_run_phase_3,
+             mix=True)
+sub_run_phase_3 = []
 method_name='mapper_comp_map'
 params = {
     'mapper':'my_proc%Mapper_Cx2c',
@@ -142,6 +145,8 @@ params = {
     'ierr':'ierr'
 }
 c_run_phase2 = Temp(funcname=method_name, params=params)
+
+sub_run_phase_3 = []
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%Mapper_Cc2x',
@@ -152,17 +157,7 @@ params = {
     'rList':'',
 }
 c_run_phase3_1 = Temp(funcname=method_name, params=params)
-
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_SMatc2a',
-    'src':'c2x_cx',
-    'dst':'c2x_ax', 
-    'msgtag':'100+10+3', 
-    'ierr':'ierr',
-    'rList':'x',
-}
-c_run_phase3_2 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(c_run_phase3_1)
 
 method_name = 'mapper_comp_map'
 params = {
@@ -173,12 +168,23 @@ params = {
     'ierr':'ierr',
     'rList':'x',
 }
+c_run_phase3_2 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(c_run_phase3_2)
+method_name = 'mapper_comp_map'
+params = {
+    'mapper':'my_proc%mapper_SMatc2a',
+    'src':'c2x_cx',
+    'dst':'c2x_ax', 
+    'msgtag':'100+10+3', 
+    'ierr':'ierr',
+    'rList':'x',
+}
 c_run_phase3_3 = Temp(funcname=method_name, params=params)
-c_run_phase3 = Temp(subroutine=[
-            c_run_phase3_1,
-            c_run_phase3_2,
-            c_run_phase3_3], mix=True)
+sub_run_phase_3.append(c_run_phase3_3)
 
+c_run_phase3 = Temp(subroutine=sub_run_phase_3,
+             mix=True)
+sub_run_phase_3 = []
 method_name='mapper_comp_map'
 params = {
     'mapper':'my_proc%Mapper_Cx2b',
@@ -199,6 +205,8 @@ params = {
     'ierr':'ierr'
 }
 b_run_phase2 = Temp(funcname=method_name, params=params)
+
+sub_run_phase_3 = []
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%Mapper_Cb2x',
@@ -209,17 +217,7 @@ params = {
     'rList':'',
 }
 b_run_phase3_1 = Temp(funcname=method_name, params=params)
-
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_SMatb2a',
-    'src':'b2x_bx',
-    'dst':'b2x_ax', 
-    'msgtag':'100+10+3', 
-    'ierr':'ierr',
-    'rList':'x',
-}
-b_run_phase3_2 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(b_run_phase3_1)
 
 method_name = 'mapper_comp_map'
 params = {
@@ -230,12 +228,23 @@ params = {
     'ierr':'ierr',
     'rList':'x',
 }
+b_run_phase3_2 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(b_run_phase3_2)
+method_name = 'mapper_comp_map'
+params = {
+    'mapper':'my_proc%mapper_SMatb2a',
+    'src':'b2x_bx',
+    'dst':'b2x_ax', 
+    'msgtag':'100+10+3', 
+    'ierr':'ierr',
+    'rList':'x',
+}
 b_run_phase3_3 = Temp(funcname=method_name, params=params)
-b_run_phase3 = Temp(subroutine=[
-            b_run_phase3_1,
-            b_run_phase3_2,
-            b_run_phase3_3], mix=True)
+sub_run_phase_3.append(b_run_phase3_3)
 
+b_run_phase3 = Temp(subroutine=sub_run_phase_3,
+             mix=True)
+sub_run_phase_3 = []
 
 
 
@@ -256,23 +265,25 @@ model_a_cfg = { # Model M's cfg
         }   
     },
 
-
     'mn_av_set': [ # Av between Model M and Model N
         {
             'n_name': 'b',
             'n_rAv': 'a2x_bx',
             'n_rField': 'x',
-            'n_gm': 'gsmap_bx',
+            'n_gm': 'gsMap_bx',
             'transform_method': '',
         },
+        
         {
             'n_name': 'c',
             'n_rAv': 'a2x_cx',
             'n_rField': 'x',
-            'n_gm': 'gsmap_cx',
+            'n_gm': 'gsMap_cx',
             'transform_method': '',
         },
+        
     ],
+
 
     'mx_gsmap_set':  { # gsMap of Model M
         'mx': {
@@ -318,23 +329,25 @@ model_c_cfg = { # Model M's cfg
         }   
     },
 
-
     'mn_av_set': [ # Av between Model M and Model N
-        {
-            'n_name': 'a',
-            'n_rAv': 'c2x_ax',
-            'n_rField': 'x',
-            'n_gm': 'gsmap_ax',
-            'transform_method': '',
-        },
         {
             'n_name': 'b',
             'n_rAv': 'c2x_bx',
             'n_rField': 'x',
-            'n_gm': 'gsmap_bx',
+            'n_gm': 'gsMap_bx',
             'transform_method': '',
         },
+        
+        {
+            'n_name': 'a',
+            'n_rAv': 'c2x_ax',
+            'n_rField': 'x',
+            'n_gm': 'gsMap_ax',
+            'transform_method': '',
+        },
+        
     ],
+
 
     'mx_gsmap_set':  { # gsMap of Model M
         'mx': {
@@ -380,23 +393,25 @@ model_b_cfg = { # Model M's cfg
         }   
     },
 
-
     'mn_av_set': [ # Av between Model M and Model N
-        {
-            'n_name': 'a',
-            'n_rAv': 'b2x_ax',
-            'n_rField': 'x',
-            'n_gm': 'gsmap_ax',
-            'transform_method': '',
-        },
         {
             'n_name': 'c',
             'n_rAv': 'b2x_cx',
             'n_rField': 'x',
-            'n_gm': 'gsmap_cx',
+            'n_gm': 'gsMap_cx',
             'transform_method': '',
         },
+        
+        {
+            'n_name': 'a',
+            'n_rAv': 'b2x_ax',
+            'n_rField': 'x',
+            'n_gm': 'gsMap_ax',
+            'transform_method': '',
+        },
+        
     ],
+
 
     'mx_gsmap_set':  { # gsMap of Model M
         'mx': {

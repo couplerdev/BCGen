@@ -25,12 +25,17 @@ def get_SMat_relation(attrVects):
         for src_x_dst_x_av in attrVects[av]:
             src_model_name = src_x_dst_x_av.name[:1]
             print(av, dst_model_name, src_x_dst_x_av.name,\
-                    src_x_dst_x_av.mapper.name)
+                    src_x_dst_x_av.mapperName)
             # todo src_model_name dst_model_name
             dst_info = {
+                # todo
                 'dst_model_name':dst_model_name,
                 'dst_av':src_x_dst_x_av,
-                'dst_gm':'gsMap_' + dst_model_name + 'x'
+                # todo
+                'dst_gm':'gsMap_' + dst_model_name + 'x',
+                'dst_mapper':src_x_dst_x_av.mapperName,
+                # todo set dst_sparse_len
+                'smat_size':8
                     }
             model_SMats[src_model_name]['dst'].append(dst_info)
     return model_SMats
@@ -40,6 +45,7 @@ print res
 
 code = codeGenerator("searchSet_Template.py", "search_set.py")
 code.addList('models',proc_cfgs)
+code.addList('merge_cfgs',res)
 code.generate()
 
 from search_set import *

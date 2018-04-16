@@ -84,6 +84,8 @@ params = {
     'ierr':'ierr'
 }
 ${model_name}_run_phase2 = Temp(funcname=method_name, params=params)
+
+sub_run_phase_3 = []
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%${mapper_c2x.name}',
@@ -94,33 +96,32 @@ params = {
     'rList':'',
 }
 ${model_name}_run_phase3_1 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(${model_name}_run_phase3_1)
 
+#for $i,$dst_info in enumerate($merge_cfgs[$model_name]['dst'])
+    #set $d_av = $dst_info['dst_av']
+    #set $av_mx_nx = $d_av.name
+    #set $gm_nx = $dst_info['dst_gm']
+    #set $dst_model_name = $dst_info['dst_model_name']
+    #set $mapper_name = $dst_info['dst_mapper']
+    #set $smat_size = $dst_info['smat_size']
+    #set $run_phase_step = 2 + $i
 method_name = 'mapper_comp_map'
 params = {
-    'mapper':'my_proc%mapper_SMat${model_name}2${others[0]}',
+    'mapper':'my_proc%${mapper_name}',
     'src':'${c2x_cx.name}',
-    'dst':'${model_name}2x_${others[0]}x', 
+    'dst':'${av_mx_nx}', 
     'msgtag':'100+10+3', 
     'ierr':'ierr',
     'rList':'x',
 }
-${model_name}_run_phase3_2 = Temp(funcname=method_name, params=params)
+${model_name}_run_phase3_${run_phase_step} = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(${model_name}_run_phase3_${run_phase_step})
+#end for
 
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_SMat${model_name}2${others[1]}',
-    'src':'${c2x_cx.name}',
-    'dst':'${model_name}2x_${others[1]}x', 
-    'msgtag':'100+10+3', 
-    'ierr':'ierr',
-    'rList':'x',
-}
-${model_name}_run_phase3_3 = Temp(funcname=method_name, params=params)
-${model_name}_run_phase3 = Temp(subroutine=[
-            ${model_name}_run_phase3_1,
-            ${model_name}_run_phase3_2,
-            ${model_name}_run_phase3_3], mix=True)
-
+${model_name}_run_phase3 = Temp(subroutine=sub_run_phase_3,
+             mix=True)
+sub_run_phase_3 = []
 #end for
 
 
@@ -156,23 +157,25 @@ model_${model_name}_cfg = { # Model M's cfg
         }   
     },
 
-
     'mn_av_set': [ # Av between Model M and Model N
+    #for $dst_info in $merge_cfgs[$model_name]['dst']
+        #set $d_av = $dst_info['dst_av']
+        #set $av_mx_nx = $d_av.name
+        #set $gm_nx = $dst_info['dst_gm']
+        #set $dst_model_name = $dst_info['dst_model_name']
+        #set $mapper_name = $dst_info['dst_mapper']
+        #set $smat_size = $dst_info['smat_size']
         {
-            'n_name': '${others[0]}',
-            'n_rAv': '${model_name}2x_${others[0]}x',
+            'n_name': '${dst_model_name}',
+            'n_rAv': '${d_av.name}',
             'n_rField': 'x',
-            'n_gm': 'gsmap_${others[0]}x',
+            'n_gm': '${gm_nx}',
             'transform_method': '',
         },
-        {
-            'n_name': '${others[1]}',
-            'n_rAv': '${model_name}2x_${others[1]}x',
-            'n_rField': 'x',
-            'n_gm': 'gsmap_${others[1]}x',
-            'transform_method': '',
-        },
+        
+    #end for
     ],
+
 
     'mx_gsmap_set':  { # gsMap of Model M
         'mx': {
