@@ -321,13 +321,20 @@ subroutine cpl_run()
         ! (c2x_ax,b2x_ax,a2x_ax) => (x2a_ax)
         ! (c2x_bx,b2x_bx,a2x_bx) => (x2b_bx)
         ! (c2x_cx,b2x_cx,a2x_cx) => (x2c_cx)
+    if(my_proc%iamin_cpl) then
         if(s==10) then
             ! merge *2x_ax --> x2a_ax in rfield "x", cal the mean of all
             call mapper_comp_avMerge(a2x_ax, b2x_ax, c2x_ax, x2a_ax, "x")
             call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
                     write(*,*) '<<===X2A_AX_Merge_VALUE Rank:',comm_rank, x2a_ax%rAttr(1,:)
+            #for $mgr_routine in $merge_subroutines
+                #set func_str = $mgr_routine.toString($mgr_routine.name, $mgr_routine.argList)
+                !call ${mgr_routine.toString($mgr_routine.name,$mgr_routine.argList)}
+            #end for
             call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
         endif
+    endif
+
     end do
 
 end subroutine cpl_run

@@ -32,4 +32,5 @@ for av in parser.attrVectCouple:
 
 for sbr in parser.subroutine:
     subroutine = parser.subroutine[sbr]
+    print(sbr, subroutine)
     print subroutine.toString(subroutine.name, subroutine.argList)
