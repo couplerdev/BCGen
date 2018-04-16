@@ -5,35 +5,39 @@ from model_set import *
 proc_cfgs = [
     parser.models[m] for m in parser.models 
 ]
-
 def get_SMat_relation(attrVects):
     model_names = []
     model_SMats = {}
 
 
     for av in attrVects:
-        model_name = av[:1]
+        # todo get dst_av_model 
+        dst_model = attrVects[av][0].dstModel
+
+        model_name = dst_model.name
+        model_gsmap_name = dst_model.gsMaps['cpl'].name
         model_SMats[model_name] = {}
         model_SMats[model_name]['src'] = av
         model_SMats[model_name]['dst'] = []
-        # todo gsMap
-        model_SMats[model_name]['gm'] = 'gsMap_' + model_name + "x"
+        model_SMats[model_name]['gm'] = model_gsmap_name
         model_names.append(model_name)
 
     for av in attrVects:
-        dst_model_name = av[:1]
         for src_x_dst_x_av in attrVects[av]:
-            src_model_name = src_x_dst_x_av.name[:1]
+            src_model = src_x_dst_x_av.srcModel
+            dst_model = src_x_dst_x_av.dstModel
+            src_model_name = src_model.name
+            dst_model_name = dst_model.name
+            dst_gsmap_name = dst_model.gsMaps['cpl'].name
+            dst_field = src_x_dst_x_av.field
             print(av, dst_model_name, src_x_dst_x_av.name,\
                     src_x_dst_x_av.mapperName)
-            # todo src_model_name dst_model_name
             dst_info = {
-                # todo
                 'dst_model_name':dst_model_name,
                 'dst_av':src_x_dst_x_av,
-                # todo
-                'dst_gm':'gsMap_' + dst_model_name + 'x',
+                'dst_gm': dst_gsmap_name,
                 'dst_mapper':src_x_dst_x_av.mapperName,
+                'dst_filed':dst_field,
                 # todo set dst_sparse_len
                 'smat_size':8
                     }

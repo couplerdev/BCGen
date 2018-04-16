@@ -51,6 +51,7 @@ params = {
         'ierr':'ierr'
     }
 ${model_name}_init = Temp(funcname=method_name, params=params)
+
 #end for
 
 #for $model in $models
@@ -74,6 +75,7 @@ params = {
     'rList':'',
 }
 ${model_name}_run_phase1 = Temp(funcname=method_name, params=params)
+
 method_name = '${model_name}_run_mct'
 params = {
     'my_proc':'my_proc',
