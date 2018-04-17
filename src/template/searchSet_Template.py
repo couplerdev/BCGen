@@ -211,15 +211,18 @@ model_${model_name}_cfg = { # Model M's cfg
 }
 #end for
 
+
 model_cfgs = [
-    model_a_cfg,
-    model_b_cfg,
-    model_c_cfg
+#for $model in $models
+    #set $model_name = $model.name
+    model_${model_name}_cfg,
+#end for
 ]
 
 deploy_cfgs = [
-    model_a_cfg,
-    model_b_cfg,
-    model_c_cfg
+#for $model in $models
+    #set $model_name = $model.name
+    model_${model_name}_cfg,
+#end for
 ]
 

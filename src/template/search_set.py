@@ -549,15 +549,18 @@ model_atm_cfg = { # Model M's cfg
 
 }
 
+
 model_cfgs = [
     model_a_cfg,
+    model_c_cfg,
     model_b_cfg,
-    model_c_cfg
+    model_atm_cfg,
 ]
 
 deploy_cfgs = [
     model_a_cfg,
+    model_c_cfg,
     model_b_cfg,
-    model_c_cfg
+    model_atm_cfg,
 ]
 

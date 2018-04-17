@@ -1,5 +1,10 @@
 from codeGen import codeGenerator
-from model_set import *
+import sys
+sys.path.append('../parser')
+from parserMod import Parser
+
+parser = Parser()
+parser.parse()
 
 proc_cfgs = [
     parser.models[m] for m in parser.models 
