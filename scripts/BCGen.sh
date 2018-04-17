@@ -14,7 +14,9 @@ elif [ $1 -eq 1 ]; then
     ./move.sh
 elif [ $1 -eq 2 ]; then
     cd $MAINPATH
-    rm $OBJFILE
+    rm baseCpl.F90
+    rm proc_def.F90
+    rm manage.F90
     $PYTHON main.py
     ./move.sh
 elif [ $1 -eq -1 ]; then

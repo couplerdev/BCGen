@@ -52,6 +52,7 @@ res = get_SMat_relation(parser.attrVectCouple)
 
 code = codeGenerator("searchSet_Template.py", "search_set.py")
 code.addList('models',proc_cfgs)
+print [model.name for model in proc_cfgs]
 code.addList('merge_cfgs',res)
 code.generate()
 
