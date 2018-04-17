@@ -24,11 +24,13 @@ for model in parser.models:
         print parser.models[model].gsMaps[gsMap].name
     print '--------------------------------'
 print len(parser.attrVectCouple)
+print parser.attrVectCouple
 for av in parser.attrVectCouple:
-    print av
+    print "merge_dst_av:", av
     for attrVect in parser.attrVectCouple[av]:
-        print attrVect.name, attrVect.mapperName
+        print attrVect.name, attrVect.mapperName, attrVect.field
 
 for sbr in parser.subroutine:
     subroutine = parser.subroutine[sbr]
+    print(sbr, subroutine)
     print subroutine.toString(subroutine.name, subroutine.argList)
