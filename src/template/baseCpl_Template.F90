@@ -13,7 +13,7 @@ use comp_${name}
      implicit none
      type(proc), target :: my_proc
 	
-
+    ! Declare gsMap of each Model
     #for $model in $proc_cfgs
 		#set $gms = $model.gsMaps
 		#for $gm in $gms
@@ -22,6 +22,7 @@ use comp_${name}
 		#end for
 	#end for
 
+    ! Declare AttrVect of each Model(c2x_cx,c2x_cc,x2c_cx,x2c_cc)
     #for $model in $proc_cfgs
 		#set $avs = $model.attrVects
 		#for $av in $avs
@@ -31,15 +32,16 @@ use comp_${name}
 	#end for
 
 
-    ! todo change to model	
-	#for $cfg in $model_cfgs
-		#set $av_mn = $cfg['mn_av_set']
-		#for $mn_av in $av_mn
-			#set $av_mx_nx = $mn_av['n_rAv']
+    ! Declare Temp Merge AttrVect of each Model(m2x_nx)
+	#for $cfg in $merge_cfgs
+		#set $cfg = $merge_cfgs[$cfg]
+		#for $mn_av in $cfg['dst']
+			#set $av_mx_nx = $mn_av['dst_av'].name
 	 type(AttrVect):: $av_mx_nx
 		#end for
 	#end for
 
+    ! Declare Control Var
     #for $model in $proc_cfgs
 	    #set $name = $model.name
 	 logical :: ${name}_run
@@ -154,28 +156,32 @@ subroutine cpl_init()
             write(*,*) ' '
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
-	
+
     if(my_proc%iamin_cpl) then
-	#for $cfg in $model_cfgs
-		#set $name = $cfg['model_unique_name']
-		#set $av_mx = $cfg['mx_av_set']
-		#set $av_mx_mx = $av_mx['mx_mx']['name']
-		#set $gm = $cfg['mx_gsmap_set']
-		#set $gm_mx = $gm['mx']['name']  
-		#set $av_mn = $cfg['mn_av_set']
-		#for $mn_av in $av_mn
-			#set $n_name = $mn_av['n_name']
-			#set $av_mx_nx = $mn_av['n_rAv']
-			#set $gm_nx = $mn_av['n_gm']
+
+	#for $cfg in $merge_cfgs
+		#set $name = $cfg
+        #set $cfg = $merge_cfgs[$cfg]
+		#set $av_mx_mx = $cfg['src']
+		#set $gm_mx = $cfg['gm']
+		#set $dst_info = $cfg['dst']
+		#for $mn_av in $dst_info
+			#set $d_av = $mn_av['dst_av']
+			#set $av_mx_nx = $d_av.name
+			#set $gm_nx = $mn_av['dst_gm']
+			#set $dst_model_name = $mn_av['dst_model_name']
+			#set $mapper_name = $mn_av['dst_mapper']
+			#set $smat_size = $mn_av['smat_size']
 			call avect_init_ext(my_proc, $av_mx_mx,&
 						 my_proc%cplid, $av_mx_nx,&
 						 my_proc%cplid, $gm_nx,&
-						 my_proc%model${n_name}2cpl_id)
+						 my_proc%model${dst_model_name}2cpl_id)
 
 			call mapper_spmat_init(my_proc,&
-					my_proc%mapper_SMat${name}2${n_name}, &
+					my_proc%${mapper_name}, &
 					my_proc%cplid, &
-					my_proc%${n_name}_gsize, my_proc%${name}_gsize, 8,&
+					my_proc%${dst_model_name}_gsize, my_proc%${name}_gsize, &
+                    $smat_size,&
 					$gm_mx, $gm_nx)
 
 		#end for
@@ -193,7 +199,6 @@ subroutine cpl_init()
         write(*,*) " "
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
 	end if
-
     write(*,*)'<========= Init End  ===========>'
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
@@ -316,13 +321,20 @@ subroutine cpl_run()
         ! (c2x_ax,b2x_ax,a2x_ax) => (x2a_ax)
         ! (c2x_bx,b2x_bx,a2x_bx) => (x2b_bx)
         ! (c2x_cx,b2x_cx,a2x_cx) => (x2c_cx)
+    if(my_proc%iamin_cpl) then
         if(s==10) then
             ! merge *2x_ax --> x2a_ax in rfield "x", cal the mean of all
             call mapper_comp_avMerge(a2x_ax, b2x_ax, c2x_ax, x2a_ax, "x")
             call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
                     write(*,*) '<<===X2A_AX_Merge_VALUE Rank:',comm_rank, x2a_ax%rAttr(1,:)
+            #for $mgr_routine in $merge_subroutines
+                #set func_str = $mgr_routine.toString($mgr_routine.name, $mgr_routine.argList)
+                !call ${mgr_routine.toString($mgr_routine.name,$mgr_routine.argList)}
+            #end for
             call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
         endif
+    endif
+
     end do
 
 end subroutine cpl_run
