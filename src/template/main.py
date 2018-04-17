@@ -49,10 +49,12 @@ def get_SMat_relation(attrVects):
     return model_SMats
 
 res = get_SMat_relation(parser.attrVectCouple)
+
 print res
 
 code = codeGenerator("searchSet_Template.py", "search_set.py")
 code.addList('models',proc_cfgs)
+
 code.addList('merge_cfgs',res)
 code.generate()
 

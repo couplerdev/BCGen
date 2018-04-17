@@ -205,7 +205,6 @@ class ModelParser:
         srcMapper.nameGenerate()
         dstMapper.BindToManager(self.__NameManager)
         dstMapper.nameGenerate()
-        print srcMapper.name, dstMapper.name
         self.__model.append(srcMapper)
         self.__model.append(dstMapper)
 
@@ -300,7 +299,6 @@ class CouplerParser: ###!!!!
                 attrVect.BindToManager(self.__NameManager)
                 attrVect.nameGenerate()
                 if self.__NameManager.FindName(attrVect):
-                    print attrVect.name
                     parser.addDict(attrVect, name)
                 mapper = Mapper(srcAttrVect,attrVect, mapType="sMat",name=mapperName)
                 mapper.BindToManager(self.__NameManager)

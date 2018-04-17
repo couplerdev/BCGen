@@ -80,7 +80,6 @@ class NameManager:
         if self.CheckName(name, objType):
             raise ValueError("name conflict")
         if objType == "Model" or objType == "AttrVect":
-            print 'oop', objType
             self.__register.addDict(obj, name)  
         return name     
 

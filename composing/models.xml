@@ -83,6 +83,34 @@
 			<arg>x2c_cc</arg>
 		</final>
 	</model>
+	<model>
+		<name>atm</name>
+		<attrVect>
+			<name></name>
+			<lsize></lsize>
+			<nx>10</nx>
+			<ny>100</ny>
+			<field>velo:cal</field>
+		</attrVect>
+		<init>
+			<name>atm_init_mct</name>
+			<arg>gsmap_atmatm</arg>
+			<arg>atm2x_atmatm</arg>
+			<arg>x2atm_atmatm</arg>
+		</init>
+		<run>
+			<name>atm_run_mct</name>
+			<arg>gsmap_atmatm</arg>
+			<arg>atm2x_atmatm</arg>
+			<arg>x2atm_atmatm</arg>
+		</run>
+		<final>
+			<name>atm_final_mct</name>
+			<arg>gsmap_atmatm</arg>
+			<arg>atm2x_atmatm</arg>
+			<arg>x2atm_atmatm</arg>
+		</final>
+	</model>
         <!-- <model>
 		<name>c</name>
 		<attrVect>

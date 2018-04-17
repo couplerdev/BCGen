@@ -62,7 +62,6 @@ ${model_name}_init = Temp(funcname=method_name, params=params)
     #set $x2c_cc = $avs['x2c_cc']
     #set $x2c_cx = $avs['x2c_cx']
     #set $comps = ['a', 'b', 'c']
-    #set $others = [c for c in $comps if c != $model_name]
     #set $mapper_c2x = $model.mappers['c2x']
     #set $mapper_x2c = $model.mappers['x2c']
 method_name='mapper_comp_map'
@@ -100,6 +99,7 @@ params = {
 ${model_name}_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(${model_name}_run_phase3_1)
 
+#if $merge_cfgs.has_key($model_name)
 #for $i,$dst_info in enumerate($merge_cfgs[$model_name]['dst'])
     #set $d_av = $dst_info['dst_av']
     #set $av_mx_nx = $d_av.name
@@ -120,6 +120,7 @@ params = {
 ${model_name}_run_phase3_${run_phase_step} = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(${model_name}_run_phase3_${run_phase_step})
 #end for
+#end if
 
 ${model_name}_run_phase3 = Temp(subroutine=sub_run_phase_3,
              mix=True)
@@ -159,6 +160,8 @@ model_${model_name}_cfg = { # Model M's cfg
     },
 
     'mn_av_set': [ # Av between Model M and Model N
+
+    #if $merge_cfgs.has_key($model_name)
     #for $dst_info in $merge_cfgs[$model_name]['dst']
         #set $d_av = $dst_info['dst_av']
         #set $av_mx_nx = $d_av.name
@@ -176,6 +179,7 @@ model_${model_name}_cfg = { # Model M's cfg
         },
         
     #end for
+    #end if
     ],
 
 
