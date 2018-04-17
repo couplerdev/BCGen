@@ -53,34 +53,32 @@ def get_SMat_relation(attrVects):
             model_SMats[src_model_name]['dst'].append(dst_info)
     return model_SMats
 
-res = get_SMat_relation(parser.attrVectCouple)
-
-print res
-
+merge_cfgs = get_SMat_relation(parser.attrVectCouple)
 code = codeGenerator("searchSet_Template.py", "search_set.py")
 code.addList('models',proc_cfgs)
-
-code.addList('merge_cfgs',res)
+code.addList('merge_cfgs',merge_cfgs)
 code.generate()
 
 from search_set import *
 
-code = codeGenerator("procM_Template.F90", "manage.F90")
 #TODO add 
+code = codeGenerator("deploymod_Template.F90", "deploy_mod.F90")
+code.addList('proc_cfgs',proc_cfgs)
+code.generate()
+
+code = codeGenerator("procM_Template.F90", "manage.F90")
 code.addList('proc_cfgs',proc_cfgs)
 code.generate()
 
 
 code = codeGenerator("procDef_Template.F90", "proc_def.F90")
-#TODO add 
 code.addList('proc_cfgs',proc_cfgs)
 code.generate()
 
-
+#TODO
 code = codeGenerator("baseCpl_Template.F90", "baseCpl.F90")
-#TODO add 
-code.addList('model_cfgs',model_cfgs)
 code.addList('proc_cfgs',proc_cfgs)
-code.addList('merge_cfgs',res)
 code.addList('merge_subroutines', merge_subroutines)
+code.addList('merge_cfgs',merge_cfgs)
+code.addList('model_cfgs',model_cfgs)
 code.generate()
