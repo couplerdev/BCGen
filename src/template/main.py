@@ -14,6 +14,13 @@ merge_subroutines = [
     parser.subroutine[m] for m in parser.subroutine
 ]
 
+
+deploy_cfgs = parser.deploy
+print(type(deploy_cfgs))
+
+
+print(deploy_cfgs)
+
 def get_SMat_relation(attrVects):
     model_names = []
     model_SMats = {}
@@ -39,8 +46,8 @@ def get_SMat_relation(attrVects):
             dst_model_name = dst_model.name
             dst_gsmap_name = dst_model.gsMaps['cpl'].name
             dst_field = src_x_dst_x_av.field
-            print(av, dst_model_name, src_x_dst_x_av.name,\
-                    src_x_dst_x_av.mapperName)
+            #print(av, dst_model_name, src_x_dst_x_av.name,\
+            #        src_x_dst_x_av.mapperName)
             dst_info = {
                 'dst_model_name':dst_model_name,
                 'dst_av':src_x_dst_x_av,
@@ -59,18 +66,23 @@ code.addList('models',proc_cfgs)
 code.addList('merge_cfgs',merge_cfgs)
 code.generate()
 
+
+
 from search_set import *
+print 'vnn'
+code = codeGenerator("procM_Template.F90", "manage.F90")
 
 #TODO add 
 code = codeGenerator("deploymod_Template.F90", "deploy_mod.F90")
 code.addList('proc_cfgs',proc_cfgs)
+code.addList('deploy_cfgs',deploy_cfgs)
 code.generate()
 
 code = codeGenerator("procM_Template.F90", "manage.F90")
 code.addList('proc_cfgs',proc_cfgs)
 code.generate()
 
-
+print 'eee'
 code = codeGenerator("procDef_Template.F90", "proc_def.F90")
 code.addList('proc_cfgs',proc_cfgs)
 code.generate()

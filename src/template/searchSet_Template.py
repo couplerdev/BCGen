@@ -129,6 +129,7 @@ sub_run_phase_3 = []
 
 #for $model in $models
     #set $model_name = $model.name
+    #set $model_id = $model.ID
     #set $avs = $model.attrVects
     #set $gms = $model.gsMaps
     #set $gsMap_cx = $model.gsMaps['cpl']
@@ -143,6 +144,7 @@ sub_run_phase_3 = []
 
 model_${model_name}_cfg = { # Model M's cfg
 'model_unique_name': '${model_name}',
+'model_unique_id': '${model_id}',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': '${c2x_cc.name}',
@@ -218,10 +220,4 @@ model_cfgs = [
 #end for
 ]
 
-deploy_cfgs = [
-#for $model in $models
-    #set $model_name = $model.name
-    model_${model_name}_cfg,
-#end for
-]
 

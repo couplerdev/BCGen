@@ -1,4 +1,3 @@
-from model_set import *
 class Temp:
     mix = False
     subroutine = []
@@ -66,18 +65,6 @@ params = {
         'ierr':'ierr'
     }
 b_init = Temp(funcname=method_name, params=params)
-
-method_name = 'atm_init_mct'
-params = {
-        'my_proc':'my_proc', 
-        'ID':'my_proc%modelatm_id',
-        'EClock':'EClock',
-        'gsMap_atmatm':'gsMap_atmatm', 
-        'atm2x_atmatm':'atm2x_atmatm', 
-        'x2atm_atmatm':'x2atm_atmatm', 
-        'ierr':'ierr'
-    }
-atm_init = Temp(funcname=method_name, params=params)
 
 
 method_name='mapper_comp_map'
@@ -263,50 +250,12 @@ sub_run_phase_3.append(b_run_phase3_3)
 b_run_phase3 = Temp(subroutine=sub_run_phase_3,
              mix=True)
 sub_run_phase_3 = []
-method_name='mapper_comp_map'
-params = {
-    'mapper':'my_proc%Mapper_Cx2atm',
-    'src':'x2atm_atmx',
-    'dst':'x2atm_atmatm', 
-    'msgtag':'100+10+2', 
-    'ierr':'ierr',
-    'rList':'',
-}
-atm_run_phase1 = Temp(funcname=method_name, params=params)
-
-method_name = 'atm_run_mct'
-params = {
-    'my_proc':'my_proc',
-    'ID':'my_proc%modelatm_id',
-    'EClock':'EClock', 
-    'atm2x':'atm2x_atmatm', 
-    'x2atm':'x2atm_atmatm',
-    'ierr':'ierr'
-}
-atm_run_phase2 = Temp(funcname=method_name, params=params)
-
-sub_run_phase_3 = []
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%Mapper_Catm2x',
-    'src':'atm2x_atmatm',
-    'dst':'atm2x_atmx', 
-    'msgtag':'100+10+3', 
-    'ierr':'ierr',
-    'rList':'',
-}
-atm_run_phase3_1 = Temp(funcname=method_name, params=params)
-sub_run_phase_3.append(atm_run_phase3_1)
-
-
-atm_run_phase3 = Temp(subroutine=sub_run_phase_3,
-             mix=True)
-sub_run_phase_3 = []
 
 
 
 model_a_cfg = { # Model M's cfg
 'model_unique_name': 'a',
+'model_unique_id': '1',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'a2x_aa',
@@ -372,6 +321,7 @@ model_a_cfg = { # Model M's cfg
 
 model_c_cfg = { # Model M's cfg
 'model_unique_name': 'c',
+'model_unique_id': '3',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'c2x_cc',
@@ -437,6 +387,7 @@ model_c_cfg = { # Model M's cfg
 
 model_b_cfg = { # Model M's cfg
 'model_unique_name': 'b',
+'model_unique_id': '2',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'b2x_bb',
@@ -500,67 +451,11 @@ model_b_cfg = { # Model M's cfg
 
 }
 
-model_atm_cfg = { # Model M's cfg
-'model_unique_name': 'atm',
-    'mx_av_set' : { # Av between model M and Cpl
-        'mx_mm':{
-            'name': 'atm2x_atmatm',
-        },
-        'mx_mx':{
-            'name': 'atm2x_atmx',
-        },   
-        'xm_mm':{
-            'name': 'x2atm_atmatm',
-        },   
-        'xm_mx':{
-            'name': 'x2atm_atmx',
-        }   
-    },
-
-    'mn_av_set': [ # Av between Model M and Model N
-
-    ],
-
-
-    'mx_gsmap_set':  { # gsMap of Model M
-        'mx': {
-            'name':'gsMap_atmx'
-        },
-        'mm': {
-            'name':'gsMap_atmatm'
-        }
-    },
-
-    'subroutine': {
-        'init_method': atm_init,
-        'run_method': {
-            'run_phase1_method': atm_run_phase1,
-            'run_phase2_method': atm_run_phase2,
-            'run_phase3_method': atm_run_phase3,
-        },
-        'final_method':[
-            {
-                'method_name':'atm_final_mct',
-                'params':{
-                }
-            }
-        ]
-    }
-
-}
-
 
 model_cfgs = [
     model_a_cfg,
     model_c_cfg,
     model_b_cfg,
-    model_atm_cfg,
 ]
 
-deploy_cfgs = [
-    model_a_cfg,
-    model_c_cfg,
-    model_b_cfg,
-    model_atm_cfg,
-]
 

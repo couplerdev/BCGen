@@ -8,9 +8,18 @@ include 'mpif.h'
     integer :: defaulToAll = 1
     integer :: comp(4, 3)
     data comp / & !--- comp_first, comp_last, stride
-            0, 0, 2, 2, &
-            3, 1, 3, 3, &
-            1, 1, 1, 1/
+        #set $first = []
+        #set $last = []
+        #set $stride = []
+        #for $model_id in $deploy_cfgs
+            #set $deploy_cfg = $deploy_cfgs[$model_id] 
+            $first.append($deploy_cfg[0]) $last.append($deploy_cfg[1]) $stride.append($deploy_cfg[2]) #end for
+        #set $firsts = ",".join($first) + ",&"
+        #set $lasts = ",".join($last) + ",&"
+        #set $strides = ",".join($stride) + "/"
+        $firsts
+        $lasts
+        $strides
     public  :: deploy
     public  :: deploy_cpl
     public  :: deploy_readFile

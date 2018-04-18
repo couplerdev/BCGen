@@ -241,7 +241,7 @@ class AttrVect(CoupleEntity):
 class Model(CoupleEntity):
     __slots__ = ['__name','__model_init','__model_run','__model_final',\
                  '__manager', '__type', '__attrVects','__gsMaps', '__mappers',\
-                 '__gSize']
+                 '__gSize', '__ID']
     def __init__(self,name="", gSize=8):
 	super(Model, self).__init__(name=name,_type="Model")
 	self.__model_init = ModelSubroutine() #optional?
@@ -253,12 +253,16 @@ class Model(CoupleEntity):
         self.__mappers = {}       
         self.__name = name
         self.__gSize = gSize
+        self.__ID = -1
 
 ### debug region
    
     @property
     def gSize(self):
         return self.__gSize
+    @gSize.setter
+    def gSize(self, gsizeValue):
+        self.__gSize = gsizeValue
 
     @property
     def attrVects(self):
@@ -296,6 +300,14 @@ class Model(CoupleEntity):
     @model_final.setter
     def model_final(self, final_subroutine):
 	self.__model_final = final_subroutine
+
+    @property
+    def ID(self):
+        return self.__ID
+
+    @ID.setter
+    def ID(self, IDValue):
+        self.__ID = IDValue 
 
     def append(self, obj):
         if obj.type == "AttrVect":

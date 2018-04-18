@@ -8,7 +8,6 @@ use mct_mod
 use comp_a
 use comp_c
 use comp_b
-use comp_atm
 
      implicit none
      type(proc), target :: my_proc
@@ -20,8 +19,6 @@ use comp_atm
 	 type(gsMap) :: gsMap_cx
 	 type(gsMap) :: gsMap_bb
 	 type(gsMap) :: gsMap_bx
-	 type(gsMap) :: gsMap_atmatm
-	 type(gsMap) :: gsMap_atmx
 
     ! Declare AttrVect of each Model(c2x_cx,c2x_cc,x2c_cx,x2c_cc)
 	 type(AttrVect),pointer ::a2x_aa
@@ -36,10 +33,6 @@ use comp_atm
 	 type(AttrVect),pointer ::b2x_bx
 	 type(AttrVect),pointer ::x2b_bb
 	 type(AttrVect),pointer ::x2b_bx
-	 type(AttrVect),pointer ::atm2x_atmatm
-	 type(AttrVect),pointer ::atm2x_atmx
-	 type(AttrVect),pointer ::x2atm_atmatm
-	 type(AttrVect),pointer ::x2atm_atmx
 
 
     ! Declare Temp Merge AttrVect of each Model(m2x_nx)
@@ -54,7 +47,6 @@ use comp_atm
 	 logical :: a_run
 	 logical :: c_run
 	 logical :: b_run
-	 logical :: atm_run
 
     
      logical :: stop_clock
@@ -94,10 +86,6 @@ subroutine cpl_init()
 		b2x_bx=> my_proc%b2x_bx
 		x2b_bb=> my_proc%x2b_bb
 		x2b_bx=> my_proc%x2b_bx
-		atm2x_atmatm=> my_proc%atm2x_atmatm
-		atm2x_atmx=> my_proc%atm2x_atmx
-		x2atm_atmatm=> my_proc%x2atm_atmatm
-		x2atm_atmx=> my_proc%x2atm_atmx
 
     call MPI_Comm_rank(MPI_COMM_WORLD, comm_rank, ierr)
 
@@ -113,9 +101,6 @@ subroutine cpl_init()
 		end if
 		if(my_proc%iamin_modelb)then
 			call b_init_mct(my_proc=my_proc,ierr=ierr,ID=my_proc%modelb_id,b2x_bb=b2x_bb,gsMap_bb=gsMap_bb,x2b_bb=x2b_bb,EClock=EClock)
-		end if
-		if(my_proc%iamin_modelatm)then
-			call atm_init_mct(atm2x_atmatm=atm2x_atmatm,my_proc=my_proc,x2atm_atmatm=x2atm_atmatm,ierr=ierr,EClock=EClock,ID=my_proc%modelatm_id,gsMap_atmatm=gsMap_atmatm)
 		end if
 
     
@@ -216,35 +201,6 @@ subroutine cpl_init()
 			call MPI_Barrier(my_proc%mpi_modelb2cpl, ierr)
 			call mapper_comp_map(my_proc%mapper_Cb2x, &
 					b2x_bb, b2x_bx, 100+10+1, ierr)
-		end if
-		if(my_proc%iamin_modelatm2cpl)then
-			call gsmap_init_ext(my_proc, gsMap_atmatm, &
-								my_proc%modelatm_id, &
-								gsMap_atmx, my_proc%cplid, &
-								my_proc%modelatm2cpl_id )
-
-			call avect_init_ext(my_proc, atm2x_atmatm,&
-						my_proc%modelatm_id, atm2x_atmx, &
-						my_proc%cplid, gsMap_atmx, &
-						my_proc%modelatm2cpl_id)
-
-			call avect_init_ext(my_proc, x2atm_atmatm,&
-						my_proc%modelatm_id, x2atm_atmx, &
-						my_proc%cplid, gsMap_atmx, &
-						my_proc%modelatm2cpl_id)
-			call mapper_rearrsplit_init(my_proc%mapper_Catm2x, &
-					my_proc, gsMap_atmatm, my_proc%modelatm_id, &
-					gsMap_atmx, my_proc%cplid, &
-					my_proc%modelatm2cpl_id, ierr)
-
-			call mapper_rearrsplit_init(my_proc%mapper_Cx2atm, &
-					my_proc, gsMap_atmx, my_proc%cplid, &
-					gsMap_atmatm, my_proc%modelatm_id, &
-					my_proc%modelatm2cpl_id, ierr)
-
-			call MPI_Barrier(my_proc%mpi_modelatm2cpl, ierr)
-			call mapper_comp_map(my_proc%mapper_Catm2x, &
-					atm2x_atmatm, atm2x_atmx, 100+10+1, ierr)
 		end if
 
 
@@ -367,7 +323,6 @@ subroutine cpl_run()
         call triger(EClock, a_run, "a_run")
         call triger(EClock, c_run, "c_run")
         call triger(EClock, b_run, "b_run")
-        call triger(EClock, atm_run, "atm_run")
         call triger(EClock, stop_clock, "stop_clock")
         s = s+1
         if(s==10) stop_clock = .true.
@@ -393,7 +348,7 @@ subroutine cpl_run()
 					enddo
 				endif
                 
-					call mapper_comp_map(mapper=my_proc%Mapper_Cx2a,rList='',src=x2a_ax,dst=x2a_aa,msgtag=100+10+2,ierr=ierr)
+					call mapper_comp_map(mapper=my_proc%Mapper_Cx2a,rList='x',src=x2a_ax,dst=x2a_aa,msgtag=100+10+2,ierr=ierr)
 
                 if(s == 3 .and. my_proc%iamin_modela2cpl) then
                     call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
@@ -415,7 +370,7 @@ subroutine cpl_run()
 					enddo
 				endif
                 
-					call mapper_comp_map(mapper=my_proc%Mapper_Cx2c,rList='',src=x2c_cx,dst=x2c_cc,msgtag=100+10+2,ierr=ierr)
+					call mapper_comp_map(mapper=my_proc%Mapper_Cx2c,rList='x',src=x2c_cx,dst=x2c_cc,msgtag=100+10+2,ierr=ierr)
 
                 if(s == 3 .and. my_proc%iamin_modela2cpl) then
                     call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
@@ -437,29 +392,7 @@ subroutine cpl_run()
 					enddo
 				endif
                 
-					call mapper_comp_map(mapper=my_proc%Mapper_Cx2b,rList='',src=x2b_bx,dst=x2b_bb,msgtag=100+10+2,ierr=ierr)
-
-                if(s == 3 .and. my_proc%iamin_modela2cpl) then
-                    call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
-                    write(*,*) '<<===X2A_AA_VALUE Rank:',comm_rank, x2a_aa%rAttr(1,:)
-                call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
-                end if
-            end if
-        end if
-        if(atm_run)then
-            if(my_proc%iamin_modelatm2cpl)then
-				if(s == 3 .and. my_proc%iamin_modela2cpl) then
-					do i=1,avect_lsize(x2a_ax)
-					x2a_ax%rAttr(1,i) = x2a_ax%rAttr(1,i) + (comm_rank+1)*10+i
-					enddo
-				endif
-				if(s == 7 .and. my_proc%iamin_modelb2cpl) then
-					do i=1,avect_lsize(x2b_bx)
-						x2b_bx%rAttr(1,i) = x2b_bx%rAttr(1,i) + (comm_rank+1)*10+i
-					enddo
-				endif
-                
-					call mapper_comp_map(mapper=my_proc%Mapper_Cx2atm,rList='',src=x2atm_atmx,dst=x2atm_atmatm,msgtag=100+10+2,ierr=ierr)
+					call mapper_comp_map(mapper=my_proc%Mapper_Cx2b,rList='x',src=x2b_bx,dst=x2b_bb,msgtag=100+10+2,ierr=ierr)
 
                 if(s == 3 .and. my_proc%iamin_modela2cpl) then
                     call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
@@ -492,11 +425,6 @@ subroutine cpl_run()
 				call b_run_mct(my_proc=my_proc,b2x=b2x_bb,ierr=ierr,x2b=x2b_bb,ID=my_proc%modelb_id,EClock=EClock)
             end if
         end if
-        if(atm_run)then
-            if(my_proc%iamin_modelatm)then
-				call atm_run_mct(my_proc=my_proc,atm2x=atm2x_atmatm,ierr=ierr,x2atm=x2atm_atmatm,ID=my_proc%modelatm_id,EClock=EClock)
-            end if
-        end if
 
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
                     write(*,*)
@@ -517,28 +445,23 @@ subroutine cpl_run()
    
         if(a_run)then
             if(my_proc%iamin_modela2cpl)then
-				call mapper_comp_map(mapper=my_proc%Mapper_Ca2x,rList='',src=a2x_aa,dst=a2x_ax,msgtag=100+10+3,ierr=ierr)
-call mapper_comp_map(mapper=my_proc%mapper_SMata2b,rList='',src=a2x_ax,dst=a2x_bx,msgtag=100+10+3,ierr=ierr)
-call mapper_comp_map(mapper=my_proc%mapper_SMata2c,rList='',src=a2x_ax,dst=a2x_cx,msgtag=100+10+3,ierr=ierr)
+				call mapper_comp_map(mapper=my_proc%Mapper_Ca2x,rList='x',src=a2x_aa,dst=a2x_ax,msgtag=100+10+3,ierr=ierr)
+call mapper_comp_map(mapper=my_proc%mapper_SMata2b,rList='x',src=a2x_ax,dst=a2x_bx,msgtag=100+10+3,ierr=ierr)
+call mapper_comp_map(mapper=my_proc%mapper_SMata2c,rList='x',src=a2x_ax,dst=a2x_cx,msgtag=100+10+3,ierr=ierr)
             end if
         end if
         if(c_run)then
             if(my_proc%iamin_modelc2cpl)then
-				call mapper_comp_map(mapper=my_proc%Mapper_Cc2x,rList='',src=c2x_cc,dst=c2x_cx,msgtag=100+10+3,ierr=ierr)
-call mapper_comp_map(mapper=my_proc%mapper_SMatc2b,rList='',src=c2x_cx,dst=c2x_bx,msgtag=100+10+3,ierr=ierr)
-call mapper_comp_map(mapper=my_proc%mapper_SMatc2a,rList='',src=c2x_cx,dst=c2x_ax,msgtag=100+10+3,ierr=ierr)
+				call mapper_comp_map(mapper=my_proc%Mapper_Cc2x,rList='x',src=c2x_cc,dst=c2x_cx,msgtag=100+10+3,ierr=ierr)
+call mapper_comp_map(mapper=my_proc%mapper_SMatc2b,rList='x',src=c2x_cx,dst=c2x_bx,msgtag=100+10+3,ierr=ierr)
+call mapper_comp_map(mapper=my_proc%mapper_SMatc2a,rList='x',src=c2x_cx,dst=c2x_ax,msgtag=100+10+3,ierr=ierr)
             end if
         end if
         if(b_run)then
             if(my_proc%iamin_modelb2cpl)then
-				call mapper_comp_map(mapper=my_proc%Mapper_Cb2x,rList='',src=b2x_bb,dst=b2x_bx,msgtag=100+10+3,ierr=ierr)
-call mapper_comp_map(mapper=my_proc%mapper_SMatb2c,rList='',src=b2x_bx,dst=b2x_cx,msgtag=100+10+3,ierr=ierr)
-call mapper_comp_map(mapper=my_proc%mapper_SMatb2a,rList='',src=b2x_bx,dst=b2x_ax,msgtag=100+10+3,ierr=ierr)
-            end if
-        end if
-        if(atm_run)then
-            if(my_proc%iamin_modelatm2cpl)then
-				call mapper_comp_map(mapper=my_proc%Mapper_Catm2x,rList='',src=atm2x_atmatm,dst=atm2x_atmx,msgtag=100+10+3,ierr=ierr)
+				call mapper_comp_map(mapper=my_proc%Mapper_Cb2x,rList='x',src=b2x_bb,dst=b2x_bx,msgtag=100+10+3,ierr=ierr)
+call mapper_comp_map(mapper=my_proc%mapper_SMatb2c,rList='x',src=b2x_bx,dst=b2x_cx,msgtag=100+10+3,ierr=ierr)
+call mapper_comp_map(mapper=my_proc%mapper_SMatb2a,rList='x',src=b2x_bx,dst=b2x_ax,msgtag=100+10+3,ierr=ierr)
             end if
         end if
 	
@@ -581,9 +504,6 @@ subroutine cpl_final()
     end if
     if(my_proc%iamin_modelb)then
 			call b_final_mct()
-    end if
-    if(my_proc%iamin_modelatm)then
-			call atm_final_mct()
     end if
     call clean(my_proc)
 

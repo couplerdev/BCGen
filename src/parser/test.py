@@ -34,3 +34,5 @@ for sbr in parser.subroutine:
     subroutine = parser.subroutine[sbr]
     print(sbr, subroutine)
     print subroutine.toString(subroutine.name, subroutine.argList)
+for deploy in parser.deploy:
+    print deploy, parser.deploy[deploy]
