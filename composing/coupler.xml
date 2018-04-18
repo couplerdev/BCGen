@@ -24,7 +24,7 @@
 				<arg>c2x_ax</arg>
 			</args>
 		</mrg>
-    </attrVect>
+   	</attrVect>
 	<attrVect>
 		<name>b2x_bx</name>
    		<model>b</model>
@@ -49,7 +49,7 @@
 				<arg>c2x_ax</arg>
 			</args>
 		</mrg>
-    </attrVect>
+    	</attrVect>
 	<attrVect>
 		<name>c2x_cx</name>
    		<model>c</model>

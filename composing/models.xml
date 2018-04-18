@@ -3,7 +3,7 @@
 		<name>a</name>
                 <attrVect>  <!--local attrVect-->
 			<name></name><!--optional-->
-			<lsize></lsize>
+			<gsize></gsize>
 			<nx>100</nx>
 			<ny>100</ny>
      			<field>lon:lat</field>
@@ -31,7 +31,7 @@
 		<name>b</name>
 		<attrVect>
 			<name></name>
-			<lsize></lsize>
+			<gsize></gsize>
 			<nx>100</nx>
 			<ny>100</ny>
 			<field>lon:lat</field>
@@ -59,7 +59,7 @@
 		<name>c</name>
 		<attrVect>
 			<name></name>
-			<lsize></lsize>
+			<gsize></gsize>
 			<nx>50</nx>
 			<ny>100</ny>
 			<field>lon:lat</field>
@@ -87,7 +87,7 @@
 		<name>atm</name>
 		<attrVect>
 			<name></name>
-			<lsize></lsize>
+			<gsize></gsize>
 			<nx>10</nx>
 			<ny>100</ny>
 			<field>velo:cal</field>

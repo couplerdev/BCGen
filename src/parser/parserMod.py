@@ -22,15 +22,17 @@ DEBUG = 1
 
 class Parser:
     def __init__(self, couplerFile="../../composing/coupler.xml",  modelFile="../../composing/models.xml", \
-                 scheduleFile="../composing/schedule.xml"):
+                 scheduleFile="../composing/schedule.xml", deployFile="../../composing/deploy.xml"):
         self.__NameManager = NameManager()
         self.__models = {}
         self.__attrVectCouple = {}
         self.__subroutine = {}   ## mrg subroutine
         self.__sMapper = {}
+        self.__deployDistribution = {} # format {id: [first, last, stride]}
         self.__couplerFile = couplerFile
         self.__modelFile = modelFile
         self.__scheduleFile = scheduleFile
+        self.__deployFile = deployFile
 
     @property
     def models(self):
@@ -43,6 +45,13 @@ class Parser:
     @property
     def subroutine(self):
         return self.__subroutine
+
+    @property
+    def deploy(self):
+        return self.__deployDistribution
+
+    def addDistribution(self, deployList, ID):
+        self.__deployDistribution[ID]=deployList
         
     def addDict(self, attrVect, name):
         if not self.__attrVectCouple.has_key(name):
@@ -65,14 +74,20 @@ class Parser:
     def modelsParse(self):
         root = self.load(self.__modelFile)
         modelParser = ModelParser(self.__NameManager)
+        index = 1
         for child in root:
             modelParser.setRoot(child)
             model = modelParser.model
+            model.ID = index
+            index = index + 1
             self.__models[model.name] = model
             self.__NameManager.register.modelDict[model.name] = model
 
     def deployParse(self):
-        pass
+        root = self.load(self.__deployFile)
+        deployParser = DeployParser(self.__NameManager)
+        deployParser.setRoot(root)
+        deployParser.deployParse(self)
 
     def schedule(self):
         #sort seq
@@ -91,10 +106,13 @@ class Parser:
     def parse(self):
         self.modelsParse()
         if DEBUG == 1:
-            print 'model parsed'
+            print '...................model parsed...................'
         self.coupleAttrVectParse()
         if DEBUG == 1:
-            print 'couple AttrVect parsed'
+            print '..............couple AttrVect parsed..............'
+        self.deployParse()
+        if DEBUG == 1:
+            print '..................deploy parsed...................'
 
     def append(self, obj):
         if obj.atype == 'Model':
@@ -142,11 +160,11 @@ class SubroutineParser:
 		
 class ModelParser:
     __slots__=['__root', '__model', '__isParsed', '__name',\
-               '__lsize','__nx','__ny','__field','__NameManager']
-    def __init__(self, NameManager,root="",lsize=0,nx=0,ny=0,field=""):
+               '__gsize','__nx','__ny','__field','__NameManager']
+    def __init__(self, NameManager,root="",lsize=0,nx=0,ny=0,field="", gsize=0):
         self.__root = root
         self.__isParsed = False
-        self.__lsize = lsize
+        self.__gsize = gsize
         self.__nx = nx
         self.__ny = ny
         self.__field = field
@@ -227,10 +245,13 @@ class ModelParser:
 
         root = root.find('attrVect')
         #if root.find('name')? how to handle optional 
-        self.__lsize = root.find("lsize").text
+        self.__gsize = root.find("gsize").text
         self.__nx = root.find("nx").text
         self.__ny = root.find("ny").text
         self.__field = root.find("field").text
+	if self.__gsize == 0:
+            self.__gsize = self.__nx*self.__ny
+        self.__model.gSize = self.__gsize
         self.__setAttrVect()
         self.__setGsMap()
         self.__setMapper()
@@ -330,4 +351,36 @@ class ScheduleParser:
     pass
 
 class DeployParser:
-    pass			
+    __slots__ = ["__root", "__NameManager", "__isParsed"]	
+    def __init__(self, nameManager):
+        self.__root = ""
+        self.__isParsed = False
+        self.__NameManager = nameManager
+
+    def setRoot(self, root):
+        self.__root = root
+        self.__isParsed = False
+
+    def deployParse(self, parser):
+        if self.__root=="":
+            raise UnsetError("self.__root not set! Please try setRoot method!")
+        root = self.__root
+        if root.find("cpl") != None:
+            cpl = root.find("cpl")
+            first = cpl.find("first").text
+            last  = cpl.find("last").text
+            stride = cpl.find("stride").text
+            deployList = [first , last, stride]
+            parser.addDistribution(deployList, 1)
+        else:
+            raise ComposingError("cpl not composed see in composing/deploy.xml")
+        models = root.find("models")
+        for model in models:
+            name = model.find("name").text
+            first = model.find("first").text
+            last = model.find("last").text
+            stride = model.find("stride").text
+            ID = parser.models[name].ID
+            ID = ID + 1
+            deployList = [first, last, stride]
+            parser.addDistribution(deployList, ID)

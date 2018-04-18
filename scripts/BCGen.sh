@@ -10,6 +10,7 @@ if [ $1 -eq 0 ]; then
     echo '--------------A generator for baseCpl-----------------------'
 elif [ $1 -eq 1 ]; then
     cd $MAINPATH
+    echo $?
     $PYTHON main.py
     ./move.sh
 elif [ $1 -eq 2 ]; then

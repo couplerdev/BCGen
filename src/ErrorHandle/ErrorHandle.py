@@ -16,3 +16,7 @@ class NoTagError(Exception):
 class BindError(Exception):
     def __init__(self, errMsg):
         super(BindError, self).__init__(errMsg)
+
+class ComposingError(Exception):
+    def __init__(self, errMsg):
+        super(ComposingError, self).__init__(errMsg)
