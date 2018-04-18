@@ -39,8 +39,8 @@ def get_SMat_relation(attrVects):
             dst_model_name = dst_model.name
             dst_gsmap_name = dst_model.gsMaps['cpl'].name
             dst_field = src_x_dst_x_av.field
-            print(av, dst_model_name, src_x_dst_x_av.name,\
-                    src_x_dst_x_av.mapperName)
+            #print(av, dst_model_name, src_x_dst_x_av.name,\
+            #        src_x_dst_x_av.mapperName)
             dst_info = {
                 'dst_model_name':dst_model_name,
                 'dst_av':src_x_dst_x_av,
@@ -55,22 +55,20 @@ def get_SMat_relation(attrVects):
 
 res = get_SMat_relation(parser.attrVectCouple)
 
-print res
 
 code = codeGenerator("searchSet_Template.py", "search_set.py")
 code.addList('models',proc_cfgs)
-
 code.addList('merge_cfgs',res)
 code.generate()
 
 from search_set import *
-
+print 'vnn'
 code = codeGenerator("procM_Template.F90", "manage.F90")
 #TODO add 
 code.addList('proc_cfgs',proc_cfgs)
 code.generate()
 
-
+print 'eee'
 code = codeGenerator("procDef_Template.F90", "proc_def.F90")
 #TODO add 
 code.addList('proc_cfgs',proc_cfgs)
