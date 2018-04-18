@@ -1,4 +1,3 @@
-from model_set import *
 class Temp:
     mix = False
     subroutine = []
