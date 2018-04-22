@@ -10,6 +10,7 @@ from parserMod import Parser
 
 parser = Parser()
 parser.parse()
+print '#############see how models works!'
 for model in parser.models:
     print '-------------------------------'
     print parser.models[model].model_init.toString()
@@ -23,16 +24,19 @@ for model in parser.models:
     for gsMap in parser.models[model].gsMaps:
         print parser.models[model].gsMaps[gsMap].name
     print '--------------------------------'
-print len(parser.attrVectCouple)
+print '##############see how attrVectCouple works!'
 print parser.attrVectCouple
 for av in parser.attrVectCouple:
     print "merge_dst_av:", av
     for attrVect in parser.attrVectCouple[av]:
         print attrVect.name, attrVect.mapperName, attrVect.field
 
+print '##############see subroutine!'
 for sbr in parser.subroutine:
     subroutine = parser.subroutine[sbr]
     print(sbr, subroutine)
     print subroutine.toString(subroutine.name, subroutine.argList)
+
+print '##############deploy mod:'
 for deploy in parser.deploy:
     print deploy, parser.deploy[deploy]

@@ -62,13 +62,11 @@ code.addList('merge_cfgs',res)
 code.generate()
 
 from search_set import *
-print 'vnn'
 code = codeGenerator("procM_Template.F90", "manage.F90")
 #TODO add 
 code.addList('proc_cfgs',proc_cfgs)
 code.generate()
 
-print 'eee'
 code = codeGenerator("procDef_Template.F90", "proc_def.F90")
 #TODO add 
 code.addList('proc_cfgs',proc_cfgs)

@@ -1,6 +1,7 @@
 <models>
 	<model>
 		<name>a</name>
+		<interval>3</interval>
                 <attrVect>  <!--local attrVect-->
 			<name></name><!--optional-->
 			<gsize></gsize>
@@ -29,6 +30,7 @@
 	</model>
 	<model>
 		<name>b</name>
+		<interval>5</interval>
 		<attrVect>
 			<name></name>
 			<gsize></gsize>
@@ -57,6 +59,7 @@
 	</model>
 	<model>
 		<name>c</name>
+		<interval>7</interval>
 		<attrVect>
 			<name></name>
 			<gsize></gsize>
@@ -85,6 +88,7 @@
 	</model>
 	<model>
 		<name>atm</name>
+		<interval>9</interval>
 		<attrVect>
 			<name></name>
 			<gsize></gsize>
@@ -111,32 +115,4 @@
 			<arg>x2atm_atmatm</arg>
 		</final>
 	</model>
-        <!-- <model>
-		<name>c</name>
-		<attrVect>
-			<name></name>
-			<lsize></lsize>
-			<nx>100</nx>
-			<ny>100</ny>
-			<field>lon:lat</field>
-		</attrVect>
-		<init>
-			<name>c_init_mct<name>
-			<arg>gsMap_cc</arg>
-			<arg>c2x_cc</arg>
-			<arg>x2c_cc</arg>
-		</init>
-		<run>
-			<name>c_run_mct</name>
-			<arg>gsMap_cc</arg>
-			<arg>c2x_cc</arg>
-			<arg>x2c_cc</arg>
-		</run>
-		<final>
-			<name>c_final_mct</name>
-			<arg>gsMap_cc</arg>
-			<arg>c2x_cc</arg>
-			<arg>x2c_cc</arg>
-		</final>
-	</model> -->
 </models>
