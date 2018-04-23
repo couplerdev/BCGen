@@ -20,7 +20,7 @@ class Temp:
                 res.append(routine.getFuncFormat())
         else:
             args = []
-            for key in self.params:
+            for key in sorted(self.params):
                 item = key + '=' + self.params[key]
                 if key == 'rList':
                     item = key + '=\'' + params[key]+ '\''
