@@ -6,7 +6,7 @@ module deploy_mod
     implicit none
 include 'mpif.h'
     integer :: defaulToAll = 1
-    integer :: comp(4, 3)
+    integer :: comp($comp_raw, 3)
     data comp / & !--- comp_first, comp_last, stride
         #set $first = []
         #set $last = []

@@ -4,7 +4,7 @@
 		<interval>3</interval>
                 <attrVect>  <!--local attrVect-->
 			<name></name><!--optional-->
-			<gsize></gsize>
+			<gsize>10</gsize>
 			<nx>100</nx>
 			<ny>100</ny>
      			<field>lon:lat</field>
@@ -33,7 +33,7 @@
 		<interval>5</interval>
 		<attrVect>
 			<name></name>
-			<gsize></gsize>
+			<gsize>10</gsize>
 			<nx>100</nx>
 			<ny>100</ny>
 			<field>lon:lat</field>
@@ -62,7 +62,7 @@
 		<interval>7</interval>
 		<attrVect>
 			<name></name>
-			<gsize></gsize>
+			<gsize>16</gsize>
 			<nx>50</nx>
 			<ny>100</ny>
 			<field>lon:lat</field>
@@ -91,7 +91,7 @@
 		<interval>9</interval>
 		<attrVect>
 			<name></name>
-			<gsize></gsize>
+			<gsize>20</gsize>
 			<nx>10</nx>
 			<ny>100</ny>
 			<field>velo:cal</field>
@@ -114,5 +114,5 @@
 			<arg>atm2x_atmatm</arg>
 			<arg>x2atm_atmatm</arg>
 		</final>
-	</model>
+	</model> 
 </models>
