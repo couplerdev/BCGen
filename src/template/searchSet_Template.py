@@ -21,12 +21,15 @@ class Temp:
         else:
             args = []
             for key in sorted(self.params):
-                item = key + '=' + self.params[key]
+                item = key + '=' + self.params[key] +'&\n'
                 if key == 'rList':
-                    item = key + '=\'' + params[key]+ '\''
+                    item = key + '=\'' + params[key]+ '\'&\n' 
                 args.append(str(item))
             args = ",".join(args)
             func_str = "call "+ self.funcname + "(" + args + ")"
+            #str_len = len(func_str) / 2
+            #func_str = func_str[:str_len] + '&\n' + func_str[str_len:]
+
             res.append(func_str)
         return "\n".join(res)
 
@@ -53,7 +56,7 @@ ${model_name}_init = Temp(funcname=method_name, params=params)
 
 #end for
 
-#for $model in $models
+#for $j, $model in enumerate($models)
     #set $model_name = $model.name
     #set $avs = $model.attrVects
     #set $c2x_cc = $avs['c2x_cc']
@@ -68,7 +71,7 @@ params = {
     'mapper':'my_proc%${mapper_x2c.name}',
     'src':'${x2c_cx.name}',
     'dst':'${x2c_cc.name}', 
-    'msgtag':'100+10+2', 
+    'msgtag':'100+${j}0+2', 
     'ierr':'ierr',
     'rList':'',
 }
@@ -91,7 +94,7 @@ params = {
     'mapper':'my_proc%${mapper_c2x.name}',
     'src':'${c2x_cc.name}',
     'dst':'${c2x_cx.name}', 
-    'msgtag':'100+10+3', 
+    'msgtag':'100+${j}0+3', 
     'ierr':'ierr',
     'rList':'',
 }
@@ -112,7 +115,7 @@ params = {
     'mapper':'my_proc%${mapper_name}',
     'src':'${c2x_cx.name}',
     'dst':'${av_mx_nx}', 
-    'msgtag':'100+10+3', 
+    'msgtag':'100+${j}0+3', 
     'ierr':'ierr',
     'rList':'x',
 }

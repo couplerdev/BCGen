@@ -76,6 +76,7 @@ code = codeGenerator("procM_Template.F90", "manage.F90")
 code = codeGenerator("deploymod_Template.F90", "deploy_mod.F90")
 code.addList('proc_cfgs',proc_cfgs)
 code.addList('deploy_cfgs',deploy_cfgs)
+print(deploy_cfgs)
 code.generate()
 
 code = codeGenerator("procM_Template.F90", "manage.F90")
@@ -86,6 +87,12 @@ print 'eee'
 code = codeGenerator("procDef_Template.F90", "proc_def.F90")
 code.addList('proc_cfgs',proc_cfgs)
 code.generate()
+
+
+code = codeGenerator("timeM_Template.F90", "timeM.F90")
+code.addList('proc_cfgs',proc_cfgs)
+code.generate()
+
 
 #TODO
 code = codeGenerator("baseCpl_Template.F90", "baseCpl.F90")

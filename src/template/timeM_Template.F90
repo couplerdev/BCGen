@@ -1,0 +1,149 @@
+module timeM
+    
+    implicit none
+    type Clock
+        integer :: seconds
+        integer :: minites
+        integer :: hours
+        integer :: days
+        !integer :: months
+        !integer :: years
+        integer :: interval
+    end type Clock
+    integer :: total_days =  1 
+
+    #for $model in $proc_cfgs
+    #set $model_name = $model.name
+    #set $model_interval = 0
+    integer :: time_${model_name}_run = ${model_interval}
+    #end for
+
+    integer :: time_a_run     =  3
+    integer :: time_b_run     =  7
+    integer :: time_c_run     =  19
+
+    public :: clock_init
+    public :: clock_advance
+    public :: triger
+contains 
+
+subroutine clock_init(EClock, interval)
+ 
+    implicit none
+    type(Clock), intent(inout)    :: EClock
+    integer, optional, intent(in) :: interval
+ 
+    EClock%seconds = 0 
+    EClock%minites = 0
+    EClock%hours   = 0
+    EClock%days    = 0
+    !EClock%months  = 0 
+    !EClock%years   = 0 ! from base so far
+
+    if(present(interval))then
+        EClock%interval = interval
+    else
+        EClock%interval = 1
+    end if
+
+end subroutine
+
+subroutine clock_advance(EClock)
+
+   implicit none
+   type(Clock), intent(inout) :: EClock
+   integer  :: plus
+   
+   EClock%seconds = EClock%seconds + EClock%interval
+   if(EClock%seconds < 60)return 
+   
+   plus = EClock%seconds/60
+   EClock%seconds = mod(EClock%seconds, 60) 
+   EClock%minites = EClock%minites + plus
+   if(EClock%minites < 60)return 
+    
+   plus = EClock%minites/60
+   EClock%minites = mod(EClock%minites, 60)
+   EClock%hours   = EClock%hours + plus
+   if(EClock%hours < 24)return 
+
+   plus = EClock%hours/24
+   EClock%hours = mod(EClock%hours, 24)
+   EClock%days  = EClock%days + plus
+
+end subroutine clock_advance
+
+subroutine triger(EClock, flag, flag_name)
+
+    implicit none
+    type(Clock), intent(in)       :: EClock
+    logical, intent(inout)        :: flag
+    character(len=*),  intent(in) :: flag_name
+    integer                       :: tmp_m
+    integer                       :: tmp_h
+    integer                       :: tmp_d 
+    integer                       :: tmp_mod
+
+    flag = .false.
+    if(flag_name=='stop_clock')then
+        if(EClock%days >= total_days)then
+            write(*,*) 'work'
+            flag=.true.
+        end if
+    end if
+
+    #for $model in $proc_cfgs
+    #set $model_name = $model.name
+    if(flag_name=='${model_name}_run')then
+        tmp_m = mod(60, time_${model_name}_run)
+        tmp_h = mod(60*60, time_${model_name}_run)
+        tmp_d = mod(tmp_h*24, time_${model_name}_run)
+        tmp_mod = mod(EClock%seconds, time_${model_name}_run) +
+mod(EClock%minites*tmp_m, time_${model_name}_run) + &
+                  mod(EClock%hours*tmp_h, time_${model_name}_run) + &
+mod(EClock%days*tmp_d, time_${model_name}_run)
+        tmp_mod = mod(tmp_mod, time_${model_name}_run)
+        if(tmp_mod == 0)then
+            flag = .true.
+        end if
+    end if
+
+    #end for
+
+end subroutine triger
+
+subroutine clock_print(EClock)
+
+    implicit none
+    type(Clock), intent(in) :: EClock
+
+    write(*,*) EClock%days, "days:", EClock%hours, "hours:", EClock%minites, "minites:",&
+               EClock%seconds, "seconds"
+
+end subroutine clock_print
+
+subroutine clock_info(EClock, info)
+
+    implicit none
+    type(Clock),  intent(inout)      :: EClock
+    character(len=*), intent(inout)  :: info
+    character(len=20)                :: tmpCh  
+   
+    write(tmpCh,*)EClock%days
+    info = info//tmpCh//"days:  "
+    
+    tmpCh = ""
+    write(tmpCh,*)EClock%hours
+    info = info//tmpCh//"hours:  "
+ 
+    tmpCh = ""
+    write(tmpCh,*)EClock%minites
+    info = info//tmpCh//"minites:  "
+    
+    tmpCh = ""
+    write(tmpCh,*)EClock%seconds
+    info = info//tmpCh//"seconds:  "
+
+end subroutine clock_info
+
+end module timeM

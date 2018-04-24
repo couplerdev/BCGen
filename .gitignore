@@ -5,3 +5,4 @@ search_set.F90
 proc_def.F90
 manage.F90
 deploy_mod.F90
+search_set.pyc
