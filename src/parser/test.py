@@ -22,6 +22,8 @@ for model in parser.models:
         print parser.models[model].mappers[mapper].name
     for gsMap in parser.models[model].gsMaps:
         print parser.models[model].gsMaps[gsMap].name
+    for interval in parser.models[model].interval:
+        print interval
     print '--------------------------------'
 print len(parser.attrVectCouple)
 print parser.attrVectCouple

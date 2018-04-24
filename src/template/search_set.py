@@ -1,4 +1,3 @@
-from model_set import *
 class Temp:
     mix = False
     subroutine = []
@@ -307,6 +306,7 @@ sub_run_phase_3 = []
 
 model_a_cfg = { # Model M's cfg
 'model_unique_name': 'a',
+'model_unique_id': '1',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'a2x_aa',
@@ -372,6 +372,7 @@ model_a_cfg = { # Model M's cfg
 
 model_c_cfg = { # Model M's cfg
 'model_unique_name': 'c',
+'model_unique_id': '3',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'c2x_cc',
@@ -437,6 +438,7 @@ model_c_cfg = { # Model M's cfg
 
 model_b_cfg = { # Model M's cfg
 'model_unique_name': 'b',
+'model_unique_id': '2',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'b2x_bb',
@@ -502,6 +504,7 @@ model_b_cfg = { # Model M's cfg
 
 model_atm_cfg = { # Model M's cfg
 'model_unique_name': 'atm',
+'model_unique_id': '4',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'atm2x_atmatm',
@@ -557,10 +560,4 @@ model_cfgs = [
     model_atm_cfg,
 ]
 
-deploy_cfgs = [
-    model_a_cfg,
-    model_c_cfg,
-    model_b_cfg,
-    model_atm_cfg,
-]
 

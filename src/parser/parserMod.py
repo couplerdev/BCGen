@@ -243,6 +243,7 @@ class ModelParser:
         subroutine.setRoot(root.find('final'))
         self.__model.model_final = subroutine.subroutine
 
+        self.__model.interval = root.find('interval').text
         root = root.find('attrVect')
         #if root.find('name')? how to handle optional 
         self.__gsize = root.find("gsize").text
