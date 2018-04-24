@@ -12,14 +12,11 @@ module timeM
     end type Clock
     integer :: total_days =  1 
 
-    integer :: time_a_run = 0
-    integer :: time_c_run = 0
-    integer :: time_b_run = 0
-    integer :: time_atm_run = 0
+    integer :: time_a_run = 3
+    integer :: time_c_run = 7
+    integer :: time_b_run = 5
+    integer :: time_atm_run = 9
 
-    integer :: time_a_run     =  3
-    integer :: time_b_run     =  7
-    integer :: time_c_run     =  19
 
     public :: clock_init
     public :: clock_advance
@@ -95,7 +92,7 @@ subroutine triger(EClock, flag, flag_name)
         tmp_m = mod(60, time_a_run)
         tmp_h = mod(60*60, time_a_run)
         tmp_d = mod(tmp_h*24, time_a_run)
-        tmp_mod = mod(EClock%seconds, time_a_run) +
+        tmp_mod = mod(EClock%seconds, time_a_run) +&
 mod(EClock%minites*tmp_m, time_a_run) + &
                   mod(EClock%hours*tmp_h, time_a_run) + &
 mod(EClock%days*tmp_d, time_a_run)
@@ -109,7 +106,7 @@ mod(EClock%days*tmp_d, time_a_run)
         tmp_m = mod(60, time_c_run)
         tmp_h = mod(60*60, time_c_run)
         tmp_d = mod(tmp_h*24, time_c_run)
-        tmp_mod = mod(EClock%seconds, time_c_run) +
+        tmp_mod = mod(EClock%seconds, time_c_run) +&
 mod(EClock%minites*tmp_m, time_c_run) + &
                   mod(EClock%hours*tmp_h, time_c_run) + &
 mod(EClock%days*tmp_d, time_c_run)
@@ -123,7 +120,7 @@ mod(EClock%days*tmp_d, time_c_run)
         tmp_m = mod(60, time_b_run)
         tmp_h = mod(60*60, time_b_run)
         tmp_d = mod(tmp_h*24, time_b_run)
-        tmp_mod = mod(EClock%seconds, time_b_run) +
+        tmp_mod = mod(EClock%seconds, time_b_run) +&
 mod(EClock%minites*tmp_m, time_b_run) + &
                   mod(EClock%hours*tmp_h, time_b_run) + &
 mod(EClock%days*tmp_d, time_b_run)
@@ -137,7 +134,7 @@ mod(EClock%days*tmp_d, time_b_run)
         tmp_m = mod(60, time_atm_run)
         tmp_h = mod(60*60, time_atm_run)
         tmp_d = mod(tmp_h*24, time_atm_run)
-        tmp_mod = mod(EClock%seconds, time_atm_run) +
+        tmp_mod = mod(EClock%seconds, time_atm_run) +&
 mod(EClock%minites*tmp_m, time_atm_run) + &
                   mod(EClock%hours*tmp_h, time_atm_run) + &
 mod(EClock%days*tmp_d, time_atm_run)

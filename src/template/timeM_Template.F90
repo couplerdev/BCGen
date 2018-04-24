@@ -14,13 +14,10 @@ module timeM
 
     #for $model in $proc_cfgs
     #set $model_name = $model.name
-    #set $model_interval = 0
+    #set $model_interval = $model.interval
     integer :: time_${model_name}_run = ${model_interval}
     #end for
 
-    integer :: time_a_run     =  3
-    integer :: time_b_run     =  7
-    integer :: time_c_run     =  19
 
     public :: clock_init
     public :: clock_advance
@@ -98,7 +95,7 @@ subroutine triger(EClock, flag, flag_name)
         tmp_m = mod(60, time_${model_name}_run)
         tmp_h = mod(60*60, time_${model_name}_run)
         tmp_d = mod(tmp_h*24, time_${model_name}_run)
-        tmp_mod = mod(EClock%seconds, time_${model_name}_run) +
+        tmp_mod = mod(EClock%seconds, time_${model_name}_run) +&
 mod(EClock%minites*tmp_m, time_${model_name}_run) + &
                   mod(EClock%hours*tmp_h, time_${model_name}_run) + &
 mod(EClock%days*tmp_d, time_${model_name}_run)

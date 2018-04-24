@@ -1,6 +1,7 @@
 <models>
 	<model>
 		<name>a</name>
+		<interval>3</interval>
                 <attrVect>  <!--local attrVect-->
 			<name></name><!--optional-->
 			<gsize>8</gsize>
@@ -29,6 +30,7 @@
 	</model>
 	<model>
 		<name>b</name>
+		<interval>5</interval>
 		<attrVect>
 			<name></name>
 			<gsize>12</gsize>
@@ -57,6 +59,7 @@
 	</model>
 	<model>
 		<name>c</name>
+		<interval>7</interval>
 		<attrVect>
 			<name></name>
 			<gsize>16</gsize>
@@ -86,6 +89,7 @@
     
 	<model>
 		<name>atm</name>
+		<interval>9</interval>
 		<attrVect>
 			<name></name>
 			<gsize>12</gsize>

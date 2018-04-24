@@ -17,8 +17,7 @@ merge_subroutines = [
 
 deploy_cfgs = parser.deploy
 print(type(deploy_cfgs))
-
-
+print(len(deploy_cfgs))
 print(deploy_cfgs)
 
 def get_SMat_relation(attrVects):
