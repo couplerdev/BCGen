@@ -86,7 +86,7 @@
 			<arg>x2c_cc</arg>
 		</final>
 	</model>
-	<model>
+<!--	<model>
 		<name>atm</name>
 		<interval>9</interval>
 		<attrVect>
@@ -115,4 +115,5 @@
 			<arg>x2atm_atmatm</arg>
 		</final>
 	</model> 
+-->
 </models>
