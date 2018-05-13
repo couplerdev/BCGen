@@ -50,6 +50,7 @@ params = {
         'gsMap_${model_name}${model_name}':'gsMap_${model_name}${model_name}', 
         '${c2x_cc.name}':'${c2x_cc.name}', 
         '${x2c_cc.name}':'${x2c_cc.name}', 
+        'domain':'${model_name}_grid_domain', 
         'ierr':'ierr'
     }
 ${model_name}_init = Temp(funcname=method_name, params=params)

@@ -13,13 +13,14 @@ use comp_${name}
      implicit none
      type(proc), target :: my_proc
 
-    ! Declare gsMap of each Model
+    ! Declare gsMap and GridDomain of each Model
     #for $model in $proc_cfgs
                 #set $gms = $model.gsMaps
                 #for $gm in $gms
                         #set $name = $gms[$gm].name
         type(gsMap) :: $name
                 #end for
+        type(gGrid) :: ${model.name}_grid_domain
     #end for
 
     ! Declare AttrVect of each Model(c2x_cx,c2x_cc,x2c_cx,x2c_cc)

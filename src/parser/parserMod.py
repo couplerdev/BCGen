@@ -164,9 +164,10 @@ class ModelParser:
     def __init__(self, NameManager,root="",lsize=0,nx=0,ny=0,field="", gsize=0):
         self.__root = root
         self.__isParsed = False
-        self.__gsize = gsize
+        #self.__gsize = gsize
         self.__nx = nx
         self.__ny = ny
+        self.__gsize = nx*ny
         self.__field = field
         self.__name = ""
         self.__NameManager = NameManager

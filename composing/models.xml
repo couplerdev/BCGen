@@ -89,10 +89,10 @@
     
 	<model>
 		<name>atm</name>
-		<interval>9</interval>
+		<interval>3</interval>
 		<attrVect>
 			<name></name>
-			<gsize>12</gsize>
+			<gsize>1000</gsize>
 			<nx>10</nx>
 			<ny>100</ny>
 			<field>velo:cal</field>
@@ -115,8 +115,67 @@
 			<arg>atm2x_atmatm</arg>
 			<arg>x2atm_atmatm</arg>
 		</final>
-    </model>
+  </model>
 
+	<model>
+		<name>lnd</name>
+		<interval>7</interval>
+		<attrVect>
+			<name></name>
+			<gsize>1000</gsize>
+			<nx>10</nx>
+			<ny>100</ny>
+			<field>velo:cal</field>
+		</attrVect>
+		<init>
+			<name>lnd_init_mct</name>
+			<arg>gsmap_lndlnd</arg>
+			<arg>lnd2x_lndlnd</arg>
+			<arg>x2lnd_lndlnd</arg>
+		</init>
+		<run>
+			<name>lnd_run_mct</name>
+			<arg>gsmap_lndlnd</arg>
+			<arg>lnd2x_lndlnd</arg>
+			<arg>x2lnd_lndlnd</arg>
+		</run>
+		<final>
+			<name>lnd_final_mct</name>
+			<arg>gsmap_lndlnd</arg>
+			<arg>lnd2x_lndlnd</arg>
+			<arg>x2lnd_lndlnd</arg>
+		</final>
+	</model>
+
+	<model>
+		<name>ocn</name>
+		<interval>7</interval>
+		<attrVect>
+			<name></name>
+			<gsize>1000</gsize>
+			<nx>10</nx>
+			<ny>100</ny>
+			<field>velo:cal</field>
+		</attrVect>
+		<init>
+			<name>ocn_init_mct</name>
+			<arg>gsmap_ocnocn</arg>
+			<arg>ocn2x_ocnocn</arg>
+			<arg>x2ocn_ocnocn</arg>
+		</init>
+		<run>
+			<name>ocn_run_mct</name>
+			<arg>gsmap_ocnocn</arg>
+			<arg>ocn2x_ocnocn</arg>
+			<arg>x2ocn_ocnocn</arg>
+		</run>
+		<final>
+			<name>ocn_final_mct</name>
+			<arg>gsmap_ocnocn</arg>
+			<arg>ocn2x_ocnocn</arg>
+			<arg>x2ocn_ocnocn</arg>
+		</final>
+  </model>
         <!-- <model>
 		<name>c</name>
 		<attrVect>

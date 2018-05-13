@@ -30,5 +30,19 @@
 			<last>3</last>
 			<stride>1</stride>	
 		</model>
+
+		<model>
+			<name>ocn</name>
+			<first>0</first>
+			<last>1</last>
+			<stride>1</stride>	
+		</model>
+
+		<model>
+			<name>lnd</name>
+			<first>2</first>
+			<last>3</last>
+			<stride>1</stride>	
+		</model>
 	</models>
 </deploy>
