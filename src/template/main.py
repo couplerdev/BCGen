@@ -56,6 +56,12 @@ def get_SMat_relation(attrVects):
                 # todo set dst_sparse_len
                 'smat_size':8
                     }
+            if src_model_name not in model_SMats:
+                model_SMats[src_model_name]={}
+                model_SMats[src_model_name]['src']=src_x_dst_x_av.srcName
+                model_SMats[src_model_name]['dst']=[]
+                model_gsmap_name=dst_model.gsMaps['cpl'].name
+                model_SMats[src_model_name]['gm']=model_gsmap_name
             model_SMats[src_model_name]['dst'].append(dst_info)
     return model_SMats
 
