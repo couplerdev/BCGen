@@ -555,7 +555,6 @@ subroutine cpl_run()
 ,ierr=ierr&
 ,mapper=my_proc%Mapper_Cx2a&
 ,msgtag=100+00+2&
-,rList='x'&
 ,src=x2a_ax&
 )
 
@@ -583,7 +582,6 @@ subroutine cpl_run()
 ,ierr=ierr&
 ,mapper=my_proc%Mapper_Cx2c&
 ,msgtag=100+10+2&
-,rList='x'&
 ,src=x2c_cx&
 )
 
@@ -611,7 +609,6 @@ subroutine cpl_run()
 ,ierr=ierr&
 ,mapper=my_proc%Mapper_Cx2b&
 ,msgtag=100+20+2&
-,rList='x'&
 ,src=x2b_bx&
 )
 
@@ -639,7 +636,6 @@ subroutine cpl_run()
 ,ierr=ierr&
 ,mapper=my_proc%Mapper_Cx2ocn&
 ,msgtag=100+30+2&
-,rList='x'&
 ,src=x2ocn_ocnx&
 )
 
@@ -667,7 +663,6 @@ subroutine cpl_run()
 ,ierr=ierr&
 ,mapper=my_proc%Mapper_Cx2atm&
 ,msgtag=100+40+2&
-,rList='x'&
 ,src=x2atm_atmx&
 )
 
@@ -695,7 +690,6 @@ subroutine cpl_run()
 ,ierr=ierr&
 ,mapper=my_proc%Mapper_Cx2lnd&
 ,msgtag=100+50+2&
-,rList='x'&
 ,src=x2lnd_lndx&
 )
 
@@ -805,21 +799,20 @@ subroutine cpl_run()
 ,ierr=ierr&
 ,mapper=my_proc%Mapper_Ca2x&
 ,msgtag=100+00+3&
-,rList='x'&
 ,src=a2x_aa&
 )
 call mapper_comp_map(dst=a2x_bx&
 ,ierr=ierr&
 ,mapper=my_proc%mapper_SMata2b&
-,msgtag=100+00+3&
-,rList='x'&
+,msgtag=100+00+4&
+,rList='velo:cal'&
 ,src=a2x_ax&
 )
 call mapper_comp_map(dst=a2x_cx&
 ,ierr=ierr&
 ,mapper=my_proc%mapper_SMata2c&
-,msgtag=100+00+3&
-,rList='x'&
+,msgtag=100+00+4&
+,rList='velo:cal'&
 ,src=a2x_ax&
 )
             end if
@@ -830,21 +823,20 @@ call mapper_comp_map(dst=a2x_cx&
 ,ierr=ierr&
 ,mapper=my_proc%Mapper_Cc2x&
 ,msgtag=100+10+3&
-,rList='x'&
 ,src=c2x_cc&
 )
 call mapper_comp_map(dst=c2x_bx&
 ,ierr=ierr&
 ,mapper=my_proc%mapper_SMatc2b&
-,msgtag=100+10+3&
-,rList='x'&
+,msgtag=100+10+4&
+,rList='velo:cal'&
 ,src=c2x_cx&
 )
 call mapper_comp_map(dst=c2x_ax&
 ,ierr=ierr&
 ,mapper=my_proc%mapper_SMatc2a&
-,msgtag=100+10+3&
-,rList='x'&
+,msgtag=100+10+4&
+,rList='velo:cal'&
 ,src=c2x_cx&
 )
             end if
@@ -855,21 +847,20 @@ call mapper_comp_map(dst=c2x_ax&
 ,ierr=ierr&
 ,mapper=my_proc%Mapper_Cb2x&
 ,msgtag=100+20+3&
-,rList='x'&
 ,src=b2x_bb&
 )
 call mapper_comp_map(dst=b2x_cx&
 ,ierr=ierr&
 ,mapper=my_proc%mapper_SMatb2c&
-,msgtag=100+20+3&
-,rList='x'&
+,msgtag=100+20+4&
+,rList='velo:cal'&
 ,src=b2x_bx&
 )
 call mapper_comp_map(dst=b2x_ax&
 ,ierr=ierr&
 ,mapper=my_proc%mapper_SMatb2a&
-,msgtag=100+20+3&
-,rList='x'&
+,msgtag=100+20+4&
+,rList='velo:cal'&
 ,src=b2x_bx&
 )
             end if
@@ -880,14 +871,13 @@ call mapper_comp_map(dst=b2x_ax&
 ,ierr=ierr&
 ,mapper=my_proc%Mapper_Cocn2x&
 ,msgtag=100+30+3&
-,rList='x'&
 ,src=ocn2x_ocnocn&
 )
 call mapper_comp_map(dst=ocn2x_atmx&
 ,ierr=ierr&
 ,mapper=my_proc%mapper_SMatocn2atm&
-,msgtag=100+30+3&
-,rList='x'&
+,msgtag=100+30+4&
+,rList='velo:cal'&
 ,src=ocn2x_ocnx&
 )
             end if
@@ -898,7 +888,6 @@ call mapper_comp_map(dst=ocn2x_atmx&
 ,ierr=ierr&
 ,mapper=my_proc%Mapper_Catm2x&
 ,msgtag=100+40+3&
-,rList='x'&
 ,src=atm2x_atmatm&
 )
             end if
@@ -909,14 +898,13 @@ call mapper_comp_map(dst=ocn2x_atmx&
 ,ierr=ierr&
 ,mapper=my_proc%Mapper_Clnd2x&
 ,msgtag=100+50+3&
-,rList='x'&
 ,src=lnd2x_lndlnd&
 )
 call mapper_comp_map(dst=lnd2x_atmx&
 ,ierr=ierr&
 ,mapper=my_proc%mapper_SMatlnd2atm&
-,msgtag=100+50+3&
-,rList='x'&
+,msgtag=100+50+4&
+,rList='velo:cal'&
 ,src=lnd2x_lndx&
 )
             end if
@@ -934,11 +922,11 @@ call mapper_comp_map(dst=lnd2x_atmx&
     if(my_proc%iamin_cpl) then
         if(s==10) then
             ! merge *2x_ax --> x2a_ax in rfield "x", cal the mean of all
-            call mapper_comp_avMerge(a2x_ax, b2x_ax, c2x_ax, x2a_ax, "x")
+            !call mapper_comp_avMerge(a2x_ax, b2x_ax, c2x_ax, x2a_ax, "x")
             call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
                     write(*,*) '<<===X2A_AX_Merge_VALUE Rank:',comm_rank, x2a_ax%rAttr(1,:)
-                !call mrg_a(a2x_ax, b2x_ax, c2x_ax)
-                !call mrg_x2atm(my_proc, x2atm_atmx, ocn2x_atmx, lnd2x_atmx, &
+                call mrg_a(a2x_ax, b2x_ax, c2x_ax)
+                call mrg_x2atm(my_proc, x2atm_atmx, ocn2x_atmx, lnd2x_atmx, &
           fractions_atm)
             call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
         endif

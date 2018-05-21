@@ -73,7 +73,6 @@ params = {
     'dst':'${x2c_cc.name}', 
     'msgtag':'100+${j}0+2', 
     'ierr':'ierr',
-    'rList':'',
 }
 ${model_name}_run_phase1 = Temp(funcname=method_name, params=params)
 
@@ -96,7 +95,6 @@ params = {
     'dst':'${c2x_cx.name}', 
     'msgtag':'100+${j}0+3', 
     'ierr':'ierr',
-    'rList':'',
 }
 ${model_name}_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(${model_name}_run_phase3_1)
@@ -110,14 +108,15 @@ sub_run_phase_3.append(${model_name}_run_phase3_1)
     #set $mapper_name = $dst_info['dst_mapper']
     #set $smat_size = $dst_info['smat_size']
     #set $run_phase_step = 2 + $i
+    #set $dst_field=$dst_info['dst_field']
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%${mapper_name}',
     'src':'${c2x_cx.name}',
     'dst':'${av_mx_nx}', 
-    'msgtag':'100+${j}0+3', 
+    'msgtag':'100+${j}0+4', 
     'ierr':'ierr',
-    'rList':'x',
+    'rList':'${dst_field}',
 }
 ${model_name}_run_phase3_${run_phase_step} = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(${model_name}_run_phase3_${run_phase_step})

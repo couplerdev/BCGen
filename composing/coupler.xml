@@ -3,16 +3,16 @@
 	<attrVect>
 		<name>a2x_ax</name>
    		<model>a</model>
-                <field>x:y</field>
+                <field>lat:lon</field>
  		<srcs>
 			<src>
                          	<attrVect>b2x_bx</attrVect>
-				<field>x:y</field>
+				<field>lat:lon</field>
                      		<mapper>mapper_SMatb2a</mapper>
                         </src>
 			<src>
 				<attrVect>c2x_cx</attrVect>
-				<field>x:y</field>
+				<field>lat:lon</field>
 				<mapper>mapper_SMatc2a</mapper>
   			</src>
 		</srcs>
@@ -28,16 +28,16 @@
 	<attrVect>
 		<name>b2x_bx</name>
    		<model>b</model>
-                <field>x:y</field>
+                <field>lat:lon</field>
  		<srcs>
 			<src>
                          	<attrVect>a2x_ax</attrVect>
-				<field>x:y</field>
+				<field>lat:lon</field>
                      		<mapper>mapper_SMata2b</mapper>
                         </src>
 			<src>
 				<attrVect>c2x_cx</attrVect>
-				<field>x:y</field>
+				<field>lat:lon</field>
 				<mapper>mapper_SMatc2b</mapper>
   			</src>
 		</srcs>
@@ -53,16 +53,16 @@
 	<attrVect>
 		<name>c2x_cx</name>
    		<model>c</model>
-                <field>x:y</field>
+                <field>lat:lon</field>
  		<srcs>
 			<src>
                          	<attrVect>a2x_ax</attrVect>
-				<field>x:y</field>
+				<field>lat:lon</field>
                      		<mapper>mapper_SMata2c</mapper>
                         </src>
 			<src>
 				<attrVect>b2x_bx</attrVect>
-				<field>x:y</field>
+				<field>lat:lon</field>
 				<mapper>mapper_SMatb2c</mapper>
   			</src>
 		</srcs>
@@ -75,5 +75,32 @@
 			</args>
 		</mrg>
         </attrVect>
+	<attrVect>
+		<name>atm2x_atmx</name>
+		<model>atm</model>
+		<field>velo:cal</field>
+		<srcs>
+			<src>
+				<attrVect>lnd2x_lndx</attrVect>
+				<field>velo:cal</field>
+				<mapper>mapper_SMatlnd2atm</mapper>
+			</src>	
+			<src>
+				<attrVect>ocn2x_ocnx</attrVect>
+				<field>velo:cal</field>
+				<mapper>mapper_SMatocn2atm</mapper>
+			</src>
+		</srcs>
+		<mrg>
+			<name>mrg_x2atm</name>
+			<args>
+				<arg>my_proc</arg>
+				<arg>x2atm_atmx</arg>
+				<arg>ocn2x_atmx</arg>
+				<arg>lnd2x_atmx</arg>
+				<arg>fractions_atm</arg>
+			</args>
+		</mrg>
+	</attrVect>
 </coupler>
 

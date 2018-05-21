@@ -113,7 +113,6 @@ params = {
     'dst':'x2a_aa', 
     'msgtag':'100+00+2', 
     'ierr':'ierr',
-    'rList':'',
 }
 a_run_phase1 = Temp(funcname=method_name, params=params)
 
@@ -136,7 +135,6 @@ params = {
     'dst':'a2x_ax', 
     'msgtag':'100+00+3', 
     'ierr':'ierr',
-    'rList':'',
 }
 a_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(a_run_phase3_1)
@@ -146,9 +144,9 @@ params = {
     'mapper':'my_proc%mapper_SMata2b',
     'src':'a2x_ax',
     'dst':'a2x_bx', 
-    'msgtag':'100+00+3', 
+    'msgtag':'100+00+4', 
     'ierr':'ierr',
-    'rList':'x',
+    'rList':'lat:lon',
 }
 a_run_phase3_2 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(a_run_phase3_2)
@@ -157,9 +155,9 @@ params = {
     'mapper':'my_proc%mapper_SMata2c',
     'src':'a2x_ax',
     'dst':'a2x_cx', 
-    'msgtag':'100+00+3', 
+    'msgtag':'100+00+4', 
     'ierr':'ierr',
-    'rList':'x',
+    'rList':'lat:lon',
 }
 a_run_phase3_3 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(a_run_phase3_3)
@@ -174,7 +172,6 @@ params = {
     'dst':'x2c_cc', 
     'msgtag':'100+10+2', 
     'ierr':'ierr',
-    'rList':'',
 }
 c_run_phase1 = Temp(funcname=method_name, params=params)
 
@@ -197,7 +194,6 @@ params = {
     'dst':'c2x_cx', 
     'msgtag':'100+10+3', 
     'ierr':'ierr',
-    'rList':'',
 }
 c_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(c_run_phase3_1)
@@ -207,9 +203,9 @@ params = {
     'mapper':'my_proc%mapper_SMatc2b',
     'src':'c2x_cx',
     'dst':'c2x_bx', 
-    'msgtag':'100+10+3', 
+    'msgtag':'100+10+4', 
     'ierr':'ierr',
-    'rList':'x',
+    'rList':'lat:lon',
 }
 c_run_phase3_2 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(c_run_phase3_2)
@@ -218,9 +214,9 @@ params = {
     'mapper':'my_proc%mapper_SMatc2a',
     'src':'c2x_cx',
     'dst':'c2x_ax', 
-    'msgtag':'100+10+3', 
+    'msgtag':'100+10+4', 
     'ierr':'ierr',
-    'rList':'x',
+    'rList':'lat:lon',
 }
 c_run_phase3_3 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(c_run_phase3_3)
@@ -235,7 +231,6 @@ params = {
     'dst':'x2b_bb', 
     'msgtag':'100+20+2', 
     'ierr':'ierr',
-    'rList':'',
 }
 b_run_phase1 = Temp(funcname=method_name, params=params)
 
@@ -258,7 +253,6 @@ params = {
     'dst':'b2x_bx', 
     'msgtag':'100+20+3', 
     'ierr':'ierr',
-    'rList':'',
 }
 b_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(b_run_phase3_1)
@@ -268,9 +262,9 @@ params = {
     'mapper':'my_proc%mapper_SMatb2c',
     'src':'b2x_bx',
     'dst':'b2x_cx', 
-    'msgtag':'100+20+3', 
+    'msgtag':'100+20+4', 
     'ierr':'ierr',
-    'rList':'x',
+    'rList':'lat:lon',
 }
 b_run_phase3_2 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(b_run_phase3_2)
@@ -279,9 +273,9 @@ params = {
     'mapper':'my_proc%mapper_SMatb2a',
     'src':'b2x_bx',
     'dst':'b2x_ax', 
-    'msgtag':'100+20+3', 
+    'msgtag':'100+20+4', 
     'ierr':'ierr',
-    'rList':'x',
+    'rList':'lat:lon',
 }
 b_run_phase3_3 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(b_run_phase3_3)
@@ -296,7 +290,6 @@ params = {
     'dst':'x2ocn_ocnocn', 
     'msgtag':'100+30+2', 
     'ierr':'ierr',
-    'rList':'',
 }
 ocn_run_phase1 = Temp(funcname=method_name, params=params)
 
@@ -319,7 +312,6 @@ params = {
     'dst':'ocn2x_ocnx', 
     'msgtag':'100+30+3', 
     'ierr':'ierr',
-    'rList':'',
 }
 ocn_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(ocn_run_phase3_1)
@@ -329,9 +321,9 @@ params = {
     'mapper':'my_proc%mapper_SMatocn2atm',
     'src':'ocn2x_ocnx',
     'dst':'ocn2x_atmx', 
-    'msgtag':'100+30+3', 
+    'msgtag':'100+30+4', 
     'ierr':'ierr',
-    'rList':'x',
+    'rList':'velo:cal',
 }
 ocn_run_phase3_2 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(ocn_run_phase3_2)
@@ -346,7 +338,6 @@ params = {
     'dst':'x2atm_atmatm', 
     'msgtag':'100+40+2', 
     'ierr':'ierr',
-    'rList':'',
 }
 atm_run_phase1 = Temp(funcname=method_name, params=params)
 
@@ -369,7 +360,6 @@ params = {
     'dst':'atm2x_atmx', 
     'msgtag':'100+40+3', 
     'ierr':'ierr',
-    'rList':'',
 }
 atm_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(atm_run_phase3_1)
@@ -385,7 +375,6 @@ params = {
     'dst':'x2lnd_lndlnd', 
     'msgtag':'100+50+2', 
     'ierr':'ierr',
-    'rList':'',
 }
 lnd_run_phase1 = Temp(funcname=method_name, params=params)
 
@@ -408,7 +397,6 @@ params = {
     'dst':'lnd2x_lndx', 
     'msgtag':'100+50+3', 
     'ierr':'ierr',
-    'rList':'',
 }
 lnd_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(lnd_run_phase3_1)
@@ -418,9 +406,9 @@ params = {
     'mapper':'my_proc%mapper_SMatlnd2atm',
     'src':'lnd2x_lndx',
     'dst':'lnd2x_atmx', 
-    'msgtag':'100+50+3', 
+    'msgtag':'100+50+4', 
     'ierr':'ierr',
-    'rList':'x',
+    'rList':'velo:cal',
 }
 lnd_run_phase3_2 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(lnd_run_phase3_2)
@@ -454,7 +442,7 @@ model_a_cfg = { # Model M's cfg
         {
             'n_name': 'b',
             'n_rAv': 'a2x_bx',
-            'n_rField': 'x:y',
+            'n_rField': 'lat:lon',
             'n_gm': 'gsMap_bx',
             'transform_method': '',
         },
@@ -462,7 +450,7 @@ model_a_cfg = { # Model M's cfg
         {
             'n_name': 'c',
             'n_rAv': 'a2x_cx',
-            'n_rField': 'x:y',
+            'n_rField': 'lat:lon',
             'n_gm': 'gsMap_cx',
             'transform_method': '',
         },
@@ -520,7 +508,7 @@ model_c_cfg = { # Model M's cfg
         {
             'n_name': 'b',
             'n_rAv': 'c2x_bx',
-            'n_rField': 'x:y',
+            'n_rField': 'lat:lon',
             'n_gm': 'gsMap_bx',
             'transform_method': '',
         },
@@ -528,7 +516,7 @@ model_c_cfg = { # Model M's cfg
         {
             'n_name': 'a',
             'n_rAv': 'c2x_ax',
-            'n_rField': 'x:y',
+            'n_rField': 'lat:lon',
             'n_gm': 'gsMap_ax',
             'transform_method': '',
         },
@@ -586,7 +574,7 @@ model_b_cfg = { # Model M's cfg
         {
             'n_name': 'c',
             'n_rAv': 'b2x_cx',
-            'n_rField': 'x:y',
+            'n_rField': 'lat:lon',
             'n_gm': 'gsMap_cx',
             'transform_method': '',
         },
@@ -594,7 +582,7 @@ model_b_cfg = { # Model M's cfg
         {
             'n_name': 'a',
             'n_rAv': 'b2x_ax',
-            'n_rField': 'x:y',
+            'n_rField': 'lat:lon',
             'n_gm': 'gsMap_ax',
             'transform_method': '',
         },
@@ -652,7 +640,7 @@ model_ocn_cfg = { # Model M's cfg
         {
             'n_name': 'atm',
             'n_rAv': 'ocn2x_atmx',
-            'n_rField': ':',
+            'n_rField': 'velo:cal',
             'n_gm': 'gsMap_atmx',
             'transform_method': '',
         },
@@ -760,7 +748,7 @@ model_lnd_cfg = { # Model M's cfg
         {
             'n_name': 'atm',
             'n_rAv': 'lnd2x_atmx',
-            'n_rField': ':',
+            'n_rField': 'velo:cal',
             'n_gm': 'gsMap_atmx',
             'transform_method': '',
         },

@@ -304,6 +304,7 @@ class CouplerParser: ###!!!!
             self.__attrVect = av
             av.BindToManager(self.__NameManager)
             if not self.__NameManager.FindName(av):
+                print av.name
                 raise ConfigError("try to mrg to a unexist attrVect")
         if root.find("srcs") != None:
             srcs = root.find("srcs")
@@ -312,6 +313,7 @@ class CouplerParser: ###!!!!
             grid = root.find('model').text
             for src in srcs:
                 srcAttrVectName = src.find("attrVect").text
+                print srcAttrVectName
                 srcAttrVect = parser.visitByName(srcAttrVectName)
                 if srcAttrVect == None:
                     raise AttributeError("no such attrVect")
