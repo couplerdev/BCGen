@@ -364,6 +364,17 @@ params = {
 atm_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(atm_run_phase3_1)
 
+method_name = 'mapper_comp_map'
+params = {
+    'mapper':'my_proc%mapper_Smatatm2ocn',
+    'src':'atm2x_atmx',
+    'dst':'atm2x_ocnx', 
+    'msgtag':'100+40+4', 
+    'ierr':'ierr',
+    'rList':'velo:cal',
+}
+atm_run_phase3_2 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(atm_run_phase3_2)
 
 atm_run_phase3 = Temp(subroutine=sub_run_phase_3,
              mix=True)
@@ -695,6 +706,14 @@ model_atm_cfg = { # Model M's cfg
 
     'mn_av_set': [ # Av between Model M and Model N
 
+        {
+            'n_name': 'ocn',
+            'n_rAv': 'atm2x_ocnx',
+            'n_rField': 'velo:cal',
+            'n_gm': 'gsMap_ocnx',
+            'transform_method': '',
+        },
+        
     ],
 
 

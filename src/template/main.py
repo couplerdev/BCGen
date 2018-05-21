@@ -14,7 +14,7 @@ merge_subroutines = [
     parser.subroutine[m] for m in parser.subroutine
 ]
 
-
+fraction_cfgs = parser.fractions
 deploy_cfgs = parser.deploy
 print(type(deploy_cfgs))
 print(len(deploy_cfgs))
@@ -106,4 +106,5 @@ code.addList('proc_cfgs',proc_cfgs)
 code.addList('merge_subroutines', merge_subroutines)
 code.addList('merge_cfgs',merge_cfgs)
 code.addList('model_cfgs',model_cfgs)
+code.addList('fraction_cfgs',fraction_cfgs)
 code.generate()

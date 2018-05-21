@@ -22,6 +22,10 @@ class Subroutine(object):
         self.__lineCharacter = lineCharacter
 
     @property
+    def name(self):
+        return self.__subroutineName
+
+    @property
     def argList(self):
         return self.__argList
     @argList.setter
@@ -241,7 +245,7 @@ class AttrVect(CoupleEntity):
 class Model(CoupleEntity):
     __slots__ = ['__name','__model_init','__model_run','__model_final',\
                  '__manager', '__type', '__attrVects','__gsMaps', '__mappers',\
-                 '__gSize', '__ID', '__interval']
+                 '__gSize', '__ID', '__interval','__domain']
     def __init__(self,name="", gSize=8):
 	super(Model, self).__init__(name=name,_type="Model")
 	self.__model_init = ModelSubroutine() #optional?
@@ -251,13 +255,20 @@ class Model(CoupleEntity):
         self.__attrVects = {}   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
         self.__gsMaps = {}
         self.__mappers = {}       
+        self.__domain = '' 
         self.__name = name
         self.__gSize = gSize
         self.__ID = -1
         self.__interval = 1
 
 ### debug region
-   
+    @property
+    def domain(self):
+        return self.__domain   
+    @domain.setter
+    def domain(self, domain):
+        self.__domain = domain
+
     @property
     def gSize(self):
         return self.__gSize
@@ -483,3 +494,22 @@ class AttrVectCpl(AttrVect):
     @property
     def dstModel(self):
         return self.__dstModel
+class Fraction(AttrVect):
+    __slots__=["__name","__field","__initSubroutine"] 
+    def __init__(self,fractionName):
+        self.__name=""
+        super(AttrVect,self).__init__(name=fractionName)
+        self.__name=fractionName
+        subroutineName = self.__name+"_init"
+        self.__initSubroutine =  Subroutine(subroutineName=subroutineName) 
+
+    @property
+    def init(self):
+        return self.__initSubroutine
+    
+    @property
+    def name(self):
+        return self.__name
+
+    def append(self, args):
+        self.__initSubroutine.append(args)

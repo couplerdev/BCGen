@@ -80,8 +80,12 @@
 		<model>atm</model>
 		<field>velo:cal</field>
 		<fraction>
-			<name>fraction_a</name>
-			<init>fraction_a_init</init>
+			<name>fraction_atm</name>
+			<init>fraction_atm_init</init>
+			<args>
+				<arg>my_proc</arg>
+				<arg>fraction_atm</arg>
+			</args>
 		</fraction>
 		<srcs>
 			<src>
@@ -103,6 +107,35 @@
 				<arg>ocn2x_atmx</arg>
 				<arg>lnd2x_atmx</arg>
 				<arg>fractions_atm</arg>
+			</args>
+		</mrg>
+	</attrVect>
+	<attrVect>
+		<name>x2ocn_ocnx</name>
+		<model>ocn</model>
+		<field>velo:cal</field>
+		<fraction>
+			<name>fraction_ocn</name>
+			<init>fraction_ocn_init</init>
+			<args>
+				<arg>my_proc</arg>
+				<arg>fraction_ocn</arg>
+			</args>
+		</fraction>
+		<srcs>
+			<src>
+				<attrVect>atm2x_atmx</attrVect>
+				<field>velo:cal</field>
+				<mapper>mapper_Smatatm2ocn</mapper>
+			</src>
+		</srcs>
+		<mrg>
+			<name>mrg_x2ocn</name>
+			<args>
+				<arg>my_proc</arg>
+				<arg>x2ocn_ocnx</arg>
+				<arg>atm2x_ocnx</arg>
+				<fraction>fraction_ocn</fraction>
 			</args>
 		</mrg>
 	</attrVect>

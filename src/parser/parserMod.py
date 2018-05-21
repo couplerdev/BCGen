@@ -12,7 +12,7 @@
 import xml.etree.ElementTree as ET
 import sys
 sys.path.append('../ir')
-from ir import Model, AttrVect, Mapper, GsMap, AttrVectCpl
+from ir import Model, AttrVect, Mapper, GsMap, AttrVectCpl, Fraction
 from ir import ModelSubroutine, MergeSubroutine
 sys.path.append('../ErrorHandle')
 from ErrorHandle import *
@@ -33,6 +33,7 @@ class Parser:
         self.__modelFile = modelFile
         self.__scheduleFile = scheduleFile
         self.__deployFile = deployFile
+        self.__fractions = {}
 
     @property
     def models(self):
@@ -49,6 +50,10 @@ class Parser:
     @property
     def deploy(self):
         return self.__deployDistribution
+
+    @property
+    def fractions(self):
+        return self.__fractions
 
     def addDistribution(self, deployList, ID):
         self.__deployDistribution[ID]=deployList
@@ -102,6 +107,8 @@ class Parser:
             mrg = avParser.mergeSubroutine
             #print attrVect.name, attrVect.atyp
             self.__subroutine[mrg.name] = mrg
+            if avParser.fraction != None:
+                self.__fractions[avParser.fraction.name]=avParser.fraction
 
     def parse(self):
         self.modelsParse()
@@ -255,6 +262,7 @@ class ModelParser:
         self.__model.gSize = self.__gsize
         self.__setAttrVect()
         self.__setGsMap()
+        self.__model.domain = name+'_grid_domain'
         self.__setMapper()
         self.__isParsed = True
 	
@@ -268,13 +276,14 @@ class ModelParser:
 #  This class used to parse couple.xml 
 #
 class CouplerParser: ###!!!!
-    __slots__ = ['__root', '__attrVect', '__isParsed', '__NameManager']
+    __slots__ = ['__root', '__attrVect', '__isParsed', '__NameManager', '__fraction']
     def __init__(self, nameManager):
         self.__root = ""
         self.__isParsed = False
         self.__NameManager = nameManager
         self.__attrVect = AttrVect()    
         self.__mergeSubroutine = MergeSubroutine()
+	self.__fraction = None
     
     @property
     def attrVect(self):
@@ -289,6 +298,11 @@ class CouplerParser: ###!!!!
     @property
     def mergeSubroutine(self):
         return self.__mergeSubroutine
+
+    @property
+    def fraction(self):
+        return self.__fraction
+
 
     def setRoot(self, root):
         self.__root = root
@@ -328,6 +342,15 @@ class CouplerParser: ###!!!!
                 mapper.BindToManager(self.__NameManager)
                 mapper.nameGenerate()
                 parser.append(mapper)
+        if root.find("fraction") != None:
+            fraction = root.find("fraction")
+            fraction_name = fraction.find('name').text
+            self.__fraction = Fraction(fraction_name)
+            args = fraction.find("args")
+            for arg in args:
+                arg = arg.text
+                self.__fraction.append(arg)
+       
         if root.find("mrg") != None:
             mrg = root.find("mrg")
             name = ""

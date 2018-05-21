@@ -27,12 +27,14 @@ use comms_def
         #set $name = $model.name
         #set $avs = $model.attrVects
         #set $mappers = $model.mappers
+        #set $grid = $model.domain
         character(len=20) :: model${name}
         integer :: ${name}_size
         integer :: ${name}_gsize
         #for $av in $avs 
         type(AttrVect) :: $avs[$av].name
         #end for
+        type(gGrid) :: $model.domain
         #for $mapper in $mappers
         type(map_mod)  :: $mappers[$mapper].name
         #end for

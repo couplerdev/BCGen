@@ -22,7 +22,6 @@ use comp_${name}
                         #set $name = $gms[$gm].name
         type(gsMap) :: $name
                 #end for
-        type(gGrid) :: ${model.name}_grid_domain
     #end for
 
     ! Declare AttrVect of each Model(c2x_cx,c2x_cc,x2c_cx,x2c_cc)
@@ -50,6 +49,9 @@ use comp_${name}
 	 logical :: ${name}_run
     #end for
 
+    #for $frac in $fraction_cfgs
+    type(AttrVect) :: $frac
+    #end for
     
      logical :: stop_clock
      type(clock) :: EClock
@@ -67,10 +69,10 @@ subroutine cpl_init()
     call pm_init(my_proc)
     call clock_init(EClock)
     
-    !---
+    !-------------------------------------------------------------------
     ! !A in 0,1,gsize=8   B in 2,3,gsize=12   C in 2,3,gsize=16
     ! !Cpl in 0,1,2,3
-    !----
+    !-------------------------------------------------------------------
 
     !-------------------------------------------------------------------
     !  !Define Model_AV_MM 
@@ -82,6 +84,12 @@ subroutine cpl_init()
                         #set $name = $avs[$av].name
                 $name=> my_proc%$name
                 #end for
+    #end for
+
+    #for $frac in $fraction_cfgs
+         #set $init = $fraction_cfgs[$frac].init
+         #set $init_str = $init.toString($init.name, $init.argList)
+         call $init_str
     #end for
 
     call MPI_Comm_rank(MPI_COMM_WORLD, comm_rank, ierr)
