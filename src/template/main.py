@@ -91,6 +91,7 @@ code.generate()
 print 'eee'
 code = codeGenerator("procDef_Template.F90", "proc_def.F90")
 code.addList('proc_cfgs',proc_cfgs)
+code.addList('merge_cfgs',merge_cfgs)
 code.generate()
 
 

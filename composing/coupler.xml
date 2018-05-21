@@ -79,6 +79,10 @@
 		<name>atm2x_atmx</name>
 		<model>atm</model>
 		<field>velo:cal</field>
+		<fraction>
+			<name>fraction_a</name>
+			<init>fraction_a_init</init>
+		</fraction>
 		<srcs>
 			<src>
 				<attrVect>lnd2x_lndx</attrVect>

@@ -87,15 +87,15 @@ use comms_def
         type(map_mod)  :: ocn
         type(map_mod)  :: atm
         type(map_mod)  :: lnd
-        !sparse mat 
-        type(map_mod)  :: mapper_SMata2b
-        type(map_mod)  :: mapper_SMata2c
-
-        type(map_mod)  :: mapper_SMatb2a
-        type(map_mod)  :: mapper_SMatb2c
-
-        type(map_mod)  :: mapper_SMatc2a
-        type(map_mod)  :: mapper_SMatc2b
+        !sparse mat   emmmm 
+        type(map_mod)   :: mapper_SMata2b
+        type(map_mod)   :: mapper_SMata2c
+        type(map_mod)   :: mapper_SMatc2b
+        type(map_mod)   :: mapper_SMatc2a
+        type(map_mod)   :: mapper_SMatb2c
+        type(map_mod)   :: mapper_SMatb2a
+        type(map_mod)   :: mapper_SMatocn2atm
+        type(map_mod)   :: mapper_SMatlnd2atm
 
 
 

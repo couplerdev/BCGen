@@ -5,6 +5,8 @@ use procm, only: pm_init => init, clean
 use comms
 use timeM
 use mct_mod
+use mrg_mod
+use fraction_mod
 #for $model in $proc_cfgs
      #set $name = $model.name
 use comp_${name}
@@ -20,6 +22,7 @@ use comp_${name}
                         #set $name = $gms[$gm].name
         type(gsMap) :: $name
                 #end for
+        type(gGrid) :: ${model.name}_grid_domain
     #end for
 
     ! Declare AttrVect of each Model(c2x_cx,c2x_cc,x2c_cx,x2c_cc)

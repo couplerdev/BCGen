@@ -5,6 +5,8 @@ use procm, only: pm_init => init, clean
 use comms
 use timeM
 use mct_mod
+use mrg_mod
+use fraction_mod
 use comp_a
 use comp_c
 use comp_b
@@ -18,16 +20,22 @@ use comp_lnd
     ! Declare gsMap of each Model
         type(gsMap) :: gsMap_aa
         type(gsMap) :: gsMap_ax
+        type(gGrid) :: a_grid_domain
         type(gsMap) :: gsMap_cc
         type(gsMap) :: gsMap_cx
+        type(gGrid) :: c_grid_domain
         type(gsMap) :: gsMap_bb
         type(gsMap) :: gsMap_bx
+        type(gGrid) :: b_grid_domain
         type(gsMap) :: gsMap_ocnocn
         type(gsMap) :: gsMap_ocnx
+        type(gGrid) :: ocn_grid_domain
         type(gsMap) :: gsMap_atmatm
         type(gsMap) :: gsMap_atmx
+        type(gGrid) :: atm_grid_domain
         type(gsMap) :: gsMap_lndlnd
         type(gsMap) :: gsMap_lndx
+        type(gGrid) :: lnd_grid_domain
 
     ! Declare AttrVect of each Model(c2x_cx,c2x_cc,x2c_cx,x2c_cc)
         type(AttrVect),pointer ::a2x_aa
