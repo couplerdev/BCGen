@@ -1,4 +1,3 @@
-#
 #    This Parser module parse xml file to intermediate representation
 #
 # reversion history
@@ -10,6 +9,7 @@
 #import ir
 # parser: parse xml to generate intermediate representation
 import xml.etree.ElementTree as ET
+from xml.dom.minidom import Document
 import sys
 sys.path.append('../ir')
 from ir import Model, AttrVect, Mapper, GsMap, AttrVectCpl, Fraction
@@ -22,13 +22,21 @@ DEBUG = 1
 
 class Parser:
     def __init__(self, couplerFile="../../composing/coupler.xml",  modelFile="../../composing/models.xml", \
-                 scheduleFile="../composing/schedule.xml", deployFile="../../composing/deploy.xml"):
+                 scheduleFile="../composing/schedule.xml", deployFile="../../composing/deploy.xml", \
+                 setup=True):
         self.__NameManager = NameManager()
         self.__models = {}
         self.__attrVectCouple = {}
         self.__subroutine = {}   ## mrg subroutine
         self.__sMapper = {}
         self.__deployDistribution = {} # format {id: [first, last, stride]}
+        self.__setupModels = []
+        if setup:
+            setup = Setup()
+            setup.setupParse()
+            setup.genXml()
+            couplerFile = setup.couplerFile
+            self.__setupModels = setup.model
         self.__couplerFile = couplerFile
         self.__modelFile = modelFile
         self.__scheduleFile = scheduleFile
@@ -79,14 +87,22 @@ class Parser:
     def modelsParse(self):
         root = self.load(self.__modelFile)
         modelParser = ModelParser(self.__NameManager)
-        index = 1
+        #index = 1
         for child in root:
             modelParser.setRoot(child)
             model = modelParser.model
-            model.ID = index
-            index = index + 1
+            #model.ID = index
+            #index = index + 1
             self.__models[model.name] = model
             self.__NameManager.register.modelDict[model.name] = model
+        models = {}
+        index = 1
+        for model in self.__models:
+            if model in self.__setupModels:
+                models[model] = self.__models[model] 
+                self.__models[model].ID = index
+                index = index+1
+        self.__models = models  
 
     def deployParse(self):
         root = self.load(self.__deployFile)
@@ -401,12 +417,117 @@ class DeployParser:
         else:
             raise ComposingError("cpl not composed see in composing/deploy.xml")
         models = root.find("models")
+        print parser.models
         for model in models:
-            name = model.find("name").text
-            first = model.find("first").text
-            last = model.find("last").text
-            stride = model.find("stride").text
-            ID = parser.models[name].ID
-            ID = ID + 1
-            deployList = [first, last, stride]
-            parser.addDistribution(deployList, ID)
+            if model.find("name").text in parser.models:
+                name = model.find("name").text
+                print name
+                first = model.find("first").text
+                last = model.find("last").text
+                stride = model.find("stride").text
+                ID = parser.models[name].ID
+                ID = ID + 1
+                deployList = [first, last, stride]
+                parser.addDistribution(deployList, ID)
+
+class Setup:
+    __slots__=["__root","__isParsed","__couple"]
+    def __init__(self, fileName='../../composing/setup.xml'):
+        tree = ET.parse(fileName)
+        self.__root = tree.getroot()
+        self.__isParsed = False
+        self.__couple = []
+        self.__coupleFile = './coupler.xml'
+        self.__model = []
+
+    def setupParse(self):
+        for child in self.__root:
+            modelName = child.find('name').text
+            self.__model.append(modelName)
+            if child.find('input')!=None and child.find('input').text !=None:
+                attrVect = {}
+                attrVect['model'] = modelName
+                attrVect['name'] = modelName+'2x_'+modelName+'x'
+                attrVect['src'] = []
+                srcAv = []
+                for src in child.find('input'):
+                    srcModel = src.attrib['name']
+                    srcField = src.text
+                    srcAttrVect = srcModel+'2'+'x_'+srcModel+'x'
+                    srcSmat = "mapper_SMat"+srcModel+"2"+modelName
+                    srcDict={}
+                    srcDict['name'] = srcModel
+                    srcDict['attrVect'] = srcAttrVect
+                    srcDict['field'] = srcField
+                    srcDict['mapper'] = srcSmat
+                    #print srcDict
+                    srcAv.append(srcDict)
+                attrVect['src']=srcAv
+                mrg = {}
+                mrg['name']='mrg_x2'+modelName
+                mrg['args']=[]
+                mrg['args'].append('my_proc')
+                dstAv = 'x2'+modelName+'_'+modelName+'x'
+                mrg['args'].append(dstAv)
+                for src in srcAv:
+                    #mrg['args'].append(src['attrVect'])
+                    srcName = src['name']
+                    aV = srcName+'2x_'+modelName+'x'
+                    mrg['args'].append(aV)
+                attrVect['mrg'] = mrg
+                self.__couple.append(attrVect)
+                #mrg['args'].append('fraction')
+    def dictDom(self,doc, k, v):
+        key = doc.createElement(k)
+        value = doc.createTextNode(v)
+        key.appendChild(value)
+        return key
+
+    def genXml(self):
+        doc = Document()
+        root = doc.createElement('coupler')
+        #doc.appendChild(root)
+        for avDict in self.__couple:
+            print 'haha'
+            attrVect = doc.createElement('attrVect')
+            name = self.dictDom(doc,'name',avDict['name'])
+            model = self.dictDom(doc, 'model', avDict['model'])
+            attrVect.appendChild(name)
+            attrVect.appendChild(model)
+            srcs = doc.createElement('srcs')
+            for src in avDict['src']:
+                srcNode = doc.createElement('src')
+                name = self.dictDom(doc, 'attrVect', src['attrVect'])
+                field = self.dictDom(doc, 'field', src['field'])
+                mapper = self.dictDom(doc, 'mapper', src['mapper'])
+                srcNode.appendChild(name)
+                srcNode.appendChild(field)
+                srcNode.appendChild(mapper)
+                srcs.appendChild(srcNode)
+            attrVect.appendChild(srcs)
+            mrg = avDict['mrg']
+            mrgNode = doc.createElement('mrg')
+            name = self.dictDom(doc, 'name', mrg['name'])
+            mrgNode.appendChild(name)
+            args = doc.createElement('args')
+            for arg in mrg['args']:
+                argDom = self.dictDom(doc, 'arg',arg)
+                args.appendChild(argDom)
+            mrgNode.appendChild(args)
+            attrVect.appendChild(mrgNode)
+            root.appendChild(attrVect)
+        doc.appendChild(root)
+        f = open(self.__coupleFile,'w')
+        doc.writexml(f, indent='\t',newl='\n',addindent='\t',encoding='utf-8')
+    
+    @property
+    def couple(self):
+        return self.__couple
+
+    @property
+    def couplerFile(self):
+        return self.__coupleFile
+
+    @property
+    def model(self):
+        return self.__model

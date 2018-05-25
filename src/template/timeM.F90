@@ -13,11 +13,10 @@ module timeM
     integer :: total_days =  1 
 
     integer :: time_a_run = 3
-    integer :: time_c_run = 7
-    integer :: time_b_run = 5
-    integer :: time_ocn_run = 7
-    integer :: time_atm_run = 9
     integer :: time_lnd_run = 7
+    integer :: time_b_run = 5
+    integer :: time_atm_run = 9
+    integer :: time_ocn_run = 7
 
 
     public :: clock_init
@@ -104,15 +103,15 @@ mod(EClock%days*tmp_d, time_a_run)
         end if
     end if
 
-    if(flag_name=='c_run')then
-        tmp_m = mod(60, time_c_run)
-        tmp_h = mod(60*60, time_c_run)
-        tmp_d = mod(tmp_h*24, time_c_run)
-        tmp_mod = mod(EClock%seconds, time_c_run) +&
-mod(EClock%minites*tmp_m, time_c_run) + &
-                  mod(EClock%hours*tmp_h, time_c_run) + &
-mod(EClock%days*tmp_d, time_c_run)
-        tmp_mod = mod(tmp_mod, time_c_run)
+    if(flag_name=='lnd_run')then
+        tmp_m = mod(60, time_lnd_run)
+        tmp_h = mod(60*60, time_lnd_run)
+        tmp_d = mod(tmp_h*24, time_lnd_run)
+        tmp_mod = mod(EClock%seconds, time_lnd_run) +&
+mod(EClock%minites*tmp_m, time_lnd_run) + &
+                  mod(EClock%hours*tmp_h, time_lnd_run) + &
+mod(EClock%days*tmp_d, time_lnd_run)
+        tmp_mod = mod(tmp_mod, time_lnd_run)
         if(tmp_mod == 0)then
             flag = .true.
         end if
@@ -132,20 +131,6 @@ mod(EClock%days*tmp_d, time_b_run)
         end if
     end if
 
-    if(flag_name=='ocn_run')then
-        tmp_m = mod(60, time_ocn_run)
-        tmp_h = mod(60*60, time_ocn_run)
-        tmp_d = mod(tmp_h*24, time_ocn_run)
-        tmp_mod = mod(EClock%seconds, time_ocn_run) +&
-mod(EClock%minites*tmp_m, time_ocn_run) + &
-                  mod(EClock%hours*tmp_h, time_ocn_run) + &
-mod(EClock%days*tmp_d, time_ocn_run)
-        tmp_mod = mod(tmp_mod, time_ocn_run)
-        if(tmp_mod == 0)then
-            flag = .true.
-        end if
-    end if
-
     if(flag_name=='atm_run')then
         tmp_m = mod(60, time_atm_run)
         tmp_h = mod(60*60, time_atm_run)
@@ -160,15 +145,15 @@ mod(EClock%days*tmp_d, time_atm_run)
         end if
     end if
 
-    if(flag_name=='lnd_run')then
-        tmp_m = mod(60, time_lnd_run)
-        tmp_h = mod(60*60, time_lnd_run)
-        tmp_d = mod(tmp_h*24, time_lnd_run)
-        tmp_mod = mod(EClock%seconds, time_lnd_run) +&
-mod(EClock%minites*tmp_m, time_lnd_run) + &
-                  mod(EClock%hours*tmp_h, time_lnd_run) + &
-mod(EClock%days*tmp_d, time_lnd_run)
-        tmp_mod = mod(tmp_mod, time_lnd_run)
+    if(flag_name=='ocn_run')then
+        tmp_m = mod(60, time_ocn_run)
+        tmp_h = mod(60*60, time_ocn_run)
+        tmp_d = mod(tmp_h*24, time_ocn_run)
+        tmp_mod = mod(EClock%seconds, time_ocn_run) +&
+mod(EClock%minites*tmp_m, time_ocn_run) + &
+                  mod(EClock%hours*tmp_h, time_ocn_run) + &
+mod(EClock%days*tmp_d, time_ocn_run)
+        tmp_mod = mod(tmp_mod, time_ocn_run)
         if(tmp_mod == 0)then
             flag = .true.
         end if

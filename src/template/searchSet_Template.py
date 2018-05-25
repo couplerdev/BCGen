@@ -11,6 +11,7 @@ class Temp:
         self.funcname = funcname
         self.params = params
         self.mix = mix
+        self.space = 24*" "
     def getName(self):
         return "rr34"
     def getFuncFormat(self):
@@ -25,8 +26,8 @@ class Temp:
                 if key == 'rList':
                     item = key + '=\'' + params[key]+ '\'&\n' 
                 args.append(str(item))
-            args = ",".join(args)
-            func_str = "call "+ self.funcname + "(" + args + ")"
+            args = (self.space+",").join(args)
+            func_str = "call "+ self.funcname + "(" + args + self.space+")"
             #str_len = len(func_str) / 2
             #func_str = func_str[:str_len] + '&\n' + func_str[str_len:]
 

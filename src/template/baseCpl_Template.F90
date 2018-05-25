@@ -197,15 +197,7 @@ subroutine cpl_init()
 
                 #end for
         #end for
-        call MPI_Barrier(MPI_COMM_WORLD, ierr)
-        write(*,*) "<<=== Rank:" , comm_rank, &
-            " lb2x_ax:", avect_lsize(b2x_ax),&
-            " lc2x_ax:", avect_lsize(c2x_ax),&
-            " la2x_bx:", avect_lsize(a2x_bx),&
-            " lc2x_bx:", avect_lsize(c2x_bx),&
-            " la2x_cx:", avect_lsize(a2x_cx),&
-            " lb2x_cx:", avect_lsize(b2x_cx),&
-            "===>>"
+ 
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
         write(*,*) " "
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
@@ -296,9 +288,7 @@ subroutine cpl_run()
         #end for
 
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
-                    write(*,*)
-        call MPI_Barrier(MPI_COMM_WORLD, ierr)
-
+        if(my_proc%iamroot) write(*,*)'----------------run phase2 end -----------------------'
         !------------------------------------------------------------
         !  Run phase 3
         !  For each Model:

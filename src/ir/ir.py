@@ -209,6 +209,9 @@ class AttrVect(CoupleEntity):
     @field.setter
     def field(self, fieldValue):
 	self.__field = fieldValue
+
+    def hasField(self, field):
+        return True   # not implement yet
  
     @property
     def src(self):
@@ -494,6 +497,7 @@ class AttrVectCpl(AttrVect):
     @property
     def dstModel(self):
         return self.__dstModel
+
 class Fraction(AttrVect):
     __slots__=["__name","__field","__initSubroutine"] 
     def __init__(self,fractionName):
