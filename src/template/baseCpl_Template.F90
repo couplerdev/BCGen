@@ -5,8 +5,8 @@ use procm, only: pm_init => init, clean
 use comms
 use timeM
 use mct_mod
-use mrg_mod
-use fraction_mod
+!use mrg_mod
+!use fraction_mod
 #for $model in $proc_cfgs
      #set $name = $model.name
 use comp_${name}
@@ -158,6 +158,9 @@ subroutine cpl_init()
                     call mapper_comp_map(my_proc%mapper_C${name}2x, &
                                          $av_mx_mm, $av_mx_mx, 100+10+1, ierr)
                 end if
+                if(iamroot_${name})then
+                    write(*,*)'-------------${name} initiated-----------'
+                end if
         #end for
 
 
@@ -240,33 +243,6 @@ subroutine cpl_run()
         !------------------------------------------------------------
 
 
-        #for $cfg in $model_cfgs
-                #set $name = $cfg['model_unique_name']
-                #set $run_method = $cfg['subroutine']['run_method']
-                #set $run_phase1_method = $run_method['run_phase1_method']
-        if(${name}_run)then
-            if(my_proc%iamin_model${name}2cpl)then
-                if(s == 3 .and. my_proc%iamin_modela2cpl) then
-                    do i=1,avect_lsize(x2a_ax)
-                        x2a_ax%rAttr(1,i) = x2a_ax%rAttr(1,i) + (comm_rank+1)*10+i
-                    enddo
-                endif
-                if(s == 7 .and. my_proc%iamin_modelb2cpl) then
-                    do i=1,avect_lsize(x2b_bx)
-                        x2b_bx%rAttr(1,i) = x2b_bx%rAttr(1,i) + (comm_rank+1)*10+i
-                    enddo
-                endif
-                
-                $run_phase1_method.getFuncFormat()
-
-                if(s == 3 .and. my_proc%iamin_modela2cpl) then
-                    call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
-                    write(*,*) '<<===X2A_AA_VALUE Rank:',comm_rank, x2a_aa%rAttr(1,:)
-                call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
-                end if
-            end if
-        end if
-        #end for
 
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
@@ -288,7 +264,7 @@ subroutine cpl_run()
         #end for
 
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
-        if(my_proc%iamroot) write(*,*)'----------------run phase2 end -----------------------'
+        if(my_proc%iam_root) write(*,*)'----------------run phase2 end -----------------------'
         !------------------------------------------------------------
         !  Run phase 3
         !  For each Model:
@@ -328,10 +304,10 @@ subroutine cpl_run()
             !call mapper_comp_avMerge(a2x_ax, b2x_ax, c2x_ax, x2a_ax, "x")
             call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
                     write(*,*) '<<===X2A_AX_Merge_VALUE Rank:',comm_rank, x2a_ax%rAttr(1,:)
-            #for $mgr_routine in $merge_subroutines
-                #set func_str = $mgr_routine.toString($mgr_routine.name, $mgr_routine.argList)
-                call ${mgr_routine.toString($mgr_routine.name,$mgr_routine.argList)}
-            #end for
+            !for mgr_routine in merge_subroutines
+            !    set func_str = mgr_routine.toString(mgr_routine.name, mgr_routine.argList)
+            !    call {mgr_routine.toString(mgr_routine.name,mgr_routine.argList)}
+            !end for
             call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
         endif
     endif

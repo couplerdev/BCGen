@@ -39,14 +39,13 @@ subroutine init(my_proc)
     call MPI_Comm_size(MPI_COMM_WORLD, num_size, ierr)
    
     !call mct_world_init(ncomps, MPI_COMM_WORLD, comms, comps) ! comms? comps?
+#for $model in $proc_cfgs
+#set $name = $model.name
 
-    my_proc%modela = "modela"
-    my_proc%modelb = "modelb"
-    my_proc%modelc = "modelc"
+    my_proc%model${name} = "model${name}"
     ! todo
-    my_proc%a_size = 10
-    my_proc%b_size = 10
-    my_proc%c_size = 10
+    my_proc%${name}_size = 10
+#end for
     ! todo
 #for $model in $proc_cfgs
     #set $g_size = $model.gSize
@@ -85,7 +84,7 @@ subroutine init(my_proc)
 
 
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
-    write(*,*)'comm initiated'
+    !write(*,*)'comm initiated'
     allocate(my_proc%comp_comm(my_proc%ncomps))
     my_proc%comp_comm(my_proc%gloid)         = my_proc%mpi_glocomm
     my_proc%comp_comm(my_proc%cplid)         = my_proc%mpi_cpl
@@ -141,7 +140,7 @@ subroutine init(my_proc)
 
 
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
-    write(*,*)'before mapper_init'
+    !write(*,*)'before mapper_init'
 
 #for $model in $proc_cfgs
     #set $g_size = $model.gSize
@@ -161,20 +160,12 @@ subroutine clean(my_proc)
     type(proc), intent(inout) :: my_proc
     integer :: ierr
 
-    call avect_clean(my_proc%a2x_aa)
-    call avect_clean(my_proc%x2a_aa)
-    call avect_clean(my_proc%a2x_ax)
-    call avect_clean(my_proc%x2a_ax)
-    call avect_clean(my_proc%b2x_bb)
-    call avect_clean(my_proc%x2b_bb)
-    call avect_clean(my_proc%b2x_bx)
-    call avect_clean(my_proc%x2b_bx)
-    call avect_clean(my_proc%c2x_cc)
-    call avect_clean(my_proc%x2c_cc)
-    call avect_clean(my_proc%c2x_cx)
-    call avect_clean(my_proc%x2c_cx)
- 
-    
+#for $model in $proc_cfgs
+     #set $name = $model.name
+    call avect_clean(my_proc%${name}2x_${name}${name})
+    call avect_clean(my_proc%x2${name}_${name}${name})
+#end for
+
     call MPI_Finalize(ierr) 
 
 end subroutine clean

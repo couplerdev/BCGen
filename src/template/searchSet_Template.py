@@ -21,13 +21,18 @@ class Temp:
                 res.append(routine.getFuncFormat())
         else:
             args = []
+            l = len(self.params)
+            indx = 0
             for key in sorted(self.params):
+                indx = indx+1
                 item = key + '=' + self.params[key] +'&\n'
                 if key == 'rList':
-                    item = key + '=\'' + params[key]+ '\'&\n' 
+                    item = key + '=\'' + self.params[key]+ '\'&\n' 
+                if indx == l:
+                    item = key + '=' + self.params[key]
                 args.append(str(item))
             args = (self.space+",").join(args)
-            func_str = "call "+ self.funcname + "(" + args + self.space+")"
+            func_str = "call "+ self.funcname + "(" + args +")"
             #str_len = len(func_str) / 2
             #func_str = func_str[:str_len] + '&\n' + func_str[str_len:]
 

@@ -14,9 +14,11 @@ import sys
 sys.path.append('../ir')
 from ir import Model, AttrVect, Mapper, GsMap, AttrVectCpl, Fraction
 from ir import ModelSubroutine, MergeSubroutine
+from Datatype import *
 sys.path.append('../ErrorHandle')
 from ErrorHandle import *
 from NameManager import *
+
 
 DEBUG = 1
 
@@ -208,6 +210,7 @@ class ModelParser:
         self.__model.append(srcGsMap)
         self.__model.append(dstGsMap)
 
+
     # get attrVect that local in model
     def __setAttrVect(self):
         comp2x_aa = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, \
@@ -248,6 +251,52 @@ class ModelParser:
         dstMapper.nameGenerate()
         self.__model.append(srcMapper)
         self.__model.append(dstMapper)
+## set time modi 8/11
+    def __setTime(self):
+	root = self.__root.find('time')
+	base_root = root.find('base')
+	y = 0
+	m = 0
+	d = 0
+	h = 0
+	if base_root.find('y')!=None:
+	    y = base_root.find('y').text
+        if base_root.find('m')!=None:
+	    m = base_root.find('m').text
+        if base_root.find('d')!=None:
+            d = base_root.find('d').text
+        if base_root.find('h')!=None:
+            h = base_root.find('h').text
+        base = Base(y, m, d, h)         
+
+        interval_root = root.find('interval')
+        m = 0 
+        d = 0
+        h = 0
+        minute = 0
+        sec = 0
+        if interval_root.find('m')!=None:
+	    m = interval_root.find('m').text
+        if interval_root.find('d')!=None:
+	    d = interval_root.find('d').text
+        if interval_root.find('h')!=None:
+	    h = interval_root.find('h').text
+        if interval_root.find('minute')!=None:
+	    minute = interval_root.find('minute').text
+        if interval_root.find('sec')!=None:
+	    sec = interval_root.find('sec').text
+        interval  = Interval(m, d, h, minute, sec)
+        self.__model.Time = Time(base, interval)
+        
+    def __setDomain(self):
+        domain_root = root.find('domain')
+        field = ""
+        if domain_root.find('field') != None:
+            field = domain_root.find('field').text
+        if domain_root.find('path') == None:
+	    raise UnsetError("domain data path not set!")
+        path  = domain_root.find('path').text
+        self.__domain = Domain(field, path)
 
     def modelParse(self):
         if self.__root == "":
@@ -278,6 +327,8 @@ class ModelParser:
         self.__model.gSize = self.__gsize
         self.__setAttrVect()
         self.__setGsMap()
+        self.__setTime()
+        self.__setDomain()
         self.__model.domain = name+'_grid_domain'
         self.__setMapper()
         self.__isParsed = True

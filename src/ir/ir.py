@@ -12,7 +12,7 @@
 import sys
 sys.path.append("../ErrorHandle")
 from ErrorHandle import *
-
+from Datatype import *
 
 class Subroutine(object):
     __slots__=['__subroutineName','__argList', '__lineCharacter']
@@ -248,7 +248,7 @@ class AttrVect(CoupleEntity):
 class Model(CoupleEntity):
     __slots__ = ['__name','__model_init','__model_run','__model_final',\
                  '__manager', '__type', '__attrVects','__gsMaps', '__mappers',\
-                 '__gSize', '__ID', '__interval','__domain']
+                 '__gSize', '__ID', '__time','__domain', '_nmlFile']
     def __init__(self,name="", gSize=8):
 	super(Model, self).__init__(name=name,_type="Model")
 	self.__model_init = ModelSubroutine() #optional?
@@ -262,7 +262,8 @@ class Model(CoupleEntity):
         self.__name = name
         self.__gSize = gSize
         self.__ID = -1
-        self.__interval = 1
+     	self.__time = None
+        self.__nmlFile = ""
 
 ### debug region
     @property
@@ -278,14 +279,6 @@ class Model(CoupleEntity):
     @gSize.setter
     def gSize(self, gsizeValue):
         self.__gSize = gsizeValue
-
-    @property
-    def interval(self):
-        return self.__interval
-
-    @interval.setter
-    def interval(self, interval):
-        self.__interval = interval
 
     @property
     def attrVects(self):
@@ -331,6 +324,14 @@ class Model(CoupleEntity):
     @ID.setter
     def ID(self, IDValue):
         self.__ID = IDValue 
+
+    @property
+    def Time(self):
+	return self.__time
+    
+    @Time.setter
+    def Time(self, time):
+        self.__time = time
 
     def append(self, obj):
         if obj.type == "AttrVect":

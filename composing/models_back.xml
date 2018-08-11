@@ -1,6 +1,7 @@
 <models>
 	<model>
 		<name>a</name>
+		<interval>3</interval>
                 <attrVect>  <!--local attrVect-->
 			<name></name><!--optional-->
 			<gsize>12</gsize>
@@ -8,51 +9,34 @@
 			<ny>4</ny><!--same as nx-->
      			<field>vel:hit</field><!--same as ny-->
 		</attrVect>
-		<domain>
+		<grid>
 			<field>lat:lon:area:mask:frac</field><!--optional-->
 			<file></file>
-		</domain>
+		</grid>
 		<init> <!--if user not define the optional tag then generate default subroutine-->
 			<name>a_init_mct</name><!--optional-->
                         <arg>gsMap_aa</arg><!--optional-->
 			<arg>a2x_aa</arg>    <!-- optional-->
 			<arg>x2a_aa</arg>   <!--optional-->
 			<arg>grid_a</arg>   <!--optional??-->
-			<arg>nml_path</arg>
 		</init>
-		<run><!--without phase version-->
+		<run>
 			<name>a_run_mct</name>
 			<arg>gsMap_aa</arg>
                         <arg>a2x_aa</arg>
                         <arg>x2a_aa</arg>
 			<arg>grid_a</arg>
-			<arg>nml_path</arg>
 		</run>
 		<final>
 			<name>a_final_mct</name>	
 			<arg>gsMap_aa</arg>
  			<arg>a2x_aa</arg>
 			<arg>x2a_aa</arg>
-			<arg>nml_path</arg>
 		</final>
-		<time>
-			<base>
-				<y></y>
-				<m></m>
-				<d></d>
-				<h></d>
-			</base>
-			<interval>
-				<m></m>
-				<d></d>
-				<h></h>
-				<min></min>
-				<sec></sec>
-			</interval>
-		</time>
 	</model>
 	<model>
 		<name>b</name>
+		<interval>5</interval>
 		<attrVect>
 			<name></name>
 			<gsize>12</gsize>
@@ -60,10 +44,9 @@
 			<ny>4</ny>
 			<field>vel:hit</field>
     		</attrVect>
-		<domain>
+		<grid>
 			<field>lat:lon:area:mask:frac</field>
-			<path></path>
-		</domain>
+		</grid>
 		<init> <!--subroutine optional-->
 			<name>b_init_mct</name>
 			<arg>gsMap_bb</arg>
@@ -82,24 +65,10 @@
 			<arg>b2x_bb</arg>
 			<arg>x2b_bb</arg>
 		</final>
-		<time>
-			<base>
-				<y></y>
-				<m></m>
-				<d></d>
-				<h></h>
-			</base>
-			<interval>
-				<m></m>
-				<d></d>
-				<h></h>
-				<min></min>
-				<sec></sec>
-			</interval>
-		</time>
 	</model>
 	<model>
 		<name>c</name>
+		<interval>7</interval>
 		<attrVect>
 			<name></name>
 			<gsize>12</gsize>
@@ -107,47 +76,28 @@
 			<ny>4</ny>
 			<field>lon:lat</field>
 		</attrVect>
-		<domain>
-			<field></field>
-			<path></path>
-		</domain>
-		<method>
-			<init>
-				<name>c_init_mct</name>
-				<arg>gsMap_cc</arg>
-				<arg>c2x_cc</arg>
-				<arg>x2c_cc</arg>
-			</init>
-			<run>
-				<name>c_run_mct</name>
-				<arg>gsMap_cc</arg>
-				<arg>c2x_cc</arg>
-				<arg>x2c_cc</arg>
-			</run>
-			<final>
-				<name>c_final_mct</name>
-				<arg>gsMap_cc</arg>
-				<arg>c2x_cc</arg>
-				<arg>x2c_cc</arg>
-			</final>
-			<time>
-				<base>
-					<y></y>
-					<m></m>
-					<d></d>
-					<h></h>
-				</base>
-				<interval>
-					<m></m>
-					<d></d>
-					<h></h>
-					<min></min>
-					<sec></sec>
-				</interval>
-			</time>
-		</model>
+		<init>
+			<name>c_init_mct</name>
+			<arg>gsMap_cc</arg>
+			<arg>c2x_cc</arg>
+			<arg>x2c_cc</arg>
+		</init>
+		<run>
+			<name>c_run_mct</name>
+			<arg>gsMap_cc</arg>
+			<arg>c2x_cc</arg>
+			<arg>x2c_cc</arg>
+		</run>
+		<final>
+			<name>c_final_mct</name>
+			<arg>gsMap_cc</arg>
+			<arg>c2x_cc</arg>
+			<arg>x2c_cc</arg>
+		</final>
+	</model>
 	<model>
 		<name>atm</name>
+		<interval>9</interval>
 		<attrVect>
 			<name></name>
 			<gsize>12</gsize>
@@ -155,10 +105,6 @@
 			<ny>4</ny>
 			<field>velo:cal</field>
 		</attrVect>
-		<domain>
-			<field></field>	
-			<path></path>
-		</domain>
 		<init>
 			<name>atm_init_mct</name>
 			<arg>gsmap_atmatm</arg>
@@ -177,20 +123,63 @@
 			<arg>atm2x_atmatm</arg>
 			<arg>x2atm_atmatm</arg>
 		</final>
-		<time>
-			<base>
-				<y></y>
-				<m></m>
-				<d></d>
-				<h></h>
-			</base>
-			<interval>
-				<m></m>
-				<d></d>
-				<h></h>
-				<min></min>
-				<sec></sec>
-			</interval>
-		</time>
 	</model> 
+        <model>
+		<name>lnd</name>
+		<interval>7</interval>
+		<attrVect>
+			<name></name>
+			<gsize>12</gsize>
+			<nx>3</nx>
+			<ny>4</ny>
+			<field>velo:cal</field>
+		</attrVect>
+		<init>
+			<name>lnd_init_mct</name>
+			<arg>gsmap_lndlnd</arg>
+			<arg>lnd2x_lndlnd</arg>
+			<arg>x2lnd_lndlnd</arg>
+		</init>
+		<run>
+			<name>lnd_run_mct</name>
+			<arg>gsmap_lndlnd</arg>
+			<arg>lnd2x_lndlnd</arg>
+			<arg>x2lnd_lndlnd</arg>
+		</run>
+		<final>
+			<name>lnd_final_mct</name>
+			<arg>gsmap_lndlnd</arg>
+			<arg>lnd2x_lndlnd</arg>
+			<arg>x2lnd_lndlnd</arg>
+		</final>
+   	</model>
+	<model>
+		<name>ocn</name>
+		<interval>7</interval>
+		<attrVect>
+			<name></name>
+			<gsize>12</gsize>
+			<nx>3</nx>
+			<ny>4</ny>
+			<field>velo:cal</field>
+		</attrVect>
+		<init>
+			<name>ocn_init_mct</name>
+			<arg>gsmap_ocnocn</arg>
+			<arg>onc2x_ocnocn</arg>
+			<arg>x2ocn_ocnocn</arg>
+		</init>
+		<run>
+			<name>ocn_run_mct</name>
+			<arg>gsmap_ocnocn</arg>
+			<arg>ocn2x_ocnocn</arg>
+			<arg>x2ocn_ocncon</arg>
+		</run>
+		<final>
+			<name>ocn_final_mct</name>
+			<arg>gsmap_ocnocn</arg>
+			<arg>ocn2x_ocnocn</arg>
+			<arg>x2ocn_ocnocn</arg>
+		</final>
+	</model>
 </models>
