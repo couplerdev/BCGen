@@ -12,29 +12,35 @@
 			<field>lat:lon:area:mask:frac</field><!--optional-->
 			<file></file>
 		</domain>
-		<init> <!--if user not define the optional tag then generate default subroutine-->
-			<name>a_init_mct</name><!--optional-->
-                        <arg>gsMap_aa</arg><!--optional-->
-			<arg>a2x_aa</arg>    <!-- optional-->
-			<arg>x2a_aa</arg>   <!--optional-->
-			<arg>grid_a</arg>   <!--optional??-->
-			<arg>nml_path</arg>
-		</init>
-		<run><!--without phase version-->
-			<name>a_run_mct</name>
-			<arg>gsMap_aa</arg>
-                        <arg>a2x_aa</arg>
-                        <arg>x2a_aa</arg>
-			<arg>grid_a</arg>
-			<arg>nml_path</arg>
-		</run>
-		<final>
-			<name>a_final_mct</name>	
-			<arg>gsMap_aa</arg>
- 			<arg>a2x_aa</arg>
-			<arg>x2a_aa</arg>
-			<arg>nml_path</arg>
-		</final>
+		<method>
+			<init> <!--if user not define the optional tag then generate default subroutine-->
+				<name>a_init_mct</name><!--optional-->
+				<in_args>
+					<arg>a2x_aa</arg>
+				</in_args>
+		        	<out_args>
+					<arg>x2a_aa</arg>
+				</out_args>		
+			</init>
+			<run><!--without phase version-->
+				<name>a_run_mct</name>
+				<in_args>
+					<arg>a2x_aa</arg>
+				</in_args>
+				<out_args>
+					<arg>x2a_aa</arg>
+				</out_args>
+			</run>
+			<final>
+				<name>a_final_mct</name>	
+				<in_arg>
+					<arg>a2x_aa</arg>
+				</in_arg>
+				<out_arg>
+					<arg>x2a_aa</arg>
+				</out_arg>
+			</final>
+		</method>
 		<time>
 			<base>
 				<y></y>
@@ -64,24 +70,35 @@
 			<field>lat:lon:area:mask:frac</field>
 			<path></path>
 		</domain>
-		<init> <!--subroutine optional-->
-			<name>b_init_mct</name>
-			<arg>gsMap_bb</arg>
-			<arg>b2x_bb</arg>
-        		<arg>x2b_bb</arg>
-		</init>
-		<run>
-			<name>b_run_mct</name>
-			<arg>gsMap_bb</arg>
-			<arg>b2x_bb</arg>
-			<arg>x2b_bb</arg>
-		</run>
-		<final>
-			<name>b_final_mct</name>
-			<arg>gsMap_bb</arg>
-			<arg>b2x_bb</arg>
-			<arg>x2b_bb</arg>
-		</final>
+		<method>
+			<init> <!--subroutine optional-->
+				<name>b_init_mct</name>
+				<in_args>
+					<arg>b2x_bb</arg>
+				</in_args>
+				<out_args>
+					<arg>x2b_bb</arg>
+				</out_args>
+			</init>
+			<run>
+				<name>b_run_mct</name>
+				<in_args>
+					<arg>b2x_bb</arg>
+				</in_args>
+				<out_args>
+					<arg>x2b_bb</arg>
+				</out_args>
+			</run>
+			<final>
+				<name>b_final_mct</name>
+				<in_args>
+					<arg>b2x_bb</arg>
+				</in_args>
+				<out_args>
+					<arg>x2b_bb</arg>
+				</out_args>
+			</final>
+		</method>
 		<time>
 			<base>
 				<y></y>
@@ -114,21 +131,30 @@
 		<method>
 			<init>
 				<name>c_init_mct</name>
-				<arg>gsMap_cc</arg>
-				<arg>c2x_cc</arg>
-				<arg>x2c_cc</arg>
+				<in_args>
+					<arg>c2x_cc</arg>
+				</in_args>
+				<out_args>
+					<arg>x2c_cc</arg>
+				</out_args>
 			</init>
-			<run>
+			<un>
 				<name>c_run_mct</name>
-				<arg>gsMap_cc</arg>
-				<arg>c2x_cc</arg>
-				<arg>x2c_cc</arg>
+				<in_args>
+					<arg>c2x_cc</arg>
+				</in_args>
+				<out_args>
+					<arg>x2c_cc</arg>
+				</out_args>
 			</run>
 			<final>
 				<name>c_final_mct</name>
-				<arg>gsMap_cc</arg>
-				<arg>c2x_cc</arg>
-				<arg>x2c_cc</arg>
+				<in_args>
+					<arg>c2x_cc</arg>
+				</in_args>
+				<out_args>
+					<arg>x2c_cc</arg>
+				</out_args>
 			</final>
 			<time>
 				<base>
@@ -159,24 +185,35 @@
 			<field></field>	
 			<path></path>
 		</domain>
-		<init>
-			<name>atm_init_mct</name>
-			<arg>gsmap_atmatm</arg>
-			<arg>atm2x_atmatm</arg>
-			<arg>x2atm_atmatm</arg>
-		</init>
-		<run>
-			<name>atm_run_mct</name>
-			<arg>gsmap_atmatm</arg>
-			<arg>atm2x_atmatm</arg>
-			<arg>x2atm_atmatm</arg>
-		</run>
-		<final>
-			<name>atm_final_mct</name>
-			<arg>gsmap_atmatm</arg>
-			<arg>atm2x_atmatm</arg>
-			<arg>x2atm_atmatm</arg>
-		</final>
+		<method>
+			<init>
+				<name>atm_init_mct</name>
+				<in_args>
+					<arg>atm2x_atmatm</arg>
+				</in_args>
+				<out_args>
+					<arg>x2atm_atmatm</arg>
+				</out_args>
+			</init>
+			<run>
+				<name>atm_run_mct</name>
+				<in_args>
+					<arg>atm2x_atmatm</arg>
+				</in_args>
+				<out_args>
+					<arg>x2atm_atmatm</arg>
+				</out_args>
+			</run>
+			<final>
+				<name>atm_final_mct</name>
+				<in_args>
+					<arg>atm2x_atmatm</arg>
+				</in_args>
+				<out_args>
+					<arg>x2atm_atmatm</arg>
+				</out_args>
+			</final>
+		</method>
 		<time>
 			<base>
 				<y></y>

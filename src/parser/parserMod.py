@@ -18,11 +18,12 @@ from Datatype import *
 sys.path.append('../ErrorHandle')
 from ErrorHandle import *
 from NameManager import *
+from runCodeParser import SubroutineNode, SeqRun
 
 
 DEBUG = 1
 
-class Parser:
+class Parser():
     def __init__(self, couplerFile="../../composing/coupler.xml",  modelFile="../../composing/models.xml", \
                  scheduleFile="../composing/schedule.xml", deployFile="../../composing/deploy.xml", \
                  setup=True):
@@ -30,6 +31,9 @@ class Parser:
         self.__models = {}
         self.__attrVectCouple = {}
         self.__subroutine = {}   ## mrg subroutine
+           
+                
+
         self.__sMapper = {}
         self.__deployDistribution = {} # format {id: [first, last, stride]}
         self.__setupModels = []
@@ -44,6 +48,7 @@ class Parser:
         self.__scheduleFile = scheduleFile
         self.__deployFile = deployFile
         self.__fractions = {}
+        self.__seqRun = seqRun()
 
     @property
     def models(self):
@@ -88,7 +93,7 @@ class Parser:
 
     def modelsParse(self):
         root = self.load(self.__modelFile)
-        modelParser = ModelParser(self.__NameManager)
+        modelParser = ModelParser(self.__NameManager, self.__seqRun)
         #index = 1
         for child in root:
             modelParser.setRoot(child)
@@ -118,7 +123,7 @@ class Parser:
 	
     def coupleAttrVectParse(self):
         root = self.load(self.__couplerFile)
-        avParser = CouplerParser(self.__NameManager)  ## not implemented now
+        avParser = CouplerParser(self.__NameManager, self.__seqRun)  ## not implemented now
         for child in root:
             avParser.setRoot(child)
             avParser.couplerParse(self)
@@ -158,6 +163,9 @@ class SubroutineParser:
         self.__subroutine = ModelSubroutine()
         self.__isParsed = False
         self.__root = ""
+        self.inArg = []
+        self.outArg = []
+        self.subroutineNode = None
 
     def setRoot(self, root):
         self.__root = root
@@ -170,12 +178,36 @@ class SubroutineParser:
 		for child in self.__root:
                     if child.tag == "name":
                         self.__subroutine.subroutineName = child.text
-                    elif child.tag == "arg":
-                        self.__subroutine.append(child.text)
+                    elif child.tag == "in_args":
+                        root = self.__root.find("in_args")
+                        for sub in root:
+                            if sub.tag == "arg":
+                                self.inArg.append(sub.text)
+                    elif child.tag == "out_args":
+                        root = self.__root.finf("in_args")
+                        
                     else:
                         raise NoTagError("No such tag "+child.tag)
                 self.__isParsed = True
                 #print self.__subroutine.subroutineName
+    
+    def appendArgs(self, args):
+        for arg in args:
+            self.__subroutine.append(arg)
+           
+
+    def getSubroutineNode(self, model='', phase=-1, inArgs=[], outArgs=[]):
+        if len(self.inArgs)!=0 and len(self.outArgs)!=0:
+	    self.subroutineNode = Subroutine(self.__subroutine.subroutineName, \
+                                   model, phase=phase, inArgs=self.inArgs, \
+                                   outArgs=self.outArgs)
+        else if len(inArgs)!=0 and len(outArgs)!=0:
+            self.subroutineNode = Subroutine(self.__subroutine.subroutineName, \
+                                   model, phase=phase, inArgs=self.inArgs, \
+                                   outArgs=self.outArgs)
+        else:
+            raise UnSetError("inArgs or outArgs not set")                                  
+        return self.subroutineNode
 
     @property
     def subroutine(self):
@@ -186,7 +218,7 @@ class SubroutineParser:
 class ModelParser:
     __slots__=['__root', '__model', '__isParsed', '__name',\
                '__gsize','__nx','__ny','__field','__NameManager']
-    def __init__(self, NameManager,root="",lsize=0,nx=0,ny=0,field="", gsize=0):
+    def __init__(self, NameManager, seqRun, root="",lsize=0,nx=0,ny=0,field="", gsize=0):
         self.__root = root
         self.__isParsed = False
         self.__gsize = gsize
@@ -195,6 +227,7 @@ class ModelParser:
         self.__field = field
         self.__name = ""
         self.__NameManager = NameManager
+        self.seqRun = seqRun 
 
     def setRoot(self, root):
         self.__root = root
@@ -209,7 +242,8 @@ class ModelParser:
         dstGsMap.nameGenerate()
         self.__model.append(srcGsMap)
         self.__model.append(dstGsMap)
-
+        self.srcGsMap = srcGsMap
+        self.dstGsMap = dstGsMap
 
     # get attrVect that local in model
     def __setAttrVect(self):
@@ -251,6 +285,9 @@ class ModelParser:
         dstMapper.nameGenerate()
         self.__model.append(srcMapper)
         self.__model.append(dstMapper)
+        self.srcMapper = srcMapper
+        self.dstMapper = dstMapper
+
 ## set time modi 8/11
     def __setTime(self):
 	root = self.__root.find('time')
@@ -307,13 +344,54 @@ class ModelParser:
         self.__model = Model(name=name)
         self.__model.BindToManager(self.__NameManager)
 
+        args = []                              #设置model内置方法的参数，主要是与现在的
+        args.append(self.__model.attrVects["x2c_cc"])   #相关的，公共的生成，
+        args.append(self.__model.attrVects["c2x_cc"])   #之后会把这块独立出来
+        args.append(self.__model.attrVects["comp"])
         subroutine = SubroutineParser()
         subroutine.setRoot(root.find('init'))   ## need ErrorHandle
+        subroutine.appendArg(args)
         self.__model.model_init = subroutine.subroutine
+        #self.seqRun.addSubroutine(subroutine.getSubroutineNode(self.__name))
+        
         subroutine.setRoot(root.find('run'))
+        subroutine.appendArgs(args)
         self.__model.model_run = subroutine.subroutine
+        run = root.find("run")
+        in_args = []
+        in_argRoot = run.find("in_arg")
+        for arg in in_argRoot:
+            in_args.append(arg.text)
+        out_args = []
+        out_argRoot = run.find("out_arg")
+        for arg in in_argRoot:
+            out_args.append(arg.text)
+        self.seqRun.addSubroutine(subroutine.getSubroutineNode(model=self.__name, phase=2,inArgs=in_args,outArg out_args ))
+        
+        #### implementation detemine subroutine generating
+        ###1 for x2a_ax to x2a_aa : this are all standard subroutine mapper_comp_comm, mappers are
+        ### rearranger
+        mapper_name =  "mapper_comp_comm"
+        msg_tag = "msg_tag"
+        ierr = "ierr"
+        argList = []
+        argList.append(self.srcMapper.name, self.__model.attrVects["x2c_cx"].name,\
+                self.__model.attrVects["x2c_cc"].name, msg_tag, ierr)
+        subroutine = Subroutine(subroutineName=mapper_name, argList)
+        in_args = []
+        out_args = []
+        in_args.append(self.__model.attrVect["x2c_cx"].name)
+        out_args.append(self.__model.attrVect["x2c_cc"].name)
+        subroutineNode = SubroutineNode(subroutineName, model=self.__name, phase=1, \
+                                      inArgs=in_args, outArgs=out_args)
+        self.SeqRun.addSubroutine(subroutineNode)
+
+             
+
         subroutine.setRoot(root.find('final'))
+        subroutine.appendArgs(args)
         self.__model.model_final = subroutine.subroutine
+        #self.seqRun.addSubroutine(subroutine.getSubroutineNode(self.__name))
 
         self.__model.interval = root.find('interval').text
         root = root.find('attrVect')
@@ -344,13 +422,14 @@ class ModelParser:
 #
 class CouplerParser: ###!!!!
     __slots__ = ['__root', '__attrVect', '__isParsed', '__NameManager', '__fraction']
-    def __init__(self, nameManager):
+    def __init__(self, nameManager, seqRun):
         self.__root = ""
         self.__isParsed = False
         self.__NameManager = nameManager
         self.__attrVect = AttrVect()    
         self.__mergeSubroutine = MergeSubroutine()
 	self.__fraction = None
+        self.seqRun = seqRun
     
     @property
     def attrVect(self):
@@ -379,6 +458,7 @@ class CouplerParser: ###!!!!
         if self.__root == "":
             raise UnSetError("self.__root not set! Please try setRoot method")
         root = self.__root
+        modelGrid = root.find("model").text
         if root.find("name")!= None:
             name = root.find("name").text
             av = AttrVect(name=name)
@@ -398,8 +478,11 @@ class CouplerParser: ###!!!!
                 srcAttrVect = parser.visitByName(srcAttrVectName)
                 if srcAttrVect == None:
                     raise AttributeError("no such attrVect")
-                field = src.find("field").text
-                mapperName = src.find("mapper").text
+                field = src.find("field").text  # shall be optional
+
+                ## mapper parse with method now
+                mapperRoot = src.find("mapper")
+                mapperName = mapperRoot.find("name").text  #latter shall be generated
                 attrVect = AttrVectCpl(srcAttrVect, mapperName, grid, field=field)
                 attrVect.BindToManager(self.__NameManager)
                 attrVect.nameGenerate()
@@ -408,7 +491,45 @@ class CouplerParser: ###!!!!
                 mapper = Mapper(srcAttrVect,attrVect, mapType="sMat",name=mapperName)
                 mapper.BindToManager(self.__NameManager)
                 mapper.nameGenerate()
+      
+                ## parse mapper method
+                mapType = mapperRoot.find("type").text
+                if mapType == "offline":
+                    filePath = mapperRoot.find("w_file").text
+                    methodRoot = mapperRoot.find("method")   # implementation added here, 
+                    phaseIdx = 0                             # latter or sooner we will add
+                    prefix = "my_proc%"
+                    tags  = 100+3
+                    for method in methodRoot:
+                        methodName = method.find("name").text
+f                       field = method.find("field").text
+                        in_args = []
+                        for arg in methodRoot.find("in_args"):
+                            in_args.append(arg.text)
+                        out_args = []
+                        for arg in methodRoot.find("out_args"):
+                            out_args.append(arg.text)
+                        if phaseIdx == 0:
+                            argList = ["my_proc", prefix+mapperName, prefix+"cplid",prefix+grid+"_gsize",\
+                                      prefix+attrVect.grid+"_gsize", "gsmap_"+grid, "gsmap_"+attrVect.grid]
+                            mapper.method.setInit(mapperName, argList)
+                        else if phaseIdx == 1:
+                            argList = [prefix+mapperName, srcAttrVect.name, attrVect.name, tags, field, "ierr"]
+                            tags+= 1
+                            mapper.method.setRun(mapperName, argList)
+                            subroutine = Subroutine(methodName, model=grid, phase=3, inputArg=in_args, \
+                                                    outputArg=out_args)
+                            self.reqRun.addSubroutine(subroutine)
+                        phaseIdx+=1
+                      
+                    in_args = []
+                    out_args = []
+                    subroutine = Subroutine("", model=grid, phase=1,inputArg=in_args, outputArg=out_args)
+                else:
+                    mapper.method = MapperMethod()
                 parser.append(mapper)
+
+        '''
         if root.find("fraction") != None:
             fraction = root.find("fraction")
             fraction_name = fraction.find('name').text
@@ -417,7 +538,8 @@ class CouplerParser: ###!!!!
             for arg in args:
                 arg = arg.text
                 self.__fraction.append(arg)
-       
+        '''
+
         if root.find("mrg") != None:
             mrg = root.find("mrg")
             name = ""
@@ -427,14 +549,25 @@ class CouplerParser: ###!!!!
             else:
                 name = "mrg"+'_'
             merge = MergeSubroutine(name=name) 
-            if mrg.find("args") != None:  # if undefined args using default mod
-                argListRoot = mrg.find("args") 
-                for arg in argListRoot:
-                    args.append(arg.text)
-            else:
-                args = []
+            in_args = []
+            if mrg.find("in_args")!=None:
+                inArg = mrg.find("in_args")
+                for arg in inArg:
+                     in_args.append(arg.text)
+            out_args = []
+            if mrg.find("out_args")!=None:
+                outArg = mrg.find("out_args")
+                for arg in outArg:
+                     out_args.append(arg.text)
+            args = ["my_proc"]
+            for arg in in_args:
+                 args.append(arg)
+            for arg in out_args:
+                 args.append(arg)
             merge.argList = args
             self.__mergeSubroutine = merge
+            subroutine =  Subroutine(name, model=modelGrid, phase=5,in_args, out_args)
+            self.SeqRun.addSubroutine(subroutine)
         else:
             print "no mrg"
             #parser.append(mrg)   ## bugy

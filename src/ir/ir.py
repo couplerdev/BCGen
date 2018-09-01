@@ -267,6 +267,10 @@ class Model(CoupleEntity):
 
 ### debug region
     @property
+    def attrVects(self):
+        return self.__attrVects
+
+    @property
     def domain(self):
         return self.__domain   
     @domain.setter
@@ -358,6 +362,34 @@ class Model(CoupleEntity):
             print obj.type
             raise TypeError("no such type!!!")
 
+class MapperMethod():
+    __slots__ = ["__initStr", "__runStr", "__stype"]
+    def __init__(self, stype="offline"):
+        self.__init = None
+        self.__run = None
+        self.__stype = stype
+
+    def setInit(self, mapperName, argList):
+        if self.__stype ==  "offline":
+            self.__init = Subroutine(mapperName, argList)
+        else:
+            pass
+
+    def setRun(self, mapperName, argList):
+        if self.__stype == "offline":
+            self.__run = Subroutine(mapperName, argList)
+        else:
+            pass
+
+    @property
+    def init(self):
+        return self.__init
+   
+    @property
+    def run(self):
+        return self.__run
+
+
 #
 #   Mapper intermediate representation
 #   subroutine ?
@@ -374,6 +406,7 @@ class Mapper(CoupleEntity):
 	self.__dstAttrVect = dstAttrVect
         self.__srcGsMap = srcGsMap
         self.__dstGsMap = dstGsMap
+        self.__method = None
         if srcAttrVect.src == 'x':
             self.__direction = "x2c"
         else: 
@@ -411,6 +444,15 @@ class Mapper(CoupleEntity):
     @property
     def atype(self):
         return self.__type
+ 
+    @property
+    def method(self):
+        return self.__method
+
+    @method.setter
+    def method(self, method)
+        self.__method = method    
+
    
 class GsMap(CoupleEntity):
     __slots__=['__name','__grid', '__pes', '__manager','__type','__bind']
@@ -439,7 +481,7 @@ class GsMap(CoupleEntity):
         self.__pes = pesValue
 
 class AttrVectCpl(AttrVect):
-    __slots__=["__mapperName", "__field","__grid","__srcAttrVect",\
+    __slots__=["__mapperMethod", "__field","__grid","__srcAttrVect",\
                "__name", "__type", "__nameSet", "__manager", "__bind", \
                "__srcModelName", "__dstModelName","__srcModel", "__dstModel"]
     def __init__(self, srcAttrVect, mapper, grid, field=""):
@@ -447,7 +489,7 @@ class AttrVectCpl(AttrVect):
         self.__name = ""
         super(AttrVectCpl, self).__init__(name=name)
         self.__srcAttrVect = srcAttrVect
-        self.__mapperName = mapper
+        self.__mapperMethod = mapperMethod
         self.__field = field
         self.__grid = grid
         self.__nameSet = False
@@ -455,7 +497,7 @@ class AttrVectCpl(AttrVect):
         self.__type = "AttrVect"
         self.__srcModelName = self.__srcAttrVect.grid
         self.__dstModelName = grid
-        self.__srcModel = Model()
+        self.__srcModel = Model()    # 尽量使用引用，看看有没有常量引用
         self.__dstModel = Model()
 
     def BindToManager(self, manager):
@@ -518,3 +560,4 @@ class Fraction(AttrVect):
 
     def append(self, args):
         self.__initSubroutine.append(args)
+

@@ -8,21 +8,50 @@
 			<src>
                          	<attrVect>b2x_bx</attrVect>
 				<field>lat:lon</field>
-                     		<mapper>mapper_SMatb2a</mapper>
+                     		<mapper>
+					<name>mapper_SMatb2a</name><!--define target method-->
+					<type>offline</type>
+					<w_file></w_file>
+					<method>
+						<phase><!--init-->
+							<name></name>
+							<in_args></in_args>
+							<out_args></out_args>
+						</phase>
+						<phase><!--run-->
+							<name></name>
+							<in_args></in_args>
+							<out_args></out_args>
+						</phase>
+					</method>
+				</mapper>
                         </src>
 			<src>
 				<attrVect>c2x_cx</attrVect>
 				<field>lat:lon</field>
-				<mapper>mapper_SMatc2a</mapper>
+				<mapper>
+					<name>mapper_SMatc2a</name>
+					<type>offline</type><!--online or offline-->
+					<w_file><w_file><!--if type is not online-->
+					<methods>
+						<phase></phase><!--the first one is init-->
+						<phase>
+							<name></name>
+							<in_args></in_args><!--optional-->
+							<out_args></out_args><!--optional easy to compute out-->
+						</phase>
+					</methods>
+				</mapper>
   			</src>
 		</srcs>
 		<mrg>
 			<name>mrg_a</name>
-			<args>
+			<in_args>
 				<arg>a2x_ax</arg>
 				<arg>b2x_ax</arg>
 				<arg>c2x_ax</arg>
-			</args>
+			</in_args>
+			<out_arg>x2a_ax</out_arg>
 		</mrg>
    	</attrVect>
 	<attrVect>
@@ -33,21 +62,48 @@
 			<src>
                          	<attrVect>a2x_ax</attrVect>
 				<field>lat:lon</field>
-                     		<mapper>mapper_SMata2b</mapper>
+                     		<mapper>
+					<name>mapper_SMata2b</name>
+					<type>offline</type>
+					<w_file></w_file>
+					<method>
+						<phase></phase>
+						<phase>
+							<name></name>
+							<in_args></in_args>
+							<out_args></out_args>
+						</phase>
+					</method>
+				</mapper>
                         </src>
 			<src>
 				<attrVect>c2x_cx</attrVect>
 				<field>lat:lon</field>
-				<mapper>mapper_SMatc2b</mapper>
+				<mapper>
+					<name>mapper_SMatc2b</name>
+					<type></type>
+					<w_file></w_file>
+					<method>
+						<phase></phase>
+						<phase>
+							<name></name>
+							<in_args></in_args>
+							<out_args></out_args>
+						</phase>
+					</method>
+				</mapper>
   			</src>
 		</srcs>
 		<mrg>
 			<name>mrg_a</name>
-			<args>
-				<arg>a2x_ax</arg>
-				<arg>b2x_ax</arg>
-				<arg>c2x_ax</arg>
-			</args>
+			<in_args>
+				<arg>a2x_bx</arg>
+				<arg>b2x_bx</arg>
+				<arg>c2x_bx</arg>
+			</in_args>
+			<out_args>
+				<arg>x2b_bx</arg>
+			</out_args>
 		</mrg>
     	</attrVect>
 	<attrVect>
@@ -58,21 +114,48 @@
 			<src>
                          	<attrVect>a2x_ax</attrVect>
 				<field>lat:lon</field>
-                     		<mapper>mapper_SMata2c</mapper>
+                     		<mapper>
+					<name>mapper_SMata2c</name>
+					<type>offline</type>
+					<w_file></w_file>
+					<method>
+						<phase></phase>
+						<phase>
+							<name></name>
+							<in_args></in_args>
+							<out_args></out_args>
+						</phase>
+					</method>
+				</mapper>
                         </src>
 			<src>
 				<attrVect>b2x_bx</attrVect>
 				<field>lat:lon</field>
-				<mapper>mapper_SMatb2c</mapper>
+				<mapper>
+					<name>mapper_SMatb2c</name>
+					<type>offline</type>
+					<w_file></w_file>
+					<method>
+						<phase></phase>
+						<phase>
+							<name></name>
+							<in_args></in_args>
+							<out_args></out_args>
+						</phase>
+					</method>
+				</mapper>
   			</src>
 		</srcs>
 		<mrg>
-			<name>mrg_a</name>
-			<args>
-				<arg>a2x_ax</arg>
-				<arg>b2x_ax</arg>
-				<arg>c2x_ax</arg>
-			</args>
+			<name>mrg_c</name>
+			<in_args>
+				<arg>a2x_cx</arg>
+				<arg>b2x_cx</arg>
+				<arg>c2x_cx</arg>
+			<in_/args>
+			<out_args>
+				<arg>x2c_cx</arg>
+			</out_args>
 		</mrg>
         </attrVect>
 	<attrVect>
@@ -91,23 +174,48 @@
 			<src>
 				<attrVect>lnd2x_lndx</attrVect>
 				<field>velo:cal</field>
-				<mapper>mapper_SMatlnd2atm</mapper>
+				<mapper>
+					<name>mapper_SMatlnd2atm</name>
+					<type>offline</type>
+					<w_file><w_file>
+					<method>
+						<phase></phase>
+						<phase>
+							<name></name>
+							<in_args></in_args>
+							<out_args></out_args>
+						</phase>
+					</method>
+				</mapper>
 			</src>	
 			<src>
 				<attrVect>ocn2x_ocnx</attrVect>
 				<field>velo:cal</field>
-				<mapper>mapper_SMatocn2atm</mapper>
+				<mapper>
+					<name>mapper_SMatocn2atm</name>
+					<type>offline</type>
+					<w_file><w_file>
+					<method>
+						<phase></phase>
+						<phase>
+							<name></name>
+							<in_args></in_args>
+							<out_args></out_args>
+						</phase>
+					</method>
+				</mapper>
 			</src>
 		</srcs>
 		<mrg>
 			<name>mrg_x2atm</name>
-			<args>
-				<arg>my_proc</arg>
+			<in_args>
 				<arg>x2atm_atmx</arg>
 				<arg>ocn2x_atmx</arg>
 				<arg>lnd2x_atmx</arg>
-				<arg>fractions_atm</arg>
-			</args>
+			</in_args>
+			<out_args>
+				<arg>x2atm_atmx</arg>
+			</out_args>
 		</mrg>
 	</attrVect>
 </coupler>
