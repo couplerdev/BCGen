@@ -1,0 +1,17 @@
+思路：
+第一阶段，cpl-> model      x2a_ax ->x2a_aa  1          (model_parser)
+           model->cpl run  x2a_aa ->a2x_aa  2          (model_parser)
+                      run  a2x_aa ->a2x_ax  3          (model_parser)
+                      run  a2x_ax ->a2x_bx  4          (coupler_parser)
+                           a2x_bx b2x_bx ->b2x_bx 5    (coupler_parser)
+
+phase one 始终没有前置依赖
+其他的需要查找前置依赖，需要一个表格
+先假定只有一种数据变化形式，也就是out，从来不多阶段处理，如果有
+如何处理同一个过程参数不同的加入？
+
+
+元数据设计：
+暂时不允许出现同一个过程输入输出相同，假设，如果有这样的需求，实现上也可以
+通过将其转化为其他变量，也就是对于一个变量来说，在耦合器可以感知范围，只能
+有一种状态，变换状态必需变换名字，保证不出现解析顺序出现环
