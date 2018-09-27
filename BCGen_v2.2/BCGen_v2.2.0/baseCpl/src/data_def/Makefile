@@ -5,3 +5,5 @@ OBJS_ALL = $(SRC: .F90=.o)
 
 OBJS_ALL:
 	$(FC) -c -L$(LIBDIR) -I$(INCLDIR) $(SRC)
+	mv *.o $(LIBDIR)
+	mv *.mod $(INCLDIR)
