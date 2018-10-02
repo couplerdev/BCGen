@@ -27,10 +27,10 @@ subroutine clock_init(EClock, interval)
     type(Clock), intent(inout)    :: EClock
     integer, optional, intent(in) :: interval
  
-    EClock_global%seconds = 0 
-    EClock_global%minites = 0
-    EClock_global%hours   = 0
-    EClock_global%days    = 0
+    EClock%seconds = 0 
+    EClock%minites = 0
+    EClock%hours   = 0
+    EClock%days    = 0
     !EClock%months  = 0 
     !EClock%years   = 0 ! from base so far
 
