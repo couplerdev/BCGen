@@ -27,12 +27,14 @@ use comms_def
         #set $name = $model.name
         #set $avs = $model.attrVects
         #set $mappers = $model.mappers
+        #set $grid = $model.domain
         character(len=20) :: model${name}
         integer :: ${name}_size
         integer :: ${name}_gsize
         #for $av in $avs 
         type(AttrVect) :: $avs[$av].name
         #end for
+        type(gGrid) :: $model.domain
         #for $mapper in $mappers
         type(map_mod)  :: $mappers[$mapper].name
         #end for
@@ -46,15 +48,13 @@ use comms_def
         #set $name = $model.name
         type(map_mod)  :: $name
     #end for
-        !sparse mat 
-        type(map_mod)  :: mapper_SMata2b
-        type(map_mod)  :: mapper_SMata2c
-
-        type(map_mod)  :: mapper_SMatb2a
-        type(map_mod)  :: mapper_SMatb2c
-
-        type(map_mod)  :: mapper_SMatc2a
-        type(map_mod)  :: mapper_SMatc2b
+        !sparse mat   emmmm 
+    #for $model in $merge_cfgs
+        #set $dst_info = $merge_cfgs[$model]['dst']
+        #for $dst in $dst_info
+        type(map_mod)   :: $dst['dst_mapper']
+        #end for
+    #end for
 
 
 

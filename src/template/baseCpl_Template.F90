@@ -5,6 +5,8 @@ use procm, only: pm_init => init, clean
 use comms
 use timeM
 use mct_mod
+!use mrg_mod
+!use fraction_mod
 #for $model in $proc_cfgs
      #set $name = $model.name
 use comp_${name}
@@ -47,6 +49,9 @@ use comp_${name}
 	 logical :: ${name}_run
     #end for
 
+    #for $frac in $fraction_cfgs
+    type(AttrVect) :: $frac
+    #end for
     
      logical :: stop_clock
      type(clock) :: EClock
@@ -64,10 +69,10 @@ subroutine cpl_init()
     call pm_init(my_proc)
     call clock_init(EClock)
     
-    !---
+    !-------------------------------------------------------------------
     ! !A in 0,1,gsize=8   B in 2,3,gsize=12   C in 2,3,gsize=16
     ! !Cpl in 0,1,2,3
-    !----
+    !-------------------------------------------------------------------
 
     !-------------------------------------------------------------------
     !  !Define Model_AV_MM 
@@ -79,6 +84,12 @@ subroutine cpl_init()
                         #set $name = $avs[$av].name
                 $name=> my_proc%$name
                 #end for
+    #end for
+
+    #for $frac in $fraction_cfgs
+         #set $init = $fraction_cfgs[$frac].init
+         #set $init_str = $init.toString($init.name, $init.argList)
+         call $init_str
     #end for
 
     call MPI_Comm_rank(MPI_COMM_WORLD, comm_rank, ierr)
@@ -147,6 +158,9 @@ subroutine cpl_init()
                     call mapper_comp_map(my_proc%mapper_C${name}2x, &
                                          $av_mx_mm, $av_mx_mx, 100+10+1, ierr)
                 end if
+                if(iamroot_${name})then
+                    write(*,*)'-------------${name} initiated-----------'
+                end if
         #end for
 
 
@@ -186,15 +200,7 @@ subroutine cpl_init()
 
                 #end for
         #end for
-        call MPI_Barrier(MPI_COMM_WORLD, ierr)
-        write(*,*) "<<=== Rank:" , comm_rank, &
-            " lb2x_ax:", avect_lsize(b2x_ax),&
-            " lc2x_ax:", avect_lsize(c2x_ax),&
-            " la2x_bx:", avect_lsize(a2x_bx),&
-            " lc2x_bx:", avect_lsize(c2x_bx),&
-            " la2x_cx:", avect_lsize(a2x_cx),&
-            " lb2x_cx:", avect_lsize(b2x_cx),&
-            "===>>"
+ 
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
         write(*,*) " "
         call MPI_Barrier(MPI_COMM_WORLD, ierr)
@@ -223,117 +229,15 @@ subroutine cpl_run()
         call clock_advance(EClock)
         #for $cfg in $model_cfgs
                #set $name = $cfg['model_unique_name']
-        call triger(EClock, ${name}_run, "${name}_run")
+        call triger(EClock_${name}, ${name}_run)
         #end for
         call triger(EClock, stop_clock, "stop_clock")
-        s = s+1
-        if(s==10) stop_clock = .true.
 
-
-
-        !------------------------------------------------------------
-        !  Run phase 1 X2M_MX --> X2M_MM
-        !  (M is Model, X is CPL)
-        !------------------------------------------------------------
-
-
-        #for $cfg in $model_cfgs
-                #set $name = $cfg['model_unique_name']
-                #set $run_method = $cfg['subroutine']['run_method']
-                #set $run_phase1_method = $run_method['run_phase1_method']
-        if(${name}_run)then
-            if(my_proc%iamin_model${name}2cpl)then
-                if(s == 3 .and. my_proc%iamin_modela2cpl) then
-                    do i=1,avect_lsize(x2a_ax)
-                        x2a_ax%rAttr(1,i) = x2a_ax%rAttr(1,i) + (comm_rank+1)*10+i
-                    enddo
-                endif
-                if(s == 7 .and. my_proc%iamin_modelb2cpl) then
-                    do i=1,avect_lsize(x2b_bx)
-                        x2b_bx%rAttr(1,i) = x2b_bx%rAttr(1,i) + (comm_rank+1)*10+i
-                    enddo
-                endif
-                
-                $run_phase1_method.getFuncFormat()
-
-                if(s == 3 .and. my_proc%iamin_modela2cpl) then
-                    call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
-                    write(*,*) '<<===X2A_AA_VALUE Rank:',comm_rank, x2a_aa%rAttr(1,:)
-                call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
-                end if
-            end if
-        end if
+        #for $subrt in $subrt_cfgs
+$subrt
         #end for
 
-        call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
-
-        !------------------------------------------------------------
-        !  Run phase 2, Model Run,  X2M_MM --> M2X_MM
-        !  (M is Model, X is CPL)
-        !------------------------------------------------------------
-
-        #for $cfg in $model_cfgs
-                #set $name = $cfg['model_unique_name']
-                #set $run_method = $cfg['subroutine']['run_method']
-                #set $run_phase2_method = $run_method['run_phase2_method']
-        if(${name}_run)then
-            if(my_proc%iamin_model${name})then
-                $run_phase2_method.getFuncFormat()
-            end if
-        end if
-        #end for
-
-        call MPI_Barrier(MPI_COMM_WORLD, ierr)
-                    write(*,*)
-        call MPI_Barrier(MPI_COMM_WORLD, ierr)
-
-        !------------------------------------------------------------
-        !  Run phase 3
-        !  For each Model:
-        !  Step1: Rearrange, M2X_MM --> M2X_MX
-        !  Step2: SparseMul With Other Model, M2X_MX --> M2X_BX
-        !  (M is Model, X is CPL, B is Another Model)
-        !------------------------------------------------------------
-        !  For example:
-        ! rearrage(a2x_aa,b2x_bb,c2x_cc) => (a2x_ax,b2x_bx,c2x_cx)
-        ! sparse(a2x_ax b2x_bx c2x_cx) =>
-        ! (a2x_bx,a2x_cx) (b2x_cx,b2x_a2) (c2x_ax,c2x_bx)
-        !
-   
-       #for $cfg in $model_cfgs
-                #set $name = $cfg['model_unique_name']
-                #set $run_method = $cfg['subroutine']['run_method']
-                #set $run_phase3_method = $run_method['run_phase3_method']
-        if(${name}_run)then
-            if(my_proc%iamin_model${name}2cpl)then
-                $run_phase3_method.getFuncFormat()
-            end if
-        end if
-        #end for
-
-        !------------------------------------------------------------
-        !  Run phase 4
-        !  Merge (A2X_MX, B2X_MX, C2X_MX, M2X_MX)--> X2M_MX
-        !  (M is Model, X is CPL, A,B,C is Another Model)
-        !------------------------------------------------------------
-        ! For Example:
-        ! (c2x_ax,b2x_ax,a2x_ax) => (x2a_ax)
-        ! (c2x_bx,b2x_bx,a2x_bx) => (x2b_bx)
-        ! (c2x_cx,b2x_cx,a2x_cx) => (x2c_cx)
-    if(my_proc%iamin_cpl) then
-        if(s==10) then
-            ! merge *2x_ax --> x2a_ax in rfield "x", cal the mean of all
-            call mapper_comp_avMerge(a2x_ax, b2x_ax, c2x_ax, x2a_ax, "x")
-            call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
-                    write(*,*) '<<===X2A_AX_Merge_VALUE Rank:',comm_rank, x2a_ax%rAttr(1,:)
-            #for $mgr_routine in $merge_subroutines
-                #set func_str = $mgr_routine.toString($mgr_routine.name, $mgr_routine.argList)
-                !call ${mgr_routine.toString($mgr_routine.name,$mgr_routine.argList)}
-            #end for
-            call MPI_Barrier(my_proc%comp_comm(my_proc%modela2cpl_id), ierr)
-        endif
-    endif
 
     end do
 

@@ -38,3 +38,5 @@ for sbr in parser.subroutine:
     print subroutine.toString(subroutine.name, subroutine.argList)
 for deploy in parser.deploy:
     print deploy, parser.deploy[deploy]
+for fraction in parser.fractions:
+    print fraction.name

@@ -8,14 +8,22 @@ module timeM
         integer :: days
         !integer :: months
         !integer :: years
-        integer :: interval
+        integer :: interval = 1
     end type Clock
     integer :: total_days =  1 
 
     #for $model in $proc_cfgs
     #set $model_name = $model.name
-    #set $model_interval = $model.interval
-    integer :: time_${model_name}_run = ${model_interval}
+    #set $model_time = $model.Time
+    #set $model_seconds = $model.Time["sec"]
+    #set $model_minutes = $model.Time["minute"]
+    #set $model_hours = $model.Time["h"]
+    #set $model_days = $model.Time["d"]
+    
+    integer :: ${model_name}_seconds = ${model_seconds}
+    integer :: ${model_name}_minutes = ${model_minutes}
+    integer :: ${model_name}_hours = ${model_hours}
+    integer :: ${model_name}_days = ${model_days}
     #end for
 
 
@@ -24,24 +32,37 @@ module timeM
     public :: triger
 contains 
 
-subroutine clock_init(EClock, interval)
+subroutine clock_init(EClock,
+                     #for $model in $proc_cfgs 
+                     #set $model_name = $model.name 
+                     ${model_name}, 
+                     #end for
+                     interval)
  
     implicit none
     type(Clock), intent(inout)    :: EClock
+    #for $model in $proc_cfgs
+    #set $model_name = $model.name
+    type(Clock), intent(inout)    :: EClock_${model_name}
+    #end for
     integer, optional, intent(in) :: interval
  
     EClock%seconds = 0 
     EClock%minites = 0
     EClock%hours   = 0
     EClock%days    = 0
+    #for $model in $proc_cfgs
+    #set $model_name = $model.name
+    EClock_${model_name}%seconds = ${model_name}_seconds
+    EClock_${model_name}%minutes = ${model_name}_minutes
+    EClock_${model_name}%hours = ${model_name}_hours
+    EClock_${model_name}%days = ${model_name}_days
+    EClock_${model_name}%interval = EClock_${model_name}%seconds+ (EClock_${model_name}%minutes +\
+                   (EClock_${model_name}%hours+EClock_${model_name}%days*24)*60)*60
+    #end for
     !EClock%months  = 0 
     !EClock%years   = 0 ! from base so far
-
-    if(present(interval))then
-        EClock%interval = interval
-    else
-        EClock%interval = 1
-    end if
+    EClock%interval = interval
 
 end subroutine
 
@@ -70,42 +91,36 @@ subroutine clock_advance(EClock)
 
 end subroutine clock_advance
 
-subroutine triger(EClock, flag, flag_name)
+subroutine triger(EClock,EClock_s ,run)
 
     implicit none
     type(Clock), intent(in)       :: EClock
-    logical, intent(inout)        :: flag
-    character(len=*),  intent(in) :: flag_name
-    integer                       :: tmp_m
-    integer                       :: tmp_h
-    integer                       :: tmp_d 
-    integer                       :: tmp_mod
+    type(Clock), intent(in)       :: EClock_s
+    logical, intent(inout)        :: run
+    integer   :: time_run
+    integer   :: tmp_m
+    integer   :: tmp_h
+    integer   :: tmp_d
+    integer   :: tmp_mod
 
-    flag = .false.
+    run = .false.
     if(flag_name=='stop_clock')then
         if(EClock%days >= total_days)then
-            write(*,*) 'work'
-            flag=.true.
+            run = .false.
         end if
     end if
-
-    #for $model in $proc_cfgs
-    #set $model_name = $model.name
-    if(flag_name=='${model_name}_run')then
-        tmp_m = mod(60, time_${model_name}_run)
-        tmp_h = mod(60*60, time_${model_name}_run)
-        tmp_d = mod(tmp_h*24, time_${model_name}_run)
-        tmp_mod = mod(EClock%seconds, time_${model_name}_run) +&
-mod(EClock%minites*tmp_m, time_${model_name}_run) + &
-                  mod(EClock%hours*tmp_h, time_${model_name}_run) + &
-mod(EClock%days*tmp_d, time_${model_name}_run)
-        tmp_mod = mod(tmp_mod, time_${model_name}_run)
-        if(tmp_mod == 0)then
-            flag = .true.
-        end if
+    time_run = EClock_s%interval
+    tmp_m = mod(60, time_run)
+    tmp_h = mod(60*60, time_run)
+    tmp_d = mod(tmp_h*24, time_run)
+    tmp_mod = mod(EClock%seconds, time_run) +&
+              mod(EClock%minites*tmp_m, time_run) + &
+              mod(EClock%hours*tmp_h, time_run) + &
+              mod(EClock%days*tmp_d, time_run)
+    tmp_mod = mod(tmp_mod, time_run)
+    if(tmp_mod == 0)then
+        run = .true.
     end if
-
-    #end for
 
 end subroutine triger
 

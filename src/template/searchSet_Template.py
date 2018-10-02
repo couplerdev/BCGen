@@ -11,6 +11,7 @@ class Temp:
         self.funcname = funcname
         self.params = params
         self.mix = mix
+        self.space = 24*" "
     def getName(self):
         return "rr34"
     def getFuncFormat(self):
@@ -20,13 +21,18 @@ class Temp:
                 res.append(routine.getFuncFormat())
         else:
             args = []
+            l = len(self.params)
+            indx = 0
             for key in sorted(self.params):
+                indx = indx+1
                 item = key + '=' + self.params[key] +'&\n'
                 if key == 'rList':
-                    item = key + '=\'' + params[key]+ '\'&\n' 
+                    item = key + '=\'' + self.params[key]+ '\'&\n' 
+                if indx == l:
+                    item = key + '=' + self.params[key]
                 args.append(str(item))
-            args = ",".join(args)
-            func_str = "call "+ self.funcname + "(" + args + ")"
+            args = (self.space+",").join(args)
+            func_str = "call "+ self.funcname + "(" + args +")"
             #str_len = len(func_str) / 2
             #func_str = func_str[:str_len] + '&\n' + func_str[str_len:]
 
@@ -73,7 +79,6 @@ params = {
     'dst':'${x2c_cc.name}', 
     'msgtag':'100+${j}0+2', 
     'ierr':'ierr',
-    'rList':'',
 }
 ${model_name}_run_phase1 = Temp(funcname=method_name, params=params)
 
@@ -96,7 +101,6 @@ params = {
     'dst':'${c2x_cx.name}', 
     'msgtag':'100+${j}0+3', 
     'ierr':'ierr',
-    'rList':'',
 }
 ${model_name}_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(${model_name}_run_phase3_1)
@@ -110,14 +114,15 @@ sub_run_phase_3.append(${model_name}_run_phase3_1)
     #set $mapper_name = $dst_info['dst_mapper']
     #set $smat_size = $dst_info['smat_size']
     #set $run_phase_step = 2 + $i
+    #set $dst_field=$dst_info['dst_field']
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%${mapper_name}',
     'src':'${c2x_cx.name}',
     'dst':'${av_mx_nx}', 
-    'msgtag':'100+${j}0+3', 
+    'msgtag':'100+${j}0+4', 
     'ierr':'ierr',
-    'rList':'x',
+    'rList':'${dst_field}',
 }
 ${model_name}_run_phase3_${run_phase_step} = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(${model_name}_run_phase3_${run_phase_step})

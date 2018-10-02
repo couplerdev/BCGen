@@ -1,8 +1,0 @@
-<schedule>
-	<run_sequence> <!--describe the sequence of mct_run-->
-		<model></model>
-		<model></model>
-		<model></model>
-	</run_sequence>
-
-</schedule>

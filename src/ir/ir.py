@@ -1,3 +1,5 @@
+#!usr/bin/python
+#coding:utf-8
 #
 #    Intermediate representation : include Subroutine class and child class ModelSubroutine
 #    class MergeSubroutine; CoupleEntity Class, its child class Model, AttrVect, sMat, Mapper,
@@ -6,12 +8,12 @@
 #    reversion history:
 #        2018,3,3              alex: add the module
 #        2018,3,27             alex: finish version v0.0
-#!/usr/bin/python
 
 # intermediate representation
 import sys
 sys.path.append("../ErrorHandle")
 from ErrorHandle import *
+from Datatype import *
 
 
 class Subroutine(object):
@@ -22,6 +24,10 @@ class Subroutine(object):
         self.__lineCharacter = lineCharacter
 
     @property
+    def name(self):
+        return self.__subroutineName
+
+    @property
     def argList(self):
         return self.__argList
     @argList.setter
@@ -29,13 +35,19 @@ class Subroutine(object):
         self.__argList = argListValue
 
     def append(self, arg):
+        print 'call this'
         if not isinstance(arg, str):
             raise  TypeError("arg not a string")
-        print type(self.__argList)
         self.__argList.append(arg)
 
     def toString(self, subroutineName, argList):
 	string = subroutineName
+        string+="("
+        for arg in argList:
+            string+=arg+", "
+        string=string[:-2]
+        string+=")"
+        '''
         string += "("
         lenString = len(string)
         lenSpace = lenString
@@ -52,6 +64,8 @@ class Subroutine(object):
         else:
             string = string[:-2]
             string += ")"
+        '''
+        #print 'stringFUNc:',string
         return string 
            
 class MergeSubroutine(Subroutine):
@@ -74,12 +88,12 @@ class MergeSubroutine(Subroutine):
     #def append(self, arg):
     #    super(MergerSubroutine, self).append(arg)
 
-    #def toString(self):
-    #    return super(MergeSubroutine, self).toString(self.__subroutineName, self.__argList)
+    def toString(self):
+        return super(MergeSubroutine, self).toString(self.__subroutineName, self.__argList)
 
 class ModelSubroutine(Subroutine):
 
-    __slots__=["__name","default","__argList","__wrapper", "__subroutineName", "__type"]
+    __slots__=["__name","default","argList","__wrapper", "__subroutineName", "__type"]
     def __init__(self, pattern=True, name="", wrapper="mct", subroutineName="init"):
         super(ModelSubroutine, self).__init__()
         self.__name = name
@@ -87,7 +101,8 @@ class ModelSubroutine(Subroutine):
         self.__type = subroutineName
         self.__subroutineName = self.__name + self.__type+ "_" + self.__wrapper
         self.default = pattern
-	self.__argList = []		
+	self.argList = []		
+
 
     @property
     def subroutineName(self):
@@ -111,22 +126,12 @@ class ModelSubroutine(Subroutine):
 	    raise TypeError("name must be str type")
         self.__subroutineName = self.__name + self.__type + "_" + self.__wrapper
 
-    @property
-    def argList(self):
-	return self.__argList
-
-    @argList.setter
-    def argList(self, _list):
-	if isinstance(__argList, list):
-	    self.__argList = _list
-	else:
-	    raise TypeError("_list must be list type")
-   
     def append(self, arg):
-        self.__argList.append(arg)
+        self.argList.append(arg)
  
     def toString(self):
-        return super(ModelSubroutine,self).toString(self.__subroutineName, self.__argList)
+        #print self.argList
+        return super(ModelSubroutine,self).toString(self.__subroutineName, self.argList)
 
 #   a bug: init with name not checked by NameManager
 #   present solution: init phase name not allowed ?	
@@ -205,6 +210,9 @@ class AttrVect(CoupleEntity):
     @field.setter
     def field(self, fieldValue):
 	self.__field = fieldValue
+
+    def hasField(self, field):
+        return True   # not implement yet
  
     @property
     def src(self):
@@ -241,7 +249,7 @@ class AttrVect(CoupleEntity):
 class Model(CoupleEntity):
     __slots__ = ['__name','__model_init','__model_run','__model_final',\
                  '__manager', '__type', '__attrVects','__gsMaps', '__mappers',\
-                 '__gSize', '__ID', '__interval']
+                 '__gSize', '__ID', '__time','__domain', '__nmlFile']
     def __init__(self,name="", gSize=8):
 	super(Model, self).__init__(name=name,_type="Model")
 	self.__model_init = ModelSubroutine() #optional?
@@ -251,27 +259,31 @@ class Model(CoupleEntity):
         self.__attrVects = {}   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
         self.__gsMaps = {}
         self.__mappers = {}       
+        self.__domain = '' 
         self.__name = name
         self.__gSize = gSize
         self.__ID = -1
-        self.__interval = 1
+     	self.__time = None
+        self.__nmlFile = ""
 
 ### debug region
-   
+    @property
+    def attrVects(self):
+        return self.__attrVects
+
+    @property
+    def domain(self):
+        return self.__domain   
+    @domain.setter
+    def domain(self, domain):
+        self.__domain = domain
+
     @property
     def gSize(self):
         return self.__gSize
     @gSize.setter
     def gSize(self, gsizeValue):
         self.__gSize = gsizeValue
-
-    @property
-    def interval(self):
-        return self.__interval
-
-    @interval.setter
-    def interval(self, interval):
-        self.__interval = interval
 
     @property
     def attrVects(self):
@@ -318,6 +330,14 @@ class Model(CoupleEntity):
     def ID(self, IDValue):
         self.__ID = IDValue 
 
+    @property
+    def Time(self):
+	return self.__time
+    
+    @Time.setter
+    def Time(self, time):
+        self.__time = time
+
     def append(self, obj):
         if obj.type == "AttrVect":
             key = "c2x_cc"
@@ -343,13 +363,41 @@ class Model(CoupleEntity):
             print obj.type
             raise TypeError("no such type!!!")
 
+class MapperMethod():
+    __slots__ = ["__initStr", "__runStr", "__stype"]
+    def __init__(self, stype="offline"):
+        self.__init = None
+        self.__run = None
+        self.__stype = stype
+
+    def setInit(self, mapperName, argList):
+        if self.__stype ==  "offline":
+            self.__init = Subroutine(mapperName, argList)
+        else:
+            pass
+
+    def setRun(self, mapperName, argList):
+        if self.__stype == "offline":
+            self.__run = Subroutine(mapperName, argList)
+        else:
+            pass
+
+    @property
+    def init(self):
+        return self.__init
+   
+    @property
+    def run(self):
+        return self.__run
+
+
 #
 #   Mapper intermediate representation
 #   subroutine ?
 #
 class Mapper(CoupleEntity):
     __slots__ = ["__mapType", "__srcAttrVect", "__dstAttrVect", "__name",\
-                 "__type", "__srcGsMap", "__dstGsMap","__direction"]
+                 "__type", "__srcGsMap", "__dstGsMap","__direction", "__method"]
     def __init__(self, srcAttrVect, dstAttrVect, srcGsMap="", dstGsMap="", \
                  mapType="copy", name=""):
         super(Mapper, self).__init__(name=name,_type="Mapper")
@@ -359,6 +407,7 @@ class Mapper(CoupleEntity):
 	self.__dstAttrVect = dstAttrVect
         self.__srcGsMap = srcGsMap
         self.__dstGsMap = dstGsMap
+        self.__method = MapperMethod()
         if srcAttrVect.src == 'x':
             self.__direction = "x2c"
         else: 
@@ -396,6 +445,15 @@ class Mapper(CoupleEntity):
     @property
     def atype(self):
         return self.__type
+ 
+    @property
+    def method(self):
+        return self.__method
+
+    @method.setter
+    def method(self, method):
+        self.__method = method    
+
    
 class GsMap(CoupleEntity):
     __slots__=['__name','__grid', '__pes', '__manager','__type','__bind']
@@ -424,15 +482,17 @@ class GsMap(CoupleEntity):
         self.__pes = pesValue
 
 class AttrVectCpl(AttrVect):
-    __slots__=["__mapperName", "__field","__grid","__srcAttrVect",\
+    __slots__=["__mapperMethod", "__field","__grid","__srcAttrVect",\
                "__name", "__type", "__nameSet", "__manager", "__bind", \
-               "__srcModelName", "__dstModelName","__srcModel", "__dstModel"]
+               "__srcModelName", "__dstModelName","__srcModel", "__dstModel",\
+               "__mapperName"]
     def __init__(self, srcAttrVect, mapper, grid, field=""):
         name = ""
         self.__name = ""
+        mapperMethod = None
         super(AttrVectCpl, self).__init__(name=name)
         self.__srcAttrVect = srcAttrVect
-        self.__mapperName = mapper
+        self.__mapperMethod = mapperMethod
         self.__field = field
         self.__grid = grid
         self.__nameSet = False
@@ -440,8 +500,9 @@ class AttrVectCpl(AttrVect):
         self.__type = "AttrVect"
         self.__srcModelName = self.__srcAttrVect.grid
         self.__dstModelName = grid
-        self.__srcModel = Model()
+        self.__srcModel = Model()    # 尽量使用引用，看看有没有常量引用
         self.__dstModel = Model()
+        self.__mapperName=""
 
     def BindToManager(self, manager):
         self.__manager = manager
@@ -467,6 +528,10 @@ class AttrVectCpl(AttrVect):
     @property
     def mapperName(self):
         return self.__mapperName
+
+    @mapperName.setter
+    def mapperName(self, mapperName):
+        self.__mapperName = mapperName
     
     @property
     def field(self):
@@ -483,3 +548,24 @@ class AttrVectCpl(AttrVect):
     @property
     def dstModel(self):
         return self.__dstModel
+
+class Fraction(AttrVect):
+    __slots__=["__name","__field","__initSubroutine"] 
+    def __init__(self,fractionName):
+        self.__name=""
+        super(AttrVect,self).__init__(name=fractionName)
+        self.__name=fractionName
+        subroutineName = self.__name+"_init"
+        self.__initSubroutine =  Subroutine(subroutineName=subroutineName) 
+
+    @property
+    def init(self):
+        return self.__initSubroutine
+    
+    @property
+    def name(self):
+        return self.__name
+
+    def append(self, args):
+        self.__initSubroutine.append(args)
+
