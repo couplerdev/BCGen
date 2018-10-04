@@ -7,13 +7,18 @@ module comms_nc
 use mct_mod
 use comms_def
 use base_sys, only: base_sys_abort
-!use logUnit, only: logUnit
-    implicit none
-    private :: binary_search
+use netcdf
 
-    public :: mct_sMatReadnc
-    public :: mct_sMatInitnc
-    public :: mct_sMatWritenc
+!use logUnit, only: logUnit
+
+    implicit none
+#include <mpif.h>
+    public :: sMatReadnc
+    public :: sMatReaddnc
+    public :: sMatPInitnc_mapfile
+    !public :: sMatWritenc
+
+    private :: binary_search
 
 contains
 
@@ -23,10 +28,12 @@ logical function binary_search(idx, starti, counti)
     integer, intent(in) :: idx
     integer, intent(in) :: starti(:)
     integer, intent(in) :: counti(:)
+
+    integer :: lsize
  
     integer :: l, r, i
 
-    logical break = .false.
+    logical :: break = .false.
  
     binary_search = .false.
     lsize = size(starti)
@@ -48,13 +55,14 @@ logical function binary_search(idx, starti, counti)
         i = (l+r)/2
         if (i<0 .or. i> lsize+1 .or. r-l<=2)then
             break = .true.
+        end if
     end do
     return 
 end function binary_search
 
 
-subroutine mct_sMatReadnc(mapper, filename)
-
+subroutine sMatReadnc(mapper, filename)
+implicit none
 #include <netcdf.inc>
    
     type(map_mod), intent(inout) :: mapper
@@ -83,30 +91,30 @@ subroutine mct_sMatReadnc(mapper, filename)
          return   ! need modify to error handle 
     end if
 
-    rcode = nf_open(filename, NF_NOWRITE, fid)
-    if (rcode /= NF_NOERR)then
-        write(*,*)nf_strerror(rcode)
+    rcode = nf90_open(filename, NF90_NOWRITE, fid)
+    if (rcode /= NF90_NOERR)then
+        write(*,*)nf90_strerror(rcode)
         return   !need modify to error handle
     endif
    
-    rcode = nf_inq_dimid(fid, 'n_s', did)
+    rcode = nf90_inq_dimid(fid, 'n_s', did)
     rcode = nf_inq_dimlen(fid, did, ns)
-    rcode = nf_inq_dimid(fid, 'n_a', did)
+    rcode = nf90_inq_dimid(fid, 'n_a', did)
     rcode = nf_inq_dimlen(fid, did, na)
-    rcode = nf_inq_dimid(fid, 'n_b', did)
+    rcode = nf90_inq_dimid(fid, 'n_b', did)
     rcode = nf_inq_dimlen(fid, did, nb)
     
     call sMat_init(mapper%sMat, nb, na, ns)
     
     igrow = sMat_indexIA(mapper%sMat, 'grow')
     igcol = sMat_indexIA(mapper%sMat, 'gcol')
-    iweight = sMat_indexIA(mapper%sMat, 'weight')
+    iweight = sMat_indexRA(mapper%sMat, 'weight')
     
     allocate(rtemp(ns), stat=rcode)
 
-    rcode = nf_inq_varid(fid, 'S', vid)
+    rcode = nf90_inq_varid(fid, 'S', vid)
     rcode = nf_get_var_double(fid, vid, rtemp)
-    if(rcode /= NF_NOERR )then
+    if(rcode /= NF90_NOERR )then
         write(*,*)'nf get error'
         return  
     end if
@@ -117,9 +125,9 @@ subroutine mct_sMatReadnc(mapper, filename)
     
     allocate(itemp(ns), stat=rcode)
    
-    rcode = nf_inq_varid(fid, 'row',vid)
+    rcode = nf90_inq_varid(fid, 'row',vid)
     rcode = nf_get_var_int(fid, vid, itemp)
-    if(rcode /= NF_NOERR)then
+    if(rcode /= NF90_NOERR)then
         write(*,*)'nf get error'
         return
     endif
@@ -128,9 +136,9 @@ subroutine mct_sMatReadnc(mapper, filename)
 
     itemp(:) = 0
 
-    rcode = nf_inq_varid(fid, 'col', vid)
+    rcode = nf90_inq_varid(fid, 'col', vid)
     rcode = nf_get_var_int(fid, vid, itemp)
-    if(rcode /= NF_NOERR)then
+    if(rcode /= NF90_NOERR)then
         write(*,*)'nf get error'
     endif
 
@@ -141,14 +149,14 @@ subroutine mct_sMatReadnc(mapper, filename)
         return 
     endif
 
-    rcode = nf_close(fid)
+    rcode = nf90_close(fid)
     if(rcode /= 0)then
         write(*,*)'close fail'
         return
     end if
-end subroutine mct_sMatReadnc
+end subroutine sMatReadnc
 
-subroutine mct_sMatReaddnc(sMat, gsmap_src, gsmap_dst, newdom, areasrc, areadst, &
+subroutine sMatReaddnc(sMat, gsmap_src, gsmap_dst, newdom, areasrc, areadst, &
                            filename, mytask, mpicom, ni_i, nj_i, ni_o, nj_o)
 
 implicit none
@@ -175,7 +183,7 @@ implicit none
     integer          :: ni, nj
     integer          :: igrow
     integer          :: igcol
-    integer          :: iweight
+    integer          :: iwgt
     integer          :: iarea
     integer          :: rsize
     integer          :: cnt
@@ -210,11 +218,13 @@ implicit none
     integer                :: vid
     integer                :: did
     integer, parameter     :: rbuf_size = 100000
+    integer               :: ierr
 
     type(attrVect)    :: areasrc0
     type(attrVect)    :: areadst0
 
     character(*), parameter :: areaAV_field = "aream"
+    character(*), parameter :: subName = ""
 
     call mpi_comm_size(mpicom, commsize)
     
@@ -226,21 +236,21 @@ implicit none
 
     !--- get matrix dimensions ----------
     !--- get matrix dimensions ----------
-   rcode = nf_inq_dimid (fid, 'n_s', did)  ! size of sparse matrix
+   rcode = nf90_inq_dimid (fid, 'n_s', did)  ! size of sparse matrix
    rcode = nf_inq_dimlen(fid, did  , ns)
-   rcode = nf_inq_dimid (fid, 'n_a', did)  ! size of  input vector
+   rcode = nf90_inq_dimid (fid, 'n_a', did)  ! size of  input vector
    rcode = nf_inq_dimlen(fid, did  , na)
-   rcode = nf_inq_dimid (fid, 'n_b', did)  ! size of output vector
+   rcode = nf90_inq_dimid (fid, 'n_b', did)  ! size of output vector
    rcode = nf_inq_dimlen(fid, did  , nb)
    
    if (present(ni_i) .and. present(nj_i) .and. present(ni_o) .and. present(nj_o)) then
-      rcode = nf_inq_dimid (fid, 'ni_a', did)  ! number of lons in input grid
+      rcode = nf90_inq_dimid (fid, 'ni_a', did)  ! number of lons in input grid
       rcode = nf_inq_dimlen(fid, did  , ni_i)
-      rcode = nf_inq_dimid (fid, 'nj_a', did)  ! number of lats in input grid
+      rcode = nf90_inq_dimid (fid, 'nj_a', did)  ! number of lats in input grid
       rcode = nf_inq_dimlen(fid, did  , nj_i)
-      rcode = nf_inq_dimid (fid, 'ni_b', did)  ! number of lons in output grid
+      rcode = nf90_inq_dimid (fid, 'ni_b', did)  ! number of lons in output grid
       rcode = nf_inq_dimlen(fid, did  , ni_o)
-      rcode = nf_inq_dimid (fid, 'nj_b', did)  ! number of lats in output grid
+      rcode = nf90_inq_dimid (fid, 'nj_b', did)  ! number of lats in output grid
       rcode = nf_inq_dimlen(fid, did  , nj_o)
    end if
 
@@ -255,12 +265,12 @@ implicit none
    if (present(areasrc)) then
    if (mytask == 0) then
       call avect_init(areasrc0,' ',areaAV_field,na)
-      rcode = nf_inq_varid     (fid,'area_a',vid)
-      if (rcode /= NF_NOERR) write(*,*) nf_strerror(rcode)
+      rcode = nf90_inq_varid     (fid,'area_a',vid)
+      if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
       rcode = nf_get_var_double(fid, vid, areasrc0%rAttr)
-      if (rcode /= NF_NOERR) write(*,*) nf_strerror(rcode)
+      if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
    endif
-   call avect_scatter(areasrc0, areasrc, SgsMap, 0, mpicom, rcode)
+   call avect_scatter(areasrc0, areasrc, gsmap_src, 0, mpicom, rcode)
    if (rcode /= 0) then!call mct_die("shr_mct_sMatReaddnc","Error on scatter of areasrc0")
        write(*,*) 'failed'
        return
@@ -280,12 +290,12 @@ implicit none
    if (present(areadst)) then
    if (mytask == 0) then
       call avect_init(areadst0,' ',areaAV_field,nb)
-      rcode = nf_inq_varid     (fid,'area_b',vid)
-      if (rcode /= NF_NOERR) write(*,*) nf_strerror(rcode)
+      rcode = nf90_inq_varid(fid,'area_b',vid)
+      if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
       rcode = nf_get_var_double(fid, vid, areadst0%rAttr)
-      if (rcode /= NF_NOERR) write(*,*) nf_strerror(rcode)
+      if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
    endif
-   call avect_scatter(areadst0, areadst, DgsMap, 0, mpicom, rcode)
+   call avect_scatter(areadst0, areadst, gsmap_dst, 0, mpicom, rcode)
    if (rcode /= 0) then!call mct_die("shr_mct_sMatReaddnc","Error on scatter of areadst0")
         write(*,*)'failed'
         return 
@@ -311,14 +321,11 @@ implicit none
    call mpi_bcast(ns,mpicom,subName//" MPI in ns bcast")
    call mpi_bcast(na,mpicom,subName//" MPI in na bcast")
    call mpi_bcast(nb,mpicom,subName//" MPI in nb bcast")
-'''
-marks
-'''
    !--- setup local seg map, sorted
    if (newdom == 'src') then
-      mygsmap => DgsMap
+      mygsmap => gsmap_dst
    elseif (newdom == 'dst') then
-      mygsmap => SgsMap
+      mygsmap => gsmap_src
    else
       write(*,*)'error'
       call base_sys_abort()
@@ -382,23 +389,23 @@ marks
 
       !--- read data on root pe
       if (mytask== 0) then
-         rcode = nf_inq_varid      (fid,'S'  ,vid)
+         rcode = nf90_inq_varid      (fid,'S'  ,vid)
          rcode = nf_get_vara_double(fid,vid,start,count,Sbuf)
          !if (rcode /= NF_NOERR .and. s_loglev > 0) write(s_logunit,F00) nf_strerror(rcode)
 
-         rcode = nf_inq_varid      (fid,'row',vid)
+         rcode = nf90_inq_varid      (fid,'row',vid)
          rcode = nf_get_vara_int   (fid,vid,start,count,Rbuf)
          !if (rcode /= NF_NOERR .and. s_loglev > 0) write(s_logunit,F00) nf_strerror(rcode)
 
-         rcode = nf_inq_varid      (fid,'col',vid)
+         rcode = nf90_inq_varid      (fid,'col',vid)
          rcode = nf_get_vara_int   (fid,vid,start,count,Cbuf)
          !if (rcode /= NF_NOERR .and. s_loglev > 0) write(s_logunit,F00) nf_strerror(rcode)
       endif
 
       !--- send S, row, col to all pes
-      call MPI_BCAST(Sbuf, size(Sbuf), MPI_DOUBLE, 0, mpicom, ierr)
-      call MPI_BCAST(Rbuf, size(Rbuf), MPI_INT, 0, mpicom, ierr)
-      call MPI_BCAST(Cbuf, size(Cbuf), MPI_INT, 0, mpicom, ierr)
+      call MPI_BCAST(Sbuf, size(Sbuf), MPI_REAL, 0, mpicom, ierr)
+      call MPI_BCAST(Rbuf, size(Rbuf), MPI_INTEGER, 0, mpicom, ierr)
+      call MPI_BCAST(Cbuf, size(Cbuf), MPI_INTEGER, 0, mpicom, ierr)
       !call shr_mpi_bcast(Sbuf,mpicom,subName//" MPI in Sbuf bcast")
       !call shr_mpi_bcast(Rbuf,mpicom,subName//" MPI in Rbuf bcast")
       !call shr_mpi_bcast(Cbuf,mpicom,subName//" MPI in Cbuf bcast")
@@ -481,12 +488,12 @@ marks
    endif
 
 
-end subroutine mct_sMatReaddnc
+end subroutine sMatReaddnc
 
 
 
 
-subroutine mct_sMatPInitnc_mapfile(sMatP, gsmapX_, gsmapY_, filename, maptype, &
+subroutine sMatPInitnc_mapfile(sMatP, gsmapX_, gsmapY_, filename, maptype, &
                                   mpicom, ni_i, nj_i, ni_o, nj_o, areasrc,areadst)
 
     type(SparseMatrixPlus), intent(inout) :: sMatP
@@ -524,10 +531,10 @@ subroutine mct_sMatPInitnc_mapfile(sMatP, gsmapX_, gsmapY_, filename, maptype, &
     call avect_init(areadst_map, rList=areaAV_field, lsize=lsize)
 
     if (present(ni_i) .and. present(nj_i) .and. present(ni_o) .and. present(nj_o)) then
-        call mct_sMatReaddnc(sMat, gsmapX_, gsmapY_, Smaptype, areasrc_map, areadst_map, &
+        call sMatReaddnc(sMat, gsmapX_, gsmapY_, Smaptype, areasrc_map, areadst_map, &
                    filename, pe_loc, mpicom, ni_i, nj_i, ni_o, nj_o)
     else 
-        call mct_sMatReaddnc(sMat, gsmapX_, gsmapY_, Smaptype, areasrc_map, areadst_map, &
+        call sMatReaddnc(sMat, gsmapX_, gsmapY_, Smaptype, areasrc_map, areadst_map, &
                    filename, pe_loc, mpicom)
     end if
 
@@ -546,6 +553,6 @@ subroutine mct_sMatPInitnc_mapfile(sMatP, gsmapX_, gsmapY_, filename, maptype, &
 
     call sMat_clean(sMat)
 
-end subroutine mct_sMatPInitnc_mapfile
+end subroutine sMatPInitnc_mapfile
 
 end module comms_nc

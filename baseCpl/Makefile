@@ -2,7 +2,7 @@ FC = mpif90
 AR = ar
 LIB_A = libbcpl.a
 ABSDIR = $(shell pwd)
-SRC  = ./include/*.o
+SRC  = lib/*.o
 LIBDIR = ./lib
 path0 = MCTWrapper
 path1 = data_def
@@ -15,26 +15,15 @@ MAIN = ./model/cpl
 
 .PHONY : all
 all :
-	@echo $(ABSDIR)
-	@echo $(models)
-	make -C $(path0)
-	make -C $(path1)
-	make -C $(path2)
-	make -C	$(path3) 
-	make -C $(path4)
-	@echo make models
-	@for dir in $(models);\
-	do\
-		cd ./model/$$dir;\
-		make;\
-		cd -;\
-	done
-	@echo end make models
+	#@for dir in $(models);\
+	#do\
+	#	cd ./model/$$dir;\
+	#	make;\
+	#	cd -;\
+	#done
 	$(AR) rcs $(LIB_A) $(SRC)
-	rm ./include/*.o
-	mv $(LIB_A) $(LIBDIR) 	
-	make -C $(MAIN)
-	mv $(MAIN)/main ./
+	mv *.a ./lib
+	#rm ./lib/*.o
 
 .PHONY : clean
 clean :

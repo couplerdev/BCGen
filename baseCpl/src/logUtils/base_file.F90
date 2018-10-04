@@ -16,7 +16,7 @@ subroutine log_init(logFile, logUnit)
     implicit none
     character(len=*),    intent(in) :: logFile
     integer,             intent(in) :: logUnit
-    logical,                        :: stats
+    logical                         :: stats
 
     inquire(logFile, exist=stats)
     if (.not. stats) then

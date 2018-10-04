@@ -1,16 +1,16 @@
 program testNc
 
-    use comms_nc, only : mct_sMatReadnc
+    use comms_nc, only : sMatReadnc
     use mct_mod
     use comms_def
 
 implicit none
-character(len=10)    :: filename = ""
+character(len=20)    :: filename = "testFile.nc"
 type(map_mod)        :: mapper
+
+mapper%map_type = "smat"
  
-call mct_sMatReadnc(mapper, filename) 
-
-
+call sMatReadnc(mapper, filename) 
 
 
 end program

@@ -1,4 +1,4 @@
-SRC = logUtil.F90
+SRC = logUtil.F90  base_file.F90
 include ../Makefile.conf
 OBJ_ALL = $(SRC: .F90=.o)
 

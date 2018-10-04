@@ -18,6 +18,10 @@ use m_attrvect ,only: avect_getIList => getIList
 use m_attrvect ,only: avect_getRList => getRList
 use m_attrvect ,only: avect_exportIList2c => exportIListToChar
 use m_attrvect ,only: avect_exportRList2c => exportRListToChar
+use m_AttrvectComms ,only: avect_scatter => scatter
+use m_AttrvectComms ,only: avect_gather => gather
+use m_AttrvectComms ,only: avect_bcast => bcast
+
 
 use m_attrvect ,only: avect_nRattr => nRattr
 
