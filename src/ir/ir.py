@@ -502,7 +502,7 @@ class AttrVectCpl(AttrVect):
         self.__dstModelName = grid
         self.__srcModel = Model()    # 尽量使用引用，看看有没有常量引用
         self.__dstModel = Model()
-        self.__mapperName=""
+        self.__mapperName=mapper
 
     def BindToManager(self, manager):
         self.__manager = manager

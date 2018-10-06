@@ -6,7 +6,7 @@ def toString(subroutine, args):
     string=""
     argString = ""
     for arg in args:
-        argString+=arg+", "
+        argString+=str(arg)+", "
     string=subroutine+"("+argString[:-2]+")"
     return string
 

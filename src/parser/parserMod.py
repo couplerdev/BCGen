@@ -115,7 +115,6 @@ class Parser():
                 self.__models[model].ID = index
                 index = index+1
         self.__models = models  
-        print(self.__models)
       
     def deployParse(self):
         root = self.load(self.__deployFile)
@@ -149,10 +148,16 @@ class Parser():
         self.deployParse()
         if DEBUG == 1:
             print '..................deploy parsed...................'
+        
+        #for node in self.__seqRun.graph.Nodes:
+        #    sbr = self.__seqRun.graph.Nodes[node]
+        #    print node, sbr.inEdge            
+
+
         self.runSubroutine = self.__seqRun.topology()
-        #for list_ in self.__runSubroutine:
-        #    for subroutine in list_:
-        #        print subroutine.data.strFormat
+        
+        for node in self.__seqRun.graph.Nodes:
+            sbr = self.__seqRun.graph.Nodes[node]
 
     def append(self, obj):
         if obj.atype == 'Model':
@@ -496,7 +501,6 @@ class CouplerParser: ###!!!!
             self.__attrVect = av
             av.BindToManager(self.__NameManager)
             if not self.__NameManager.FindName(av):
-                print av.name
                 raise ConfigError("try to mrg to a unexist attrVect")
         if root.find("srcs") != None:
             srcs = root.find("srcs")
@@ -505,12 +509,10 @@ class CouplerParser: ###!!!!
             grid = root.find('model').text
             for src in srcs:
                 srcAttrVectName = src.find("attrVect").text
-                print srcAttrVectName
                 srcAttrVect = parser.visitByName(srcAttrVectName)
                 if srcAttrVect == None:
                     raise AttributeError("no such attrVect")
                 field = src.find("field").text  # shall be optional
-                print field
                 ## mapper parse with method now
                 mapperRoot = src.find("mapper")
                 mapperName = mapperRoot.find("name").text  #latter shall be generated
@@ -545,16 +547,17 @@ class CouplerParser: ###!!!!
                                       prefix+attrVect.grid+"_gsize", "gsmap_"+grid, "gsmap_"+attrVect.grid]
                             mapper.method.setInit(mapperName, argList)
                         elif phaseIdx == 1:
-                            argList = [prefix+mapperName, srcAttrVect.name, attrVect.name, tags, field, "ierr"]
+                            field_arg = "field=\""+field+"\""
+                            argList = [prefix+mapperName, srcAttrVect.name, attrVect.name, tags, field_arg, "ierr"]
                             tags+= 1
                             mapper.method.setRun(mapperName, argList)
-                            string = toString(mapperName, argList)
+                            string = toString(methodName, argList)
                             cw = CodeWrapper(grid, grid+"2cpl")
                             cw.appendStr(string)
-                            strFormat = cw.toString()
-                            subroutine = Subroutine(methodName, model=grid, phase=3, inputArg=in_args, \
+                            strFormat = cw.getStr()
+                            subroutine = SubroutineNode(methodName, model=grid, phase=4, inputArg=in_args, \
                                                     outputArg=out_args, strFormat=strFormat)
-                            self.reqRun.addSubroutine(subroutine)
+                            self.seqRun.addSubroutine(subroutine)
                         phaseIdx+=1
                       
                     in_args = []
@@ -641,11 +644,9 @@ class DeployParser:
         else:
             raise ComposingError("cpl not composed see in composing/deploy.xml")
         models = root.find("models")
-        print parser.models
         for model in models:
             if model.find("name").text in parser.models:
                 name = model.find("name").text
-                print name
                 first = model.find("first").text
                 last = model.find("last").text
                 stride = model.find("stride").text
@@ -690,6 +691,10 @@ class Setup:
                     w_file = ""
                     map_type = "offline"
                     method = {}
+                    phase_0 = {}
+                    phase_0["name"] = "smat_init"
+                    phase_0["in_args"] = []
+                    phase_0["out_args"] = []
                     phase = {}
                     phaseName = "mapper_comp_comm"
                     phase["name"] = phaseName
@@ -702,6 +707,7 @@ class Setup:
                     phase["in_args"]=in_args
                     phase["out_args"]=out_args
                     method = []
+                    method.append(phase_0)
                     method.append(phase)
                     srcSmat["name"] = srcSmatName
                     srcSmat["field"] = srcField   # assume srcField are same
@@ -720,7 +726,6 @@ class Setup:
                 dstAv = 'x2'+modelName+'_'+modelName+'x'
                 mrg['out_args'].append(dstAv)
                 for av in dstAvList:
-                    print av
                     #mrg['args'].append(src['attrVect'])
                     mrg['in_args'].append(av)
                 mrg['in_args'].append(attrVect['name'])
@@ -738,7 +743,6 @@ class Setup:
         root = doc.createElement('coupler')
         #doc.appendChild(root)
         for avDict in self.__couple:
-            print 'haha'
             attrVect = doc.createElement('attrVect')
             name = self.dictDom(doc,'name',avDict['name'])
             model = self.dictDom(doc, 'model', avDict['model'])
@@ -748,24 +752,37 @@ class Setup:
             for src in avDict['src']:
                 srcNode = doc.createElement('src')
                 name = self.dictDom(doc, 'attrVect', src['attrVect'])
-                field = self.dictDom(doc, 'field', src['field'])
+                field = ""
+                try:
+                    field = self.dictDom(doc, 'field', src['field'])
+                except:
+                    pass
                 ##set mapper
                 mapperNode = doc.createElement("mapper")
                 mapper_name = self.dictDom(doc, 'name', src['mapper']['name'])
                 mapper_type = self.dictDom(doc, 'type', src['mapper']['type'])
                 mapper_w_file = self.dictDom(doc, 'w_file', src['mapper']['w_file'])
                 mapperMethod = doc.createElement("method")
+
                 for phase in src['mapper']['method']:
                     phaseNode=  doc.createElement("phase")
                     phase_name = self.dictDom(doc,'name', phase['name'])
-                    in_args = doc.createElement("in_args")
-                    for in_arg in phase['in_args']:
-                        arg = self.dictDom(doc, 'arg', in_arg)
-                        in_args.appendChild(arg)
-                    out_args = doc.createElement("out_args")
-                    for out_arg in phase['out_args']:
-                        arg = self.dictDom(doc, 'arg', out_arg)
-                        out_args.appendChild(arg)
+                    in_args = None
+                    if phase['in_args'] == []:
+                        in_args = self.dictDom(doc, 'in_args', '')
+                    else:
+                        in_args = doc.createElement("in_args")
+                        for in_arg in phase['in_args']:
+                            arg = self.dictDom(doc, 'arg', in_arg)
+                            in_args.appendChild(arg)
+                    out_args = None
+                    if phase['out_args'] == []:
+                        out_args = self.dictDom(doc, 'out_args', '')
+                    else:
+                        out_args = doc.createElement("out_args")
+                        for out_arg in phase['out_args']:
+                            arg = self.dictDom(doc, 'arg', out_arg)
+                            out_args.appendChild(arg)
                     phaseNode.appendChild(phase_name)
                     phaseNode.appendChild(in_args)
                     phaseNode.appendChild(out_args)

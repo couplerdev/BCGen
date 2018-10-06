@@ -13,15 +13,40 @@ module timeM
     integer :: total_days =  1 
 
     
-    integer :: a_seconds = 0
-    integer :: a_minutes = 0
-    integer :: a_hours = 0
-    integer :: a_days = 0
+    integer :: glc_seconds = 
+    integer :: glc_minutes = 0
+    integer :: glc_hours = 
+    integer :: glc_days = 
     
-    integer :: b_seconds = 1
-    integer :: b_minutes = 0
-    integer :: b_hours = 0
-    integer :: b_days = 0
+    integer :: ocn_seconds = 
+    integer :: ocn_minutes = 0
+    integer :: ocn_hours = 
+    integer :: ocn_days = 
+    
+    integer :: atm_seconds = 
+    integer :: atm_minutes = 0
+    integer :: atm_hours = 
+    integer :: atm_days = 
+    
+    integer :: ice_seconds = 
+    integer :: ice_minutes = 0
+    integer :: ice_hours = 
+    integer :: ice_days = 
+    
+    integer :: rof_seconds = 
+    integer :: rof_minutes = 0
+    integer :: rof_hours = 
+    integer :: rof_days = 
+    
+    integer :: wav_seconds = 
+    integer :: wav_minutes = 0
+    integer :: wav_hours = 
+    integer :: wav_days = 
+    
+    integer :: lnd_seconds = 
+    integer :: lnd_minutes = 0
+    integer :: lnd_hours = 
+    integer :: lnd_days = 
 
 
     public :: clock_init
@@ -30,32 +55,72 @@ module timeM
 contains 
 
 subroutine clock_init(EClock,
-                     a, 
-                     b, 
+                     glc, 
+                     ocn, 
+                     atm, 
+                     ice, 
+                     rof, 
+                     wav, 
+                     lnd, 
                      interval)
  
     implicit none
     type(Clock), intent(inout)    :: EClock
-    type(Clock), intent(inout)    :: EClock_a
-    type(Clock), intent(inout)    :: EClock_b
+    type(Clock), intent(inout)    :: EClock_glc
+    type(Clock), intent(inout)    :: EClock_ocn
+    type(Clock), intent(inout)    :: EClock_atm
+    type(Clock), intent(inout)    :: EClock_ice
+    type(Clock), intent(inout)    :: EClock_rof
+    type(Clock), intent(inout)    :: EClock_wav
+    type(Clock), intent(inout)    :: EClock_lnd
     integer, optional, intent(in) :: interval
  
     EClock%seconds = 0 
     EClock%minites = 0
     EClock%hours   = 0
     EClock%days    = 0
-    EClock_a%seconds = a_seconds
-    EClock_a%minutes = a_minutes
-    EClock_a%hours = a_hours
-    EClock_a%days = a_days
-    EClock_a%interval = EClock_a%seconds+ (EClock_a%minutes +\
-                   (EClock_a%hours+EClock_a%days*24)*60)*60
-    EClock_b%seconds = b_seconds
-    EClock_b%minutes = b_minutes
-    EClock_b%hours = b_hours
-    EClock_b%days = b_days
-    EClock_b%interval = EClock_b%seconds+ (EClock_b%minutes +\
-                   (EClock_b%hours+EClock_b%days*24)*60)*60
+    EClock_glc%seconds = glc_seconds
+    EClock_glc%minutes = glc_minutes
+    EClock_glc%hours = glc_hours
+    EClock_glc%days = glc_days
+    EClock_glc%interval = EClock_glc%seconds+ (EClock_glc%minutes +\
+                   (EClock_glc%hours+EClock_glc%days*24)*60)*60
+    EClock_ocn%seconds = ocn_seconds
+    EClock_ocn%minutes = ocn_minutes
+    EClock_ocn%hours = ocn_hours
+    EClock_ocn%days = ocn_days
+    EClock_ocn%interval = EClock_ocn%seconds+ (EClock_ocn%minutes +\
+                   (EClock_ocn%hours+EClock_ocn%days*24)*60)*60
+    EClock_atm%seconds = atm_seconds
+    EClock_atm%minutes = atm_minutes
+    EClock_atm%hours = atm_hours
+    EClock_atm%days = atm_days
+    EClock_atm%interval = EClock_atm%seconds+ (EClock_atm%minutes +\
+                   (EClock_atm%hours+EClock_atm%days*24)*60)*60
+    EClock_ice%seconds = ice_seconds
+    EClock_ice%minutes = ice_minutes
+    EClock_ice%hours = ice_hours
+    EClock_ice%days = ice_days
+    EClock_ice%interval = EClock_ice%seconds+ (EClock_ice%minutes +\
+                   (EClock_ice%hours+EClock_ice%days*24)*60)*60
+    EClock_rof%seconds = rof_seconds
+    EClock_rof%minutes = rof_minutes
+    EClock_rof%hours = rof_hours
+    EClock_rof%days = rof_days
+    EClock_rof%interval = EClock_rof%seconds+ (EClock_rof%minutes +\
+                   (EClock_rof%hours+EClock_rof%days*24)*60)*60
+    EClock_wav%seconds = wav_seconds
+    EClock_wav%minutes = wav_minutes
+    EClock_wav%hours = wav_hours
+    EClock_wav%days = wav_days
+    EClock_wav%interval = EClock_wav%seconds+ (EClock_wav%minutes +\
+                   (EClock_wav%hours+EClock_wav%days*24)*60)*60
+    EClock_lnd%seconds = lnd_seconds
+    EClock_lnd%minutes = lnd_minutes
+    EClock_lnd%hours = lnd_hours
+    EClock_lnd%days = lnd_days
+    EClock_lnd%interval = EClock_lnd%seconds+ (EClock_lnd%minutes +\
+                   (EClock_lnd%hours+EClock_lnd%days*24)*60)*60
     !EClock%months  = 0 
     !EClock%years   = 0 ! from base so far
     EClock%interval = interval

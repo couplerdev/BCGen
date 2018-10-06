@@ -1,36 +1,44 @@
+#!/usr/bin/python
+#coding:utf-8
 from codeGen import codeGenerator
 import sys
 sys.path.append('../parser')
 from parserMod import Parser
+from search_set import *
+'''
+codeMapper work as a batch code generator:
+get a mapper: templateFile, codeFile, [cfgs_list]
 
-parser = Parser()
-parser.parse()
+'''
+class TempConfig:
+    def __init__(self, template, codeFile, cfgs):
+        self.template = template
+        self.codeFile = codeFile
+        if type(cfgs) != type({}):
+            raise TypeError("cfgs not list") 
+        self.cfgs = cfgs
+        
 
-proc_cfgs = [
-    parser.models[m] for m in parser.models 
-]
+class CodeMapper:
+    def __init__(self, mappers=[]):
+        self.mappers = mappers
 
-merge_subroutines = [
-    parser.subroutine[m] for m in parser.subroutine
-]
-subrt_cfgs = []
-for list_ in parser.runSubroutine:
-    for node in list_:
-        subrt_cfgs.append(node.data.strFormat)
+    def addTempConf(self, tempConf):
+        self.mapper.append(tempConf)
 
-fraction_cfgs = parser.fractions
-deploy_cfgs = parser.deploy
-#print(type(deploy_cfgs))
-#print(len(deploy_cfgs))
-#print(deploy_cfgs)
+    def genCode(self):
+        for spec in self.mappers:
+            code = codeGenerator(spec.template, spec.codeFile)
+            for cfg in spec.cfgs:
+                code.addList(cfg, spec.cfgs[cfg])
+            code.generate()
+
 
 def get_SMat_relation(attrVects):
     model_names = []
     model_SMats = {}
-    #print attrVects
-
+   
     for av in attrVects:
-        # todo get dst_av_model 
         dst_model = attrVects[av][0].dstModel
         model_name = dst_model.name
         model_gsmap_name = attrVects[av][0].srcModel.gsMaps['cpl'].name
@@ -49,65 +57,56 @@ def get_SMat_relation(attrVects):
             model_gsmap_name = src_model.gsMaps['cpl'].name
             dst_gsmap_name = dst_model.gsMaps['cpl'].name
             dst_field = src_x_dst_x_av.field
-            #print(av, dst_model_name, src_x_dst_x_av.name,\
-            #        src_x_dst_x_av.mapperName)
+
             dst_info = {
-                'dst_model_name':dst_model_name,
-                'dst_av':src_x_dst_x_av,
+		'dst_model_name': dst_model_name,
+                'dst_av': src_x_dst_x_av,
                 'dst_gm': dst_gsmap_name,
-                'dst_mapper':src_x_dst_x_av.mapperName,
-                'dst_field':dst_field,
-                # todo set dst_sparse_len
-                'smat_size':3
-                    }
+                'dst_mapper': src_x_dst_x_av.mapperName,
+                'dst_field': dst_field,
+		'smat_size':3
+            } 
             if src_model_name not in model_SMats:
-                model_SMats[src_model_name]={}
-                model_SMats[src_model_name]['src']=src_x_dst_x_av.srcName
-                model_SMats[src_model_name]['dst']=[]
-                model_gsmap_name=dst_model.gsMaps['cpl'].name
-                model_SMats[src_model_name]['gm']=model_gsmap_name
+                model_SMats[src_model_name] = {}
+                model_SMats[src_model_name]['src'] = src_x_dst_x_av.srcName
+                model_SMats[src_model_name]['dst'] = []
+                model_gsmap_name = dst_model.gsMaps['cpl'].name
+                model_SMats[src_model_name]['gm'] = model_gsmap_name
             model_SMats[src_model_name]['dst'].append(dst_info)
     return model_SMats
 
-merge_cfgs = get_SMat_relation(parser.attrVectCouple)
-print' merge:', merge_cfgs
-code = codeGenerator("searchSet_Template.py", "search_set.py")
-code.addList('models',proc_cfgs)
-code.addList('merge_cfgs',merge_cfgs)
-code.generate()
 
 
+if __name__ == "__main__":
+    parser = Parser()
+    parser.parse()
+    proc_cfgs = [ parser.models[m] for m in parser.models]
+    merge_subroutines = [ parser.subroutine[m] for m in parser.subroutine]
+    subrt_cfgs = [ node.data.strFormat for list_ in parser.runSubroutine \
+                  for node in list_] # for run time cfgs
+    fraction_cfgs = parser.fractions
+    deploy_cfgs = parser.deploy
+    merge_cfgs = get_SMat_relation(parser.attrVectCouple)
 
-from search_set import *
-print 'vnn'
-code = codeGenerator("procM_Template.F90", "manage.F90")
+    searchTmp = TempConfig("searchSet_Template.py", "search_set.py",\
+                          {'models':proc_cfgs, 'merge_cfgs': merge_cfgs})
+    
+    manageTmp = TempConfig("procM_Template.F90", "manage.F90", {"proc_cfgs": proc_cfgs})
 
-#TODO add 
-code = codeGenerator("deploymod_Template.F90", "deploy_mod.F90")
-code.addList('proc_cfgs',proc_cfgs)
-code.addList('deploy_cfgs',deploy_cfgs)
-#print(deploy_cfgs)
-code.generate()
-code = codeGenerator("procM_Template.F90", "manage.F90")
-code.addList('proc_cfgs',proc_cfgs)
-code.generate()
+    deployTmp = TempConfig("deploymod_Template.F90", "deploy_mod.F90",\
+                          {'proc_cfgs':proc_cfgs, "deploy_cfgs":deploy_cfgs}) 
 
-code = codeGenerator("procDef_Template.F90", "proc_def.F90")
-code.addList('proc_cfgs',proc_cfgs)
-code.addList('merge_cfgs',merge_cfgs)
-code.generate()
+    procdefTmp = TempConfig("procDef_Template.F90", "proc_def.F90",\
+                          {"proc_cfgs":proc_cfgs, "merge_cfgs": merge_cfgs})
 
-code = codeGenerator("timeM_Template.F90", "timeM.F90")
-code.addList('proc_cfgs',proc_cfgs)
-code.generate()
-print 'time'
+    timeMTmp = TempConfig("timeM_Template.F90", "timeM.F90",{"proc_cfgs":proc_cfgs})
 
-#TODO
-code = codeGenerator("baseCpl_Template.F90", "baseCpl.F90")
-code.addList('proc_cfgs',proc_cfgs)
-code.addList('merge_subroutines', merge_subroutines)
-code.addList('merge_cfgs',merge_cfgs)
-code.addList('model_cfgs',model_cfgs)
-code.addList('fraction_cfgs',fraction_cfgs)
-code.addList('subrt_cfgs', subrt_cfgs)
-code.generate()
+    baseCplTmp = TempConfig("baseCpl_Template.F90","baseCpl.F90",\
+                           {'proc_cfgs':proc_cfgs, 'merge_subroutines':merge_subroutines,\
+                            'merge_cfgs':merge_cfgs, 'model_cfgs':model_cfgs,\
+                            'subrt_cfgs':subrt_cfgs, 'fraction_cfgs':fraction_cfgs})
+    confList = [searchTmp, manageTmp, deployTmp, procdefTmp,timeMTmp, baseCplTmp]
+    codeGen = CodeMapper(confList)
+    codeGen.genCode()
+    
+    

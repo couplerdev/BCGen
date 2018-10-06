@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+#coding:utf-8
 class Node:
     def __init__(self, index, data=None):
         self.index = index
@@ -65,9 +65,10 @@ class SeqRun:
             return 
         self.graph.addNode(Node(subroutine.name, data=subroutine))
 	self.subroutineDict[subroutine.name] = subroutine
-        if subroutine.phase == 0:
+        if subroutine.phase == 1:
             for arg in subroutine.inputArg:
                 self.startPos[arg] = subroutine.name
+                
         else:
             for arg in subroutine.inputArg:
                 self.varInTable[arg] = subroutine.name
@@ -77,7 +78,7 @@ class SeqRun:
             if not self.modelPhase.has_key(subroutine.model):
                 self.modelPhase[subroutine.model] = []
             self.modelPhase[subroutine.model].append((subroutine.phase,subroutine.name))
-		
+	print 'subroutine:', subroutine.name, subroutine.inputArg, subroutine.outputArg	
 
         # if in a defined model then define edge phases
         # if in has attr depending then define an edge
@@ -94,7 +95,7 @@ class SeqRun:
         for modelName in self.modelPhase:
             model = self.modelPhase[modelName]
             model.sort(key=lambda pair:pair[0])
-            if len(model) <= 2:
+            if len(model) < 2:
                 break
             else:
                 for i in range(len(model)-1):
@@ -105,7 +106,10 @@ class SeqRun:
                     e = Edge(node1, node2)
                     node1.outEdge[e.name] = e
                     node2.inEdge[e.name] = e
-       
+        print self.varInTable
+        print '--------------------'
+        print self.varOutTable      
+ 
         for arg in self.varOutTable:
             if self.varInTable.has_key(arg):
                 p2 = self.varInTable[arg]
@@ -115,9 +119,11 @@ class SeqRun:
                 e = Edge(node1, node2)
                 node1.outEdge[e.name] = e
                 node2.inEdge[e.name] = e
+                print p1,p2
                  
 
     def topology(self):
+        self.parseToGraph()
         g = self.graph
         seq = []
         while(True):

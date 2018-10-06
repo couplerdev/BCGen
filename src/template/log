@@ -1,0 +1,60 @@
+subroutine: a_run_mcta2 ['a2x_aa'] ['x2a_aa']
+subroutine: mapper_comp_namea1 ['x2a_ax'] ['x2a_aa']
+subroutine: mapper_comp_namea3 ['a2x_aa'] ['a2x_ax']
+subroutine: b_run_mctb2 ['b2x_bb'] ['x2b_bb']
+subroutine: mapper_comp_nameb1 ['x2b_bx'] ['x2b_bb']
+subroutine: mapper_comp_nameb3 ['b2x_bb'] ['b2x_bx']
+subroutine: c_run_mctc2 ['c2x_cc'] ['x2c_cc']
+subroutine: mapper_comp_namec1 ['x2c_cx'] ['x2c_cc']
+subroutine: mapper_comp_namec3 ['c2x_cc'] ['c2x_cx']
+subroutine: atm_run_mctatm2 ['atm2x_atmatm'] ['x2atm_atmatm']
+subroutine: mapper_comp_nameatm1 ['x2atm_atmx'] ['x2atm_atmatm']
+subroutine: mapper_comp_nameatm3 ['atm2x_atmatm'] ['atm2x_atmx']
+subroutine: ocn_run_mctocn2 ['ocn2x_ocnocn'] ['x2ocn_ocncon']
+subroutine: mapper_comp_nameocn1 ['x2ocn_ocnx'] ['x2ocn_ocnocn']
+subroutine: mapper_comp_nameocn3 ['ocn2x_ocnocn'] ['ocn2x_ocnx']
+subroutine: lnd_run_mctlnd2 ['lnd2x_lndlnd'] ['x2lnd_lndlnd']
+subroutine: mapper_comp_namelnd1 ['x2lnd_lndx'] ['x2lnd_lndlnd']
+subroutine: mapper_comp_namelnd3 ['lnd2x_lndlnd'] ['lnd2x_lndx']
+subroutine: rof_run_mctrof2 ['rof2x_rofrof'] ['x2rof_rofrof']
+subroutine: mapper_comp_namerof1 ['x2rof_rofx'] ['x2rof_rofrof']
+subroutine: mapper_comp_namerof3 ['rof2x_rofrof'] ['rof2x_rofx']
+subroutine: wav_run_mctwav2 ['wav2x_wavwav'] ['x2wav_wavwav']
+subroutine: mapper_comp_namewav1 ['x2wav_wavx'] ['x2wav_wavwav']
+subroutine: mapper_comp_namewav3 ['wav2x_wavwav'] ['wav2x_wavx']
+subroutine: ice_run_mctice2 ['ice2x_iceice'] ['x2ice_iceice']
+subroutine: mapper_comp_nameice1 ['x2ice_icex'] ['x2ice_iceice']
+subroutine: mapper_comp_nameice3 ['ice2x_iceice'] ['ice2x_icex']
+subroutine: glc_run_mctglc2 ['glc2x_glcglc'] ['x2glc_glcglc']
+subroutine: mapper_comp_nameglc1 ['x2glc_glcx'] ['x2glc_glcglc']
+subroutine: mapper_comp_nameglc3 ['glc2x_glcglc'] ['glc2x_glcx']
+...................model parsed...................
+subroutine: mapper_comp_commatm3 ['lnd2x_lndx'] ['lnd2x_atmx']
+subroutine: mrg_x2atmatm5 ['lnd2x_atmx', 'ocn2x_atmx', 'ice2x_atmx', 'atm2x_atmx'] ['x2atm_atmx']
+subroutine: mapper_comp_commice3 ['atm2x_atmx'] ['atm2x_icex']
+subroutine: mrg_x2iceice5 ['atm2x_icex', 'ocn2x_icex', 'ice2x_icex'] ['x2ice_icex']
+subroutine: mapper_comp_commrof3 ['lnd2x_lndx'] ['lnd2x_rofx']
+subroutine: mrg_x2rofrof5 ['lnd2x_rofx', 'rof2x_rofx'] ['x2rof_rofx']
+subroutine: mapper_comp_commlnd3 ['atm2x_atmx'] ['atm2x_lndx']
+subroutine: mrg_x2lndlnd5 ['atm2x_lndx', 'rof2x_lndx', 'lnd2x_lndx'] ['x2lnd_lndx']
+subroutine: mapper_comp_commocn3 ['atm2x_atmx'] ['atm2x_ocnx']
+subroutine: mrg_x2ocnocn5 ['atm2x_ocnx', 'ice2x_ocnx', 'wav2x_ocnx', 'ocn2x_ocnx'] ['x2ocn_ocnx']
+subroutine: mapper_comp_commwav3 ['atm2x_atmx'] ['atm2x_wavx']
+subroutine: mrg_x2wavwav5 ['atm2x_wavx', 'ocn2x_wavx', 'ice2x_wavx', 'wav2x_wavx'] ['x2wav_wavx']
+..............couple AttrVect parsed..............
+..................deploy parsed...................
+{'atm2x_atmatm': 'mapper_comp_nameatm3', 'glc2x_glcglc': 'mapper_comp_nameglc3', 'atm2x_lndx': 'mrg_x2lndlnd5', 'ocn2x_atmx': 'mrg_x2atmatm5', 'ocn2x_wavx': 'mrg_x2wavwav5', 'lnd2x_rofx': 'mrg_x2rofrof5', 'atm2x_atmx': 'mapper_comp_commwav3', 'lnd2x_atmx': 'mrg_x2atmatm5', 'ice2x_iceice': 'mapper_comp_nameice3', 'lnd2x_lndx': 'mrg_x2lndlnd5', 'ocn2x_ocnx': 'mrg_x2ocnocn5', 'rof2x_rofx': 'mrg_x2rofrof5', 'ocn2x_icex': 'mrg_x2iceice5', 'lnd2x_lndlnd': 'mapper_comp_namelnd3', 'ice2x_atmx': 'mrg_x2atmatm5', 'ocn2x_ocnocn': 'mapper_comp_nameocn3', 'ice2x_icex': 'mrg_x2iceice5', 'wav2x_wavx': 'mrg_x2wavwav5', 'rof2x_rofrof': 'mapper_comp_namerof3', 'c2x_cc': 'mapper_comp_namec3', 'wav2x_wavwav': 'mapper_comp_namewav3', 'atm2x_wavx': 'mrg_x2wavwav5', 'rof2x_lndx': 'mrg_x2lndlnd5', 'atm2x_ocnx': 'mrg_x2ocnocn5', 'wav2x_ocnx': 'mrg_x2ocnocn5', 'atm2x_icex': 'mrg_x2iceice5', 'ice2x_ocnx': 'mrg_x2ocnocn5', 'b2x_bb': 'mapper_comp_nameb3', 'a2x_aa': 'mapper_comp_namea3', 'ice2x_wavx': 'mrg_x2wavwav5'}
+--------------------
+{'x2glc_glcglc': 'mapper_comp_nameglc1', 'rof2x_rofx': 'mapper_comp_namerof3', 'atm2x_lndx': 'mapper_comp_commlnd3', 'lnd2x_rofx': 'mapper_comp_commrof3', 'atm2x_atmx': 'mapper_comp_nameatm3', 'lnd2x_atmx': 'mapper_comp_commatm3', 'a2x_ax': 'mapper_comp_namea3', 'wav2x_wavx': 'mapper_comp_namewav3', 'x2atm_atmatm': 'mapper_comp_nameatm1', 'glc2x_glcx': 'mapper_comp_nameglc3', 'x2atm_atmx': 'mrg_x2atmatm5', 'x2rof_rofrof': 'mapper_comp_namerof1', 'ice2x_icex': 'mapper_comp_nameice3', 'lnd2x_lndx': 'mapper_comp_namelnd3', 'x2ocn_ocnocn': 'mapper_comp_nameocn1', 'x2lnd_lndx': 'mrg_x2lndlnd5', 'x2rof_rofx': 'mrg_x2rofrof5', 'c2x_cx': 'mapper_comp_namec3', 'atm2x_ocnx': 'mapper_comp_commocn3', 'ocn2x_ocnx': 'mapper_comp_nameocn3', 'x2ice_iceice': 'mapper_comp_nameice1', 'atm2x_wavx': 'mapper_comp_commwav3', 'x2lnd_lndlnd': 'mapper_comp_namelnd1', 'x2ocn_ocnx': 'mrg_x2ocnocn5', 'x2a_aa': 'mapper_comp_namea1', 'x2c_cc': 'mapper_comp_namec1', 'atm2x_icex': 'mapper_comp_commice3', 'x2wav_wavwav': 'mapper_comp_namewav1', 'b2x_bx': 'mapper_comp_nameb3', 'x2ocn_ocncon': 'ocn_run_mctocn2', 'x2ice_icex': 'mrg_x2iceice5', 'x2wav_wavx': 'mrg_x2wavwav5', 'x2b_bb': 'mapper_comp_nameb1'}
+mapper_comp_namerof3 mrg_x2rofrof5
+mapper_comp_commlnd3 mrg_x2lndlnd5
+mapper_comp_commrof3 mrg_x2rofrof5
+mapper_comp_nameatm3 mapper_comp_commwav3
+mapper_comp_commatm3 mrg_x2atmatm5
+mapper_comp_namewav3 mrg_x2wavwav5
+mapper_comp_nameice3 mrg_x2iceice5
+mapper_comp_namelnd3 mrg_x2lndlnd5
+mapper_comp_commocn3 mrg_x2ocnocn5
+mapper_comp_nameocn3 mrg_x2ocnocn5
+mapper_comp_commwav3 mrg_x2wavwav5
+mapper_comp_commice3 mrg_x2iceice5
