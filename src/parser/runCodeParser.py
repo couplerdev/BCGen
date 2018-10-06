@@ -78,7 +78,6 @@ class SeqRun:
             if not self.modelPhase.has_key(subroutine.model):
                 self.modelPhase[subroutine.model] = []
             self.modelPhase[subroutine.model].append((subroutine.phase,subroutine.name))
-	print 'subroutine:', subroutine.name, subroutine.inputArg, subroutine.outputArg	
 
         # if in a defined model then define edge phases
         # if in has attr depending then define an edge
@@ -106,9 +105,6 @@ class SeqRun:
                     e = Edge(node1, node2)
                     node1.outEdge[e.name] = e
                     node2.inEdge[e.name] = e
-        print self.varInTable
-        print '--------------------'
-        print self.varOutTable      
  
         for arg in self.varOutTable:
             if self.varInTable.has_key(arg):
@@ -119,7 +115,6 @@ class SeqRun:
                 e = Edge(node1, node2)
                 node1.outEdge[e.name] = e
                 node2.inEdge[e.name] = e
-                print p1,p2
                  
 
     def topology(self):

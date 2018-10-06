@@ -592,7 +592,7 @@ model_glc_cfg = { # Model M's cfg
 
 model_ocn_cfg = { # Model M's cfg
 'model_unique_name': 'ocn',
-'model_unique_id': '1',
+'model_unique_id': '2',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'ocn2x_ocnocn',
@@ -666,7 +666,7 @@ model_ocn_cfg = { # Model M's cfg
 
 model_atm_cfg = { # Model M's cfg
 'model_unique_name': 'atm',
-'model_unique_id': '2',
+'model_unique_id': '1',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'atm2x_atmatm',
@@ -748,7 +748,7 @@ model_atm_cfg = { # Model M's cfg
 
 model_ice_cfg = { # Model M's cfg
 'model_unique_name': 'ice',
-'model_unique_id': '4',
+'model_unique_id': '6',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'ice2x_iceice',
@@ -822,7 +822,7 @@ model_ice_cfg = { # Model M's cfg
 
 model_rof_cfg = { # Model M's cfg
 'model_unique_name': 'rof',
-'model_unique_id': '3',
+'model_unique_id': '4',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'rof2x_rofrof',
@@ -938,7 +938,7 @@ model_wav_cfg = { # Model M's cfg
 
 model_lnd_cfg = { # Model M's cfg
 'model_unique_name': 'lnd',
-'model_unique_id': '6',
+'model_unique_id': '3',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'lnd2x_lndlnd',

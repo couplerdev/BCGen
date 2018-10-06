@@ -94,27 +94,19 @@ class Parser():
     def modelsParse(self):
         root = self.load(self.__modelFile)
         modelParser = ModelParser(self.__NameManager, self.__seqRun)
-        #index = 1
+        index = 1
         for child in root:
+            if self.__enable_setup:
+                modelName = child.find('name').text
+                if modelName not in self.__setupModels:
+                    continue
             modelParser.setRoot(child)
             model = modelParser.model
-            #model.ID = index
-            #index = index + 1
+            model.ID = index
+            index = index + 1
             self.__models[model.name] = model
             self.__NameManager.register.modelDict[model.name] = model
-        models = {}
-        index = 1
-        for model in self.__models:
-            if self.__enable_setup:
-                if model in self.__setupModels:
-                    models[model] = self.__models[model] 
-                    self.__models[model].ID = index
-                    index = index+1
-            else:
-                models[model] = self.__models[model]
-                self.__models[model].ID = index
-                index = index+1
-        self.__models = models  
+       
       
     def deployParse(self):
         root = self.load(self.__deployFile)
@@ -156,8 +148,6 @@ class Parser():
 
         self.runSubroutine = self.__seqRun.topology()
         
-        for node in self.__seqRun.graph.Nodes:
-            sbr = self.__seqRun.graph.Nodes[node]
 
     def append(self, obj):
         if obj.atype == 'Model':
