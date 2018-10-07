@@ -3,17 +3,50 @@ module timeM
     implicit none
     type Clock
         integer :: seconds
-        integer :: minites
+        integer :: minutes
         integer :: hours
         integer :: days
         !integer :: months
         !integer :: years
-        integer :: interval
+        integer :: interval = 1
     end type Clock
     integer :: total_days =  1 
 
-    integer :: time_a_run = 3
-    integer :: time_b_run = 5
+    
+    integer :: glc_seconds = 0
+    integer :: glc_minutes = 0
+    integer :: glc_hours = 0
+    integer :: glc_days = 0
+    
+    integer :: ocn_seconds = 0
+    integer :: ocn_minutes = 0
+    integer :: ocn_hours = 0
+    integer :: ocn_days = 0
+    
+    integer :: atm_seconds = 0
+    integer :: atm_minutes = 0
+    integer :: atm_hours = 0
+    integer :: atm_days = 0
+    
+    integer :: ice_seconds = 0
+    integer :: ice_minutes = 0
+    integer :: ice_hours = 0
+    integer :: ice_days = 0
+    
+    integer :: rof_seconds = 0
+    integer :: rof_minutes = 0
+    integer :: rof_hours = 0
+    integer :: rof_days = 0
+    
+    integer :: wav_seconds = 0
+    integer :: wav_minutes = 0
+    integer :: wav_hours = 0
+    integer :: wav_days = 0
+    
+    integer :: lnd_seconds = 0
+    integer :: lnd_minutes = 0
+    integer :: lnd_hours = 0
+    integer :: lnd_days = 0
 
 
     public :: clock_init
@@ -21,24 +54,76 @@ module timeM
     public :: triger
 contains 
 
-subroutine clock_init(EClock, interval)
+subroutine clock_init(EClock, &
+                     EClock_glc,& 
+                     EClock_ocn,& 
+                     EClock_atm,& 
+                     EClock_ice,& 
+                     EClock_rof,& 
+                     EClock_wav,& 
+                     EClock_lnd,& 
+                     interval)
  
     implicit none
     type(Clock), intent(inout)    :: EClock
+    type(Clock), intent(inout)    :: EClock_glc
+    type(Clock), intent(inout)    :: EClock_ocn
+    type(Clock), intent(inout)    :: EClock_atm
+    type(Clock), intent(inout)    :: EClock_ice
+    type(Clock), intent(inout)    :: EClock_rof
+    type(Clock), intent(inout)    :: EClock_wav
+    type(Clock), intent(inout)    :: EClock_lnd
     integer, optional, intent(in) :: interval
  
     EClock%seconds = 0 
-    EClock%minites = 0
+    EClock%minutes = 0
     EClock%hours   = 0
     EClock%days    = 0
+    EClock_glc%seconds = glc_seconds
+    EClock_glc%minutes = glc_minutes
+    EClock_glc%hours = glc_hours
+    EClock_glc%days = glc_days
+    EClock_glc%interval = EClock_glc%seconds+ (EClock_glc%minutes +\
+                   (EClock_glc%hours+EClock_glc%days*24)*60)*60
+    EClock_ocn%seconds = ocn_seconds
+    EClock_ocn%minutes = ocn_minutes
+    EClock_ocn%hours = ocn_hours
+    EClock_ocn%days = ocn_days
+    EClock_ocn%interval = EClock_ocn%seconds+ (EClock_ocn%minutes +\
+                   (EClock_ocn%hours+EClock_ocn%days*24)*60)*60
+    EClock_atm%seconds = atm_seconds
+    EClock_atm%minutes = atm_minutes
+    EClock_atm%hours = atm_hours
+    EClock_atm%days = atm_days
+    EClock_atm%interval = EClock_atm%seconds+ (EClock_atm%minutes +\
+                   (EClock_atm%hours+EClock_atm%days*24)*60)*60
+    EClock_ice%seconds = ice_seconds
+    EClock_ice%minutes = ice_minutes
+    EClock_ice%hours = ice_hours
+    EClock_ice%days = ice_days
+    EClock_ice%interval = EClock_ice%seconds+ (EClock_ice%minutes +\
+                   (EClock_ice%hours+EClock_ice%days*24)*60)*60
+    EClock_rof%seconds = rof_seconds
+    EClock_rof%minutes = rof_minutes
+    EClock_rof%hours = rof_hours
+    EClock_rof%days = rof_days
+    EClock_rof%interval = EClock_rof%seconds+ (EClock_rof%minutes +\
+                   (EClock_rof%hours+EClock_rof%days*24)*60)*60
+    EClock_wav%seconds = wav_seconds
+    EClock_wav%minutes = wav_minutes
+    EClock_wav%hours = wav_hours
+    EClock_wav%days = wav_days
+    EClock_wav%interval = EClock_wav%seconds+ (EClock_wav%minutes +\
+                   (EClock_wav%hours+EClock_wav%days*24)*60)*60
+    EClock_lnd%seconds = lnd_seconds
+    EClock_lnd%minutes = lnd_minutes
+    EClock_lnd%hours = lnd_hours
+    EClock_lnd%days = lnd_days
+    EClock_lnd%interval = EClock_lnd%seconds+ (EClock_lnd%minutes +\
+                   (EClock_lnd%hours+EClock_lnd%days*24)*60)*60
     !EClock%months  = 0 
     !EClock%years   = 0 ! from base so far
-
-    if(present(interval))then
-        EClock%interval = interval
-    else
-        EClock%interval = 1
-    end if
+    EClock%interval = interval
 
 end subroutine
 
@@ -53,11 +138,11 @@ subroutine clock_advance(EClock)
    
    plus = EClock%seconds/60
    EClock%seconds = mod(EClock%seconds, 60) 
-   EClock%minites = EClock%minites + plus
-   if(EClock%minites < 60)return 
+   EClock%minutes = EClock%minutes + plus
+   if(EClock%minutes < 60)return 
     
-   plus = EClock%minites/60
-   EClock%minites = mod(EClock%minites, 60)
+   plus = EClock%minutes/60
+   EClock%minutes = mod(EClock%minutes, 60)
    EClock%hours   = EClock%hours + plus
    if(EClock%hours < 24)return 
 
@@ -67,53 +152,37 @@ subroutine clock_advance(EClock)
 
 end subroutine clock_advance
 
-subroutine triger(EClock, flag, flag_name)
+subroutine triger(EClock,EClock_s ,run, flag_name)
 
     implicit none
     type(Clock), intent(in)       :: EClock
-    logical, intent(inout)        :: flag
-    character(len=*),  intent(in) :: flag_name
-    integer                       :: tmp_m
-    integer                       :: tmp_h
-    integer                       :: tmp_d 
-    integer                       :: tmp_mod
+    type(Clock), intent(in)       :: EClock_s
+    logical, intent(inout)        :: run
+    character(*),  intent(in)     :: flag_name
+    integer   :: time_run
+    integer   :: tmp_m
+    integer   :: tmp_h
+    integer   :: tmp_d
+    integer   :: tmp_mod
 
-    flag = .false.
+    run = .false.
     if(flag_name=='stop_clock')then
         if(EClock%days >= total_days)then
-            write(*,*) 'work'
-            flag=.true.
+            run = .false.
         end if
     end if
-
-    if(flag_name=='a_run')then
-        tmp_m = mod(60, time_a_run)
-        tmp_h = mod(60*60, time_a_run)
-        tmp_d = mod(tmp_h*24, time_a_run)
-        tmp_mod = mod(EClock%seconds, time_a_run) +&
-mod(EClock%minites*tmp_m, time_a_run) + &
-                  mod(EClock%hours*tmp_h, time_a_run) + &
-mod(EClock%days*tmp_d, time_a_run)
-        tmp_mod = mod(tmp_mod, time_a_run)
-        if(tmp_mod == 0)then
-            flag = .true.
-        end if
+    time_run = EClock_s%interval
+    tmp_m = mod(60, time_run)
+    tmp_h = mod(60*60, time_run)
+    tmp_d = mod(tmp_h*24, time_run)
+    tmp_mod = mod(EClock%seconds, time_run) +&
+              mod(EClock%minutes*tmp_m, time_run) + &
+              mod(EClock%hours*tmp_h, time_run) + &
+              mod(EClock%days*tmp_d, time_run)
+    tmp_mod = mod(tmp_mod, time_run)
+    if(tmp_mod == 0)then
+        run = .true.
     end if
-
-    if(flag_name=='b_run')then
-        tmp_m = mod(60, time_b_run)
-        tmp_h = mod(60*60, time_b_run)
-        tmp_d = mod(tmp_h*24, time_b_run)
-        tmp_mod = mod(EClock%seconds, time_b_run) +&
-mod(EClock%minites*tmp_m, time_b_run) + &
-                  mod(EClock%hours*tmp_h, time_b_run) + &
-mod(EClock%days*tmp_d, time_b_run)
-        tmp_mod = mod(tmp_mod, time_b_run)
-        if(tmp_mod == 0)then
-            flag = .true.
-        end if
-    end if
-
 
 end subroutine triger
 
@@ -122,7 +191,7 @@ subroutine clock_print(EClock)
     implicit none
     type(Clock), intent(in) :: EClock
 
-    write(*,*) EClock%days, "days:", EClock%hours, "hours:", EClock%minites, "minites:",&
+    write(*,*) EClock%days, "days:", EClock%hours, "hours:", EClock%minutes, "minites:",&
                EClock%seconds, "seconds"
 
 end subroutine clock_print
@@ -142,8 +211,8 @@ subroutine clock_info(EClock, info)
     info = info//tmpCh//"hours:  "
  
     tmpCh = ""
-    write(tmpCh,*)EClock%minites
-    info = info//tmpCh//"minites:  "
+    write(tmpCh,*)EClock%minutes
+    info = info//tmpCh//"minutes:  "
     
     tmpCh = ""
     write(tmpCh,*)EClock%seconds

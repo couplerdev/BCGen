@@ -18,7 +18,7 @@ subroutine log_init(logFile, logUnit)
     integer,             intent(in) :: logUnit
     logical                         :: stats
 
-    inquire(logFile, exist=stats)
+    inquire(file=logFile, exist=stats)
     if (.not. stats) then
         call base_sys_abort()
     end if
@@ -31,7 +31,7 @@ subroutine log_final(logFile, logUnit)
     implicit none
     character(len=*),   intent(in)  :: logFile
     integer,            intent(in)  :: logUnit
-    close(unit=logUnit, file=logFile)
+    close(unit=logUnit)
 
 end subroutine log_final
 

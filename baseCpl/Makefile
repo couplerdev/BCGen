@@ -4,39 +4,48 @@ LIB_A = libbcpl.a
 ABSDIR = $(shell pwd)
 SRC  = lib/*.o
 LIBDIR = ./lib
-path0 = MCTWrapper
-path1 = data_def
-path2 = timeManage
-path3 = transManage
-path4 = procManage
-models=$(shell ls -l ./model|grep ^d|grep -v 'cpl'|awk '{print $$9}')
+MCTMODDIR = MCTWrapper
+DEFDIR = data_def
+TIMEDIR= timeManage
+COMMDIR = transManage
+PROCDIR = procManage
+MRGDIR = MrgSubroutine
+SYSDIR = sys
+ESM = esm
+LOGUTILDIR =  logUtils 
+models=$(shell ls -l ./src/model|grep ^d|grep -v 'cpl'|awk '{print $$9}')
 MAIN = ./model/cpl
-
+DEPS=$(MCTMODDIR) $(SYSDIR) $(LOGUTILDIR) $(DEFDIR) $(ESM) $(TIMEDIR) $(COMMDIR) $(PROCDIR) $(MRGDIR) 
 
 .PHONY : all
 all :
-	#@for dir in $(models);\
-	#do\
-	#	cd ./model/$$dir;\
-	#	make;\
-	#	cd -;\
+	@for dir in $(DEPS);\
+	do\
+		echo $$dir;\
+		cd src/$$dir;\
+		make; \
+		cd -; \
+	done
+	$(AR) rcs $(LIB_A) ./lib/*.o
+	mv $(LIB_A) $(LIBDIR)
+	@for dir in $(models);\
+	do\
+		echo $$dir; \
+		cd src/model/$$dir; \
+		make;\
+		cd -;\
+	done
+		#cd ./model/$$dir;\
+		#make;\
+		#cd -;\
 	#done
-	$(AR) rcs $(LIB_A) $(SRC)
-	mv *.a ./lib
+	#$(AR) rcs $(LIB_A) $(SRC)
+	#mv *.a ./lib
 	#rm ./lib/*.o
 
 .PHONY : clean
 clean :
-	make clean -C $(path0)
-	make clean -C $(path1)
-	make clean -C $(path2)
-	make clean -C $(path3)
-	make clean -C $(path4)
-	make clean -C $(model1)
-	make clean -C $(model2)
-	make clean -C $(model3)
-	make clean -C $(model4)
-	make clean -C $(model5)
-	make clean -C $(model6)
+	make clean -C include
+	make clean -C lib
 	make clean -C $(MAIN)
 	rm ./main

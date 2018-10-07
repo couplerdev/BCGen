@@ -18,7 +18,7 @@ module base_fields
     character(CXX)   :: flds_atm2x_states
     character(CXX)   :: flds_atm2x_fluxes
     character(CXX)   :: flds_x2atm_states
-    character(CXX)   :: flds_x2atm_states
+    character(CXX)   :: flds_x2atm_fluxes
     
     character(CXX)   :: flds_ice2x_states
     character(CXX)   :: flds_ice2x_fluxes
@@ -33,7 +33,7 @@ module base_fields
     character(CXX)   :: flds_ocn2x_states
     character(CXX)   :: flds_ocn2x_fluxes
     character(CXX)   :: flds_x2ocn_states
-    character(CXX)   :: flds_ocn2x_fluxes
+    character(CXX)   :: flds_x2ocn_fluxes
 
     character(CXX)   :: flds_glc2x_states
     character(CXX)   :: flds_glc2x_fluxes
@@ -68,6 +68,7 @@ module base_fields
     character(CXX)   :: flds_ocn2x_fields
     character(CXX)   :: flds_x2ocn_fields
     character(CXX)   :: flds_rof2x_fields
+    character(CXX)   :: flds_x2rof_fields
     character(CXX)   :: flds_glc2x_fields
     character(CXX)   :: flds_x2glc_fields
     character(CXX)   :: flds_snow2x_fields
@@ -78,4 +79,4 @@ module base_fields
     
 
 
-end moudle base_fields
+end module base_fields

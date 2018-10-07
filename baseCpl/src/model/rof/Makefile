@@ -1,5 +1,5 @@
 
-SRC = comp_atm.F90
+SRC = comp_rof.F90
 include ../Makefile.conf
 OBJ_ALL = $(SRC: .F90=.o)
 

@@ -109,7 +109,7 @@ subroutine atm_init_mct(my_proc, ID, EClock, &
     allocate(start(nlseg))
     allocate(length(nlseg))
 
-    gsize = my_proc%a_gsize !a_gsize =nx*ny
+    gsize = my_proc%atm_gsize !a_gsize =nx*ny
     lsize = gsize / nproc
     llseg = lsize / nlseg
 
@@ -155,7 +155,7 @@ subroutine atm_run_mct(my_proc, ID, EClock, atm2x, x2atm, ierr)
     type(AttrVect), intent(inout)  :: atm2x
     type(AttrVect), intent(inout)  :: x2atm
     integer, intent(inout)         :: ierr    
-    integer comm_rank,i, av_lsize, n_rflds, n_iflds, n,nf
+    integer  :: comm_rank,i, av_lsize, n_rflds, n_iflds, n,nf
     
 
     call mpi_comm_rank(my_proc%comp_comm(ID), comm_rank, ierr)

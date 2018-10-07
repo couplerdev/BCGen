@@ -3,6 +3,7 @@ use mct_mod
 use comms_def
 use extend
 use proc_def
+use comms_nc, only : sMatPInitnc_mapfile
     implicit none
     
     public :: mapper_init
@@ -11,6 +12,7 @@ use proc_def
     public :: mapper_comp_map
     public :: mapper_comp_interpolation  
     public :: mapper_comp_avMerge
+    public :: mapper_spmat_init_nil
     private :: gsmap_check    
 
 interface mapper_init ; module procedure &
@@ -77,7 +79,7 @@ end subroutine mapper_rearrsplit_init
 
 ! Build sMat, gsMap_s, gsMap_d must In comp_comm(ID_s)
 ! 
-subroutine mapper_spmat_init(my_proc, mapper,&
+subroutine mapper_spmat_init_nil(my_proc, mapper,&
                 ID_s, &
                 nRows, nCols, nElements,&
                 gsMap_s, gsMap_d)
@@ -124,35 +126,34 @@ subroutine mapper_spmat_init(my_proc, mapper,&
     call MPI_Barrier(my_proc%comp_comm(ID_s), ierr)
 
 
-end subroutine mapper_spmat_init
+end subroutine mapper_spmat_init_nil
 
 !----------------------------------------
 !  read weight from nfl weight to init spmat
 !----------------------------------------
 
-!subroutine mapper_spmat_init(mapper, gsmap_src, gsmap_dst, mpicom, &
-!                       maprcfile, maprcname, maprctype, samegrid, string)
-!    implicit none
-!
-!    type(map_mod),     intent(inout)  :: mapper
-!    type(gsmap),       intent(in)     :: gsmap_src
-!    type(gsmap),       intent(in)     :: gsmap_dst
-!    integer,           intent(in)     :: mpicom
-!    character(len=*),  intent(in)     :: maprcfile
-!    character(len=*),  intent(in)     :: maprcname
-!    character(len=*),  intent(in)     :: maprctype
-!    logical,           intent(in)     :: samegrid
-!    character(len=*),  intent(in), optional :: string
-!
-!    integer   :: ssize, dsize
-!   
-!    call sMAtPInitnc(mapper%sMatPlus, gsmap_src, gsmap_dst, &
-!                   trim(maprcfile), trim(maprcname), trim(maprctype), mpicom)
-!
+subroutine mapper_spmat_init(mapper, gsmap_src, gsmap_dst, mpicom,&
+                       maprcfile, maprctype, samegrid, string)
+    implicit none
+
+    type(map_mod),     intent(inout)  :: mapper
+    type(gsmap),       intent(in)     :: gsmap_src
+    type(gsmap),       intent(in)     :: gsmap_dst
+    integer,           intent(in)     :: mpicom
+    character(len=*),  intent(in)     :: maprcfile
+    character(len=*),  intent(in)     :: maprctype
+    logical,           intent(in), optional :: samegrid
+    character(len=*),  intent(in), optional :: string
+
+    integer   :: ssize, dsize
+   
+    call sMatPInitnc_mapfile(mapper%sMatPlus, gsmap_src, gsmap_dst, &
+                   trim(maprcfile),  trim(maprctype), mpicom)
+
     
 
 
-!end subroutine mapper_spmat_init
+end subroutine mapper_spmat_init
 
 !subroutine mapper_spmat_init(my_proc, mapper,&
 !                          ID_s, gsmap_src, gsmap_dst,&

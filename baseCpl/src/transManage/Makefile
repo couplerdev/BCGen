@@ -1,4 +1,4 @@
-SRC = extend.F90 comms.F90 comms_nc.F90 
+SRC = extend.F90  comms_nc.F90 comms.F90
 include ../Makefile.conf
 OBJ_ALL = $(SRC: .F90=.o)
 SRC_test = testComms.F90

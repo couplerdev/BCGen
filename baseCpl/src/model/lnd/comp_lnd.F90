@@ -109,7 +109,7 @@ subroutine lnd_init_mct(my_proc, ID, EClock, &
     allocate(start(nlseg))
     allocate(length(nlseg))
 
-    gsize = my_proc%a_gsize !a_gsize =nx*ny
+    gsize = my_proc%lnd_gsize !a_gsize =nx*ny
     lsize = gsize / nproc
     llseg = lsize / nlseg
 

@@ -5,7 +5,6 @@ LIB_SYS = libsys.a
 
 OBJ_ALL:
 	$(FC) -c -I$(INCLDIR) -L$(LIBDIR) $(SRC)
-	$(AR) rsc $(LIB_SYS) ./*.o
-	mv *.a $(LIBDIR)
+	mv *.o $(LIBDIR)
 	mv *.mod $(INCLDIR)
 

@@ -4,7 +4,7 @@ OBJ_ALL = $(SRC: .F90=.o)
 EXE = main
 
 EXE:
-	$(FC) -o $(EXE) $(OBJ_ALL) -L$(INCLDIR) -I$(LIBDIR) 
+	$(FC) -o $(EXE) $(OBJ_ALL) -I$(INCLDIR) -L$(LIBDIR) 
 	mv $(EXE) $(BINDIR)
 	rm *.o
 	rm *.mod

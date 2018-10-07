@@ -2,7 +2,9 @@ module comp_glc
 use mct_mod
 use timeM
 use proc_def
-use logUnitl, only: logUnit
+use logUtil, only: logUnit
+use base_fields, only: flds_c2x => flds_glc2x_fields, &
+                       flds_x2c => flds_x2glc_fields
     implicit none
      integer :: comp_id
 
@@ -27,7 +29,7 @@ subroutine glc_init_mct(my_proc, ID, EClock, gsMap_glcglc,&
      type(AttrVect), intent(inout)  :: glc2x_glcglc
      type(AttrVect), intent(inout)  :: x2glc_glcglc
      type(gGrid),    intent(inout)  :: domain
-     integer. intent(inout) :: ierr
+     integer, intent(inout) :: ierr
      integer :: local_comm, i
 
      logical :: first_time = .true.
@@ -35,6 +37,7 @@ subroutine glc_init_mct(my_proc, ID, EClock, gsMap_glcglc,&
      integer :: ngy, ngx
      integer :: nlseg
      integer :: llseg
+     integer :: nproc
 
      integer, allocatable :: start(:)
      integer, allocatable :: length(:)
@@ -79,23 +82,112 @@ subroutine glc_init_mct(my_proc, ID, EClock, gsMap_glcglc,&
 
      !----------------------------------
      !  init mct grid 
-     !--------------------------------
+     !----------------------------------
+     allocate(start(nlseg))
+     allocate(length(nlseg))
+  
+     gsize = my_proc%glc_gsize
+     lsize = gsize / nproc
+     llseg = lsize / nlseg
+
+     do i = 1, nlseg
+         start(i) = (comm_rank*lsize) + (i-1)*llseg
+         length(i) = llseg
+     end do
+
+     !--------------------------------------
+     !  init MCT global seg map
+     !--------------------------------------
+     
+     call gsMap_init(gsMap_glcglc, start, length, root, local_comm, ID)
+     
+     !--------------------------------------
+     ! init MCT Domain
+     !--------------------------------------
+     
+     call glc_domain_init(local_comm, gsMap_glcglc, domain) 
+ 
+     !---------------------------------------
+     ! init AttrVect
+     !--------------------------------------
+     call avect_init(glc2x_glcglc, rList=flds_c2x, lsize=lsize)
+     call avect_init(x2glc_glcglc, rList=flds_x2c, lsize=lsize)
+
+     call avect_zero(glc2x_glcglc) 
+     call avect_zero(x2glc_glcglc)
+
 
 end subroutine glc_init_mct
 
 
-subroutine glc_run_mct()
+subroutine glc_run_mct(my_proc, ID, EClock, glc2x_glcglc, x2glc_glcglc, ierr)
+    
+    implicit none
+    type(proc), intent(inout)      :: my_proc
+    integer,    intent(in)         :: ID
+    type(Clock), intent(in)        :: EClock
+    type(AttrVect), intent(inout)  :: glc2x_glcglc
+    type(AttrVect), intent(inout)  :: x2glc_glcglc
+    integer,        intent(inout)  :: ierr
 
+    integer :: comm_rank, i
+    integer :: av_lsize, n_rflds, n_iflds
+    integer :: n, nf
 
+    call mpi_comm_rank(my_proc%comp_comm(ID), comm_rank, ierr)
+     
+    av_lsize = avect_lsize(glc2x_glcglc)
+    n_rflds = avect_nRattr(x2glc_glcglc)
+    n_iflds = avect_nRattr(x2glc_glcglc)
+   
+    do nf=1, n_rflds
+        do n = 1, av_lsize
+            glc2x_glcglc%rAttr(nf, n) = (nf*100)
+        end do
+    end do
 
 end subroutine glc_run_mct
 
 
 subroutine glc_final_mct()
 
-
+     write(logUnit, *)"glc final"
        
 end subroutine glc_final_mct
+
+subroutine glc_domain_init(mpicomm, gsMap_glcglc, domain)
+
+    integer       ,intent(in)    :: mpicomm
+    type(gsMap)   ,intent(in)    :: gsMap_glcglc
+    type(gGrid)   ,intent(inout) :: domain
+
+    real(8)    ,pointer :: data(:)
+    integer    ,pointer :: idata(:)
+    integer :: ierr, lsize
+
+    call gGrid_init(GGrid=domain, &
+        CoordChars=trim('x:y:z'), &
+        otherchars=trim('lat:lon:area:frac:mask:aream'), &
+        lsize=gsMap_lsize(gsMap_glcglc, mpicomm))
+    call avect_zero(domain%data)
+
+    lsize = gsMap_lsize(gsMap_glcglc, mpicomm)
+
+    allocate(data(lsize))
+    allocate(idata(lsize))
+    data(:) = -9999.0
+    call gGrid_importRAttr(domain, "lat", data, lsize)
+    call gGrid_importRAttr(domain, "lon", data, lsize)
+    call gGrid_importRAttr(domain, "area", data, lsize)
+    call gGrid_importRAttr(domain, "frac", data, lsize)
+ 
+    data(:) = 0.0
+    call gGrid_importRAttr(domain, "mask", data, lsize)
+    call gGrid_importRAttr(domain, "aream", data, lsize)
+    deallocate(data)
+    deallocate(idata)
+
+end subroutine glc_domain_init
 
 
 end module comp_glc
