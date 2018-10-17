@@ -23,19 +23,18 @@ contains
 !  a_init_mct, init gsmap_aa, avect, avect init with zero, but not init
 !  dom at present
 !-------------------------------------------------------------------------
-subroutine atm_init_mct(my_proc, ID, EClock, &
-    gsMap_atmatm, atm2x_atmatm, x2atm_atmatm, &
-    domain, ierr)
+subroutine atm_init_mct(modelInfo, EClock, &
+    atm2x_atmatm, x2atm_atmatm, ierr)
 
     implicit none
-    type(proc), intent(inout)        :: my_proc
-    integer, intent(in)              :: ID
+    type(model_info), target, intent(inout)  :: modelInfo
     type(Clock), intent(in)          :: EClock
-    type(gsMap), intent(inout)       :: gsMap_atmatm
     type(AttrVect), intent(inout)    :: atm2x_atmatm
     type(AttrVect), intent(inout)    :: x2atm_atmatm
-    type(gGrid), intent(inout)              :: domain
-    integer,  intent(inout)          :: ierr
+    integer,        intent(inout)    :: ierr
+    integer                :: ID
+    type(gsMap), pointer   :: gsMap_atmatm   
+    type(gGrid), pointer   :: domain
     integer ::local_comm,i
 
     ! control signal
@@ -67,7 +66,12 @@ subroutine atm_init_mct(my_proc, ID, EClock, &
     character(*), parameter :: subName = "(atm_init_mct) "
 
     
-    local_comm = my_proc%comp_comm(ID)
+    local_comm = modelInfo%comm
+    domain => modelInfo%domain
+    gsmap_atmatm => modelInfo%gsmap
+    ID = modelInfo%ID
+    gsize = modelInfo%gsize
+
     call mpi_comm_rank(local_comm, comm_rank, ierr)
     call mpi_comm_size(local_comm, comm_size, ierr)
 !---
@@ -109,7 +113,6 @@ subroutine atm_init_mct(my_proc, ID, EClock, &
     allocate(start(nlseg))
     allocate(length(nlseg))
 
-    gsize = my_proc%atm_gsize !a_gsize =nx*ny
     lsize = gsize / nproc
     llseg = lsize / nlseg
 
@@ -146,19 +149,22 @@ subroutine atm_init_mct(my_proc, ID, EClock, &
 
 end subroutine atm_init_mct
 
-subroutine atm_run_mct(my_proc, ID, EClock, atm2x, x2atm, ierr)
+subroutine atm_run_mct(modelInfo, EClock, atm2x, x2atm, ierr)
 
     implicit none
-    type(proc), intent(inout)      :: my_proc
-    integer,    intent(in)         :: ID
-    type(Clock), intent(in)        :: EClock
-    type(AttrVect), intent(inout)  :: atm2x
-    type(AttrVect), intent(inout)  :: x2atm
-    integer, intent(inout)         :: ierr    
+    type(model_info), target, intent(inout)   :: modelInfo
+    type(Clock), intent(in)           :: EClock
+    type(AttrVect), intent(inout)     :: atm2x
+    type(AttrVect), intent(inout)     :: x2atm
+    integer, intent(inout)            :: ierr
+    type(gGrid), pointer  :: domain
+    integer               :: ID 
     integer  :: comm_rank,i, av_lsize, n_rflds, n_iflds, n,nf
-    
+    integer :: local_comm
 
-    call mpi_comm_rank(my_proc%comp_comm(ID), comm_rank, ierr)
+    local_comm = modelInfo%comm
+    domain => modelInfo%domain
+    call mpi_comm_rank(local_comm, comm_rank, ierr)
     
     av_lsize = avect_lsize(atm2x) 
     n_rflds = avect_nRattr(x2atm)

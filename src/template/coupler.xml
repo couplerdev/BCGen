@@ -10,7 +10,7 @@
 					<mapper>
 						<name>mapper_Smatlnd2atm</name>
 						<type>offline</type>
-						<w_file></w_file>
+						<w_file>idmap</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -35,7 +35,7 @@
 					<mapper>
 						<name>mapper_Smatocn2atm</name>
 						<type>offline</type>
-						<w_file></w_file>
+						<w_file>map_fv4x5_to_gx3v7_aave_da_091218.nc</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -60,7 +60,7 @@
 					<mapper>
 						<name>mapper_Smatice2atm</name>
 						<type>offline</type>
-						<w_file></w_file>
+						<w_file>map_gx3v7_to_fv4x5_aave_da_091218.nc</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -103,7 +103,7 @@
 					<mapper>
 						<name>mapper_Smatatm2ice</name>
 						<type>offline</type>
-						<w_file></w_file>
+						<w_file>map_fv4x5_to_gx3v7_aave_da_091218.nc</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -122,37 +122,11 @@
 						</method>
 					</mapper>
 				</src>
-				<src>
-					<attrVect>ocn2x_ocnx</attrVect>
-					<field>So_t:So_s:So_u</field>
-					<mapper>
-						<name>mapper_Smatocn2ice</name>
-						<type>offline</type>
-						<w_file></w_file>
-						<method>
-							<phase>
-								<name>smat_init</name>
-								<in_args></in_args>
-								<out_args></out_args>
-							</phase>
-							<phase>
-								<name>mapper_comp_comm</name>
-								<in_args>
-									<arg>ocn2x_ocnx</arg>
-								</in_args>
-								<out_args>
-									<arg>ocn2x_icex</arg>
-								</out_args>
-							</phase>
-						</method>
-					</mapper>
-				</src>
 			</srcs>
 			<mrg>
 				<name>mrg_x2ice</name>
 				<in_args>
 					<arg>atm2x_icex</arg>
-					<arg>ocn2x_icex</arg>
 					<arg>ice2x_icex</arg>
 				</in_args>
 				<out_args>
@@ -163,37 +137,10 @@
 		<attrVect>
 			<name>rof2x_rofx</name>
 			<model>rof</model>
-			<srcs>
-				<src>
-					<attrVect>lnd2x_lndx</attrVect>
-					<field>Sl_tref:Sl_qref:Sl_t</field>
-					<mapper>
-						<name>mapper_Smatlnd2rof</name>
-						<type>offline</type>
-						<w_file></w_file>
-						<method>
-							<phase>
-								<name>smat_init</name>
-								<in_args></in_args>
-								<out_args></out_args>
-							</phase>
-							<phase>
-								<name>mapper_comp_comm</name>
-								<in_args>
-									<arg>lnd2x_lndx</arg>
-								</in_args>
-								<out_args>
-									<arg>lnd2x_rofx</arg>
-								</out_args>
-							</phase>
-						</method>
-					</mapper>
-				</src>
-			</srcs>
+			<srcs/>
 			<mrg>
 				<name>mrg_x2rof</name>
 				<in_args>
-					<arg>lnd2x_rofx</arg>
 					<arg>rof2x_rofx</arg>
 				</in_args>
 				<out_args>
@@ -211,7 +158,7 @@
 					<mapper>
 						<name>mapper_Smatatm2lnd</name>
 						<type>offline</type>
-						<w_file></w_file>
+						<w_file>idmap</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -236,7 +183,7 @@
 					<mapper>
 						<name>mapper_Smatrof2lnd</name>
 						<type>offline</type>
-						<w_file></w_file>
+						<w_file>map_4x5_nomask_to_0.5x0.5_nomask_aave_da_c110822.nc</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -278,7 +225,7 @@
 					<mapper>
 						<name>mapper_Smatatm2ocn</name>
 						<type>offline</type>
-						<w_file></w_file>
+						<w_file>map_fv4x5_to_gx3v7_bilin_da_091218.nc</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -298,37 +245,12 @@
 					</mapper>
 				</src>
 				<src>
-					<attrVect>ice2x_icex</attrVect>
-					<field>Si_avsdr:Si_anidr:Si_anidf</field>
-					<mapper>
-						<name>mapper_Smatice2ocn</name>
-						<type>offline</type>
-						<w_file></w_file>
-						<method>
-							<phase>
-								<name>smat_init</name>
-								<in_args></in_args>
-								<out_args></out_args>
-							</phase>
-							<phase>
-								<name>mapper_comp_comm</name>
-								<in_args>
-									<arg>ice2x_icex</arg>
-								</in_args>
-								<out_args>
-									<arg>ice2x_ocnx</arg>
-								</out_args>
-							</phase>
-						</method>
-					</mapper>
-				</src>
-				<src>
 					<attrVect>wav2x_wavx</attrVect>
 					<field>Sw_hstokes:Sw_lamult</field>
 					<mapper>
 						<name>mapper_Smatwav2ocn</name>
 						<type>offline</type>
-						<w_file></w_file>
+						<w_file>idmap</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -352,7 +274,6 @@
 				<name>mrg_x2ocn</name>
 				<in_args>
 					<arg>atm2x_ocnx</arg>
-					<arg>ice2x_ocnx</arg>
 					<arg>wav2x_ocnx</arg>
 					<arg>ocn2x_ocnx</arg>
 				</in_args>
@@ -371,7 +292,7 @@
 					<mapper>
 						<name>mapper_Smatatm2wav</name>
 						<type>offline</type>
-						<w_file></w_file>
+						<w_file>idmap</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -396,7 +317,7 @@
 					<mapper>
 						<name>mapper_Smatocn2wav</name>
 						<type>offline</type>
-						<w_file></w_file>
+						<w_file>idmap</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -421,7 +342,7 @@
 					<mapper>
 						<name>mapper_Smatice2wav</name>
 						<type>offline</type>
-						<w_file></w_file>
+						<w_file>idmap</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>

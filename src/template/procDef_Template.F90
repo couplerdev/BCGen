@@ -4,6 +4,14 @@ use comms_def
     implicit none
 !include "mpif.h"
 
+    type model_info
+        integer     :: ID
+        type(gsMap) :: gsmap
+        type(gGrid) :: domain
+        integer     :: comm
+        integer     :: gsize
+    end type model_info
+
     type proc
         !-----------------------------------------------
         ! Meta desc of proc
@@ -107,9 +115,13 @@ use comms_def
         logical :: ${name}_run
     #end for
 
+    #for $model in $proc_cfgs
+        #set $model_name = $model.name
+        type(model_info)  :: model_${model_name}
+    #end for
+
 
     end type proc
-
 
 
 

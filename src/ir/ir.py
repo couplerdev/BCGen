@@ -14,7 +14,8 @@ import sys
 sys.path.append("../ErrorHandle")
 from ErrorHandle import *
 from Datatype import *
-
+sys.path.append("../parser")
+from codeWrapper import toString
 
 class Subroutine(object):
     __slots__=['__subroutineName','__argList', '__lineCharacter']
@@ -131,7 +132,8 @@ class ModelSubroutine(Subroutine):
  
     def toString(self):
         #print self.argList
-        return super(ModelSubroutine,self).toString(self.__subroutineName, self.argList)
+        str_ =  toString(self.__subroutineName, self.argList)
+        return str_
 
 #   a bug: init with name not checked by NameManager
 #   present solution: init phase name not allowed ?	
@@ -482,17 +484,17 @@ class GsMap(CoupleEntity):
         self.__pes = pesValue
 
 class AttrVectCpl(AttrVect):
-    __slots__=["__mapperMethod", "__field","__grid","__srcAttrVect",\
+    __slots__=["__mapperType", "__field","__grid","__srcAttrVect",\
                "__name", "__type", "__nameSet", "__manager", "__bind", \
                "__srcModelName", "__dstModelName","__srcModel", "__dstModel",\
-               "__mapperName"]
-    def __init__(self, srcAttrVect, mapper, grid, field=""):
+               "__mapperName", "__mapperFile"]
+    def __init__(self, srcAttrVect, mapper, grid, field="", mapperFile="", mapperType="online"):
         name = ""
         self.__name = ""
-        mapperMethod = None
         super(AttrVectCpl, self).__init__(name=name)
         self.__srcAttrVect = srcAttrVect
-        self.__mapperMethod = mapperMethod
+        self.__mapperType = mapperType
+        self.__mapperFile = mapperFile
         self.__field = field
         self.__grid = grid
         self.__nameSet = False
@@ -524,6 +526,14 @@ class AttrVectCpl(AttrVect):
     @property
     def name(self):
         return self.__name
+
+    @property
+    def mapperType(self):
+        return self.__mapperType
+
+    @property
+    def mapperFile(self):
+        return self.__mapperFile
 
     @property
     def mapperName(self):

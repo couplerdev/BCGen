@@ -3,7 +3,7 @@ module timeM
     implicit none
     type Clock
         integer :: seconds
-        integer :: minites
+        integer :: minutes
         integer :: hours
         integer :: days
         !integer :: months
@@ -13,40 +13,40 @@ module timeM
     integer :: total_days =  1 
 
     
-    integer :: glc_seconds = 
+    integer :: glc_seconds = 0
     integer :: glc_minutes = 0
-    integer :: glc_hours = 
-    integer :: glc_days = 
+    integer :: glc_hours = 0
+    integer :: glc_days = 0
     
-    integer :: ocn_seconds = 
+    integer :: ocn_seconds = 0
     integer :: ocn_minutes = 0
-    integer :: ocn_hours = 
-    integer :: ocn_days = 
+    integer :: ocn_hours = 0
+    integer :: ocn_days = 0
     
-    integer :: atm_seconds = 
+    integer :: atm_seconds = 0
     integer :: atm_minutes = 0
-    integer :: atm_hours = 
-    integer :: atm_days = 
+    integer :: atm_hours = 0
+    integer :: atm_days = 0
     
-    integer :: ice_seconds = 
+    integer :: ice_seconds = 0
     integer :: ice_minutes = 0
-    integer :: ice_hours = 
-    integer :: ice_days = 
+    integer :: ice_hours = 0
+    integer :: ice_days = 0
     
-    integer :: rof_seconds = 
+    integer :: rof_seconds = 0
     integer :: rof_minutes = 0
-    integer :: rof_hours = 
-    integer :: rof_days = 
+    integer :: rof_hours = 0
+    integer :: rof_days = 0
     
-    integer :: wav_seconds = 
+    integer :: wav_seconds = 0
     integer :: wav_minutes = 0
-    integer :: wav_hours = 
-    integer :: wav_days = 
+    integer :: wav_hours = 0
+    integer :: wav_days = 0
     
-    integer :: lnd_seconds = 
+    integer :: lnd_seconds = 0
     integer :: lnd_minutes = 0
-    integer :: lnd_hours = 
-    integer :: lnd_days = 
+    integer :: lnd_hours = 0
+    integer :: lnd_days = 0
 
 
     public :: clock_init
@@ -54,14 +54,14 @@ module timeM
     public :: triger
 contains 
 
-subroutine clock_init(EClock,
-                     glc, 
-                     ocn, 
-                     atm, 
-                     ice, 
-                     rof, 
-                     wav, 
-                     lnd, 
+subroutine clock_init(EClock, &
+                     EClock_glc,& 
+                     EClock_ocn,& 
+                     EClock_atm,& 
+                     EClock_ice,& 
+                     EClock_rof,& 
+                     EClock_wav,& 
+                     EClock_lnd,& 
                      interval)
  
     implicit none
@@ -76,7 +76,7 @@ subroutine clock_init(EClock,
     integer, optional, intent(in) :: interval
  
     EClock%seconds = 0 
-    EClock%minites = 0
+    EClock%minutes = 0
     EClock%hours   = 0
     EClock%days    = 0
     EClock_glc%seconds = glc_seconds
@@ -138,11 +138,11 @@ subroutine clock_advance(EClock)
    
    plus = EClock%seconds/60
    EClock%seconds = mod(EClock%seconds, 60) 
-   EClock%minites = EClock%minites + plus
-   if(EClock%minites < 60)return 
+   EClock%minutes = EClock%minutes + plus
+   if(EClock%minutes < 60)return 
     
-   plus = EClock%minites/60
-   EClock%minites = mod(EClock%minites, 60)
+   plus = EClock%minutes/60
+   EClock%minutes = mod(EClock%minutes, 60)
    EClock%hours   = EClock%hours + plus
    if(EClock%hours < 24)return 
 
@@ -152,12 +152,13 @@ subroutine clock_advance(EClock)
 
 end subroutine clock_advance
 
-subroutine triger(EClock,EClock_s ,run)
+subroutine triger(EClock,EClock_s ,run, flag_name)
 
     implicit none
     type(Clock), intent(in)       :: EClock
     type(Clock), intent(in)       :: EClock_s
     logical, intent(inout)        :: run
+    character(*),  intent(in)     :: flag_name
     integer   :: time_run
     integer   :: tmp_m
     integer   :: tmp_h
@@ -175,7 +176,7 @@ subroutine triger(EClock,EClock_s ,run)
     tmp_h = mod(60*60, time_run)
     tmp_d = mod(tmp_h*24, time_run)
     tmp_mod = mod(EClock%seconds, time_run) +&
-              mod(EClock%minites*tmp_m, time_run) + &
+              mod(EClock%minutes*tmp_m, time_run) + &
               mod(EClock%hours*tmp_h, time_run) + &
               mod(EClock%days*tmp_d, time_run)
     tmp_mod = mod(tmp_mod, time_run)
@@ -190,7 +191,7 @@ subroutine clock_print(EClock)
     implicit none
     type(Clock), intent(in) :: EClock
 
-    write(*,*) EClock%days, "days:", EClock%hours, "hours:", EClock%minites, "minites:",&
+    write(*,*) EClock%days, "days:", EClock%hours, "hours:", EClock%minutes, "minites:",&
                EClock%seconds, "seconds"
 
 end subroutine clock_print
@@ -210,8 +211,8 @@ subroutine clock_info(EClock, info)
     info = info//tmpCh//"hours:  "
  
     tmpCh = ""
-    write(tmpCh,*)EClock%minites
-    info = info//tmpCh//"minites:  "
+    write(tmpCh,*)EClock%minutes
+    info = info//tmpCh//"minutes:  "
     
     tmpCh = ""
     write(tmpCh,*)EClock%seconds

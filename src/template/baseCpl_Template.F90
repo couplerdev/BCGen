@@ -20,7 +20,7 @@ use comp_${name}
                 #set $gms = $model.gsMaps
                 #for $gm in $gms
                         #set $name = $gms[$gm].name
-        type(gsMap) :: $name
+        type(gsMap), pointer :: $name
                 #end for
     #end for
 
@@ -41,6 +41,12 @@ use comp_${name}
                         #set $av_mx_nx = $mn_av['dst_av'].name
          type(AttrVect):: $av_mx_nx
                 #end for
+    #end for
+
+    ! Declare grid domain
+    #for $model in $proc_cfgs
+         #set $domain = $model.domain
+         type(gGrid), pointer :: $model.domain
     #end for
 
     ! Declare Control Var
@@ -86,6 +92,13 @@ subroutine cpl_init()
                 #end for
     #end for
 
+    #for $model in $proc_cfgs
+                #set $gm =  $model.gsMaps["comp"].name
+                #set $model_name = $model.name
+                domain_${model_name} => my_proc%model_${model_name}%domain
+                $gm => my_proc%model_${model_name}%gsmap
+    #end for
+
     #for $frac in $fraction_cfgs
          #set $init = $fraction_cfgs[$frac].init
          #set $init_str = $init.toString($init.name, $init.argList)
@@ -102,9 +115,9 @@ subroutine cpl_init()
                 #set $name = $cfg['model_unique_name']
                 #set $subroutine = $cfg['subroutine']
                 #set $init_method = $subroutine['init_method']
-                if(my_proc%iamin_model${name})then
-                    $init_method.getFuncFormat()
-                end if
+       if(my_proc%iamin_model${name})then
+           $init_method.getStrFormat()
+       end if
        #end for
 
     
@@ -158,7 +171,7 @@ subroutine cpl_init()
                     call mapper_comp_map(my_proc%mapper_C${name}2x, &
                                          $av_mx_mm, $av_mx_mx, 100+10+1, ierr)
                 end if
-                if(iamroot_${name})then
+                if(my_proc%iamroot_model${name})then
                     write(*,*)'-------------${name} initiated-----------'
                 end if
         #end for
@@ -185,18 +198,15 @@ subroutine cpl_init()
                         #set $gm_nx = $mn_av['dst_gm']
                         #set $dst_model_name = $mn_av['dst_model_name']
                         #set $mapper_name = $mn_av['dst_mapper']
+                        #set $mapper_file = $mn_av['w_file']
                         #set $smat_size = $mn_av['smat_size']
         call avect_init_ext(my_proc, $av_mx_mx,&
                             my_proc%cplid, $av_mx_nx,&
                             my_proc%cplid, $gm_nx, &
                             my_proc%model${dst_model_name}2cpl_id)
 
-        call mapper_spmat_init(my_proc,&
-                               my_proc%${mapper_name}, &
-                               my_proc%cplid, &
-                               my_proc%${dst_model_name}_gsize, my_proc%${name}_gsize, &
-                               $smat_size,&
-                               $gm_mx, $gm_nx)
+        call mapper_spmat_init(my_proc%${mapper_name}, $gm_mx, $gm_nx, mpicom,&
+                               ${mapper_file}, 'X')
 
                 #end for
         #end for

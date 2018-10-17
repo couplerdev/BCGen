@@ -178,7 +178,7 @@ end subroutine mapper_spmat_init
 
 !end subroutine mapper_spmat_init
 
-subroutine mapper_comp_map(mapper, src, dst, msgtag,  ierr, rList)
+subroutine mapper_comp_map(mapper, src, dst, msgtag,  ierr, field)
     
     implicit none
     type(map_mod),  intent(inout)              :: mapper
@@ -186,14 +186,14 @@ subroutine mapper_comp_map(mapper, src, dst, msgtag,  ierr, rList)
     type(AttrVect), intent(inout)           :: dst
     integer,        optional,   intent(in)  :: msgtag
     integer,        optional,   intent(inout) :: ierr
-    character(len=*),optional,   intent(in)  :: rList
+    character(len=*),optional,   intent(in)  :: field
 
     if(mapper%map_type=="copy")then
         call avect_copy(src, dst)
     else if(mapper%map_type=="rearr")then
         call rearrange(src, dst, mapper%rearr, msgtag)
     else if(mapper%map_type=="spmat")then
-        call mapper_comp_avNorm(mapper, src, dst,  rList)
+        call mapper_comp_avNorm(mapper, src, dst,  field)
     end if
 
 end subroutine mapper_comp_map

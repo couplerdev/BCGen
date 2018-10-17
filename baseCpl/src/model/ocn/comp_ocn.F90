@@ -23,20 +23,18 @@ contains
 !  a_init_mct, init gsmap_aa, avect, avect init with zero, but not init
 !  dom at present
 !-------------------------------------------------------------------------
-subroutine ocn_init_mct(my_proc, ID, EClock, &
-    gsMap_ocnocn, ocn2x_ocnocn, x2ocn_ocnocn, &
-    domain, ierr)
+subroutine ocn_init_mct(modelInfo, EClock, ocn2x_ocnocn, x2ocn_ocnocn, ierr)
 
     implicit none
-    type(proc), intent(inout)        :: my_proc
-    integer, intent(in)              :: ID
+    type(model_info), target, intent(inout)  :: modelInfo
     type(Clock), intent(in)          :: EClock
-    type(gsMap), intent(inout)       :: gsMap_ocnocn
     type(AttrVect), intent(inout)    :: ocn2x_ocnocn
     type(AttrVect), intent(inout)    :: x2ocn_ocnocn
-    type(gGrid), intent(inout)              :: domain
     integer,  intent(inout)          :: ierr
-    integer ::local_comm,i
+    integer     :: ID
+    integer     :: local_comm,i
+    type(gGrid), pointer :: domain
+    type(gsMap), pointer :: gsMap_ocnocn
 
     ! control signal
     logical :: first_time = .true. ! if the first time to run or restart
@@ -67,7 +65,11 @@ subroutine ocn_init_mct(my_proc, ID, EClock, &
     character(*), parameter :: subName = "(ocn_init_mct) "
 
     
-    local_comm = my_proc%comp_comm(ID)
+    local_comm = modelInfo%comm
+    domain => modelInfo%domain
+    gsMap_ocnocn => modelInfo%gsmap
+    ID = modelInfo%ID
+    gsize = modelInfo%gsize
     call mpi_comm_rank(local_comm, comm_rank, ierr)
     call mpi_comm_size(local_comm, comm_size, ierr)
 !---
@@ -109,7 +111,6 @@ subroutine ocn_init_mct(my_proc, ID, EClock, &
     allocate(start(nlseg))
     allocate(length(nlseg))
 
-    gsize = my_proc%ocn_gsize !a_gsize =nx*ny
     lsize = gsize / nproc
     llseg = lsize / nlseg
 
@@ -146,19 +147,24 @@ subroutine ocn_init_mct(my_proc, ID, EClock, &
 
 end subroutine ocn_init_mct
 
-subroutine ocn_run_mct(my_proc, ID, EClock, ocn2x, x2ocn, ierr)
+subroutine ocn_run_mct(modelInfo, EClock, ocn2x, x2ocn, ierr)
 
     implicit none
-    type(proc), intent(inout)      :: my_proc
-    integer,    intent(in)         :: ID
-    type(Clock), intent(in)        :: EClock
-    type(AttrVect), intent(inout)  :: ocn2x
-    type(AttrVect), intent(inout)  :: x2ocn
-    integer, intent(inout)         :: ierr    
+    type(model_info), target, intent(inout)  :: modelInfo
+    type(Clock), intent(in)          :: EClock
+    type(AttrVect), intent(inout)    :: ocn2x
+    type(AttrVect), intent(inout)    :: x2ocn
+    integer, intent(inout)           :: ierr    
+    integer               :: local_comm
+    integer               :: ID
+    type(gGrid), pointer  :: domain
     integer comm_rank,i, av_lsize, n_rflds, n_iflds, n,nf
     
+    local_comm = modelInfo%comm
+    ID = modelInfo%ID
+    domain => modelInfo%domain
 
-    call mpi_comm_rank(my_proc%comp_comm(ID), comm_rank, ierr)
+    call mpi_comm_rank(local_comm, comm_rank, ierr)
     
     av_lsize = avect_lsize(ocn2x) 
     n_rflds = avect_nRattr(x2ocn)

@@ -199,10 +199,10 @@ class SubroutineParser:
                 #print self.__subroutine.subroutineName
     
     def appendArgs(self, args):
-        self.__subroutine.argList = args
+        for arg in args:
+            self.__subroutine.append(arg)
         #for arg in args:
         #    self.__subroutine.argList.append(arg)
-           
 
     def getSubroutineNode(self, model='', phase=-1, inArgs=[], outArgs=[], strFormat=""):
         if len(self.inArgs)!=0 and len(self.outArgs)!=0:
@@ -320,20 +320,20 @@ class ModelParser:
         h = 0
         minute = 0
         sec = 0
-        if interval_root.find('m')!=None:
+        if interval_root.find('m')!=None and interval_root.find('m').text!=None:
 	    m = interval_root.find('m').text
-        if interval_root.find('d')!=None:
+        if interval_root.find('d')!=None and interval_root.find('d').text!=None:
 	    d = interval_root.find('d').text
-        if interval_root.find('h')!=None:
+        if interval_root.find('h')!=None and interval_root.find('h').text!=None:
 	    h = interval_root.find('h').text
-        if interval_root.find('minute')!=None:
+        if interval_root.find('minute')!=None and interval_root.find('minute').text!=None:
 	    minute = interval_root.find('minute').text
-        if interval_root.find('sec')!=None:
+        if interval_root.find('sec')!=None and interval_root.find('sec').text!=None:
 	    sec = interval_root.find('sec').text
         #interval  = Interval(m, d, h, minute, sec)
         self.__model.Time = {"m":m,"d":d,"h":h,"minute":minute,"sec":sec}
-        
     def __setDomain(self):
+	'''
         root = self.__root
         domain_root = root.find('domain')
         field = ""
@@ -343,18 +343,22 @@ class ModelParser:
 	    raise UnsetError("domain data path not set!")
         path  = domain_root.find('path').text
         self.__domain = Domain(field, path)
+	'''
+        self.__model.domain =  "domain_"+self.__name
 
     def __setSubroutine(self):    # must be the last to be set
         root =self.__root.find("method")
         grid = self.__name
-        args = ["my_proc","EClock", self.__model.attrVects["x2c_cc"].name, \
-              self.__model.attrVects["c2x_cc"].name,"ierr"]
+        args = ["my_proc%model_"+grid, "EClock",self.__model.attrVects["x2c_cc"].name, \
+              self.__model.attrVects["c2x_cc"].name, "ierr=ierr"]
 
         subroutine = SubroutineParser()
         subroutine.setRoot(root.find("init"))
-        subroutine.appendArgs(args)
         self.__model.model_init = subroutine.subroutine
+        self.__model.model_init.argList = args
 
+        args = ["my_proc%model_"+grid ,"EClock", self.__model.attrVects["x2c_cc"].name, \
+		self.__model.attrVects["c2x_cc"].name, "ierr=ierr"]
         subroutine = SubroutineParser()
         subroutine.setRoot(root.find("run"))
         subroutine.appendArgs(args)
@@ -377,8 +381,8 @@ class ModelParser:
         ###  are rearranger
         mapper_name = "mapper_comp_name"
         msg_tag = "msg_tag"
-        ierr = "ierr"
-        argList = [self.srcMapper.name, self.__model.attrVects["x2c_cx"].name, \
+        ierr = "ierr=ierr"
+        argList = ["my_proc%"+self.srcMapper.name, self.__model.attrVects["x2c_cx"].name, \
                self.__model.attrVects["x2c_cc"].name, msg_tag, ierr]
         subroutine = Subroutine(subroutineName=mapper_name, argList=argList)
         in_args = []
@@ -393,7 +397,7 @@ class ModelParser:
                                       outputArg=out_args, strFormat=strFormat)
         self.SeqRun.addSubroutine(subroutineNode)
 
-        argList = [self.srcMapper.name, self.__model.attrVects["c2x_cc"].name, \
+        argList = ["my_proc%"+self.srcMapper.name, self.__model.attrVects["c2x_cc"].name, \
                self.__model.attrVects["c2x_cx"].name, msg_tag, ierr]
         subroutine = Subroutine(mapper_name, argList=argList)
         in_args = []
@@ -432,7 +436,6 @@ class ModelParser:
         self.__setGsMap()
         self.__setTime()
         self.__setDomain()
-        self.__model.domain = name+'_grid_domain'
         self.__setMapper()
         self.__setSubroutine()
         self.__isParsed = True
@@ -506,7 +509,10 @@ class CouplerParser: ###!!!!
                 ## mapper parse with method now
                 mapperRoot = src.find("mapper")
                 mapperName = mapperRoot.find("name").text  #latter shall be generated
-                attrVect = AttrVectCpl(srcAttrVect, mapperName, grid, field=field)
+                mapperType = mapperRoot.find("type").text
+                mapperFile = "\""+mapperRoot.find("w_file").text+"\""
+                attrVect = AttrVectCpl(srcAttrVect, mapperName, grid, field=field,\
+                             mapperType=mapperType, mapperFile=mapperFile)
                 attrVect.BindToManager(self.__NameManager)
                 attrVect.nameGenerate()
                 if self.__NameManager.FindName(attrVect):
@@ -538,7 +544,7 @@ class CouplerParser: ###!!!!
                             mapper.method.setInit(mapperName, argList)
                         elif phaseIdx == 1:
                             field_arg = "field=\""+field+"\""
-                            argList = [prefix+mapperName, srcAttrVect.name, attrVect.name, tags, field_arg, "ierr"]
+                            argList = [prefix+mapperName, srcAttrVect.name, attrVect.name, tags, field_arg, "ierr=ierr"]
                             tags+= 1
                             mapper.method.setRun(mapperName, argList)
                             string = toString(methodName, argList)
@@ -595,7 +601,7 @@ class CouplerParser: ###!!!!
             merge.argList = args
             self.__mergeSubroutine = merge
             string = toString(name, args)
-            cw = CodeWrapper("cpl", "cpl")
+            cw = CodeWrapper(modelGrid, modelGrid+"2cpl")
             cw.appendStr(string)
             strFormat=cw.getStr()
             subroutine =  SubroutineNode(name, model=modelGrid, phase=5,inputArg=in_args, outputArg=out_args,\
@@ -669,7 +675,13 @@ class Setup:
                 #设置src的字典
                 for src in child.find('input'):
                     srcModel = src.attrib['name']
-                    srcField = src.text
+                    srcField = src.find('field').text
+                    w_file = ""
+                    map_type = "offline"
+                    try:
+                    	w_file = src.find('file').text
+                    except:
+                        map_type = "online"
                     srcAttrVect = srcModel+'2'+'x_'+srcModel+'x'
                     srcDict={}
                     srcDict['attrVect'] = srcAttrVect
@@ -678,8 +690,6 @@ class Setup:
                     srcSmatName = "mapper_Smat"+srcModel+"2"+modelName
                     dstAttrVect = srcModel+'2'+'x_'+modelName+'x'
                     dstAvList.append(dstAttrVect)
-                    w_file = ""
-                    map_type = "offline"
                     method = {}
                     phase_0 = {}
                     phase_0["name"] = "smat_init"

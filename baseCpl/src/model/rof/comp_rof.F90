@@ -19,18 +19,17 @@ use base_fields, only: flds_c2x => flds_rof2x_fields, &
 
 contains
 
-subroutine rof_init_mct(my_proc, ID, EClock, gsMap_rofrof,&
-        rof2x_rofrof, x2rof_rofrof, domain, ierr)
+subroutine rof_init_mct(modelInfo, EClock, rof2x_rofrof, x2rof_rofrof, ierr)
      implicit none
-     type(proc), intent(inout)      :: my_proc
-     integer, intent(in)            :: ID
-     type(Clock), intent(in)        :: EClock
-     type(gsMap), intent(inout)     :: gsMap_rofrof
-     type(AttrVect), intent(inout)  :: rof2x_rofrof
-     type(AttrVect), intent(inout)  :: x2rof_rofrof
-     type(gGrid),    intent(inout)  :: domain
+     type(model_info), target, intent(inout)      :: modelInfo
+     type(Clock), intent(in)              :: EClock
+     type(AttrVect), intent(inout)        :: rof2x_rofrof
+     type(AttrVect), intent(inout)        :: x2rof_rofrof
      integer, intent(inout) :: ierr
-     integer :: local_comm, i
+     integer      :: local_comm, i
+     integer      :: ID
+     type(gGrid), pointer  :: domain
+     type(gsMap), pointer  :: gsMap_rofrof
 
      logical :: first_time = .true.
      
@@ -54,7 +53,11 @@ subroutine rof_init_mct(my_proc, ID, EClock, gsMap_rofrof,&
      character(*), parameter :: F91 ="('(rof_init_mct) ',73('-'))"
      character(*), parameter :: subName = "(rof_init_mct)"
 
-     local_comm = my_proc%comp_comm(ID)
+     local_comm = modelInfo%comm
+     domain => modelInfo%domain
+     gsMap_rofrof => modelInfo%gsmap
+     ID = modelInfo%ID
+     gsize = modelInfo%gsize
      call mpi_comm_rank(local_comm, comm_rank, ierr)
      call mpi_comm_size(local_comm, comm_size, ierr)
  
@@ -86,7 +89,6 @@ subroutine rof_init_mct(my_proc, ID, EClock, gsMap_rofrof,&
      allocate(start(nlseg))
      allocate(length(nlseg))
   
-     gsize = my_proc%rof_gsize
      lsize = gsize / nproc
      llseg = lsize / nlseg
 
@@ -120,21 +122,26 @@ subroutine rof_init_mct(my_proc, ID, EClock, gsMap_rofrof,&
 end subroutine rof_init_mct
 
 
-subroutine rof_run_mct(my_proc, ID, EClock, rof2x_rofrof, x2rof_rofrof, ierr)
+subroutine rof_run_mct(modelInfo, EClock, rof2x_rofrof, x2rof_rofrof, ierr)
     
     implicit none
-    type(proc), intent(inout)      :: my_proc
-    integer,    intent(in)         :: ID
-    type(Clock), intent(in)        :: EClock
-    type(AttrVect), intent(inout)  :: rof2x_rofrof
-    type(AttrVect), intent(inout)  :: x2rof_rofrof
-    integer,        intent(inout)  :: ierr
+    type(model_info), target, intent(inout)      :: modelInfo
+    type(Clock), intent(in)              :: EClock
+    type(AttrVect), intent(inout)        :: rof2x_rofrof
+    type(AttrVect), intent(inout)        :: x2rof_rofrof
+    integer,        intent(inout)        :: ierr
 
+    integer              :: ID
+    integer              :: local_comm
+    type(gGrid), pointer :: domain
     integer :: comm_rank, i
     integer :: av_lsize, n_rflds, n_iflds
     integer :: n, nf
 
-    call mpi_comm_rank(my_proc%comp_comm(ID), comm_rank, ierr)
+    local_comm = modelInfo%comm
+    domain => modelInfo%domain
+    ID = modelInfo%ID
+    call mpi_comm_rank(local_comm, comm_rank, ierr)
      
     av_lsize = avect_lsize(rof2x_rofrof)
     n_rflds = avect_nRattr(x2rof_rofrof)

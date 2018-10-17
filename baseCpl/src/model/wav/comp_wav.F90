@@ -19,18 +19,17 @@ use base_fields, only: flds_c2x => flds_wav2x_fields, &
 
 contains
 
-subroutine wav_init_mct(my_proc, ID, EClock, gsMap_wavwav,&
-        wav2x_wavwav, x2wav_wavwav, domain, ierr)
+subroutine wav_init_mct(modelInfo, EClock, wav2x_wavwav, x2wav_wavwav, ierr)
      implicit none
-     type(proc), intent(inout)      :: my_proc
-     integer, intent(in)            :: ID
-     type(Clock), intent(in)        :: EClock
-     type(gsMap), intent(inout)     :: gsMap_wavwav
-     type(AttrVect), intent(inout)  :: wav2x_wavwav
-     type(AttrVect), intent(inout)  :: x2wav_wavwav
-     type(gGrid),    intent(inout)  :: domain
+     type(model_info), target, intent(inout)      :: modelInfo
+     type(Clock), intent(in)              :: EClock
+     type(AttrVect), intent(inout)        :: wav2x_wavwav
+     type(AttrVect), intent(inout)        :: x2wav_wavwav
      integer, intent(inout) :: ierr
-     integer :: local_comm, i
+     integer              :: local_comm, i
+     integer              :: ID
+     type(gsMap), pointer :: gsMap_wavwav
+     type(gGrid), pointer :: domain
 
      logical :: first_time = .true.
      
@@ -54,7 +53,11 @@ subroutine wav_init_mct(my_proc, ID, EClock, gsMap_wavwav,&
      character(*), parameter :: F91 ="('(wav_init_mct) ',73('-'))"
      character(*), parameter :: subName = "(wav_init_mct)"
 
-     local_comm = my_proc%comp_comm(ID)
+     local_comm = modelInfo%comm
+     ID = modelInfo%ID 
+     domain => modelInfo%domain
+     gsMap_wavwav => modelInfo%gsmap
+     gsize = modelInfo%gsize
      call mpi_comm_rank(local_comm, comm_rank, ierr)
      call mpi_comm_size(local_comm, comm_size, ierr)
  
@@ -86,7 +89,6 @@ subroutine wav_init_mct(my_proc, ID, EClock, gsMap_wavwav,&
      allocate(start(nlseg))
      allocate(length(nlseg))
   
-     gsize = my_proc%wav_gsize
      lsize = gsize / nproc
      llseg = lsize / nlseg
 
@@ -120,21 +122,27 @@ subroutine wav_init_mct(my_proc, ID, EClock, gsMap_wavwav,&
 end subroutine wav_init_mct
 
 
-subroutine wav_run_mct(my_proc, ID, EClock, wav2x_wavwav, x2wav_wavwav, ierr)
+subroutine wav_run_mct(modelInfo, EClock, wav2x_wavwav, x2wav_wavwav, ierr)
     
     implicit none
-    type(proc), intent(inout)      :: my_proc
-    integer,    intent(in)         :: ID
+    type(model_info), target, intent(inout)      :: modelInfo
     type(Clock), intent(in)        :: EClock
     type(AttrVect), intent(inout)  :: wav2x_wavwav
     type(AttrVect), intent(inout)  :: x2wav_wavwav
     integer,        intent(inout)  :: ierr
 
+    integer     :: ID
+    integer     :: local_comm
+    type(gGrid), pointer :: domain
+
     integer :: comm_rank, i
     integer :: av_lsize, n_rflds, n_iflds
     integer :: n, nf
 
-    call mpi_comm_rank(my_proc%comp_comm(ID), comm_rank, ierr)
+    local_comm = modelInfo%comm
+    ID = modelInfo%ID
+    domain => modelInfo%domain
+    call mpi_comm_rank(local_comm, comm_rank, ierr)
      
     av_lsize = avect_lsize(wav2x_wavwav)
     n_rflds = avect_nRattr(x2wav_wavwav)

@@ -1,0 +1,141 @@
+baseCpl.F90:91.1:
+
+  logical :: glc_run
+ 1
+警告： (1)处的制表符不相容
+baseCpl.F90:92.1:
+
+  logical :: ocn_run
+ 1
+警告： (1)处的制表符不相容
+baseCpl.F90:93.1:
+
+  logical :: atm_run
+ 1
+警告： (1)处的制表符不相容
+baseCpl.F90:94.1:
+
+  logical :: ice_run
+ 1
+警告： (1)处的制表符不相容
+baseCpl.F90:95.1:
+
+  logical :: rof_run
+ 1
+警告： (1)处的制表符不相容
+baseCpl.F90:96.1:
+
+  logical :: wav_run
+ 1
+警告： (1)处的制表符不相容
+baseCpl.F90:97.1:
+
+  logical :: lnd_run
+ 1
+警告： (1)处的制表符不相容
+baseCpl.F90:725.132:
+
+wav, atm2x_atmx, atm2x_wavx, 103, field="Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem", i
+                                                                           1
+警告： 行在(1)处被截断
+baseCpl.F90:725.130:
+
+m2wav, atm2x_atmx, atm2x_wavx, 103, field="Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem", i
+                                                                           1
+错误： (1)处的实参数列中缺少关键字名
+baseCpl.F90:732.132:
+
+ocn, atm2x_atmx, atm2x_ocnx, 103, field="Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem", i
+                                                                           1
+警告： 行在(1)处被截断
+baseCpl.F90:732.130:
+
+m2ocn, atm2x_atmx, atm2x_ocnx, 103, field="Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem", i
+                                                                           1
+错误： (1)处的实参数列中缺少关键字名
+baseCpl.F90:746.132:
+
+lnd, atm2x_atmx, atm2x_lndx, 103, field="Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem", i
+                                                                           1
+警告： 行在(1)处被截断
+baseCpl.F90:746.130:
+
+m2lnd, atm2x_atmx, atm2x_lndx, 103, field="Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem", i
+                                                                           1
+错误： (1)处的实参数列中缺少关键字名
+baseCpl.F90:753.132:
+
+ice, atm2x_atmx, atm2x_icex, 103, field="Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem", i
+                                                                           1
+警告： 行在(1)处被截断
+baseCpl.F90:753.130:
+
+m2ice, atm2x_atmx, atm2x_icex, 103, field="Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem", i
+                                                                           1
+错误： (1)处的实参数列中缺少关键字名
+baseCpl.F90:562.30:
+
+        call triger(EClock_atm, atm_run)
+                              1
+错误： (1)处的符号‘eclock_atm’没有隐式类型
+baseCpl.F90:560.30:
+
+        call triger(EClock_glc, glc_run)
+                              1
+错误： (1)处的符号‘eclock_glc’没有隐式类型
+baseCpl.F90:563.30:
+
+        call triger(EClock_ice, ice_run)
+                              1
+错误： (1)处的符号‘eclock_ice’没有隐式类型
+baseCpl.F90:566.30:
+
+        call triger(EClock_lnd, lnd_run)
+                              1
+错误： (1)处的符号‘eclock_lnd’没有隐式类型
+baseCpl.F90:561.30:
+
+        call triger(EClock_ocn, ocn_run)
+                              1
+错误： (1)处的符号‘eclock_ocn’没有隐式类型
+baseCpl.F90:564.30:
+
+        call triger(EClock_rof, rof_run)
+                              1
+错误： (1)处的符号‘eclock_rof’没有隐式类型
+baseCpl.F90:565.30:
+
+        call triger(EClock_wav, wav_run)
+                              1
+错误： (1)处的符号‘eclock_wav’没有隐式类型
+baseCpl.F90:571.90:
+
+l mapper_comp_name(my_proc%Mapper_Crof2x, x2rof_rofx, x2rof_rofrof, msg_tag, ie
+                                                                           1
+错误： (1)处的符号‘msg_tag’没有隐式类型
+baseCpl.F90:450.89:
+
+apper_spmat_init(my_proc%mapper_Smatocn2wav, gsMap_atmx, gsMap_wavx, mpicom,&
+                                                                           1
+错误： (1)处的符号‘mpicom’没有隐式类型
+baseCpl.F90:556.24:
+
+    call triger(EClock, stop_clock, "stop_clock")
+                        1
+错误： (1)处实参‘eclock_s’类型不匹配；将 LOGICAL(4) 传递给 TYPE(clock)
+baseCpl.F90:567.28:
+
+        call triger(EClock, stop_clock, "stop_clock")
+                            1
+错误： (1)处实参‘eclock_s’类型不匹配；将 LOGICAL(4) 传递给 TYPE(clock)
+baseCpl.F90:739.97:
+
+r_comp_comm(my_proc%mapper_Smatlnd2atm, lnd2x_lndx, lnd2x_atmx, 103, field="Sl_
+                                                                           1
+错误： (1)处过程‘mapper_comp_comm’的关键字参数要求显式的接口
+baseCpl.F90:114.27:
+
+    call clock_init(EClock)
+                           1
+错误： 参数‘eclock_glc’在(1)处缺少实参
+make: *** [EXE] 错误 1

@@ -152,6 +152,17 @@ subroutine init(my_proc)
 
     my_proc%nothing = .false.
 
+    !-------------------------------------------
+    !   init model desc info only used for MCT
+    !-------------------------------------------
+    
+#for $model in $proc_cfgs
+    #set $name = $model.name
+    my_proc%model_${name}%ID = my_proc%model${name}_id
+    my_proc%model_${name}%comm = my_proc%mpi_model${name}
+    my_proc%model_${name}%gsize = my_proc%${name}_size
+#end for
+
 end subroutine init
 
 subroutine clean(my_proc)

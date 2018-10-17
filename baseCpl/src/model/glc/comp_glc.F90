@@ -19,17 +19,16 @@ use base_fields, only: flds_c2x => flds_glc2x_fields, &
 
 contains
 
-subroutine glc_init_mct(my_proc, ID, EClock, gsMap_glcglc,&
-        glc2x_glcglc, x2glc_glcglc, domain, ierr)
+subroutine glc_init_mct(modelInfo, EClock, glc2x_glcglc, x2glc_glcglc, ierr)
      implicit none
-     type(proc), intent(inout)      :: my_proc
-     integer, intent(in)            :: ID
+     type(model_info), target, intent(inout)      :: modelInfo
      type(Clock), intent(in)        :: EClock
-     type(gsMap), intent(inout)     :: gsMap_glcglc
      type(AttrVect), intent(inout)  :: glc2x_glcglc
      type(AttrVect), intent(inout)  :: x2glc_glcglc
-     type(gGrid),    intent(inout)  :: domain
      integer, intent(inout) :: ierr
+     type(gsMap), pointer    :: gsMap_glcglc
+     type(gGrid), pointer    :: domain
+     integer :: ID
      integer :: local_comm, i
 
      logical :: first_time = .true.
@@ -54,7 +53,12 @@ subroutine glc_init_mct(my_proc, ID, EClock, gsMap_glcglc,&
      character(*), parameter :: F91 ="('(glc_init_mct) ',73('-'))"
      character(*), parameter :: subName = "(glc_init_mct)"
 
-     local_comm = my_proc%comp_comm(ID)
+     local_comm = modelInfo%comm
+     domain  => modelInfo%domain
+     gsmap_glcglc => modelInfo%gsmap
+     ID = modelInfo%ID
+     gsize = modelInfo%gsize
+
      call mpi_comm_rank(local_comm, comm_rank, ierr)
      call mpi_comm_size(local_comm, comm_size, ierr)
  
@@ -86,7 +90,6 @@ subroutine glc_init_mct(my_proc, ID, EClock, gsMap_glcglc,&
      allocate(start(nlseg))
      allocate(length(nlseg))
   
-     gsize = my_proc%glc_gsize
      lsize = gsize / nproc
      llseg = lsize / nlseg
 
@@ -120,21 +123,25 @@ subroutine glc_init_mct(my_proc, ID, EClock, gsMap_glcglc,&
 end subroutine glc_init_mct
 
 
-subroutine glc_run_mct(my_proc, ID, EClock, glc2x_glcglc, x2glc_glcglc, ierr)
+subroutine glc_run_mct(modelInfo, EClock, glc2x_glcglc, x2glc_glcglc, ierr)
     
     implicit none
-    type(proc), intent(inout)      :: my_proc
-    integer,    intent(in)         :: ID
+    type(model_info), target, intent(inout)      :: modelInfo
     type(Clock), intent(in)        :: EClock
     type(AttrVect), intent(inout)  :: glc2x_glcglc
     type(AttrVect), intent(inout)  :: x2glc_glcglc
     integer,        intent(inout)  :: ierr
-
+    integer               :: ID
+    type(gGrid), pointer  :: domain
+    integer               :: local_comm
     integer :: comm_rank, i
     integer :: av_lsize, n_rflds, n_iflds
     integer :: n, nf
 
-    call mpi_comm_rank(my_proc%comp_comm(ID), comm_rank, ierr)
+    local_comm = modelInfo%comm
+    domain => modelInfo%domain
+    ID = modelInfo%ID
+    call mpi_comm_rank(local_comm, comm_rank, ierr)
      
     av_lsize = avect_lsize(glc2x_glcglc)
     n_rflds = avect_nRattr(x2glc_glcglc)

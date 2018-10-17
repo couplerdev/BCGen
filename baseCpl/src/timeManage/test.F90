@@ -1,9 +1,10 @@
 program esp1
-    use esmf
     implicit none
 
-    write(*,*) 'ok'
-
+    integer :: a(2)
+    a(1) = 1
+    a(2 ) = 2
+    write(*,*)a
 
 
 end program esp1

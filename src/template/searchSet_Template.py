@@ -1,3 +1,10 @@
+import sys
+sys.path.append('../ir')
+sys.path.append('../parser')
+from ir import ModelSubroutine
+from codeWrapper import toString
+
+
 class Temp:
     mix = False
     subroutine = []
@@ -5,15 +12,21 @@ class Temp:
     params = {
     
     }
-    def __init__(self, funcname="", params="", mix=False, subroutine=[]):
+    def __init__(self, funcname="", params="", mix=False, subroutine=[], strFmt=""):
         self.a = "333"
         self.subroutine = subroutine
         self.funcname = funcname
         self.params = params
         self.mix = mix
         self.space = 24*" "
+        self.strFmt =  strFmt
+
     def getName(self):
         return "rr34"
+  
+    def getStrFormat(self):
+	return 'call '+self.strFmt
+
     def getFuncFormat(self):
         res = []
         if self.mix:
@@ -33,8 +46,6 @@ class Temp:
                 args.append(str(item))
             args = (self.space+",").join(args)
             func_str = "call "+ self.funcname + "(" + args +")"
-            #str_len = len(func_str) / 2
-            #func_str = func_str[:str_len] + '&\n' + func_str[str_len:]
 
             res.append(func_str)
         return "\n".join(res)
@@ -48,6 +59,8 @@ class Temp:
     #set $x2c_cx = $avs['x2c_cx']
     #set $mapper_c2x = $model.mappers['c2x']
     #set $mapper_x2c = $model.mappers['x2c']
+    #set $init = $model.model_init
+    #set $strFmt = $init.toString()
 method_name = '${model_name}_init_mct'
 params = {
         'my_proc':'my_proc', 
@@ -58,7 +71,7 @@ params = {
         '${x2c_cc.name}':'${x2c_cc.name}', 
         'ierr':'ierr'
     }
-${model_name}_init = Temp(funcname=method_name, params=params)
+${model_name}_init = Temp(funcname=method_name, params=params, strFmt='${strFmt}')
 
 #end for
 
@@ -105,6 +118,8 @@ params = {
 ${model_name}_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(${model_name}_run_phase3_1)
 
+
+
 #if $merge_cfgs.has_key($model_name)
 #for $i,$dst_info in enumerate($merge_cfgs[$model_name]['dst'])
     #set $d_av = $dst_info['dst_av']
@@ -128,6 +143,7 @@ ${model_name}_run_phase3_${run_phase_step} = Temp(funcname=method_name, params=p
 sub_run_phase_3.append(${model_name}_run_phase3_${run_phase_step})
 #end for
 #end if
+
 
 ${model_name}_run_phase3 = Temp(subroutine=sub_run_phase_3,
              mix=True)

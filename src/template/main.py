@@ -4,7 +4,7 @@ from codeGen import codeGenerator
 import sys
 sys.path.append('../parser')
 from parserMod import Parser
-from search_set import *
+
 '''
 codeMapper work as a batch code generator:
 get a mapper: templateFile, codeFile, [cfgs_list]
@@ -64,6 +64,7 @@ def get_SMat_relation(attrVects):
                 'dst_gm': dst_gsmap_name,
                 'dst_mapper': src_x_dst_x_av.mapperName,
                 'dst_field': dst_field,
+                'w_file': src_x_dst_x_av.mapperFile,
 		'smat_size':3
             } 
             if src_model_name not in model_SMats:
@@ -81,6 +82,8 @@ if __name__ == "__main__":
     parser = Parser()
     parser.parse()
     proc_cfgs = [ parser.models[m] for m in parser.models]
+    for m in parser.models:
+        print parser.models[m].model_init.toString()
     merge_subroutines = [ parser.subroutine[m] for m in parser.subroutine]
     subrt_cfgs = [ node.data.strFormat for list_ in parser.runSubroutine \
                   for node in list_] # for run time cfgs
@@ -90,7 +93,9 @@ if __name__ == "__main__":
 
     searchTmp = TempConfig("searchSet_Template.py", "search_set.py",\
                           {'models':proc_cfgs, 'merge_cfgs': merge_cfgs})
-    
+    searchGen = CodeMapper([searchTmp])
+    searchGen.genCode()
+    from search_set import *
     manageTmp = TempConfig("procM_Template.F90", "manage.F90", {"proc_cfgs": proc_cfgs})
 
     deployTmp = TempConfig("deploymod_Template.F90", "deploy_mod.F90",\
@@ -106,6 +111,7 @@ if __name__ == "__main__":
                             'merge_cfgs':merge_cfgs, 'model_cfgs':model_cfgs,\
                             'subrt_cfgs':subrt_cfgs, 'fraction_cfgs':fraction_cfgs})
     confList = [searchTmp, manageTmp, deployTmp, procdefTmp,timeMTmp, baseCplTmp]
+
     codeGen = CodeMapper(confList)
     codeGen.genCode()
     

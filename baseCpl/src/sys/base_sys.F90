@@ -7,11 +7,12 @@ include "mpif.h"
 
 contains 
 
-subroutine base_sys_abort()
+subroutine base_sys_abort(info)
     implicit none
+    character(*), intent(in) :: info
     integer :: rc
     integer :: ierr
-
+    write(*,*)info
     call MPI_Abort(MPI_COMM_WORLD, rc, ierr)
 
 

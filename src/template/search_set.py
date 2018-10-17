@@ -1,3 +1,10 @@
+import sys
+sys.path.append('../ir')
+sys.path.append('../parser')
+from ir import ModelSubroutine
+from codeWrapper import toString
+
+
 class Temp:
     mix = False
     subroutine = []
@@ -5,15 +12,21 @@ class Temp:
     params = {
     
     }
-    def __init__(self, funcname="", params="", mix=False, subroutine=[]):
+    def __init__(self, funcname="", params="", mix=False, subroutine=[], strFmt=""):
         self.a = "333"
         self.subroutine = subroutine
         self.funcname = funcname
         self.params = params
         self.mix = mix
         self.space = 24*" "
+        self.strFmt =  strFmt
+
     def getName(self):
         return "rr34"
+  
+    def getStrFormat(self):
+	return 'call '+self.strFmt
+
     def getFuncFormat(self):
         res = []
         if self.mix:
@@ -33,8 +46,6 @@ class Temp:
                 args.append(str(item))
             args = (self.space+",").join(args)
             func_str = "call "+ self.funcname + "(" + args +")"
-            #str_len = len(func_str) / 2
-            #func_str = func_str[:str_len] + '&\n' + func_str[str_len:]
 
             res.append(func_str)
         return "\n".join(res)
@@ -49,7 +60,7 @@ params = {
         'x2glc_glcglc':'x2glc_glcglc', 
         'ierr':'ierr'
     }
-glc_init = Temp(funcname=method_name, params=params)
+glc_init = Temp(funcname=method_name, params=params, strFmt='glc_init_mct(my_proc%model_glc, EClock, x2glc_glcglc, glc2x_glcglc, ierr=ierr)')
 
 method_name = 'ocn_init_mct'
 params = {
@@ -61,7 +72,7 @@ params = {
         'x2ocn_ocnocn':'x2ocn_ocnocn', 
         'ierr':'ierr'
     }
-ocn_init = Temp(funcname=method_name, params=params)
+ocn_init = Temp(funcname=method_name, params=params, strFmt='ocn_init_mct(my_proc%model_ocn, EClock, x2ocn_ocnocn, ocn2x_ocnocn, ierr=ierr)')
 
 method_name = 'atm_init_mct'
 params = {
@@ -73,7 +84,7 @@ params = {
         'x2atm_atmatm':'x2atm_atmatm', 
         'ierr':'ierr'
     }
-atm_init = Temp(funcname=method_name, params=params)
+atm_init = Temp(funcname=method_name, params=params, strFmt='atm_init_mct(my_proc%model_atm, EClock, x2atm_atmatm, atm2x_atmatm, ierr=ierr)')
 
 method_name = 'ice_init_mct'
 params = {
@@ -85,7 +96,7 @@ params = {
         'x2ice_iceice':'x2ice_iceice', 
         'ierr':'ierr'
     }
-ice_init = Temp(funcname=method_name, params=params)
+ice_init = Temp(funcname=method_name, params=params, strFmt='ice_init_mct(my_proc%model_ice, EClock, x2ice_iceice, ice2x_iceice, ierr=ierr)')
 
 method_name = 'rof_init_mct'
 params = {
@@ -97,7 +108,7 @@ params = {
         'x2rof_rofrof':'x2rof_rofrof', 
         'ierr':'ierr'
     }
-rof_init = Temp(funcname=method_name, params=params)
+rof_init = Temp(funcname=method_name, params=params, strFmt='rof_init_mct(my_proc%model_rof, EClock, x2rof_rofrof, rof2x_rofrof, ierr=ierr)')
 
 method_name = 'wav_init_mct'
 params = {
@@ -109,7 +120,7 @@ params = {
         'x2wav_wavwav':'x2wav_wavwav', 
         'ierr':'ierr'
     }
-wav_init = Temp(funcname=method_name, params=params)
+wav_init = Temp(funcname=method_name, params=params, strFmt='wav_init_mct(my_proc%model_wav, EClock, x2wav_wavwav, wav2x_wavwav, ierr=ierr)')
 
 method_name = 'lnd_init_mct'
 params = {
@@ -121,7 +132,7 @@ params = {
         'x2lnd_lndlnd':'x2lnd_lndlnd', 
         'ierr':'ierr'
     }
-lnd_init = Temp(funcname=method_name, params=params)
+lnd_init = Temp(funcname=method_name, params=params, strFmt='lnd_init_mct(my_proc%model_lnd, EClock, x2lnd_lndlnd, lnd2x_lndlnd, ierr=ierr)')
 
 
 method_name='mapper_comp_map'
@@ -156,6 +167,9 @@ params = {
 }
 glc_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(glc_run_phase3_1)
+
+
+
 
 
 glc_run_phase3 = Temp(subroutine=sub_run_phase_3,
@@ -194,6 +208,8 @@ params = {
 ocn_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(ocn_run_phase3_1)
 
+
+
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%mapper_Smatocn2wav',
@@ -216,17 +232,7 @@ params = {
 }
 ocn_run_phase3_3 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(ocn_run_phase3_3)
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_Smatocn2ice',
-    'src':'ocn2x_ocnx',
-    'dst':'ocn2x_icex', 
-    'msgtag':'100+10+4', 
-    'ierr':'ierr',
-    'rList':'So_t:So_s:So_u',
-}
-ocn_run_phase3_4 = Temp(funcname=method_name, params=params)
-sub_run_phase_3.append(ocn_run_phase3_4)
+
 
 ocn_run_phase3 = Temp(subroutine=sub_run_phase_3,
              mix=True)
@@ -264,39 +270,8 @@ params = {
 atm_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(atm_run_phase3_1)
 
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_Smatatm2wav',
-    'src':'atm2x_atmx',
-    'dst':'atm2x_wavx', 
-    'msgtag':'100+20+4', 
-    'ierr':'ierr',
-    'rList':'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
-}
-atm_run_phase3_2 = Temp(funcname=method_name, params=params)
-sub_run_phase_3.append(atm_run_phase3_2)
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_Smatatm2ice',
-    'src':'atm2x_atmx',
-    'dst':'atm2x_icex', 
-    'msgtag':'100+20+4', 
-    'ierr':'ierr',
-    'rList':'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
-}
-atm_run_phase3_3 = Temp(funcname=method_name, params=params)
-sub_run_phase_3.append(atm_run_phase3_3)
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_Smatatm2ocn',
-    'src':'atm2x_atmx',
-    'dst':'atm2x_ocnx', 
-    'msgtag':'100+20+4', 
-    'ierr':'ierr',
-    'rList':'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
-}
-atm_run_phase3_4 = Temp(funcname=method_name, params=params)
-sub_run_phase_3.append(atm_run_phase3_4)
+
+
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%mapper_Smatatm2lnd',
@@ -306,8 +281,42 @@ params = {
     'ierr':'ierr',
     'rList':'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
 }
+atm_run_phase3_2 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(atm_run_phase3_2)
+method_name = 'mapper_comp_map'
+params = {
+    'mapper':'my_proc%mapper_Smatatm2ocn',
+    'src':'atm2x_atmx',
+    'dst':'atm2x_ocnx', 
+    'msgtag':'100+20+4', 
+    'ierr':'ierr',
+    'rList':'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
+}
+atm_run_phase3_3 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(atm_run_phase3_3)
+method_name = 'mapper_comp_map'
+params = {
+    'mapper':'my_proc%mapper_Smatatm2ice',
+    'src':'atm2x_atmx',
+    'dst':'atm2x_icex', 
+    'msgtag':'100+20+4', 
+    'ierr':'ierr',
+    'rList':'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
+}
+atm_run_phase3_4 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(atm_run_phase3_4)
+method_name = 'mapper_comp_map'
+params = {
+    'mapper':'my_proc%mapper_Smatatm2wav',
+    'src':'atm2x_atmx',
+    'dst':'atm2x_wavx', 
+    'msgtag':'100+20+4', 
+    'ierr':'ierr',
+    'rList':'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
+}
 atm_run_phase3_5 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(atm_run_phase3_5)
+
 
 atm_run_phase3 = Temp(subroutine=sub_run_phase_3,
              mix=True)
@@ -345,6 +354,8 @@ params = {
 ice_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(ice_run_phase3_1)
 
+
+
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%mapper_Smatice2wav',
@@ -367,17 +378,7 @@ params = {
 }
 ice_run_phase3_3 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(ice_run_phase3_3)
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_Smatice2ocn',
-    'src':'ice2x_icex',
-    'dst':'ice2x_ocnx', 
-    'msgtag':'100+30+4', 
-    'ierr':'ierr',
-    'rList':'Si_avsdr:Si_anidr:Si_anidf',
-}
-ice_run_phase3_4 = Temp(funcname=method_name, params=params)
-sub_run_phase_3.append(ice_run_phase3_4)
+
 
 ice_run_phase3 = Temp(subroutine=sub_run_phase_3,
              mix=True)
@@ -415,6 +416,8 @@ params = {
 rof_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(rof_run_phase3_1)
 
+
+
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%mapper_Smatrof2lnd',
@@ -426,6 +429,7 @@ params = {
 }
 rof_run_phase3_2 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(rof_run_phase3_2)
+
 
 rof_run_phase3 = Temp(subroutine=sub_run_phase_3,
              mix=True)
@@ -463,6 +467,8 @@ params = {
 wav_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(wav_run_phase3_1)
 
+
+
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%mapper_Smatwav2ocn',
@@ -474,6 +480,7 @@ params = {
 }
 wav_run_phase3_2 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(wav_run_phase3_2)
+
 
 wav_run_phase3 = Temp(subroutine=sub_run_phase_3,
              mix=True)
@@ -511,17 +518,8 @@ params = {
 lnd_run_phase3_1 = Temp(funcname=method_name, params=params)
 sub_run_phase_3.append(lnd_run_phase3_1)
 
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_Smatlnd2rof',
-    'src':'lnd2x_lndx',
-    'dst':'lnd2x_rofx', 
-    'msgtag':'100+60+4', 
-    'ierr':'ierr',
-    'rList':'Sl_tref:Sl_qref:Sl_t',
-}
-lnd_run_phase3_2 = Temp(funcname=method_name, params=params)
-sub_run_phase_3.append(lnd_run_phase3_2)
+
+
 method_name = 'mapper_comp_map'
 params = {
     'mapper':'my_proc%mapper_Smatlnd2atm',
@@ -531,8 +529,9 @@ params = {
     'ierr':'ierr',
     'rList':'Sl_tref:Sl_qref:Sl_t',
 }
-lnd_run_phase3_3 = Temp(funcname=method_name, params=params)
-sub_run_phase_3.append(lnd_run_phase3_3)
+lnd_run_phase3_2 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(lnd_run_phase3_2)
+
 
 lnd_run_phase3 = Temp(subroutine=sub_run_phase_3,
              mix=True)
@@ -626,14 +625,6 @@ model_ocn_cfg = { # Model M's cfg
             'transform_method': '',
         },
         
-        {
-            'n_name': 'ice',
-            'n_rAv': 'ocn2x_icex',
-            'n_rField': 'So_t:So_s:So_u',
-            'n_gm': 'gsMap_icex',
-            'transform_method': '',
-        },
-        
     ],
 
 
@@ -685,18 +676,10 @@ model_atm_cfg = { # Model M's cfg
     'mn_av_set': [ # Av between Model M and Model N
 
         {
-            'n_name': 'wav',
-            'n_rAv': 'atm2x_wavx',
+            'n_name': 'lnd',
+            'n_rAv': 'atm2x_lndx',
             'n_rField': 'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
-            'n_gm': 'gsMap_wavx',
-            'transform_method': '',
-        },
-        
-        {
-            'n_name': 'ice',
-            'n_rAv': 'atm2x_icex',
-            'n_rField': 'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
-            'n_gm': 'gsMap_icex',
+            'n_gm': 'gsMap_lndx',
             'transform_method': '',
         },
         
@@ -709,10 +692,18 @@ model_atm_cfg = { # Model M's cfg
         },
         
         {
-            'n_name': 'lnd',
-            'n_rAv': 'atm2x_lndx',
+            'n_name': 'ice',
+            'n_rAv': 'atm2x_icex',
             'n_rField': 'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
-            'n_gm': 'gsMap_lndx',
+            'n_gm': 'gsMap_icex',
+            'transform_method': '',
+        },
+        
+        {
+            'n_name': 'wav',
+            'n_rAv': 'atm2x_wavx',
+            'n_rField': 'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
+            'n_gm': 'gsMap_wavx',
             'transform_method': '',
         },
         
@@ -779,14 +770,6 @@ model_ice_cfg = { # Model M's cfg
             'n_rAv': 'ice2x_atmx',
             'n_rField': 'Si_avsdr:Si_anidr:Si_anidf',
             'n_gm': 'gsMap_atmx',
-            'transform_method': '',
-        },
-        
-        {
-            'n_name': 'ocn',
-            'n_rAv': 'ice2x_ocnx',
-            'n_rField': 'Si_avsdr:Si_anidr:Si_anidf',
-            'n_gm': 'gsMap_ocnx',
             'transform_method': '',
         },
         
@@ -956,14 +939,6 @@ model_lnd_cfg = { # Model M's cfg
 
     'mn_av_set': [ # Av between Model M and Model N
 
-        {
-            'n_name': 'rof',
-            'n_rAv': 'lnd2x_rofx',
-            'n_rField': 'Sl_tref:Sl_qref:Sl_t',
-            'n_gm': 'gsMap_rofx',
-            'transform_method': '',
-        },
-        
         {
             'n_name': 'atm',
             'n_rAv': 'lnd2x_atmx',

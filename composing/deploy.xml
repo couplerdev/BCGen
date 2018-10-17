@@ -42,5 +42,29 @@
 			<last>3</last>
 			<stride>1</stride>
 		</model>
+		<model>
+			<name>rof</name>
+			<first>0</first>
+			<last>3</last>
+			<stride>1</stride>
+		</model>
+		<model>
+			<name>wav</name>
+			<first>0</first>
+			<last>3</last>
+			<stride>1</stride>
+		</model>
+		<model>
+			<name>ice</name>
+			<first>0</first>
+			<last>3</last>
+			<stride>1</stride>
+		</model>
+		<model>
+			<name>glc</name>
+			<first>0</first>
+			<last>3</last>
+			<stride>1</stride>
+		</model>
 	</models>
 </deploy>

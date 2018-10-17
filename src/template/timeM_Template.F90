@@ -3,7 +3,7 @@ module timeM
     implicit none
     type Clock
         integer :: seconds
-        integer :: minites
+        integer :: minutes
         integer :: hours
         integer :: days
         !integer :: months
@@ -32,10 +32,10 @@ module timeM
     public :: triger
 contains 
 
-subroutine clock_init(EClock,
+subroutine clock_init(EClock, &
                      #for $model in $proc_cfgs 
                      #set $model_name = $model.name 
-                     ${model_name}, 
+                     EClock_${model_name},& 
                      #end for
                      interval)
  
@@ -48,7 +48,7 @@ subroutine clock_init(EClock,
     integer, optional, intent(in) :: interval
  
     EClock%seconds = 0 
-    EClock%minites = 0
+    EClock%minutes = 0
     EClock%hours   = 0
     EClock%days    = 0
     #for $model in $proc_cfgs
@@ -77,11 +77,11 @@ subroutine clock_advance(EClock)
    
    plus = EClock%seconds/60
    EClock%seconds = mod(EClock%seconds, 60) 
-   EClock%minites = EClock%minites + plus
-   if(EClock%minites < 60)return 
+   EClock%minutes = EClock%minutes + plus
+   if(EClock%minutes < 60)return 
     
-   plus = EClock%minites/60
-   EClock%minites = mod(EClock%minites, 60)
+   plus = EClock%minutes/60
+   EClock%minutes = mod(EClock%minutes, 60)
    EClock%hours   = EClock%hours + plus
    if(EClock%hours < 24)return 
 
@@ -91,12 +91,13 @@ subroutine clock_advance(EClock)
 
 end subroutine clock_advance
 
-subroutine triger(EClock,EClock_s ,run)
+subroutine triger(EClock,EClock_s ,run, flag_name)
 
     implicit none
     type(Clock), intent(in)       :: EClock
     type(Clock), intent(in)       :: EClock_s
     logical, intent(inout)        :: run
+    character(*),  intent(in)     :: flag_name
     integer   :: time_run
     integer   :: tmp_m
     integer   :: tmp_h
@@ -114,7 +115,7 @@ subroutine triger(EClock,EClock_s ,run)
     tmp_h = mod(60*60, time_run)
     tmp_d = mod(tmp_h*24, time_run)
     tmp_mod = mod(EClock%seconds, time_run) +&
-              mod(EClock%minites*tmp_m, time_run) + &
+              mod(EClock%minutes*tmp_m, time_run) + &
               mod(EClock%hours*tmp_h, time_run) + &
               mod(EClock%days*tmp_d, time_run)
     tmp_mod = mod(tmp_mod, time_run)
@@ -129,7 +130,7 @@ subroutine clock_print(EClock)
     implicit none
     type(Clock), intent(in) :: EClock
 
-    write(*,*) EClock%days, "days:", EClock%hours, "hours:", EClock%minites, "minites:",&
+    write(*,*) EClock%days, "days:", EClock%hours, "hours:", EClock%minutes, "minites:",&
                EClock%seconds, "seconds"
 
 end subroutine clock_print
@@ -149,8 +150,8 @@ subroutine clock_info(EClock, info)
     info = info//tmpCh//"hours:  "
  
     tmpCh = ""
-    write(tmpCh,*)EClock%minites
-    info = info//tmpCh//"minites:  "
+    write(tmpCh,*)EClock%minutes
+    info = info//tmpCh//"minutes:  "
     
     tmpCh = ""
     write(tmpCh,*)EClock%seconds

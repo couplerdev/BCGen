@@ -23,20 +23,18 @@ contains
 !  a_init_mct, init gsmap_aa, avect, avect init with zero, but not init
 !  dom at present
 !-------------------------------------------------------------------------
-subroutine lnd_init_mct(my_proc, ID, EClock, &
-    gsMap_lndlnd, lnd2x_lndlnd, x2lnd_lndlnd, &
-    domain, ierr)
+subroutine lnd_init_mct(modelInfo, EClock, lnd2x_lndlnd, x2lnd_lndlnd, ierr)
 
     implicit none
-    type(proc), intent(inout)        :: my_proc
-    integer, intent(in)              :: ID
+    type(model_info), target, intent(inout)        :: modelInfo
     type(Clock), intent(in)          :: EClock
-    type(gsMap), intent(inout)       :: gsMap_lndlnd
     type(AttrVect), intent(inout)    :: lnd2x_lndlnd
     type(AttrVect), intent(inout)    :: x2lnd_lndlnd
-    type(gGrid), intent(inout)              :: domain
     integer,  intent(inout)          :: ierr
-    integer ::local_comm,i
+    integer               :: ID
+    type(gGrid), pointer  :: domain
+    type(gsMap), pointer  :: gsMap_lndlnd
+    integer    :: local_comm,i
 
     ! control signal
     logical :: first_time = .true. ! if the first time to run or restart
@@ -67,7 +65,11 @@ subroutine lnd_init_mct(my_proc, ID, EClock, &
     character(*), parameter :: subName = "(lnd_init_mct) "
 
     
-    local_comm = my_proc%comp_comm(ID)
+    local_comm = modelInfo%comm
+    gsMap_lndlnd => modelInfo%gsmap
+    domain => modelInfo%domain
+    ID = modelInfo%ID
+    gsize = modelInfo%gsize
     call mpi_comm_rank(local_comm, comm_rank, ierr)
     call mpi_comm_size(local_comm, comm_size, ierr)
 !---
@@ -109,7 +111,6 @@ subroutine lnd_init_mct(my_proc, ID, EClock, &
     allocate(start(nlseg))
     allocate(length(nlseg))
 
-    gsize = my_proc%lnd_gsize !a_gsize =nx*ny
     lsize = gsize / nproc
     llseg = lsize / nlseg
 
@@ -146,19 +147,23 @@ subroutine lnd_init_mct(my_proc, ID, EClock, &
 
 end subroutine lnd_init_mct
 
-subroutine lnd_run_mct(my_proc, ID, EClock, lnd2x, x2lnd, ierr)
+subroutine lnd_run_mct(modelInfo, EClock, lnd2x, x2lnd, ierr)
 
     implicit none
-    type(proc), intent(inout)      :: my_proc
-    integer,    intent(in)         :: ID
+    type(model_info), target, intent(inout)      :: modelInfo
     type(Clock), intent(in)        :: EClock
     type(AttrVect), intent(inout)  :: lnd2x
     type(AttrVect), intent(inout)  :: x2lnd
     integer, intent(inout)         :: ierr    
+    integer               :: ID
+    integer               :: local_comm
+    type(gGrid), pointer  :: domain
     integer comm_rank,i, av_lsize, n_rflds, n_iflds, n,nf
     
-
-    call mpi_comm_rank(my_proc%comp_comm(ID), comm_rank, ierr)
+    local_comm = modelInfo%comm
+    ID = modelInfo%ID
+    domain => modelInfo%domain
+    call mpi_comm_rank(local_comm, comm_rank, ierr)
     
     av_lsize = avect_lsize(lnd2x) 
     n_rflds = avect_nRattr(x2lnd)

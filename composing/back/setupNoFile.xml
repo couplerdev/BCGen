@@ -4,7 +4,7 @@
 		<input>
 			<src name='lnd'>
 				<field>Sl_tref:Sl_qref:Sl_t</field>
-				<file>idmap</file>
+				<file>map</file>
 			</src>
 			<src name='ocn'>
 				<field>So_t:So_s:So_u</field>
@@ -19,15 +19,14 @@
 	<model>
 		<name>ice</name>
 		<input>
-			<src name='atm'>
-				<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>
-				<file>map_fv4x5_to_gx3v7_aave_da_091218.nc</file>
-			</src>
+			<src name='atm'>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</src>
+			<src name='ocn'>So_t:So_s:So_u</src>
 		</input>
 	</model>
 	<model>
 		<name>rof</name>
 		<input>
+			<src name='lnd'>Sl_tref:Sl_qref:Sl_t</src>
 		</input>
 	</model>
 	<model>
@@ -35,7 +34,7 @@
 		<input>
 			<src name='atm'>
 				<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>
-				<file>idmap</file>
+				<file>map_0.5x0.5_nomast_to_4x5_nomask_aave_da_c110822.nc</file>
 			</src>
 			<src name='rof'>
 				<field>Slrr_volr</field>
@@ -46,14 +45,9 @@
 	<model>
 		<name>ocn</name>
 		<input>
-			<src name='atm'>
-				<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>
-				<file>map_fv4x5_to_gx3v7_bilin_da_091218.nc</file>
-			</src>
-			<src name='wav'>
-				<field>Sw_hstokes:Sw_lamult</field>
-				<file>idmap</file>
-			</src>
+			<src name='atm'>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</src>
+			<src name='ice'>Si_avsdr:Si_anidr:Si_anidf</src>
+			<src name='wav'>Sw_hstokes:Sw_lamult</src>
 		</input>
 	</model>
 	<model>
@@ -63,18 +57,9 @@
 	<model>
 		<name>wav</name>
 		<input>
-			<src name='atm'>
-				<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>
-				<file>idmap</file>
-			</src>
-			<src name='ocn'>
-				<field>So_t:So_s:So_u</field>
-				<file>idmap</file>
-			</src>
-			<src name='ice'>
-				<field>Si_avsdr:Si_anidr:Si_anidf</field>
-				<file>idmap</file>
-			</src>
+			<src name='atm'>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</src>
+			<src name='ocn'>So_t:So_s:So_u</src>
+			<src name='ice'>Si_avsdr:Si_anidr:Si_anidf</src>
 		</input>
 	</model>
 </setup>
