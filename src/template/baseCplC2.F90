@@ -1,0 +1,258 @@
+module baseCpl
+use proc_def
+use comms_def
+use procm, only: pm_init => init, clean
+use comms
+use timeM
+use mct_mod
+#for $model in $proc_cfgs
+     #set $name = $model.name
+use comp_${name}
+#end for
+
+    implicit none
+    type(Meta),  pointer :: metaData
+
+    !declare gsMap for each Model
+    #for $model in $proc_cfgs
+         #set $gms = $model.gsMaps
+         #for $gm in $gms
+              #set $name = $gms[$gm].name
+    type(gsMap), pointer ::$name
+         #end for
+    #end for    
+
+    ! declare AttrVect of each Model(c2x_cx, c2x_cc, x2c_cx, x2c_cc)
+    #for $model in $proc_cfgs
+         #set $avs = $model.attrVects
+         #for $av in $avs
+              #set $name = $avs[$av].name
+    type(AttrVect), pointer :: $name
+         #end for
+    #end for
+
+    ! declare Temp Merge AttrVect of each Model(m2x_nx) 
+    #for $cfg in $merge_cfgs
+         #set $cfg = $merge_cfgs[$cfg]
+         #for $mn_av in $cfg['dst']
+              #set $av_mx_nx = $mn_av['dst_av']
+    type(AttrVect) ::$av_mx_nx
+         #end for
+    #end for
+
+    #for $model in $proc_cfgs
+         #set $domain = $model.domain
+    type(gGrid),  pointer :: $model.domain
+    #end for
+
+    #for $model in $proc_cfgs
+         #set $name in $model.name
+    logical ::${name}_run
+    #end for
+
+    #for $model in $proc_cfgs
+    type(EClock)   :: EClock_${model}
+    #end for
+    type(EClock)   :: EClock_drv
+
+    type(timeManager), target :: SyncClock
+    logical :: restart_alarm
+    logical :: history_alarm
+    logical :: histavg_alarm
+    logical :: stop_alarm
+    #for $model in $proc_cfgs
+    logical :: ${model}run_alarm
+    #end for
+    public  :: cpl_init  
+    public  :: cpl_run
+    public  :: cpl_final
+
+contains 
+
+subroutine cpl_init()
+    implicit none
+    integer :: ierr
+    integer :: comm_rank
+    logical :: restart
+    character(len=64)  :: nmlfile
+    character(len=64)  :: restart_file
+    logical :: iamroot
+    
+    call pm_init(metaData)
+    call confMeta_getInfo(metaData%conf, nmlfile=nmlfile, restart=restart,
+restart_file=restart_file)
+    call time_ClockInit(SyncClock, nmlfile, restart, restart_file,
+time_cal_noleap)
+    call procMeta_getInfo(metaData%my_proc,ID=GLOID, iamroot=iamroot)
+
+    !-------------------------------------------------------------
+    !   Define Model_AV_MM
+    !-------------------------------------------------------------
+
+    #for $model in $proc_cfgs
+         #set $avs = $model.attrVects
+         #for $av in $avs
+              #set $name = $avs[$av].name
+    $name => metaData%name
+         #end for
+    #end for
+
+    #for $model in $proc_cfgs
+         #set $gm = $model.gsMaps["comp"].name
+         #set $model_name = $model.name
+    domain_${model_name} =>   metaData%model_${model_name}%domain
+    $gm => metaData%model_${model_name}%gsMap
+    #end for
+     
+    !-------------------------------------------------------
+    ! Model init
+    !-------------------------------------------------------
+    #for $cfg in $model_cfgs
+         #set $name = $cfg['model_unique_name']
+         #set $subroutine  = $cfg['subroutine']
+         #set $init_method = $subroutine['init_method']
+    if(metaData%iamin_model{name})then
+         $init_method.getStrFormat()
+    end if
+    #end for
+
+    call MPI_Barrier(MPI_COMM_WORLD, ierr)
+        if(iamroot)then
+            write(logUnit, *) '-------------All Model init rank', comm_rank
+        end if
+    call MPI_Barrier(MPI_COMM_WORLD)
+
+    !--------------------------------------------------------
+    !  Model_x gsmap_ext av_ext
+    !--------------------------------------------------------
+    #for $cfg in $model_cfgs
+        #set $av_mx = $cfg['mx_av_set']
+        #set $gm = $cfg['mx_gsmap_set']
+        #set $name = $cfg[['model_unique_name']
+        #set $av_mx_mm = $av_mx['mx_mm']['name']
+        #set $av_xm_mm = $av_mx['xm_mm']['name']
+        #set $av_mx_mx = $av_mx['mx_mx']['name']
+        #set $av_xm_mx = $av_mx['xm_mx']['name']
+        #set $gm_mx = $gm['mx']['name']
+        #set $gm_mm = $gm['mm']['name']
+    if(metaData%iamin_model${name}2cpl)then
+        call gsmap_init_ext(metaData, $gm_mm, metaData%model${name}_id, &
+                        $gm_mx, metaData%cplid, metaData%model${name}2cpl_id)
+
+        call avect_init_ext(metaData, $av_mx_mm, metaData%model${name}_id, &
+                        $av_mx_mx, metaData%cplid, $gm_mx, & 
+                        metaData%model${name}2cpl_id)
+        
+        call avect_init_ext(metaData, $av_xm_mm, metaData%model${name}_id, &
+                        $av_xm_mx, metaData%cplid, $gm_mx, &
+                        metaData%model${name}2cpl_id)  
+
+        call mapper_rearrsplit_init(metaData%mapper_C${name}2x, metaData, $gm_mm,&
+                         metaData%model${name}_id, $gm_mx, metaData%cplid, &
+                         metaData%model${name}2cpl_id, ierr) 
+        call mapper_rearrsplit_init(metaData%mapper_Cx2${name}, metaData, $gm_mx,&
+                         metaData%cpl_id, $gm_mm, metaData%model${name}_id, &
+                         metaData%model${name}2cpl_id, ierr)
+        call MPI_Barrier(metaData%mpi_model${name}2cpl, ierr)
+        call mapper_comp_map(metaData%mapper_C${name}2x, $av_mx_mm, $av_mx_mx, 100+10+1, ierr)
+    end if
+    
+    if(metaData%iamroot_model${name})then
+        write(logUnit, *)'---------------${name} initiated-------------'
+    end if
+#end for
+
+    if(metaData%iamin_cpl)then
+        #for $cfg in $merge_cfgs
+             #set $name = $cfg
+             #set $cfg = $merge_cfgs[$cfg]
+             #set $av_mx_mx = $cfg['src']
+             #set $gm_mx = $cfg['gm']
+             #set $dst_info = $cfg['dst']
+             #for $mn_av in $dst_info
+                  #set $d_av = $mv_av['dst_av']
+                  #set $av_mx_nx = $d_av.name
+                  #set $gm_nx = $mn_av['dst_gm']
+                  #set $dst_model_name = $mn_av['dst_model_name']
+                  #set $mapper_name = $mn_av['dst_mapper']
+                  #set $mapper_file = $mn_av['w_file']
+                  #set $smat_size = $mn_av['smat_size']
+        call avect_init_ext(metaData, $av_mx_mx, metaData%cplid, &
+                           $av_mx_nx, metaData%cpplid, $gm_nx, &
+                           metaData%model${dst_model_name}2cpl_id)
+        call mapper_spmat_init(metaData%${mapper_name}, $gm_mx, $gm_nx, mpicom, &
+                           ${mapper_file}, 'X')   
+             #end for
+        #end for
+    end if
+
+    call MPI_Barrier(MPI_COMM_WORLD, ierr)
+    write(logUnit, *)'---------------Init End------------'
+    call MPI_Barrier(MPI_COMM_WORLD, ierr)
+
+end subroutine cpl_init
+
+subroutine cpl_run()
+
+    implicit none
+    integer  :: ierr, s, i, comm_rank
+
+    call mpi_comm_rank(MPI_COMM_WORLD, comm_rank)
+    call MPI_Barrier(MPI_COMM_WORLD, ierr)
+    write(*,*)'----------rank:', comm_rank, ' begin run------------'
+    do while(.not. stop_clock)
+        call time_clockAdvance(SyncClock)
+        stop_alarm = time_alarmIsOn(clock_drv, alarm_stop)
+        history_alarm = time_alarmIsOn(clock_drv, alarm_history)
+        histavg_alarm = time_alarmIsOn(clock_drv, alarm_histavg)
+        restart_alarm = time_alarmIsOn(clock_drv, alarm_restart)
+        #for $model in $proc_cfgs
+        ${model}run_alarm = time_alarmIsOn(clock_drv, alarm_${model}run)
+        ${model}run_alarm = time_alarmIsOn(clock_drv, alarm_${model}run)
+        #end for
+        if(time_alarmIsOn(EClock_drv, alarm_datestop))
+            if(metaData%iamroot_cpl)then
+                write(logUnit,*)' '
+                write(logUnit,*)subname,'Note: Stopping from alarm date stop'
+                write(logUnit,*)' '
+            end if
+            stop_alarm = .true.
+        end if
+        #for subrt in $subrt_cfgs
+        $subrt
+        #end for
+    end do
+    
+
+end subroutine cpl_run
+
+subroutine cpl_final()
+
+    implicit none
+
+    !----------------------------------------
+    !     end component
+    !----------------------------------------
+    #for $cfg in $model_cfgs
+         #set $name = $cfg['model_unique_name']
+         #set $subroutine = $cfg['subroutine']
+         #set $final_method = $subroutine['final_method']
+    if(metaData%iamin_model${name})then
+         #for method in $final_method
+              #set $final_method_name = $method['method_name']
+              #set $params = $method['params']
+              #set $args  = []
+              #for $key in $params
+                   #set item = $key + '=' + $params[$key]
+                   $args.append(str(item))
+              #end for
+              #set $args = ",".join(args)
+          call ${final_method_name}($args)
+          #end for
+    end if
+
+    #end for
+
+end subroutine cpl_final
+
+end module baseCpl
