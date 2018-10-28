@@ -17,6 +17,12 @@ module time_type
     integer,   parameter :: alarm_atmrun =
     integer,   parameter :: alarm_ocnrun = 
     integer,   parameter :: alarm_histavg =  
+    character(len=*), parameter :: clock_drv_name = "clock_drv"
+    character(len=*), parameter :: clock_atm_name = "clock_atm"
+    character(len=*), parameter :: clock_ocn_name = "clock_ocn"
+    character(len=*), parameter :: time_cal_noleap = ""
+    character(len=*), parameter :: time_cal_gregorian = ""
+    character(len=*), parameter :: 
     type EClockPointer
         type(ESMF_Clock), pointer :: EClock=> null()
     end type EClockPointer
