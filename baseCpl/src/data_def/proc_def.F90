@@ -1,235 +1,221 @@
 module proc_def
 use mct_mod
+use type_def
 use comms_def
+   implicit none
+   type procMeta
+       integer :: IDs(:)    ! comp ID
+       integer :: comms(:)
+       integer :: ranks(:)
+       integer :: groupLen
+       integer :: predefSize 
+       character(len=MODELNAME) :: models(:)
+   end type procMeta
+
+   type compMeta
+       integer ::ID
+       type(gsMap) :: gsmap
+       type(gGrid) :: domain
+       integer :: comm
+       integer :: gsize
+   end type compMeta
+
+   type confMeta
+       character(len=64) :: nmlfile
+       character(len=64) :: restart_file
+       logical :: restart
+   end type confMeta
+
+
+   public :: procMeta_init
+   public :: procMeta_final
+   public :: procMeta_print
+   public :: procMeta_addToModel
+   public :: procMeta_getInfo
+   public :: compMeta_getInfo
+   public :: confMeta_init
+   public :: confMeta_getInfo
+
+interface procMeta_getInfo
+    module procedure procMeta_getInfoModel
+    module procedure procMeta_getInfoModels
+end interface
+
+interface confMeta_init
+    module procedure confMeta_initFile
+    module procedure confMeta_initDefault
+end interface
+
+contains
+
+subroutine procMeta_init(proc, predefSize, ierr)
+
     implicit none
-!include "mpif.h"
+    type(procMeta),    intent(inout) :: proc   
+    integer, optional, intent(in)    :: predefSize
+    integer, optional, intent(inout) :: ierr
 
-    type model_info
-        integer     :: ID
-        type(gsMap) :: gsmap
-        type(gGrid) :: domain
-        integer     :: comm
-        integer     :: gsize
-    end type model_info
+    proc%predefSize = 10
+    proc%groupLen = 0
+    if(present(predefSize))then
+        proc%predefSize = predefSize
+    end if
+    
+    allocate(proc%IDs(proc%predefSize))
+    allocate(proc%comms(proc%predefSize))
+    allocate(proc%models(proc%predefSize))
 
-    type proc
-        !-----------------------------------------------
-        ! Meta desc of proc
-        !-----------------------------------------------
-        integer :: num_comms
-        integer :: num_flags
-        integer :: num_models
-        integer :: my_rank
-        integer :: my_size
-        integer :: ncomps = 16
-        !-----------------------------------------------
-        ! define flags
-        !-----------------------------------------------
-        logical :: nothing
+end subroutine procMeta_init
 
-        !-----------------------------------------------
-        ! define model variables
-        !-----------------------------------------------
-        character(len=20) :: modelglc
-        integer :: glc_size
-        integer :: glc_gsize
-        type(AttrVect) :: glc2x_glcglc
-        type(AttrVect) :: glc2x_glcx
-        type(AttrVect) :: x2glc_glcglc
-        type(AttrVect) :: x2glc_glcx
-        type(gGrid) :: domain_glc
-        type(map_mod)  :: Mapper_Cglc2x
-        type(map_mod)  :: Mapper_Cx2glc
-        character(len=20) :: modelocn
-        integer :: ocn_size
-        integer :: ocn_gsize
-        type(AttrVect) :: ocn2x_ocnocn
-        type(AttrVect) :: ocn2x_ocnx
-        type(AttrVect) :: x2ocn_ocnocn
-        type(AttrVect) :: x2ocn_ocnx
-        type(gGrid) :: domain_ocn
-        type(map_mod)  :: Mapper_Cocn2x
-        type(map_mod)  :: Mapper_Cx2ocn
-        character(len=20) :: modelatm
-        integer :: atm_size
-        integer :: atm_gsize
-        type(AttrVect) :: atm2x_atmatm
-        type(AttrVect) :: atm2x_atmx
-        type(AttrVect) :: x2atm_atmatm
-        type(AttrVect) :: x2atm_atmx
-        type(gGrid) :: domain_atm
-        type(map_mod)  :: Mapper_Catm2x
-        type(map_mod)  :: Mapper_Cx2atm
-        character(len=20) :: modelice
-        integer :: ice_size
-        integer :: ice_gsize
-        type(AttrVect) :: ice2x_iceice
-        type(AttrVect) :: ice2x_icex
-        type(AttrVect) :: x2ice_iceice
-        type(AttrVect) :: x2ice_icex
-        type(gGrid) :: domain_ice
-        type(map_mod)  :: Mapper_Cice2x
-        type(map_mod)  :: Mapper_Cx2ice
-        character(len=20) :: modelrof
-        integer :: rof_size
-        integer :: rof_gsize
-        type(AttrVect) :: rof2x_rofrof
-        type(AttrVect) :: rof2x_rofx
-        type(AttrVect) :: x2rof_rofrof
-        type(AttrVect) :: x2rof_rofx
-        type(gGrid) :: domain_rof
-        type(map_mod)  :: Mapper_Crof2x
-        type(map_mod)  :: Mapper_Cx2rof
-        character(len=20) :: modelwav
-        integer :: wav_size
-        integer :: wav_gsize
-        type(AttrVect) :: wav2x_wavwav
-        type(AttrVect) :: wav2x_wavx
-        type(AttrVect) :: x2wav_wavwav
-        type(AttrVect) :: x2wav_wavx
-        type(gGrid) :: domain_wav
-        type(map_mod)  :: Mapper_Cwav2x
-        type(map_mod)  :: Mapper_Cx2wav
-        character(len=20) :: modellnd
-        integer :: lnd_size
-        integer :: lnd_gsize
-        type(AttrVect) :: lnd2x_lndlnd
-        type(AttrVect) :: lnd2x_lndx
-        type(AttrVect) :: x2lnd_lndlnd
-        type(AttrVect) :: x2lnd_lndx
-        type(gGrid) :: domain_lnd
-        type(map_mod)  :: Mapper_Clnd2x
-        type(map_mod)  :: Mapper_Cx2lnd
+subroutine procMeta_final(proc, ierr)
 
-        character(len=20) :: iList = "fieldi"
-        character(len=20) :: rList = "fieldr"
+    implicit none
+    type(procMeta),    intent(inout) :: proc
+    integer, optional, intent(inout) :: ierr
 
-        
-        type(map_mod)  :: glc
-        type(map_mod)  :: ocn
-        type(map_mod)  :: atm
-        type(map_mod)  :: ice
-        type(map_mod)  :: rof
-        type(map_mod)  :: wav
-        type(map_mod)  :: lnd
-        !sparse mat   emmmm 
-        type(map_mod)   :: mapper_Smatocn2wav
-        type(map_mod)   :: mapper_Smatocn2atm
-        type(map_mod)   :: mapper_Smatatm2lnd
-        type(map_mod)   :: mapper_Smatatm2ocn
-        type(map_mod)   :: mapper_Smatatm2ice
-        type(map_mod)   :: mapper_Smatatm2wav
-        type(map_mod)   :: mapper_Smatrof2lnd
-        type(map_mod)   :: mapper_Smatice2wav
-        type(map_mod)   :: mapper_Smatice2atm
-        type(map_mod)   :: mapper_Smatwav2ocn
-        type(map_mod)   :: mapper_Smatlnd2atm
+    deallocate(proc%IDs)
+    deallocate(proc%comms)
+    deallocate(proc%models)
 
+end subroutine procMeta_finale
 
+subroutine procMeta_print(proc, wunit, ierr)
 
+    implicit none
+    type(procMeta),    intent(in)    :: proc 
+    integer, optional, intent(in)    :: wunit
+    integer, optional, intent(inout) :: ierr
+    
+    if(present(wunit))then
+        write(wunit,*)'procMeta:',proc%IDs
+        write(wunit,*)'procMeta:',proc%comms
+        write(wunit,*)'procMeta:',proc%models
+    else
+        write(*,*) 'procMeta', proc%IDs
+        write(*,*) 'procMeta', proc%comms
+        write(*,*) 'procMeta', proc%models
+    end if
 
-        !------------------------------------------------------
-        ! define relative comm variables
-        !------------------------------------------------------
-        integer :: mpi_glocomm
-        integer :: mpi_cpl
-        integer :: mpi_modelglc
-        integer :: mpi_modelglc2cpl
-        integer :: mpi_modelocn
-        integer :: mpi_modelocn2cpl
-        integer :: mpi_modelatm
-        integer :: mpi_modelatm2cpl
-        integer :: mpi_modelice
-        integer :: mpi_modelice2cpl
-        integer :: mpi_modelrof
-        integer :: mpi_modelrof2cpl
-        integer :: mpi_modelwav
-        integer :: mpi_modelwav2cpl
-        integer :: mpi_modellnd
-        integer :: mpi_modellnd2cpl
+end subroutine procMeta_print
 
-        !-------------------------------------------------------
-        ! To support the ncomps used in mct_world_init
-        ! add array to store mpi_comm user get it from 
-        ! ID
-        !-------------------------------------------------------
-        integer :: gloid         = 1
-        integer :: cplid         = 2
-        integer :: modelglc_id = 3
-        integer :: modelglc2cpl_id = 10
-        integer :: modelocn_id = 4
-        integer :: modelocn2cpl_id = 11
-        integer :: modelatm_id = 5
-        integer :: modelatm2cpl_id = 12
-        integer :: modelice_id = 6
-        integer :: modelice2cpl_id = 13
-        integer :: modelrof_id = 7
-        integer :: modelrof2cpl_id = 14
-        integer :: modelwav_id = 8
-        integer :: modelwav2cpl_id = 15
-        integer :: modellnd_id = 9
-        integer :: modellnd2cpl_id = 16
+subroutine procMeta_addToModel(proc, ID, comm, modelName, ierr)
 
-        integer, dimension(:), pointer :: comp_comm
-        integer, dimension(:), pointer :: comp_id
-        ! judge if in model_a/b/c
-        logical, dimension(:), pointer :: iamin_model
+    implicit none
+    type(procMeta),  intent(inout) :: proc
+    integer,         intent(in)    :: ID
+    integer,         intent(in)    :: comm
+    character(len=MODELNAME), intent(in) :: modelName
+    integer,  optional,  intent(in) :: ierr
+    
+    ! local
+    integer :: half, n
+    integer :: IDs(:)
+    integer :: comms(:)
+    integer :: rank
+    character(len=MODELNAME) :: models(:)
 
-        !-------------------------------------------------------
-        ! define comm control variables and run control 
-        !-------------------------------------------------------
+    if(proc%groupLen==proc%predefSize)then
+        call base_sys_abort("predef size not enough")
+    end if
 
-        logical :: iam_root
-        logical :: iamin_cpl
-        logical :: iamroot_cpl
+    n = proc%groupLen+1
+    proc%IDs(n) = ID
+    proc%comms(n) = comm
+    proc%models = modelName
+    call MPI_COMM_RANK(comm, rank, ierr)
+    proc%ranks(n) = rank
+    proc%groupLen = n
 
-        logical :: iamin_modelglc
-        logical :: iamin_modelglc2cpl
-        logical :: iamroot_modelglc
-        logical :: iamroot_modelglc2cpl
-        logical :: glc_run
-        logical :: iamin_modelocn
-        logical :: iamin_modelocn2cpl
-        logical :: iamroot_modelocn
-        logical :: iamroot_modelocn2cpl
-        logical :: ocn_run
-        logical :: iamin_modelatm
-        logical :: iamin_modelatm2cpl
-        logical :: iamroot_modelatm
-        logical :: iamroot_modelatm2cpl
-        logical :: atm_run
-        logical :: iamin_modelice
-        logical :: iamin_modelice2cpl
-        logical :: iamroot_modelice
-        logical :: iamroot_modelice2cpl
-        logical :: ice_run
-        logical :: iamin_modelrof
-        logical :: iamin_modelrof2cpl
-        logical :: iamroot_modelrof
-        logical :: iamroot_modelrof2cpl
-        logical :: rof_run
-        logical :: iamin_modelwav
-        logical :: iamin_modelwav2cpl
-        logical :: iamroot_modelwav
-        logical :: iamroot_modelwav2cpl
-        logical :: wav_run
-        logical :: iamin_modellnd
-        logical :: iamin_modellnd2cpl
-        logical :: iamroot_modellnd
-        logical :: iamroot_modellnd2cpl
-        logical :: lnd_run
+end subroutine procMeta_addToModel
 
-        type(model_info)  :: model_glc
-        type(model_info)  :: model_ocn
-        type(model_info)  :: model_atm
-        type(model_info)  :: model_ice
-        type(model_info)  :: model_rof
-        type(model_info)  :: model_wav
-        type(model_info)  :: model_lnd
+subroutine procMeta_getInfoModel(proc, ID, comm, rank, modelName, ierr)
+    
+    implicit none
+    type(procMeta),    intent(in) :: proc
+    integer,           intent(in) :: ID
+    integer, optional, intent(inout) :: comm
+    integer, optional, intent(inout) :: rank
+    integer, optional, intent(inout) :: modelName
+
+    integer :: idx
+
+    do n = 1, proc%groupLen
+        if(proc%IDs(n)==ID)then
+            idx = ID
+            exit
+        end if
+    end do
+
+    if(present(comm))then
+        comm = proc%comms(idx)
+    end if
+    if(present(rank)) then
+        rank= proc%ranks(idx)
+    end if
+    if(present(modelName))then
+        modelName = proc%modelName
+    end if
+
+end subroutine procMeta_getInfoModel
+
+subroutine procMeta_getInfoModels(proc, ierr)
+
+    implicit none
+    type(procMeta),    intent(inout) :: proc
+    integer, optional, intent(inout) :: ierr
+    ! TODO
+    
+
+end subroutine procMeta_getInfoModels
+
+subroutine compMeta_getInfo(comp, ID, gsmap, domain, comm, gsize, ierr)
+
+    implicit none
+    type(compMeta),        intent(inout)  :: comp
+    integer,     optional, intent(inout)  :: ID
+    type(gsMap), optional, intent(inout)  :: gsmap
+    type(gGrid), optional, intent(inout)  :: domain
+    integer,     optional, intent(inout)  :: comm
+    integer,     optional, intent(inout)  :: gsize
+    integer,     optional, intent(inout)  :: ierr
+
+    if(present(ID)) ID =comp%ID
+    if(present(gsMap)) gsmap = comp%gsmap
+    if(present(domain)) domain = comp%domain
+    if(present(comm)) comm= comp%comm
+    if(present(gsize)) gsize = comp%comm
+
+end subroutine compMeta_getInfo
+
+subroutine confMeta_initFile(conf, conf_file, ierr)
 
 
-    end type proc
+end subroutine confMeta_initFile
 
 
+subroutine confMeta_initDefault(conf, ierr)
 
+
+end subroutine confMeta_initDefault
+
+subroutine confMeta_getInfo(conf, nmlfile, restart, restart_file)
+
+    implicit none
+    type(confMeta),                intent(in)    :: conf
+    character(len=*),   optional,  intent(inout) :: nmlfile
+    character(len=*),   optional,  intent(inout) :: restart_file
+    logical,            optional,  intent(inout) :: restart
+
+    if(present(nmlfile))then
+        nmlfile = conf%nmlfile
+    end if
+    
+    if(present(restart_file))then
+        restart_file =  conf%restart_file
+    end if
+
+    if(present(restart))then
+        restart = conf%restart
+    end if
+end subroutine confMeta_getInfo
 end module proc_def

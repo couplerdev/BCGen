@@ -104,6 +104,7 @@ class Parser():
             model = modelParser.model
             model.ID = index
             index = index + 1
+            print 'modelname:',model.name
             self.__models[model.name] = model
             self.__NameManager.register.modelDict[model.name] = model
        
@@ -502,6 +503,7 @@ class CouplerParser: ###!!!!
             grid = root.find('model').text
             for src in srcs:
                 srcAttrVectName = src.find("attrVect").text
+                print srcAttrVectName
                 srcAttrVect = parser.visitByName(srcAttrVectName)
                 if srcAttrVect == None:
                     raise AttributeError("no such attrVect")
@@ -814,6 +816,7 @@ class Setup:
             root.appendChild(attrVect)
         doc.appendChild(root)
         f = open(self.__coupleFile,'w')
+        print 'write'
         doc.writexml(f, indent='\t',newl='\n',addindent='\t',encoding='utf-8')
     
     @property

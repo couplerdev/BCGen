@@ -1,4 +1,5 @@
 module base_io
+use global_var
 use ESMF
 use pio
 
@@ -23,12 +24,19 @@ use pio
         module procedure base_io_write_r8
     end interface
 
+    ! local data
+    character(*),  parameter :: prefix = "base_io_"
+    type(file_desc_t), save  :: cpl_io_file
+    integer                  :: cpl_io_subsystem
+    character(*),  parameter :: version = 'cpl7v10' 
+    character(*),  parameter :: version0 = 'cpl7v00'
+
 contains
 
 subroutine base_io_wopen(my_proc, filename, clobber, cdf64)
 
     implicit none
-    type(proc), pointer, intent(in) :: my_proc
+    type(procMeta), pointer, intent(in) :: my_proc
     character(len=*),    intent(in) :: filename
     logical, optional,   intent(in) :: clobber
     logical, optional,   intent(in) :: cdf64
@@ -43,7 +51,7 @@ subroutine base_io_wopen(my_proc, filename, clobber, cdf64)
     character(len=64) :: lversion
     character(len=*), parameter :: subName = '(seq_io_wopen)'
 
-    mpicom = my_proc%mpi_cpl
+    call procMeta_getInfo(my_proc,ID=CPLID, comm=mpicom, rank=iam)
     call MPI_COMM_RANK(mpicom, iam, ierr)
     lclobber = .false.
     if(present(clobber))lclobber = clobber
@@ -101,7 +109,7 @@ subroutine base_io_close(filename)
     integer  :: rcode
     character(*), parameter  :: subName = '(base_io_close)'
 
-    iam = ???
+    call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam)
    
     if(.not. pio_file_is_open(cpl_io_file))then
 
@@ -125,17 +133,6 @@ subroutine base_io_redef(filename)
     rcode = pio_redef(cpl_io_file)
 
 end subroutine base_io_redef
-
-
-subroutine base_io_read_int(filename)
-    implicit none
-    character(len=*),  intent(in)  :: filename
-    integer :: rcode
-
-    rcode = pio_enddef(cpl_io_file)
-
-end subroutine base_io_read_int
-
 
 
 subroutine base_io_read_av(filename, gsmap, AV, dname, pre)
@@ -172,8 +169,8 @@ subroutine base_io_read_av(filename, gsmap, AV, dname, pre)
         lpre = trim(pre) 
     end if
 
-    iam !!!
-    mpicom !!!!
+    call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam, comm=mpicom)
+
     call gsmap_OrderedPoints(gsmap, iam, Dof)
     
     ns = attrVect_lszie(AV)
@@ -273,8 +270,7 @@ subroutine base_io_read_int1d(filename, idata, dname)
     character(len=64) :: name1
     character(*), parameter :: subName = '(base_io_read_int1d)'
  
-    iam ???
-    mpicom ???
+    call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam, comm=mpicom)
     lversion = trim(version0)
     
     if(iam==0)inquire(file=trim(filename), exist=exists)
@@ -331,8 +327,7 @@ subroutine base_io_read_r81d(filename, rdata, dname)
     character(len=64) :: name1
     character(*), parameter :: subName = '(base_io_read_r81d)'
 
-    iam ???
-    mpicom ???
+   call procMeta_getInfo(metaData%my_proc, rank=iam, comm=mpicom)
     lversion = trim(version0)
    
     if(iam==0)inquire(file=trim(filename), exist=exists)
@@ -375,8 +370,7 @@ subroutine base_io_read_char(filename, rdata, dname)
     character(len=64) :: name1
     character(*), parameter :: subName = '(base_io_read_char)'
 
-    iam = ???
-    mpicom = ???
+    call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam, comm=mpicom)
     lversion = trim(version0)
 
     if(iam==0) inquire(file=trim(filename), exist=exists)
@@ -472,7 +466,7 @@ subroutine base_io_write_av(filename, gsmap, AV, dname, whead, wdata, nx, ny, nt
     luse_float = .false.
     if(present(use_float)) luse_float = use_float
     
-    !call MPI_COMM_RANK()
+    call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam)
 
     ng = gsmap_gsize(gsmap)
     lnx = ng
@@ -555,7 +549,7 @@ subroutine  base_io_write_int(filename, idata, dname, whead, wdata)
         return
     end if
 
-    call MPI_COMM_RANK()
+    call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam)
     if(lwhead)then
         call flds_lookup()
         rcode = pio_def_var(cpl_io_file, trim(dname), PIO_INT, varid)
@@ -601,7 +595,7 @@ subroutine base_io_write_r8(filename, rdata, dname, whead, wdata)
         return
     end if
 
-    iam  !
+    call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam)
     
     if(lwhead) then
         call base_lookup(trim(dname), longname=lname, stdname=sname, units=cunit)
@@ -652,7 +646,7 @@ subroutine base_io_write_char(filename, rdata, dname, whead, wdata)
         return 
     end if
 
-    iam !
+    call procMeta_getInfo(metaData, ID=CPLID, rank=iam)
     if(lwhead)then
         call base_lookup
         lnx = len(charvar)
@@ -708,7 +702,7 @@ subroutine base_io_write_time(filename, time_units, time_cal, time_val, nt, whea
         return 
     end if
 
-    iam !
+    call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam)
     
     if(lwhead) then
         rcode = pio_def_dim(cpl_io_file, 'time', PIO_UNLIMITED, dimid(1))
@@ -753,9 +747,5 @@ subroutine base_io_write_time(filename, time_units, time_cal, time_val, nt, whea
      
 end subroutine base_io_write_time
 
-
-subroutine base_io_enddef() 
-
-end subroutine base_io_enddef
 
 end module base_io

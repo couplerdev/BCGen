@@ -69,8 +69,10 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     character(len=*),  intent(in)    :: restart_file
     type(ESMF_CalKind_Flag), intent(inout), optional  :: cal
     type(ESMF_Clock),  pointer :: EClock_drv
-    type(ESMF_Clock),  pointer :: EClock_atm
-    type(ESMF_Clock),  pointer :: EClock_ocn 
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    type(ESMF_Clock),  pointer :: EClock_${name}
+    #end for
     type(ESMF_VM) :: vm
     type(ESMF_Time) :: currTime
     type(ESMF_Time) :: stopTime
@@ -83,11 +85,9 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     type(ESMF_TimeInterval) :: TimeStep
     type(ESMF_CalKind_Flag) :: esmf_caltype
     type(ESMF_Calender) :: calendar
-    type(ESMF_Time) :: atm_offset    ! offset is to define the diff between 
                                      ! drv and comp
     type(ESMF_TimeInterval) :: intervals(NUMCOMPS)
     type(ESMF_Time) :: times(NUMCOMPS)   
-    type(ESMF_Time) :: atm_time
     type(ESMF_Time) :: drv_time
     type(ESMF_TimeINterval) :: tmp_interval
 
@@ -140,7 +140,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     EClock_drv => SyncClock%ECP(clock_drv)%EClock
     #for $model in $proc_cfgs
          #set $name = $model.name
-    EClock_atm => SyncClock%ECP(clock_${name})%EClock 
+    EClock_${name} => SyncClock%ECP(clock_${name})%EClock 
     #end for
 
     !-------------------------------------------------------
@@ -252,7 +252,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     flag = 
     #for $model in $proc_cfgs
          #set $name = $model.name
-         abs(${name}_cpl_offset)>${atm}_cpl_dt .or. &
+         abs(${name}_cpl_offset)>${name}_cpl_dt .or. &
     #end for
          (.false.)
     if(flag)then
@@ -519,15 +519,14 @@ subroutine time_clockAdvance(SyncClock)
         call time_alarmSetOff(SyncClock%ECP(n)%EClock)
     end do
 
-    call ESMF_ClockAdvance(SyncClock%ECP()%EClock, rc=rc)
+    call ESMF_ClockAdvance(SyncClock%ECP(clock_drv)%EClock, rc=rc)
     
-    if(ESMF_AlarmIsRing(SyncClock%EAlarm(,)))then
-        call ESMF_ClockAdvance(SyncClock%ECP()%EClock, rc=rc)
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    if(ESMF_AlarmIsRing(SyncClock%EAlarm(clock_drv,alarm_${name}run)))then
+        call ESMF_ClockAdvance(SyncClock%ECP(clock_${name})%EClock, rc=rc)
     end if
-
-    if(ESMF_AlarmIsRing(SyncClock%EAlarm(,)))then
-        call ESMF_ClockAdvance(SyncClock%ECP()%EClock, rc=rc)
-    end if
+    #end for
 
     if(end_restart)then
         do n = 1, max_clocks

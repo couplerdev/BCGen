@@ -104,15 +104,20 @@ if __name__ == "__main__":
     procdefTmp = TempConfig("procDef_Template.F90", "proc_def.F90",\
                           {"proc_cfgs":proc_cfgs, "merge_cfgs": merge_cfgs})
 
-    timeMTmp = TempConfig("timeM_Template.F90", "timeM.F90",{"proc_cfgs":proc_cfgs})
+    timeCesmTmp = TempConfig("timeCesm_Template.F90", "timeCesm.F90",{"proc_cfgs":proc_cfgs})
+ 
+    globalTmp = TempConfig("globalVar_Template.F90", "global_var.F90", {"proc_cfgs":proc_cfgs, \
+                                                                        "merge_cfgs":merge_cfgs}) 
+
+    timeDefTmp = TempConfig("timeDef_Template.F90", "time_def.F90",{"proc_cfgs":proc_cfgs})
 
     baseCplTmp = TempConfig("baseCpl_Template.F90","baseCpl.F90",\
                            {'proc_cfgs':proc_cfgs, 'merge_subroutines':merge_subroutines,\
                             'merge_cfgs':merge_cfgs, 'model_cfgs':model_cfgs,\
                             'subrt_cfgs':subrt_cfgs, 'fraction_cfgs':fraction_cfgs})
-    confList = [searchTmp, manageTmp, deployTmp, procdefTmp,timeMTmp, baseCplTmp]
+    confList = [searchTmp, manageTmp, deployTmp, procdefTmp, baseCplTmp, globalTmp, timeDefTmp, timeCesmTmp]
 
     codeGen = CodeMapper(confList)
     codeGen.genCode()
     
-    
+     

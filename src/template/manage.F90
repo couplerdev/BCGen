@@ -27,9 +27,8 @@ subroutine init(metaData)
     integer :: num_size 
     integer :: iter
 
-    #set $ncomps = len($proc_cfgs)
-    metaData%num_models = $ncomps
-    metaData%num_comms =  2*$ncomps+2
+    metaData%num_models = 2
+    metaData%num_comms =  2*2+2
     
     
 
@@ -55,13 +54,14 @@ subroutine init(metaData)
     call deploy_cpl(metaData%mpi_glocomm, metaData%mpi_cpl, &
                   metaData%cplid, metaData%iamin_model, 0, ierr)
 
-    #for $model in $proc_cfgs
-         #set $name = $model.name
-    call deploy(metaData%mpi_glocomm, metaData%mpi_model${name},&
-                metaData%mpi_model${name}2cpl, &
-                metaData%model${name}_id, metaData%cplid, &
-                metaData%model${name}2cpl_id, metaData%iamin_model, 0, ierr)
-    #end for
+    call deploy(metaData%mpi_glocomm, metaData%mpi_modelatm,&
+                metaData%mpi_modelatm2cpl, &
+                metaData%modelatm_id, metaData%cplid, &
+                metaData%modelatm2cpl_id, metaData%iamin_model, 0, ierr)
+    call deploy(metaData%mpi_glocomm, metaData%mpi_modelocn,&
+                metaData%mpi_modelocn2cpl, &
+                metaData%modelocn_id, metaData%cplid, &
+                metaData%modelocn2cpl_id, metaData%iamin_model, 0, ierr)
 
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     write(*,*), "my_world_rank:", num_rank, " my_in_model", metaData%iamin_model
@@ -74,11 +74,10 @@ subroutine init(metaData)
     metaData%comp_comm(metaData%gloid)       = metaData%mpi_glocomm
     metaData%comp_comm(metaData%cplid)       = metaData%mpi_cpl
 
-    #for $model in $proc_cfgs
-         #set $name = $model.name
-    metaData%comp_comm(metaData%model${name}_id)     = metaData%mpi_model${name}
-    metaData%comp_comm(metaData%model${name}2cpl_id) =metaData%mpi_model${name}2cpl 
-    #end for
+    metaData%comp_comm(metaData%modelatm_id)     = metaData%mpi_modelatm
+    metaData%comp_comm(metaData%modelatm2cpl_id) =metaData%mpi_modelatm2cpl 
+    metaData%comp_comm(metaData%modelocn_id)     = metaData%mpi_modelocn
+    metaData%comp_comm(metaData%modelocn2cpl_id) =metaData%mpi_modelocn2cpl 
 
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     write(*,*)'comp_comm initiated'
@@ -103,21 +102,30 @@ subroutine init(metaData)
         metaData%iamin_cpl = .true.
     end if
 
-    #for $model in $proc_cfgs
-         #set $name = $model.name 
-    metaData%iamin_model${name} = .false.
-    if(metaData%iamin_model(metaData%model${name}_id))then
-        call iam_comm_root(metaData%mpi_model${name}, metaData%iamroot_model${name}, ierr)
-        metaData%iamin_model${name} = .true.
+    metaData%iamin_modelatm = .false.
+    if(metaData%iamin_model(metaData%modelatm_id))then
+        call iam_comm_root(metaData%mpi_modelatm, metaData%iamroot_modelatm, ierr)
+        metaData%iamin_modelatm = .true.
     end if
 
-    metaData%iamin_model${name}2cpl = .false.
-    if(metaData%iamin_model(metaData%model${name}2cpl_id))then
-        call iam_comm_root(metaData%mpi_model${name}2cpl, &
-            metaData%iamroot_model${name}2cpl, ierr)
-        metaData%iamin_model${name}2cpl = .true.
+    metaData%iamin_modelatm2cpl = .false.
+    if(metaData%iamin_model(metaData%modelatm2cpl_id))then
+        call iam_comm_root(metaData%mpi_modelatm2cpl, &
+            metaData%iamroot_modelatm2cpl, ierr)
+        metaData%iamin_modelatm2cpl = .true.
     end if
-    #end for
+    metaData%iamin_modelocn = .false.
+    if(metaData%iamin_model(metaData%modelocn_id))then
+        call iam_comm_root(metaData%mpi_modelocn, metaData%iamroot_modelocn, ierr)
+        metaData%iamin_modelocn = .true.
+    end if
+
+    metaData%iamin_modelocn2cpl = .false.
+    if(metaData%iamin_model(metaData%modelocn2cpl_id))then
+        call iam_comm_root(metaData%mpi_modelocn2cpl, &
+            metaData%iamroot_modelocn2cpl, ierr)
+        metaData%iamin_modelocn2cpl = .true.
+    end if
    
     metaData%iamin_modelocn = .false.
     if(metaData%iamin_model(metaData%modelocn_id))then
@@ -129,21 +137,20 @@ subroutine init(metaData)
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     !write(*,*)'before mapper_init'
 
-    #for $model in $proc_cfgs
-         #set $name = $model.name
-    call mapper_init(metaData%mapper_C${name}2x, ierr)
-    call mapper_init(metaData%mapper_Cx2${name}, ierr)
+    call mapper_init(metaData%mapper_Catm2x, ierr)
+    call mapper_init(metaData%mapper_Cx2atm, ierr)
 
-    #end for
+    call mapper_init(metaData%mapper_Cocn2x, ierr)
+    call mapper_init(metaData%mapper_Cx2ocn, ierr)
+
 
     !-------------------------------------------
     !   init model desc info only used for MCT
     !-------------------------------------------
-    #for $model in $proc_cfgs
-         #set $name = $model.name
-    metaData%${name}%ID = ATMID
-    metaData%${name}%comm = metaData%comp_comm(${name}id)
-    #end for
+    metaData%atm%ID = ATMID
+    metaData%atm%comm = metaData%comp_comm(atmid)
+    metaData%ocn%ID = ATMID
+    metaData%ocn%comm = metaData%comp_comm(ocnid)
 
 end subroutine init
 
@@ -154,10 +161,8 @@ subroutine clean(metaData)
     integer :: ierr
 
     call procMeta_Final(metaData%proc, ierr)
-    #for $model in $proc_cfgs
-         #set $name = $model.name
-    call compMeta_Final(metaData%${name}, ierr)
-    #end for
+    call compMeta_Final(metaData%atm, ierr)
+    call compMeta_Final(metaData%ocn, ierr)
 
     call MPI_Finalize(ierr) 
 
