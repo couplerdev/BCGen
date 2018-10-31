@@ -5,8 +5,10 @@ module time_mod
     use time_def
     implicit none
     integer, parameter :: NUMALARMS = 7
-    integer, parameter :: NUMCOMPS = 2
-    integer, parameter :: NUMCOMPS = 2
+    #for $model in $proc_cfgs
+         #set $ncomps = len($proc_cfgs)
+    integer, parameter :: NUMCOMPS = $ncomps
+    #end for
     type(ESMF_Alarm) :: alarm(NUMALARMS)
     integer :: dtime(NUMCOMPS)
     public :: time_clockRegist
@@ -67,8 +69,10 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     character(len=*),  intent(in)    :: restart_file
     type(ESMF_CalKind_Flag), intent(inout), optional  :: cal
     type(ESMF_Clock),  pointer :: EClock_drv
-    type(ESMF_Clock),  pointer :: EClock_atm
-    type(ESMF_Clock),  pointer :: EClock_ocn
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    type(ESMF_Clock),  pointer :: EClock_${name}
+    #end for
     type(ESMF_VM) :: vm
     type(ESMF_Time) :: currTime
     type(ESMF_Time) :: stopTime
@@ -106,10 +110,11 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     integer            :: curr_tod
     integer            :: ref_ymd
     integer            :: ref_ymd
-    integer            :: atm_cpl_dt
-    integer            :: atm_cpl_offset
-    integer            :: ocn_cpl_dt
-    integer            :: ocn_cpl_offset
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    integer            :: ${name}_cpl_dt
+    integer            :: ${name}_cpl_offset
+    #end for
     logical            :: end_restart
 
     ! local variables
@@ -126,13 +131,17 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
           history_option, history_n, history_ymd,      &
           histavg_option, histavg_n, histavg_ymd,      &
           start_ymd, start_tod, ref_ymd, ref_tod,      &
-          atm_cpl_dt, atm_cpl_offset,      &
-          ocn_cpl_dt, ocn_cpl_offset,      &
+          #for $model in $proc_cfgs
+               #set $name = $model.name
+          ${name}_cpl_dt, ${name}_cpl_offset,      &
+          #end for
           end_restart
 
     EClock_drv => SyncClock%ECP(clock_drv)%EClock
-    EClock_atm => SyncClock%ECP(clock_atm)%EClock 
-    EClock_ocn => SyncClock%ECP(clock_ocn)%EClock 
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    EClock_${name} => SyncClock%ECP(clock_${name})%EClock 
+    #end for
 
     !-------------------------------------------------------
     !   init option and conf data from nml file on root
@@ -162,10 +171,11 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
        ref_tod        = 0 
        curr_ymd       = 0
        curr_tod       = 0
-       atm_cpl_dt     = 0
-       atm_cpl_offset = 0
-       ocn_cpl_dt     = 0
-       ocn_cpl_offset = 0
+       #for $model in $proc_cfgs
+            #set $name = $model.name
+       ${name}_cpl_dt     = 0
+       ${name}_cpl_offset = 0
+       #end for
        end_restart    = .true.
 
        unitn = base_file_getUnit()
@@ -217,10 +227,11 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     call base_mpi_bcast(ref_tod,        mpicom)
     call base_mpi_bcast(curr_ymd,       mpicom)
     call base_mpi_bcast(curr_tod,       mpicom)
-    call base_mpi_bcast(atm_cpl_dt,     mpicom)
-    call base_mpi_bcast(atm_cpl_offset,     mpicom)
-    call base_mpi_bcast(ocn_cpl_dt,     mpicom)
-    call base_mpi_bcast(ocn_cpl_offset,     mpicom)
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    call base_mpi_bcast(${name}_cpl_dt,     mpicom)
+    call base_mpi_bcast(${name}_cpl_offset,     mpicom)
+    #end for
     call base_mpi_bcast(end_restart,    mpicom)
     
     if(ref_ymd == 0)then
@@ -239,8 +250,10 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     endif 
 
     flag = 
-         abs(atm_cpl_offset)>atm_cpl_dt .or. &
-         abs(ocn_cpl_offset)>ocn_cpl_dt .or. &
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+         abs(${name}_cpl_offset)>${name}_cpl_dt .or. &
+    #end for
          (.false.)
     if(flag)then
         write(logUnit, *)trim(subbname), ' ERROR: invalid offset'
@@ -271,8 +284,10 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     time_cal = calendar
 
     dtime = 0 
-    dtime(clock_atm) = atm_cpl_dt
-    dtime(clock_ocn) = ocn_cpl_dt
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    dtime(clock_${name}) = ${name}_cpl_dt
+    #end for 
     dtime(clock_drv) = maxval(dtime)
     dtime(clock_drv) = minval(dtime)
 
@@ -342,16 +357,14 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
             call base_sys_abort()
     end do
     
-    call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_atm), rc=rc)
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_${name}), rc=rc)
     OffsetTime=  currTime + TimeStep
-    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_atm),&
-                  option=time_optNSeconds, opt_n=dtime(clock_atm), RefTime=OffsetTime,&
-                  alarmname=trim(alarm_atm_name))
-    call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_ocn), rc=rc)
-    OffsetTime=  currTime + TimeStep
-    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_ocn),&
-                  option=time_optNSeconds, opt_n=dtime(clock_ocn), RefTime=OffsetTime,&
-                  alarmname=trim(alarm_ocn_name))
+    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_${name}),&
+                  option=time_optNSeconds, opt_n=dtime(clock_${name}), RefTime=OffsetTime,&
+                  alarmname=trim(alarm_${name}_name))
+    #end for
 
     
 end subroutine time_clockInit
@@ -508,12 +521,12 @@ subroutine time_clockAdvance(SyncClock)
 
     call ESMF_ClockAdvance(SyncClock%ECP(clock_drv)%EClock, rc=rc)
     
-    if(ESMF_AlarmIsRing(SyncClock%EAlarm(clock_drv,alarm_atmrun)))then
-        call ESMF_ClockAdvance(SyncClock%ECP(clock_atm)%EClock, rc=rc)
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    if(ESMF_AlarmIsRing(SyncClock%EAlarm(clock_drv,alarm_${name}run)))then
+        call ESMF_ClockAdvance(SyncClock%ECP(clock_${name})%EClock, rc=rc)
     end if
-    if(ESMF_AlarmIsRing(SyncClock%EAlarm(clock_drv,alarm_ocnrun)))then
-        call ESMF_ClockAdvance(SyncClock%ECP(clock_ocn)%EClock, rc=rc)
-    end if
+    #end for
 
     if(end_restart)then
         do n = 1, max_clocks

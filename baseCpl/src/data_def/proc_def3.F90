@@ -156,13 +156,6 @@ subroutine procMeta_getInfoModels(proc, ierr)
 
 end subroutine procMeta_getInfoModels
 
-subroutine Meta_getInfo()
-
-
-end subroutine Meta_getInfo
-
-subroutine 
-
 subroutine compMeta_getInfo(comp, ID, gsmap, domain, comm, gsize, ierr)
 
     implicit none
