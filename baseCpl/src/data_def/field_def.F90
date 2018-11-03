@@ -1,96 +1,147 @@
 module field
+!--------------------------------------------------------
+!
+!    This is field manage mod
+!
+!--------------------------------------------------------
 use base_sys
+use base_log
 use type_def
-    type fieldMeta
+    type fieldDesc
+        character(len=FIELDSLEN) :: shortname
+        character(len=FIELDSLEN) :: lonename
+        character(len=FIELDSLEN) :: stdname
+        character(len=FIELDSLEN) :: units
+    end type fieldDesc
+    type fldsMeta
         character(FIELDSLEN) :: domain_fld
-        character(FIELDSLEN) :: atm_State
-        character(FIELDSLEN) :: atm_Flux
-        integer   :: fldCounts
+        integer   :: capacity
         integer   :: items
-        character(FIELDSLEN), dimension(:,:) :: lookup
-    end type fieldMeta
+        type(fieldDesc), dimension(:) :: lookup
+    end type fldsMeta
 
-    public :: fieldMeta_init
-    public :: field_set
-    public :: field_add
-    public :: field_lookup
-    public :: fieldMeta_final
-    public :: set_lookup
+    public :: fldsMeta_init
+    public :: fldsMeta_add
+    public :: fldsMeta_lookup
+    public :: fldsMeta_final
 
-interface fieldMeta_init
-    module procedure fieldMeta_initHardCoded
-    module procedure fieldMeta_initConf
+interface fldsMeta_add
+    module procedure fldsMeta_add_desc
+    module procedure fldsMeta_add_name
 end interface
 
-contains
+contains 
 
-subroutine fieldMeta_initHardCoded(fields, items, ierr)
+subroutine fldsMeta_init(fldsMetaData, cap)
 
     implicit none
-    type(fieldMeta),   intent(inout) :: fields
-    integer,           intent(in)    :: items
+    type(fldsMeta),    intent(inout)  :: fldsMetaData
+    integer,           intent(in)     :: cap
+
+    fldsMetaData%capacity = cap
+    allocate(fldsMetaData%lookup(cap))
+    fldsMetaData%items = 0
+
+end subroutine fldsMeta_init
+
+subroutine fldsMeta_add_desc(fldsMetaData, fldDesc, ierr)
+
+    implicit none
+    type(fldsMeta),    intent(inout) :: fldsMetaData
+    type(fieldDesc),   intent(in)    :: fldDesc
     integer, optional, intent(inout) :: ierr
+    
+    if(present(ierr))ierr=0
+    if(fldsMetaData%capacity==fldsMetaData%items)then
+        if(present(ierr))then
+            ierr = 1
+        end if
+        write(logUnit, *)'fldsMeta out of capacity'
+        return 
+    end if
+    fldsMetaData%lookup(fldsMetaData%items+1) = fldDesc
+    fldsMetaData%items = fldsMetaData%items + 1
 
-    fields%fldCounts = 100
-    allocate(fields%lookup(fields%fldCounts,items))
+end subroutine fldsMeta_add_desc
 
-    call field_set(fields%atm_State,"")
-    call field_set(fields%atm_Flux, "")
-
-end subroutine fieldMeta_initHardCoded
-
-subroutine fieldMeta_initConf(fields, items, conf_file, ierr)
+subroutine fldsMeta_add_name(fldsMetaData, shortname, longname, stdname, units, ierr)
 
     implicit none
-    type(fieldMeta),   intent(inout)  :: fields
-    integer，          intent(in)     :: items
-    character(len=100), intent(in)    :: conf_file
-    integer, optional, intent(inout)  :: ierr   
+    type(fldsMeta),         intent(inout)  :: fldsMetaData
+    character(*),           intent(in)     :: shortname
+    character(*), optional, intent(in)     :: longname
+    character(*), optional, intent(in)     :: stdname
+    character(*), optional, intent(in)     :: units
+    integer,      optional, intent(inout)  :: ierr
+
+    ! local
+    character(*)        :: unkown = "unkown"
+    character(FIELDLEN) :: llongname = unkown
+    character(FIELDLEN) :: lstdname = unkown
+    character(FIELDLEN) :: lunits = unkown
+    type(fieldDesc)     :: fldDesc
+
+    if(present(longname))llongname = longname
+    if(present(stdname)) lstdname = stdname
+    if(present(units)) lunits = units
+    if(present(ierr))  ierr = 0
+    
+    if(fldsMetaData%capacity==fldsMetaData%items)then
+        if(present(ierr))ierr=1
+        write(logUnit, *)'fldsMeta out of capacity'
+        return 
+    end if
+
+    fldDesc%shortname = shortname
+    fldDesc%longname = llongname
+    fldDesc%stdname = lstdname
+    fldDesc%units = lunits
+
+    fldsMetaData%lookup(fldsMetaData%items) = fldDesc
+
+    fldsMetaData%items = fldsMetaData%items + 1
+
+end subroutine fldsMeta_add_name
+
+
+subroutine flds_lookup(fldsMetaData, shortname, longname, stdname, units)
+
+    implicit none
+    type(fldsMeta),         intent(in)     :: fldsMetaData
+    character(*),           intent(in)     :: shortname
+    character(*), optional, intent(inout)  :: longname
+    character(*), optional, intent(inout)  :: stdname
+    character(*), optional, intent(inout)  :: units
+
+    ! local 
+    integer                 :: i
+    character(len=*)        :: unkown = "unkown"
+    character(len=FIELDLEN) :: llongname = unkown
+    character(len=FIELDLEN) :: lstdname = unkown
+    character(len=FIELDLEN) :: lunits = unkown
    
-end subroutine fieldMeta_initConf
+    do i = 1, fldsMetaData%items
+        if(fldsMetaData%lookup(i)%shortname==shortname)then
+            llongename = fldsMetaData%lookup(i)%longname
+            lstdname = fldsMetaData%lookup(i)%stdname
+            lunits = fldsMetaData%lookup(i)%units
+        end if
+    end do
 
-subroutine 
+    if(present(longname))longname = llongname
+    if(present(stdname)) stdname = lstdname
+    if(present(units))lunits = units
+end subroutine fldsMeta_lookup
 
-subroutine fieldMeta_final(fields, ierr)
-
-    implicit none
-    type(fieldMeta), intent(inout)   :: fields
-
-end subroutine fieldMeta_final
-
-subroutine fieldMeta_print(fields, ierr)
-
-    implicit none
-    type(fields),      intent(inout)  ::fields
-    integer, optional, intent(inout)  :: ierr
-
-    ! generate code
-
-end subroutine fieldMeta_print
-
-subroutine field_set(fields, flds, ierr)
+subroutine fldsMeta_final(fldsMetaData)
 
     implicit none
-    character(FIELDSLEN),  intent(inout) :: fields
-    character(FIELDSLEN),  intent(in)    :: flds
-    integer,   optional,   intent(inout) :: ierr
+    type(fldsMeta),     intent(inout)  :: fldsMetaData
 
-    fields = flds
-
-end subroutine field_set
-
-subroutine field_add(fields, fld, ierr)
-
-    implicit none
-    character(FIELDSLEN), intent(inout) :: fields
-    character(FLDLEN),    intent(in)    :: fld
-    integer, optional,    intent(inout) :: ierr
-  
-    fields = fields//trim(fld)
-
-subroutine field_check()
-
-
-end subroutine field_check
+    deallocate(fldsMetaData%lookup)
+    fldsMetaData%capacity =  0
+    fldsMetaData%items = 0 
+   
+end subroutine fldsMeta_final
 
 end module field
