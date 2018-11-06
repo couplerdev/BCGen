@@ -2,7 +2,7 @@ module global_var
 
    implicit none
    type Meta
-       type(field)       :: Fields
+       type(fldsMeta)    :: fldsMetaData
        type(procMeta)    :: my_proc
        type(confMeta)    :: conf
        #for $model in $proc_cfgs
@@ -89,6 +89,11 @@ module global_var
             #for $dst in $dst_info
        type(map_mod)   :: $dst['dst_mapper']
             #end for
+       #end for
+
+       #for $fld in $fieldVar_cfgs
+            #set $val = $fieldVar_cfgs[$fld]
+       character(FIELDSLEN) :: $fld 
        #end for
 
    end type Meta
