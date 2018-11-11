@@ -1,0 +1,13 @@
+# Target labels
+ genf90
+# Source files and their labels
+/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/CMakeFiles/genf90
+/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/CMakeFiles/genf90.rule
+/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/CMakeFiles/genf90-complete.rule
+/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-install.rule
+/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-mkdir.rule
+/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-download.rule
+/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-update.rule
+/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-patch.rule
+/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-configure.rule
+/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-build.rule

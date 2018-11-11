@@ -1,6 +1,7 @@
 module comp_lnd
 use mct_mod
 use timeM
+use global_var
 use proc_def
   implicit none
   integer  :: comp_id
@@ -23,10 +24,10 @@ contains
 !  a_init_mct, init gsmap_aa, avect, avect init with zero, but not init
 !  dom at present
 !-------------------------------------------------------------------------
-subroutine lnd_init_mct(modelInfo, EClock, lnd2x_lndlnd, x2lnd_lndlnd, ierr)
+subroutine lnd_init_mct(compInfo, EClock, lnd2x_lndlnd, x2lnd_lndlnd, ierr)
 
     implicit none
-    type(model_info), target, intent(inout)        :: modelInfo
+    type(compMeta), target, intent(inout)       :: compInfo
     type(Clock), intent(in)          :: EClock
     type(AttrVect), intent(inout)    :: lnd2x_lndlnd
     type(AttrVect), intent(inout)    :: x2lnd_lndlnd
@@ -65,11 +66,9 @@ subroutine lnd_init_mct(modelInfo, EClock, lnd2x_lndlnd, x2lnd_lndlnd, ierr)
     character(*), parameter :: subName = "(lnd_init_mct) "
 
     
-    local_comm = modelInfo%comm
-    gsMap_lndlnd => modelInfo%gsmap
-    domain => modelInfo%domain
-    ID = modelInfo%ID
-    gsize = modelInfo%gsize
+    call compMeta_getInfo(compInfo, ID=ID, gsmap=gsMap_lndlnd, domain=domain, &
+                         comm=local_comm, gsize=gsize)
+    
     call mpi_comm_rank(local_comm, comm_rank, ierr)
     call mpi_comm_size(local_comm, comm_size, ierr)
 !---
@@ -147,10 +146,10 @@ subroutine lnd_init_mct(modelInfo, EClock, lnd2x_lndlnd, x2lnd_lndlnd, ierr)
 
 end subroutine lnd_init_mct
 
-subroutine lnd_run_mct(modelInfo, EClock, lnd2x, x2lnd, ierr)
+subroutine lnd_run_mct(compInfo, EClock, lnd2x, x2lnd, ierr)
 
     implicit none
-    type(model_info), target, intent(inout)      :: modelInfo
+    type(compMeta), target, intent(inout)      :: compInfo
     type(Clock), intent(in)        :: EClock
     type(AttrVect), intent(inout)  :: lnd2x
     type(AttrVect), intent(inout)  :: x2lnd
@@ -160,9 +159,8 @@ subroutine lnd_run_mct(modelInfo, EClock, lnd2x, x2lnd, ierr)
     type(gGrid), pointer  :: domain
     integer comm_rank,i, av_lsize, n_rflds, n_iflds, n,nf
     
-    local_comm = modelInfo%comm
-    ID = modelInfo%ID
-    domain => modelInfo%domain
+    call compMeta_getInfo(compInfo, comm=local_comm, ID=ID, domain=domain)
+    
     call mpi_comm_rank(local_comm, comm_rank, ierr)
     
     av_lsize = avect_lsize(lnd2x) 

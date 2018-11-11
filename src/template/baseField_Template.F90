@@ -1,4 +1,4 @@
-module base_fields
+module base_field
 
     use global_var
     implicit none
@@ -22,7 +22,7 @@ subroutine flds_init(metaData, ierr)
 
     #set totalFld = len($field_cfgs)
     totalFld = $(totalFld)
-    call fieldMeta_init(metaData%fieldMeta, totalFld)
+    call fldsMeta_init(metaData%fldsMetaData, totalFld)
     
     #for fld in $fieldVar_cfgs
          #set val = $fieldVar_cfgs[$fld]
@@ -38,10 +38,10 @@ subroutine flds_init(metaData, ierr)
     fldDesc%longname = "$lname"
     fldDesc%stdname = "$stdname"
     fldDesc%units = "$units"
-    call fieldMeta_add(metaData%fieldMeta, fldDesc)
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     #end for
 
 end subroutine flds_init
 
 
-end module base_fields
+end module base_field

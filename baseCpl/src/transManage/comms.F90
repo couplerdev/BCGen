@@ -36,11 +36,11 @@ subroutine mapper_init_func()
 
 end subroutine mapper_init_func
 
-subroutine mapper_rearrsplit_init(mapper, my_proc, gsmap_s, ID_s, gsmap_d, ID_d, ID_join, ierr)
+subroutine mapper_rearrsplit_init(mapper, metaData, gsmap_s, ID_s, gsmap_d, ID_d, ID_join, ierr)
 
     implicit none
     type(map_mod), intent(inout)   :: mapper
-    type(proc),    intent(in)      :: my_proc
+    type(Meta),    intent(in)      :: metaData
     type(gsMap),   intent(in)      :: gsmap_s
     integer,       intent(in)      :: ID_s
     type(gsMap),   intent(in)      :: gsmap_d
@@ -52,9 +52,9 @@ subroutine mapper_rearrsplit_init(mapper, my_proc, gsmap_s, ID_s, gsmap_d, ID_d,
     type(gsMap) :: gsmap_s_join
     type(gsMap) :: gsmap_d_join
 
-    mpicom_s = my_proc%comp_comm(ID_s)
-    mpicom_d = my_proc%comp_comm(ID_d)
-    mpicom_join = my_proc%comp_comm(ID_join)
+    mpicom_s = metaData%comp_comm(ID_s)
+    mpicom_d = metaData%comp_comm(ID_d)
+    mpicom_join = metaData%comp_comm(ID_join)
 
     !--if(gsmap_Identical(gsmap_s, gsmap_d))then
     if(1 == 0)then
@@ -79,11 +79,11 @@ end subroutine mapper_rearrsplit_init
 
 ! Build sMat, gsMap_s, gsMap_d must In comp_comm(ID_s)
 ! 
-subroutine mapper_spmat_init_nil(my_proc, mapper,&
+subroutine mapper_spmat_init_nil(metaData, mapper,&
                 ID_s, &
                 nRows, nCols, nElements,&
                 gsMap_s, gsMap_d)
-    type(proc), intent(inout) :: my_proc
+    type(Meta), intent(inout) :: metaData
     type(map_mod), intent(inout) :: mapper
     integer, intent(in) :: ID_s
     integer, intent(in) :: nRows ! gsMap_d%gSize
@@ -99,9 +99,9 @@ subroutine mapper_spmat_init_nil(my_proc, mapper,&
 
 
 
-    call mpi_comm_rank(my_proc%comp_comm(ID_s), comm_rank, ierr)
+    call mpi_comm_rank(metaData%comp_comm(ID_s), comm_rank, ierr)
 
-    if (my_proc%iamin_model(ID_s) .and. comm_rank == 0 ) then
+    if (metaData%iamin_model(ID_s) .and. comm_rank == 0 ) then
         allocate(rows(nElements), cols(nElements), &
                 weights(nElements), stat=ierr)
         do n=1, nElements
@@ -119,11 +119,11 @@ subroutine mapper_spmat_init_nil(my_proc, mapper,&
     mapper%map_type = "spmat"
 
 
-    call MPI_Barrier(my_proc%comp_comm(ID_s), ierr)
+    call MPI_Barrier(metaData%comp_comm(ID_s), ierr)
     call sMatPlus_init(mapper%sMatPlus, &
            mapper%sMat, gsMap_s, gsMap_d, &
-           sMat_Xonly, 0, my_proc%comp_comm(ID_s), ID_s)
-    call MPI_Barrier(my_proc%comp_comm(ID_s), ierr)
+           sMat_Xonly, 0, metaData%comp_comm(ID_s), ID_s)
+    call MPI_Barrier(metaData%comp_comm(ID_s), ierr)
 
 
 end subroutine mapper_spmat_init_nil

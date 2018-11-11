@@ -5,6 +5,7 @@ use comms_def, only: mct_mod
 use proc_def, only: procMeta, compMeta
 use global_var
 use field_def
+use base_field
 use comms, only: mapper_init
 use deploy_mod, only: deploy, deploy_cpl
 use mpi_comm, only:  iam_comm_root
@@ -144,6 +145,12 @@ subroutine init(metaData)
     metaData%${name}%ID = ATMID
     metaData%${name}%comm = metaData%comp_comm(${name}id)
     #end for
+
+    !-------------------------------------------
+    !   init field 
+    !-------------------------------------------
+    call flds_init(metaData, ierr)
+
 
 end subroutine init
 

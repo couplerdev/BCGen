@@ -5,19 +5,21 @@ module field
 !
 !--------------------------------------------------------
 use base_sys
-use base_log
-use type_def
+use logUtil
+use type_def, only : FIELDSLEN
+use proc_def
+    implicit none
     type fieldDesc
         character(len=FIELDSLEN) :: shortname
-        character(len=FIELDSLEN) :: lonename
+        character(len=FIELDSLEN) :: longname
         character(len=FIELDSLEN) :: stdname
         character(len=FIELDSLEN) :: units
     end type fieldDesc
     type fldsMeta
-        character(FIELDSLEN) :: domain_fld
+        character(len=FIELDSLEN) :: domain_fld
         integer   :: capacity
         integer   :: items
-        type(fieldDesc), dimension(:) :: lookup
+        type(fieldDesc), allocatable :: lookup(:)
     end type fldsMeta
 
     public :: fldsMeta_init
@@ -75,11 +77,15 @@ subroutine fldsMeta_add_name(fldsMetaData, shortname, longname, stdname, units, 
     integer,      optional, intent(inout)  :: ierr
 
     ! local
-    character(*)        :: unkown = "unkown"
-    character(FIELDLEN) :: llongname = unkown
-    character(FIELDLEN) :: lstdname = unkown
-    character(FIELDLEN) :: lunits = unkown
+    character(FIELDSLEN) :: unkown = "unkown"
+    character(FIELDSLEN) :: llongname = ''
+    character(FIELDSLEN) :: lstdname = ''
+    character(FIELDSLEN) :: lunits = ''
     type(fieldDesc)     :: fldDesc
+
+    llongname = unkown
+    lstdname = unkown
+    lunits = unkown
 
     if(present(longname))llongname = longname
     if(present(stdname)) lstdname = stdname
@@ -104,7 +110,7 @@ subroutine fldsMeta_add_name(fldsMetaData, shortname, longname, stdname, units, 
 end subroutine fldsMeta_add_name
 
 
-subroutine flds_lookup(fldsMetaData, shortname, longname, stdname, units)
+subroutine fldsMeta_lookup(fldsMetaData, shortname, longname, stdname, units)
 
     implicit none
     type(fldsMeta),         intent(in)     :: fldsMetaData
@@ -115,14 +121,18 @@ subroutine flds_lookup(fldsMetaData, shortname, longname, stdname, units)
 
     ! local 
     integer                 :: i
-    character(len=*)        :: unkown = "unkown"
-    character(len=FIELDLEN) :: llongname = unkown
-    character(len=FIELDLEN) :: lstdname = unkown
-    character(len=FIELDLEN) :: lunits = unkown
+    character(len=FIELDSLEN) :: unkown = "unkown"
+    character(len=FIELDSLEN) :: llongname = ''
+    character(len=FIELDSLEN) :: lstdname = ''
+    character(len=FIELDSLEN) :: lunits = ''
+
+    llongname = unkown
+    lstdname  = unkown
+    lunits = unkown
    
     do i = 1, fldsMetaData%items
         if(fldsMetaData%lookup(i)%shortname==shortname)then
-            llongename = fldsMetaData%lookup(i)%longname
+            llongname = fldsMetaData%lookup(i)%longname
             lstdname = fldsMetaData%lookup(i)%stdname
             lunits = fldsMetaData%lookup(i)%units
         end if

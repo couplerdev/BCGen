@@ -1,0 +1,1 @@
+/usr/local/bin/mpicc  -std=c99 -g -O0  -rdynamic CMakeFiles/examplePio.dir/examplePio.c.o  -o examplePio ../../src/clib/libpioc.a ../../src/gptl/libgptl.a -lnetcdf /usr/local/Pnetcdf/lib/libpnetcdf.a -lmpifort -lgfortran -lm -lquadmath -lm 

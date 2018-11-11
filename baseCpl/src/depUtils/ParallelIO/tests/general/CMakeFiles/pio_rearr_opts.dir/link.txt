@@ -1,0 +1,1 @@
+/usr/local/bin/mpif90    CMakeFiles/pio_rearr_opts.dir/pio_rearr_opts.F90.o CMakeFiles/pio_rearr_opts.dir/util/pio_tutil.F90.o  -o pio_rearr_opts ../../src/flib/libpiof.a ../../src/clib/libpioc.a /usr/local/lib/libnetcdf.so ../../src/gptl/libgptl.a /usr/local/lib/libnetcdff.so /usr/local/Pnetcdf/lib/libpnetcdf.a 

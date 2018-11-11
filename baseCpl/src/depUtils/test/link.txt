@@ -1,0 +1,1 @@
+/usr/lib64/mpich-3.2/bin/mpif90    -g -O0 examplePio.o  -o examplePio_f90 -Wl,-rpath,/usr/local/netcdf/lib:/usr/local/netcdf-fortran/lib /usr/local/lib/libpiof.a /usr/local/lib/libpioc.a /usr/local/lib/libgptl.a /usr/local/netcdf/lib/libnetcdf.so /usr/local/netcdf-fortran/lib/libnetcdff.so /usr/local/pnetcdf/lib/libpnetcdf.a 

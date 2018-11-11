@@ -1,0 +1,1 @@
+/usr/local/bin/mpicc  -std=c99 -g -O0  -rdynamic CMakeFiles/test_pioc_unlim.dir/test_pioc_unlim.c.o CMakeFiles/test_pioc_unlim.dir/test_common.c.o CMakeFiles/test_pioc_unlim.dir/test_shared.c.o  -o test_pioc_unlim ../../src/clib/libpioc.a ../../src/gptl/libgptl.a -lnetcdf /usr/local/Pnetcdf/lib/libpnetcdf.a -lmpifort -lgfortran -lm -lquadmath -lm 

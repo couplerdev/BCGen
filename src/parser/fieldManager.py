@@ -58,6 +58,13 @@ class FieldManager:
                 for v in val:
                     fldDict[v] = 1
         fldMeta = root.find('fldMeta')
+        for name in self.fldsQuery:
+            val = self.fldsQuery[name]
+            idx = 50
+            while idx<len(val):
+                val = val[:idx-1]+"&\n"+val[idx-1:]
+                idx+=50
+            self.fldsQuery[name] = val
         for child in fldMeta:
             sname = child.find('shortname').text
             if sname in fldDict:

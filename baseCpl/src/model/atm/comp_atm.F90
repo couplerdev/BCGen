@@ -2,6 +2,7 @@ module comp_atm
 use mct_mod
 use timeM
 use proc_def
+use global_var
     implicit none
     integer  :: comp_id
     !---------------------------------------------------------
@@ -23,11 +24,11 @@ contains
 !  a_init_mct, init gsmap_aa, avect, avect init with zero, but not init
 !  dom at present
 !-------------------------------------------------------------------------
-subroutine atm_init_mct(modelInfo, EClock, &
+subroutine atm_init_mct(compInfo, EClock, &
     atm2x_atmatm, x2atm_atmatm, ierr)
 
     implicit none
-    type(model_info), target, intent(inout)  :: modelInfo
+    type(compMeta), target, intent(inout)  :: compInfo
     type(Clock), intent(in)          :: EClock
     type(AttrVect), intent(inout)    :: atm2x_atmatm
     type(AttrVect), intent(inout)    :: x2atm_atmatm
@@ -65,12 +66,8 @@ subroutine atm_init_mct(modelInfo, EClock, &
     character(*), parameter :: F91   = "('(atm_init_mct) ',73('-'))"
     character(*), parameter :: subName = "(atm_init_mct) "
 
-    
-    local_comm = modelInfo%comm
-    domain => modelInfo%domain
-    gsmap_atmatm => modelInfo%gsmap
-    ID = modelInfo%ID
-    gsize = modelInfo%gsize
+    call compMeta_getInfo(compInfo, ID=ID, gsmap=gsmap_atmatm, domain=domain, &
+                          gsize =  gsize, comm=local_comm)
 
     call mpi_comm_rank(local_comm, comm_rank, ierr)
     call mpi_comm_size(local_comm, comm_size, ierr)
@@ -149,10 +146,10 @@ subroutine atm_init_mct(modelInfo, EClock, &
 
 end subroutine atm_init_mct
 
-subroutine atm_run_mct(modelInfo, EClock, atm2x, x2atm, ierr)
+subroutine atm_run_mct(compInfo, EClock, atm2x, x2atm, ierr)
 
     implicit none
-    type(model_info), target, intent(inout)   :: modelInfo
+    type(compMeta), target, intent(inout)   :: compInfo
     type(Clock), intent(in)           :: EClock
     type(AttrVect), intent(inout)     :: atm2x
     type(AttrVect), intent(inout)     :: x2atm
@@ -162,8 +159,7 @@ subroutine atm_run_mct(modelInfo, EClock, atm2x, x2atm, ierr)
     integer  :: comm_rank,i, av_lsize, n_rflds, n_iflds, n,nf
     integer :: local_comm
 
-    local_comm = modelInfo%comm
-    domain => modelInfo%domain
+    call compMeta_getInfo(compInfo, comm=local_comm, domain=domain)
     call mpi_comm_rank(local_comm, comm_rank, ierr)
     
     av_lsize = avect_lsize(atm2x) 

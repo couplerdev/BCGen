@@ -5,6 +5,7 @@ module extend
 !--------------------------------------------------------- 
 use mct_mod
 use proc_def
+use global_var
     implicit none
     include 'mpif.h'    
     include 'netcdf.inc'
@@ -17,11 +18,11 @@ use proc_def
 
 contains
 
-subroutine gsmap_init_ext(my_proc, gsmap_s, ID_s, gsmap_d, &
+subroutine gsmap_init_ext(metaData, gsmap_s, ID_s, gsmap_d, &
                       ID_d, ID_join)
 
     implicit none
-    type(proc), intent(in)     :: my_proc
+    type(Meta), intent(in)     :: metaData
     type(gsMap), intent(in)    :: gsmap_s
     integer,     intent(in)    :: ID_s
     type(gsMap), intent(inout) :: gsmap_d
@@ -30,12 +31,12 @@ subroutine gsmap_init_ext(my_proc, gsmap_s, ID_s, gsmap_d, &
     type(gsMap) gsmap_join
     integer :: mpi_comm_s, mpi_comm_d, mpi_comm_join, mct_compid_d, mct_compid_join
     
-    mpi_comm_s = my_proc%comp_comm(ID_s)
-    mpi_comm_d = my_proc%comp_comm(ID_d)
-    mpi_comm_join = my_proc%comp_comm(ID_join)
+    mpi_comm_s = metaData%comp_comm(ID_s)
+    mpi_comm_d = metaData%comp_comm(ID_d)
+    mpi_comm_join = metaData%comp_comm(ID_join)
     
-    mct_compid_join = my_proc%comp_id(ID_join)
-    mct_compid_d = my_proc%comp_id(ID_d)
+    mct_compid_join = metaData%comp_id(ID_join)
+    mct_compid_d = metaData%comp_id(ID_d)
 
     call gsmap_extend(gsmap_s, gsmap_join,&
                             mpi_comm_s, mpi_comm_join,&
@@ -48,9 +49,9 @@ subroutine gsmap_init_ext(my_proc, gsmap_s, ID_s, gsmap_d, &
 
 end subroutine gsmap_init_ext
 
-subroutine avect_init_ext(my_proc, AV_s, ID_s, AV_d, ID_d, gsMap_d, ID_join)
+subroutine avect_init_ext(metaData, AV_s, ID_s, AV_d, ID_d, gsMap_d, ID_join)
     implicit none
-    type(proc),     intent(in)    :: my_proc
+    type(Meta),     intent(in)    :: metaData
     type(AttrVect), intent(inout) :: AV_s
     integer,        intent(in)    :: ID_s
     type(AttrVect), intent(inout) :: AV_d
@@ -58,9 +59,9 @@ subroutine avect_init_ext(my_proc, AV_s, ID_s, AV_d, ID_d, gsMap_d, ID_join)
     type(gsMap),        intent(in):: gsMap_d
     integer,        intent(in)    :: ID_join
     integer lsize
-    lsize = gsMap_lsize(gsMap_d, my_proc%comp_comm(ID_d))
-    call avect_extend(my_proc, AV_s, ID_s, ID_d)
-    call avect_create(my_proc, AV_s, ID_s,&
+    lsize = gsMap_lsize(gsMap_d, metaData%comp_comm(ID_d))
+    call avect_extend(metaData, AV_s, ID_s, ID_d)
+    call avect_create(metaData, AV_s, ID_s,&
                         AV_d, ID_d, &
                         lsize)
 end subroutine avect_init_ext
@@ -123,23 +124,23 @@ end subroutine gsmap_extend
 
 
 !todo my implement need to discussion
-subroutine avect_extend(my_proc, AV_s, &
+subroutine avect_extend(metaData, AV_s, &
               ID_s, ID_d)
     implicit none
-    type(proc)    , intent(in)    :: my_proc
+    type(Meta)    , intent(in)    :: metaData
     type(AttrVect), intent(inout) :: AV_s
     integer, intent(in) ::  ID_s, ID_d
     integer  ::  mpi_comm_s, mpi_comm_d, ier,srank,rrank,rank_s,rank_d
     character(len=100) :: iList,rList
 
 
-    mpi_comm_s = my_proc%comp_comm(ID_s)
-    mpi_comm_d = my_proc%comp_comm(ID_d)
+    mpi_comm_s = metaData%comp_comm(ID_s)
+    mpi_comm_d = metaData%comp_comm(ID_d)
 
     ! becast the rank of comm_d who is the root in comm_s
     rank_s = -1
     srank = -1
-    if(my_proc%iamin_model(ID_s)) &
+    if(metaData%iamin_model(ID_s)) &
         call mpi_comm_rank(mpi_comm_s, rank_s, ier)
 
     call mpi_comm_rank(mpi_comm_d, rank_d, ier)
@@ -153,13 +154,13 @@ subroutine avect_extend(my_proc, AV_s, &
 
     iList = " "
     rList = " "
-    if(my_proc%iamin_model(ID_s)) then
+    if(metaData%iamin_model(ID_s)) then
         iList = avect_exportIList2c(AV_s)
         rList = avect_exportRList2c(AV_s)
     endif
     call mpi_bcast(iList, len(iList), MPI_CHARACTER, rrank, mpi_comm_d, ier)
     call mpi_bcast(rList, len(rList), MPI_CHARACTER, rrank, mpi_comm_d, ier)
-    if(.not. my_proc%iamin_model(ID_s)) then
+    if(.not. metaData%iamin_model(ID_s)) then
         if(len_trim(iList) > 0 .and. len_trim(rList) > 0) then
           call avect_init(AV_s,rList=rList,iList=iList, lsize=0)
         else if(len_trim(iList) > 0 .and. len_trim(rList) == 0) then
@@ -325,9 +326,9 @@ subroutine gsmap_create(gsmapi, mpicomi, gsmapo, mpicomo, compido)
     endif
 end subroutine gsmap_create
 
-subroutine avect_create(my_proc, AV_s, ID_s, AV_d, ID_d, lsize)
+subroutine avect_create(metaData, AV_s, ID_s, AV_d, ID_d, lsize)
     implicit none
-    type(proc),     intent(in)      :: my_proc
+    type(Meta),     intent(in)      :: metaData
     type(AttrVect), intent(inout)   :: AV_s
     integer,        intent(in)      :: ID_s
     type(AttrVect), intent(inout)   :: AV_d
@@ -337,13 +338,13 @@ subroutine avect_create(my_proc, AV_s, ID_s, AV_d, ID_d, lsize)
     integer pid_in_d,ier, rank_s, rank_d, srank, rrank
     character(len=1000) :: iList,rList
     
-    mpi_comm_s = my_proc%comp_comm(ID_s)
-    mpi_comm_d = my_proc%comp_comm(ID_d)
+    mpi_comm_s = metaData%comp_comm(ID_s)
+    mpi_comm_d = metaData%comp_comm(ID_d)
     
     ! becast the rank of comm_d who is the root in comm_s
     rank_s = -1
     srank = -1
-    if(my_proc%iamin_model(ID_s)) &
+    if(metaData%iamin_model(ID_s)) &
         call mpi_comm_rank(mpi_comm_s, rank_s, ier)
 
     call mpi_comm_rank(mpi_comm_d, rank_d, ier)
@@ -358,7 +359,7 @@ subroutine avect_create(my_proc, AV_s, ID_s, AV_d, ID_d, lsize)
 
     iList = " "
     rList = " "
-    if(my_proc%iamin_model(ID_s)) then
+    if(metaData%iamin_model(ID_s)) then
         iList = avect_exportIList2c(AV_s)
         rList = avect_exportRList2c(AV_s)
     endif
@@ -380,9 +381,9 @@ subroutine avect_create(my_proc, AV_s, ID_s, AV_d, ID_d, lsize)
     endif
 end subroutine avect_create
 
-subroutine save_model_av(my_proc, AV, gsMap_AV, ID, time)
+subroutine save_model_av(metaData, AV, gsMap_AV, ID, time)
     implicit none
-    type(proc),     intent(in)      :: my_proc
+    type(Meta),     intent(in)      :: metaData
     type(AttrVect), intent(in)   :: AV
     type(gsMap), intent(in)   :: gsMap_AV
     integer,        intent(in)      :: ID
@@ -394,7 +395,7 @@ subroutine save_model_av(my_proc, AV, gsMap_AV, ID, time)
     integer, dimension(MPI_STATUS_SIZE) :: status
     character(len=1000) :: check_point_path
 
-    mpi_comm = my_proc%comp_comm(ID)
+    mpi_comm = metaData%comp_comm(ID)
     if(mpi_comm /= MPI_COMM_NULL) then
         check_point_path = "file.txt"
 
@@ -424,9 +425,9 @@ subroutine save_model_av(my_proc, AV, gsMap_AV, ID, time)
     endif
 end subroutine save_model_av
 
-subroutine log_msg(my_proc, ID, msg, log_path)
+subroutine log_msg(metaData, ID, msg, log_path)
     implicit none
-    type(proc),     intent(in)      :: my_proc
+    type(Meta),     intent(in)      :: metaData
     integer,        intent(in)      :: ID
     character(len=*), intent(in) :: msg
     character(len=*), intent(in) :: log_path
@@ -439,7 +440,7 @@ subroutine log_msg(my_proc, ID, msg, log_path)
     character*10 b(3)
     call date_and_time(b(1), b(2), b(3), date_time)
 
-    mpi_comm = my_proc%comp_comm(ID)
+    mpi_comm = metaData%comp_comm(ID)
 
     if(mpi_comm /= MPI_COMM_NULL) then
         call mpi_comm_rank(mpi_comm, comm_rank, ierr)
@@ -467,32 +468,32 @@ subroutine log_msg(my_proc, ID, msg, log_path)
 end subroutine log_msg
 
 
-subroutine log_run_msg(my_proc, ID, log_path, time)
+subroutine log_run_msg(metaData, ID, log_path, time)
     implicit none
-    type(proc),     intent(in)      :: my_proc
+    type(Meta),     intent(in)      :: metaData
     integer,        intent(in)      :: ID
     character(len=*), intent(in) :: log_path
     integer,        intent(in)      :: time
     character(len=30) ::  msg
     character(len=4) ::  txt_rank
     integer :: comm_rank, mpi_comm, ierr
-    mpi_comm = my_proc%comp_comm(ID)
+    mpi_comm = metaData%comp_comm(ID)
 
     if(mpi_comm /= MPI_COMM_NULL) then
         call mpi_comm_rank(mpi_comm, comm_rank, ierr)
         write(txt_rank,"(I4)") comm_rank
         msg = 'COMM_RANK:' // txt_rank // ' STATUS: RUN'
         call MPI_Barrier(mpi_comm, ierr)
-        call log_msg(my_proc, ID, msg, log_path)
+        call log_msg(metaData, ID, msg, log_path)
     endif
 end subroutine log_run_msg
 
 
 
-subroutine read_netcdf(my_proc, ID, check_point_path, time, AV, gsMap_AV)
+subroutine read_netcdf(metaData, ID, check_point_path, time, AV, gsMap_AV)
     !读取id model的全网格数据，并根据在GSMAP上的网格数据分布 设置到对应AV
     implicit none
-    type(proc),     intent(in)      :: my_proc
+    type(Meta),     intent(in)      :: metaData
     integer,        intent(in)      :: ID
     character(len=*), intent(in) :: check_point_path
     integer,        intent(in)      :: time
@@ -528,7 +529,7 @@ subroutine read_netcdf(my_proc, ID, check_point_path, time, AV, gsMap_AV)
     write(*,*) 'read data ok'
 
    
-    mpi_comm = my_proc%comp_comm(ID)
+    mpi_comm = metaData%comp_comm(ID)
     if(mpi_comm /= MPI_COMM_NULL) then
         call mpi_comm_rank(mpi_comm, comm_rank, ierr)
         nlseg = gsMap_lsize(gsMap_AV, mpi_comm)        
@@ -557,11 +558,11 @@ subroutine read_netcdf(my_proc, ID, check_point_path, time, AV, gsMap_AV)
 
 end subroutine read_netcdf
 
-subroutine write_netcdf(my_proc, ID, log_path, time, AV, gsMap_AV)
+subroutine write_netcdf(metaData, ID, log_path, time, AV, gsMap_AV)
     !todo
     !将AV数据写入netcdf文件， 需要增加AV gather步骤, 即需要将AV转为全局AV
     implicit none
-    type(proc),     intent(in)      :: my_proc
+    type(Meta),     intent(in)      :: metaData
     integer,        intent(in)      :: ID
     character(len=*), intent(in) :: log_path
     integer,        intent(in)      :: time
@@ -583,7 +584,7 @@ subroutine write_netcdf(my_proc, ID, log_path, time, AV, gsMap_AV)
     allocate(rdimsid(rlist_len))
     allocate(idimsid(ilist_len))
 
-    mpi_comm = my_proc%comp_comm(ID)
+    mpi_comm = metaData%comp_comm(ID)
     if(mpi_comm /= MPI_COMM_NULL) then
         lsize = gsMap_lsize(gsMap_AV, mpi_comm)
         call check(nf_create(log_path, NF_CLOBBER, ncid))
@@ -631,8 +632,7 @@ subroutine StringSplit(InStr,delimiter,StrArray,nsize)
 !----------------------------------------------  
 !---将字符串InStr进行分割,结果放入StrArray中  
 !---delimiter::分隔符号,例如';,,' 使用;和,分割字符串  
-!---nsize:分割数目  
-!---吴徐平2011-04-29(wxp07@qq.com)  
+!---nsize:分割数目    
 !----------------------------------------------  
 implicit none  
 character(len = *) , Intent( IN ) :: InStr  

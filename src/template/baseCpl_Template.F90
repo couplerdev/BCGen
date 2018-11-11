@@ -1,6 +1,7 @@
 module baseCpl
 use proc_def
 use comms_def
+use global_var
 use procm, only: pm_init => init, clean
 use comms
 use timeM

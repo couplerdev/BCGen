@@ -9,6 +9,7 @@ use m_attrvect ,only: avect_copy => copy
 use m_attrvect ,only: avect_lsize => lsize
 use m_attrvect ,only: avect_indexIA => indexIA
 use m_attrvect ,only: avect_indexRA => indexRA
+use m_attrvect ,only: avect_nRattr => nRattr
 use m_attrvect ,only: avect_importRA => importRAttr
 use m_attrvect ,only: avect_importIattr => importIattr
 use m_attrvect ,only: avect_exportIattr => exportIattr
@@ -81,7 +82,9 @@ use m_SparseMatrixPlus, only : sMatPlus_init => init
 use m_SparseMatrixPlus, only : sMatPlus_clean => clean
 use m_SparseMatrixPlus, only : sMat_Xonly => Xonly ! Decompose matrix by row
 
-
+use m_string,  only : string 
+use m_string,  only : string_toChar => toChar
+use m_string,  only : string_clean 
 
 !---Matrix-Vector multiply methods
 use m_MatAttrVectMul, only: sMatAvect_Mult => sMatAvMult

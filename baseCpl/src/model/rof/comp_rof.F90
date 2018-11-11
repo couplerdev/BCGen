@@ -2,6 +2,7 @@ module comp_rof
 use mct_mod
 use timeM
 use proc_def
+use global_var
 use logUtil, only: logUnit
 use base_fields, only: flds_c2x => flds_rof2x_fields, &
                        flds_x2c => flds_x2rof_fields

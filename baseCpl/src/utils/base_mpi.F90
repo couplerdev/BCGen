@@ -1,6 +1,6 @@
 module base_mpi
 use mpi
-
+use logUtil
 !----------------------------------------------------------
 !     This moudle is used for wrapped mpi API, making it is
 !     easy to  use. 
@@ -27,13 +27,13 @@ subroutine base_mpi_chkerr(rcode, string)
     character(*),  intent(in) :: string
     !--local----
     character(*), parameter    :: subName=  '(base_mpi_chkerr)'
-    character(MPI_MAX_ERROR_STRING)  :: logString
+    character(MPI_MAX_ERROR_STRING)  :: lString
     integer :: length
     integer :: ierr
 
     if(rcode/=MPI_SUCCESS)then
-        call MPI_ERROR_STRING(rcode, logString, length, ierr)
-        write(logUnit, *) trim(subName:),"", logString(1, length)
+        call MPI_ERROR_STRING(rcode,lString, length, ierr)
+        write(logUnit, *) trim(subName),"", lString(1:length)
         call base_mpi_abort(string,rcode)
     end if
 end subroutine base_mpi_chkerr
@@ -79,12 +79,13 @@ subroutine base_mpi_barrier(comm, string)
 
 end subroutine base_mpi_barrier
 
-subroutine base_mpi_bcastInt(msg, comm, string, root)
+subroutine base_mpi_bcastInt(msg, comm, string, pebcast, root)
     implicit none
     integer, intent(inout) :: msg
     integer, intent(in)    :: comm
     character(*), optional, intent(in) :: string
     integer,      optional, intent(in) :: pebcast
+    integer,      optional, intent(in) :: root
 
     character(*), parameter   :: subName = '(shr_mpi_bcastInt)'
     integer :: ierr
@@ -120,7 +121,7 @@ subroutine base_mpi_bcastLogical(msg, comm, string, root)
    
     lsize = 1
     local_root = 0
-    if(present(local_root)) local_root = root
+    if(present(root)) local_root = root
     call MPI_BCAST(msg, lsize, MPI_LOGICAL, local_root, comm, ierr)
 
     if(present(string))then
@@ -166,7 +167,7 @@ subroutine base_mpi_bcastR8(msg, comm, string, root)
     character(len=*), optional, intent(in)  :: string
     integer,          optional, intent(in)  :: root
 
-    character(len=*)    :: subName = '(base_mpi_bcastR8)'
+    character(len=*), parameter  :: subName = '(base_mpi_bcastR8)'
     integer :: ierr
     integer :: lsize
     integer :: local_root

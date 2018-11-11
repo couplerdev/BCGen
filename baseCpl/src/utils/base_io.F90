@@ -2,9 +2,9 @@ module base_io
 use global_var
 use ESMF
 use pio
+use time_type
 
     implicit none
-    character(len=*) :: cpl_io_file
     public :: base_io_wopen
     public :: base_io_close
     public :: base_io_read
@@ -12,7 +12,7 @@ use pio
 
     interface base_io_read
         module procedure base_io_read_av
-        module procedure base_io_read_avs
+        !module procedure base_io_read_avs
         module procedure base_io_read_int
         module procedure base_io_read_r8
     end interface
@@ -25,11 +25,17 @@ use pio
     end interface
 
     ! local data
-    character(*),  parameter :: prefix = "base_io_"
-    type(file_desc_t), save  :: cpl_io_file
-    integer                  :: cpl_io_subsystem
-    character(*),  parameter :: version = 'cpl7v10' 
-    character(*),  parameter :: version0 = 'cpl7v00'
+    character(*),  parameter       :: prefix = "base_io_"
+    character(*),  parameter       :: wfilename = ''
+    type(file_desc_t), save        :: cpl_io_file
+    integer                        :: cpl_pio_iotype
+    type(iosystem_desc_t), pointer :: cpl_io_subsystem
+    real,          parameter       :: fillvalue = 0.0  ! SHR_CONST_SPVAL
+    character(*),  parameter       :: version = 'cpl7v10' 
+    character(*),  parameter       :: version0 = 'cpl7v00'
+    
+    character(len=64)  :: charvar
+    integer            :: io_comm
 
 contains
 
@@ -49,25 +55,25 @@ subroutine base_io_wopen(my_proc, filename, clobber, cdf64)
     integer :: nmode
     integer :: ierr
     character(len=64) :: lversion
-    character(len=*), parameter :: subName = '(seq_io_wopen)'
+    character(len=*), parameter :: subName = '(base_io_wopen)'
 
+    lversion = trim(version0)
     call procMeta_getInfo(my_proc,ID=CPLID, comm=mpicom, rank=iam)
     call MPI_COMM_RANK(mpicom, iam, ierr)
     lclobber = .false.
     if(present(clobber))lclobber = clobber
     
     lcdf64 = .false.
-    if(present(lcdf64)) lcdf64 = cdf64
+    if(present(cdf64)) lcdf64 = cdf64
 
     if (.not. pio_file_is_open(cpl_io_file))then
         if(iam==0)inquire(file=trim(filename), exist=exists)
-        call base_mpi_bcast(exsits, mpicom, 'base_io_wopen exists')
+        call base_mpi_bcast(exists, mpicom, 'base_io_wopen exists')
         if(exists)then
             if(lclobber)then
                 nmode = pio_clobber
                 if(lcdf64) nmode = ior(nmode, PIO_64BIT_OFFSET)
-                rcode = pio_createfile(cpl_io_subsystem, cpl_io_file,
-cpl_pio_iotype, trim(filename), nmode)
+                rcode = pio_createfile(cpl_io_subsystem, cpl_io_file, cpl_pio_iotype, trim(filename), nmode)
                 if(iam==0)write(logUnit, *) subName,'create file', trim(filename)
                 rcode = pio_put_att(cpl_io_file, pio_global, 'file_version',version)
             else
@@ -91,7 +97,7 @@ cpl_pio_iotype, trim(filename), nmode)
         end if
     else if(trim(wfilename) /= trim(filename))then
         if(iam==0)write(logUnit, *)subname, 'different file currently open', trim(filename)
-        call base_sys_abort()
+        call base_sys_abort("different file currently open")
     else
 
     end if
@@ -117,7 +123,7 @@ subroutine base_io_close(filename)
         call pio_closefile(cpl_io_file)
     else
         if(iam==0)write(logUnit, *)subName, 'different file currently open', trim(filename)
-        call base_sys_abort()
+        call base_sys_abort("different file currently open")
     end if
 
     wfilename = ''
@@ -134,12 +140,21 @@ subroutine base_io_redef(filename)
 
 end subroutine base_io_redef
 
+subroutine base_io_enddef(filename)
 
-subroutine base_io_read_av(filename, gsmap, AV, dname, pre)
+    implicit none
+    character(len=*), intent(in)  :: filename
+    integer :: rcode
+
+    rcode  = pio_enddef(cpl_io_file)
+
+end subroutine base_io_enddef
+
+subroutine base_io_read_av(filename, comp_gsmap, AV, dname, pre)
 
     implicit none
     character(len=*),  intent(in)    :: filename
-    type(gsmap),       intent(in)    :: gsmap
+    type(gsmap),       intent(in)    :: comp_gsmap
     type(attrVect),    intent(inout) :: AV
     character(len=*),  intent(in)    :: dname
     character(len=*),  intent(in), optional :: pre
@@ -162,7 +177,7 @@ subroutine base_io_read_av(filename, gsmap, AV, dname, pre)
     character(len=64) :: lpre
     character(*), parameter :: subName = '(base_io_read_av)'
 
-    lversion = trim(version0) ???/
+    lversion = trim(version0) 
     
     lpre = trim(dname)
     if(present(pre)) then
@@ -171,20 +186,20 @@ subroutine base_io_read_av(filename, gsmap, AV, dname, pre)
 
     call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam, comm=mpicom)
 
-    call gsmap_OrderedPoints(gsmap, iam, Dof)
+    call gsmap_OrderedPoints(comp_gsmap, iam, Dof)
     
-    ns = attrVect_lszie(AV)
-    nf = attrVect_nRattr(AV)
+    ns = avect_lsize(AV)
+    nf = avect_nRattr(AV)
    
     if(iam==0)inquire(file=trim(filename), exist=exists)
     call base_mpi_bcast(exists, mpicom, 'base_io_read_av exists')
-    if(exisits)then
+    if(exists)then
         rcode= pio_openfile(cpl_io_subsystem, pioid,cpl_pio_iotype, trim(filename), pio_nowrite)
         if(iam==0) write(logUnit, *) subname, 'open file', trim(filename)
         call pio_seterrorhandling(pioid, PID_BCAST_ERROR)
     else
         if(iam==0) write(logUnit, *) subname, 'ERROR: file invalid',trim(filename),'', trim(dname)
-        call base_sys_abort()
+        call base_sys_abort("ERROR: file invalid")
     end if
 
     do k = 1, nf
@@ -194,7 +209,7 @@ subroutine base_io_read_av(filename, gsmap, AV, dname, pre)
         if(trim(lversion)==trim(version))then
             name1 = trim(lpre)//'_'//trim(itemc)
         else
-            name1 = trim(prefix)//trim(dname)//'_'//trim(itmec)
+            name1 = trim(prefix)//trim(dname)//'_'//trim(itemc)
         end if
         call pio_seterrorhandling(pioid, PIO_BCAST_ERROR)
         rcode = pio_inq_varid(pioid, trim(name1), varid)
@@ -206,13 +221,13 @@ subroutine base_io_read_av(filename, gsmap, AV, dname, pre)
                 if(ndims>=2)then
                     rcode = pio_inq_dimlen(pioid, dimid(2), lny)
                 else
-                    lny-1
+                    lny = 1 
                 end if
                 ng = lnx*lny
-                if(ng/=gsmap_gsize(gsmap))then
+                if(ng/=gsmap_gsize(comp_gsmap))then
                     if(iam==0)write(logUnit, *)subname,'ERROR: dimension notmatch', &
-                                lnx, lny, gsmap_gsize(gsmap)
-                    call base_sys_abort()
+                                lnx, lny, gsmap_gsize(comp_gsmap)
+                    call base_sys_abort('ERROR: dimension  notmatch')
                 end if
                 call pio_initdecomp(cpl_io_subsystem, pio_double, (/lnx, lny/),dof, iodesc) 
                 deallocate(dof)
@@ -221,7 +236,7 @@ subroutine base_io_read_av(filename, gsmap, AV, dname, pre)
         else
             write(logUnit, *)'base_io_readav warning: field', trim(itemc), 'is not on restart file'
             write(logUnit, *)'for backwards compatibility will set it to 0'
-            av%rattr(k,:) = 0.0_r8
+            av%rattr(k,:) = 0.0
         end if
         call pio_seterrorhandling(pioid, PIO_INTERNAL_ERROR)
     end do
@@ -229,7 +244,7 @@ subroutine base_io_read_av(filename, gsmap, AV, dname, pre)
     do n = 1, ns
     do k = 1, nf
         if(AV%rAttr(k, n)==fillvalue)then
-            AV%rAttr(k, n) = 0.0_r8
+            AV%rAttr(k, n) = 0.0
         end if
     end do
     end do
@@ -282,7 +297,7 @@ subroutine base_io_read_int1d(filename, idata, dname)
         call pio_seterrorhandling(pioid, PIO_INTERNAL_ERROR)
     else
         if(iam==0)write(logUnit, *)subname, 'ERROR: file invalid', trim(filename), ' ', trim(dname)
-        call base_sys_abort()
+        call base_sys_abort("ERROR: file invalid")
     end if
 
     if(trim(lversion)==trim(version))then
@@ -321,7 +336,8 @@ subroutine base_io_read_r81d(filename, rdata, dname)
 
     integer :: rcode
     integer :: iam, mpicom
-    type(file_desc_T) :: varid
+    type(file_desc_T) :: pioid
+    type(var_desc_T) :: varid
     logical :: exists
     character(len=64) :: lversion
     character(len=64) :: name1
@@ -333,13 +349,13 @@ subroutine base_io_read_r81d(filename, rdata, dname)
     if(iam==0)inquire(file=trim(filename), exist=exists)
     call base_mpi_bcast(exists, mpicom, 'base_io_read_r81d exists')
     if(exists)then
-        rcode = pio_openfile(cpl_io_subsystem, pioid, cpl_pio_idtype, trim(filename), pio_nowrite)
+        rcode = pio_openfile(cpl_io_subsystem, pioid, cpl_pio_iotype, trim(filename), pio_nowrite)
         call pio_seterrorhandling(pioid, PIO_BCAST_ERROR)
         rcode = pio_get_att(pioid, pio_global, "file_version", lversion)
         call pio_seterrorhandling(pioid, PIO_INTERNAL_ERROR)
     else
         if(iam==0)write(logUnit, *)subName, 'ERROR: file invalid',trim(filename), ' ', trim(dname)
-        call base_sys_abort()
+        call base_sys_abort("ERROR: file invalid")
     end if
 
     if(trim(lversion)==trim(version))then
@@ -382,7 +398,7 @@ subroutine base_io_read_char(filename, rdata, dname)
         call pio_seterrorhandling(pioid, PIO_INTERNAL_ERROR)
     else
         if(iam==0)write(logUnit, *)subname, 'ERROR: file invalid',trim(filename), ' ', trim(dname)
-        call base_sys_abort()
+        call base_sys_abort("ERROR: file invalid")
     end if
 
     if(trim(lversion)==trim(version))then
@@ -400,12 +416,12 @@ end subroutine base_io_read_char
 
 
 
-subroutine base_io_write_av(filename, gsmap, AV, dname, whead, wdata, nx, ny, nt,&
+subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, ny, nt,&
                            fillval, pre, tavg, use_float)
     
     implicit none
     character(len=*),  intent(in) :: filename
-    type(gsmap),       intent(in) :: gsmap
+    type(gsmap),       intent(in) :: comp_gsmap
     type(attrVect),    intent(in) :: AV
     character(len=*),  intent(in) :: dname
     logical, optional, intent(in) :: wdata
@@ -427,8 +443,8 @@ subroutine base_io_write_av(filename, gsmap, AV, dname, whead, wdata, nx, ny, nt
     integer, target :: dimid3(3)
     integer, pointer :: dimid(:)
     type(var_desc_t) :: varid
-    type(;io_desc_t) :: iodesc
-    integer(kind=PIO_OFFSET) :: frame
+    type(io_desc_t) :: iodesc
+    integer(PIO_OFFSET) :: frame
     type(string) :: mstring  !!!!!
     character(len=64) :: itemc
     character(len=64) :: name1
@@ -443,8 +459,9 @@ subroutine base_io_write_av(filename, gsmap, AV, dname, whead, wdata, nx, ny, nt
     character(len=*), parameter :: subName='(base_io_write)'
     integer :: lbum
     integer, pointer :: Dof(:)
+    logical :: luse_float
 
-    lfillvalue = fillvalue
+    lfillvalue = fillval
     if(present(fillval))then
         lfillvalue = fillval
     end if
@@ -468,14 +485,14 @@ subroutine base_io_write_av(filename, gsmap, AV, dname, whead, wdata, nx, ny, nt
     
     call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam)
 
-    ng = gsmap_gsize(gsmap)
+    ng = gsmap_gsize(comp_gsmap)
     lnx = ng
     lny =  1
 
     nf = avect_nRattr(AV)
     if(nf < 1)then
         write(logUnit,*) subname, 'ERROR: nf = ', nf, trim(dname)
-        call base_sys_abort()
+        call base_sys_abort("ERROR: nf")
     end if
 
     if(present(nx)) then
@@ -486,7 +503,7 @@ subroutine base_io_write_av(filename, gsmap, AV, dname, whead, wdata, nx, ny, nt
     end if
     if(lnx*lny /= ng) then
         if(iam==0)write(logUnit, *)subname,'ERROR: grid2d size not consistent', ng, lnx, lny, trim(dname)
-        call base_sys_abort()
+        call base_sys_abort(subname//" ERROR: grid2d size not consitent")
     end if
 
     if(lwhead) then
@@ -542,7 +559,7 @@ subroutine  base_io_write_int(filename, idata, dname, whead, wdata)
 
     lwhead = .true.
     lwdata = .true.
-    if(present(whead)) lwheada = whead
+    if(present(whead)) lwhead = whead
     if(present(wdata)) lwdata = wdata
 
     if(.not. lwhead .and. .not. lwdata)then
@@ -551,7 +568,7 @@ subroutine  base_io_write_int(filename, idata, dname, whead, wdata)
 
     call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam)
     if(lwhead)then
-        call flds_lookup()
+        call fldsMeta_lookup(metaData%fldsMetaData, trim(dname), longname=lname, stdname=sname, units=cunit)
         rcode = pio_def_var(cpl_io_file, trim(dname), PIO_INT, varid)
         rcode = pio_put_att(cpl_io_file, varid, "units", trim(cunit))
         rcode = pio_put_att(cpl_io_file, varid, "long_name", trim(lname))
@@ -598,7 +615,7 @@ subroutine base_io_write_r8(filename, rdata, dname, whead, wdata)
     call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam)
     
     if(lwhead) then
-        call base_lookup(trim(dname), longname=lname, stdname=sname, units=cunit)
+        call fldsMeta_lookup(metaData%fldsMetaData,trim(dname), longname=lname, stdname=sname, units=cunit)
         rcode = pio_def_var(cpl_io_file, trim(dname), PIO_DOUBLE, varid)
         if(rcode == PIO_NOERR)then
             rcode = pio_put_att(cpl_io_file, varid, "units", trim(cunit))
@@ -646,9 +663,9 @@ subroutine base_io_write_char(filename, rdata, dname, whead, wdata)
         return 
     end if
 
-    call procMeta_getInfo(metaData, ID=CPLID, rank=iam)
+    call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam)
     if(lwhead)then
-        call base_lookup
+        call fldsMeta_lookup(metaData%fldsMetaData, trim(dname), longname=lname, stdname=sname, units=cunit)
         lnx = len(charvar)
         rcode = pio_def_dim(cpl_io_file, trim(dname)//'_len', lnx, dimid(1))
         rcode = pio_def_var(cpl_io_file, trim(dname), PIO_CHAR, dimid, varid)
@@ -690,7 +707,7 @@ subroutine base_io_write_time(filename, time_units, time_cal, time_val, nt, whea
     logical :: lwhead, lwdata
     integer :: start(4), cnt(4)
     character(len=200) :: lcalendar
-    real(kind=8) ::time_val_1d(1)
+    real(kind=8) ::time_val_ld(1)
     character(*), parameter :: subName = '(base_io_write_time)'
 
     lwhead = .true.
@@ -708,10 +725,10 @@ subroutine base_io_write_time(filename, time_units, time_cal, time_val, nt, whea
         rcode = pio_def_dim(cpl_io_file, 'time', PIO_UNLIMITED, dimid(1))
         rcode = pio_def_var(cpl_io_file, 'time', PIO_DOUBLE, dimid, varid)
         rcode = pio_put_att(cpl_io_file, varid, 'units', trim(time_units))
-        lcalendar = cal()????
-        if(trim(lcalendar)==trim(..nolead))then
+        lcalendar = time_cal_noleap
+        if(trim(lcalendar)==trim('NO_LEAP'))then
             lcalendar = 'noleap'
-        else if(trim(lcalendar)==trim(..gregorian))then
+        else if(trim(lcalendar)==trim('GREGORIAN'))then
             lcalendar = 'gregorian'
         end if
         rcode  = pio_put_att(cpl_io_file, varid, 'calendar', trim(lcalendar))

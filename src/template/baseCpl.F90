@@ -1,6 +1,7 @@
 module baseCpl
 use proc_def
 use comms_def
+use global_var
 use procm, only: pm_init => init, clean
 use comms
 use timeM
@@ -205,14 +206,14 @@ subroutine cpl_run()
         end if
             if(atm_run)then
         if(my_proc%iamin_modelatm2cpl)then
-            call mapper_comp_name(my_proc%Mapper_Catm2x, x2atm_atmx, x2atm_atmatm, msg_tag, ierr=ierr)
+            call mapper_comp_name(metaData%Mapper_Catm2x, x2atm_atmx, x2atm_atmatm, msg_tag, ierr=ierr)
         end if
     end if
 
 
             if(ocn_run)then
         if(my_proc%iamin_modelocn2cpl)then
-            call mapper_comp_name(my_proc%Mapper_Cocn2x, x2ocn_ocnx, x2ocn_ocnocn, msg_tag, ierr=ierr)
+            call mapper_comp_name(metaData%Mapper_Cocn2x, x2ocn_ocnx, x2ocn_ocnocn, msg_tag, ierr=ierr)
         end if
     end if
 
@@ -233,28 +234,28 @@ subroutine cpl_run()
 
             if(atm_run)then
         if(my_proc%iamin_modelatm2cpl)then
-            call mapper_comp_name(my_proc%Mapper_Catm2x, x2atm_atmx, x2atm_atmatm, msg_tag, ierr=ierr)
+            call mapper_comp_name(metaData%Mapper_Catm2x, x2atm_atmx, x2atm_atmatm, msg_tag, ierr=ierr)
         end if
     end if
 
 
             if(ocn_run)then
         if(my_proc%iamin_modelocn2cpl)then
-            call mapper_comp_name(my_proc%Mapper_Cocn2x, x2ocn_ocnx, x2ocn_ocnocn, msg_tag, ierr=ierr)
+            call mapper_comp_name(metaData%Mapper_Cocn2x, x2ocn_ocnx, x2ocn_ocnocn, msg_tag, ierr=ierr)
         end if
     end if
 
 
             if(atm_run)then
         if(my_proc%iamin_modelatm2cpl)then
-            call mapper_comp_comm(my_proc%mapper_Smatocn2atm, ocn2x_ocnx, ocn2x_atmx, 103, field="So_t:So_s:So_u", ierr=ierr)
+            call mapper_comp_comm(metaData%mapper_Smatocn2atm, ocn2x_ocnx, ocn2x_atmx, 103, field="So_t:So_s:So_u", ierr=ierr)
         end if
     end if
 
 
             if(ocn_run)then
         if(my_proc%iamin_modelocn2cpl)then
-            call mapper_comp_comm(my_proc%mapper_Smatatm2ocn, atm2x_atmx, atm2x_ocnx, 103, field="Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem", ierr=ierr)
+            call mapper_comp_comm(metaData%mapper_Smatatm2ocn, atm2x_atmx, atm2x_ocnx, 103, field="Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem", ierr=ierr)
         end if
     end if
 
