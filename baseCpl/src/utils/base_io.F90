@@ -5,6 +5,7 @@ use pio
 use time_type
 
     implicit none
+    public :: base_io_init
     public :: base_io_wopen
     public :: base_io_close
     public :: base_io_read
@@ -19,14 +20,15 @@ use time_type
 
     interface base_io_write
         module procedure base_io_write_av
-        module procedure base_io_write_avs
+        !module procedure base_io_write_avs
         module procedure base_io_write_int
         module procedure base_io_write_r8
     end interface
 
     ! local data
     character(*),  parameter       :: prefix = "base_io_"
-    character(*),  parameter       :: wfilename = ''
+    character(len=128)             :: wfilename = ''
+    integer,       parameter       :: PIO_OffSet = 8
     type(file_desc_t), save        :: cpl_io_file
     integer                        :: cpl_pio_iotype
     type(iosystem_desc_t), pointer :: cpl_io_subsystem
@@ -38,6 +40,11 @@ use time_type
     integer            :: io_comm
 
 contains
+
+subroutine base_io_init()
+
+
+end subroutine base_io_init
 
 subroutine base_io_wopen(my_proc, filename, clobber, cdf64)
 
@@ -196,7 +203,7 @@ subroutine base_io_read_av(filename, comp_gsmap, AV, dname, pre)
     if(exists)then
         rcode= pio_openfile(cpl_io_subsystem, pioid,cpl_pio_iotype, trim(filename), pio_nowrite)
         if(iam==0) write(logUnit, *) subname, 'open file', trim(filename)
-        call pio_seterrorhandling(pioid, PID_BCAST_ERROR)
+        call pio_seterrorhandling(pioid, PIO_BCAST_ERROR)
     else
         if(iam==0) write(logUnit, *) subname, 'ERROR: file invalid',trim(filename),'', trim(dname)
         call base_sys_abort("ERROR: file invalid")
@@ -343,7 +350,7 @@ subroutine base_io_read_r81d(filename, rdata, dname)
     character(len=64) :: name1
     character(*), parameter :: subName = '(base_io_read_r81d)'
 
-   call procMeta_getInfo(metaData%my_proc, rank=iam, comm=mpicom)
+   call procMeta_getInfo(metaData%my_proc, metaData%cplid, rank=iam, comm=mpicom)
     lversion = trim(version0)
    
     if(iam==0)inquire(file=trim(filename), exist=exists)
@@ -444,7 +451,7 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
     integer, pointer :: dimid(:)
     type(var_desc_t) :: varid
     type(io_desc_t) :: iodesc
-    integer(PIO_OFFSET) :: frame
+    integer(PIO_OffSet) :: frame
     type(string) :: mstring  !!!!!
     character(len=64) :: itemc
     character(len=64) :: name1
@@ -528,8 +535,8 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
             call string_clean(mstring)
             name1 = trim(lpre)//'_'//trim(itemc)
             rcode = pio_inq_varid(cpl_io_file, trim(name1), varid)
-            call pio_setframe(varid, frame)
-            call pio_write_adarray(cpl_io_file, varid, iodesc, av%rattr(k:), rcode, fillval=lfillvalue)
+            !call pio_setframe(varid, frame)
+            call pio_write_darray(cpl_io_file, varid, iodesc, av%rattr(k,:), rcode, fillval=lfillvalue)
         end do
 
         call pio_freedecomp(cpl_io_file, iodesc)
