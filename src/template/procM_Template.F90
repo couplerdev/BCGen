@@ -1,7 +1,7 @@
 module procM
 
 use mct_mod
-use comms_def, only: mct_mod
+use comms_def, only: map_mod
 use proc_def, only: procMeta, compMeta
 use global_var
 use field_def
@@ -22,11 +22,13 @@ contains
 subroutine init(metaData)
     
     implicit none 
-    type(Meta),      intent(inout) :: metaData
+    type(Meta), intent(inout), target :: metaData
     integer :: ierr    
     integer :: num_rank
     integer :: num_size 
     integer :: iter
+    integer, dimension(:), pointer :: mycomms
+    integer, dimension(:), pointer :: myids
 
     #set $ncomps = len($proc_cfgs)
     metaData%num_models = $ncomps
@@ -88,7 +90,10 @@ subroutine init(metaData)
         metaData%comp_id(iter) = iter
     end do
 
-    call mct_world_init(metaData%ncomps, MPI_COMM_WORLD, metaData%comp_comm, metaData%comp_id)
+    mycomms => metaData%comp_comm
+    myids => metaData%comp_id
+
+    call mct_world_init(metaData%ncomps, MPI_COMM_WORLD, mycomms, myids)
 
     write(*,*)'mct_world_init initiated'
     if(num_rank==0) then
@@ -160,7 +165,7 @@ subroutine clean(metaData)
     type(Meta), intent(inout) :: metaData
     integer :: ierr
 
-    call procMeta_Final(metaData%proc, ierr)
+    call procMeta_Final(metaData%my_proc, ierr)
     #for $model in $proc_cfgs
          #set $name = $model.name
     call compMeta_Final(metaData%${name}, ierr)

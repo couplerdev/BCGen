@@ -38,7 +38,7 @@ use field
        !-------------------------------------------
        integer, allocatable  :: comp_comm(:)
        integer, allocatable  :: comp_id(:)
-       integer, allocatable  :: imain_model(:)
+       logical, allocatable  :: iamin_model(:)
 
        !------------------------------------------
        !   intermediate vars
@@ -65,6 +65,7 @@ use field
        #for $model in $proc_cfgs
             #set $name = $model.name
        integer    :: mpi_model${name}
+       integer    :: mpi_model${name}2cpl
        #end for
        
        logical    :: iam_root
@@ -95,7 +96,7 @@ use field
 
    end type Meta
     
-   type(Meta)          :: metaData
+   type(Meta), target  :: metaData
    integer, parameter  :: gloid = 1
    integer, parameter  :: cplid = 2
    #for $index, $model in enumerate($proc_cfgs)
