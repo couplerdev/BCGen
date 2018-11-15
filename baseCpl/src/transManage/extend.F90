@@ -4,10 +4,12 @@ module extend
 ! comm set, they should extend themselves.
 !--------------------------------------------------------- 
 use mct_mod
+use mpi
 use proc_def
 use global_var
+
     implicit none
-    include 'mpif.h'    
+    !include 'mpif.h'    
     include 'netcdf.inc'
     public :: gsmap_init_ext
     public :: gsmap_extend

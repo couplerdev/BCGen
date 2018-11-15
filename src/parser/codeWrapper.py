@@ -23,7 +23,7 @@ class CodeWrapper:
     def getStr(self):
         string = ""
         string+=self.intent+"if("+self.model+"_run)then\n"
-        string+=2*self.intent+"if(my_proc%iamin_model"+self.model_cpl+")then\n"
+        string+=2*self.intent+"if(metaData%iamin_model"+self.model_cpl+")then\n"
         for sub in self.subroutine:
             string+=3*self.intent+"call "+sub+"\n"
         string+=2*self.intent+"end if\n"

@@ -123,13 +123,14 @@ subroutine procMeta_addToModel(proc, ID, comm, modelName, ierr)
 
 end subroutine procMeta_addToModel
 
-subroutine procMeta_getInfo(proc, ID, comm, rank, modelName, ierr)
+subroutine procMeta_getInfo(proc, ID, comm, rank, iamroot, modelName, ierr)
 
     implicit none
     type(procMeta),         intent(in)    :: proc
     integer,                intent(in)    :: ID
     integer,   optional,    intent(inout) :: comm
     integer,   optional,    intent(inout) :: rank
+    logical,   optional,    intent(inout) :: iamroot
     character(*), optional, intent(inout) :: modelName
     integer,   optional,    intent(inout) :: ierr
 
@@ -148,6 +149,12 @@ subroutine procMeta_getInfo(proc, ID, comm, rank, modelName, ierr)
     end if
     if(present(rank))then
         rank = proc%ranks(idx)
+    end if
+    if(present(iamroot))then
+        iamroot = .false.
+        if(proc%ranks(idx)==0)then
+           iamroot = .true.
+        end if
     end if
     if(present(modelName))then
         modelName = proc%models(idx)

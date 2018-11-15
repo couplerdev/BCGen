@@ -394,7 +394,7 @@ class ModelParser:
     def __setSubroutine(self):    # must be the last to be set
         root =self.__root.find("method")
         grid = self.__name
-        args = ["my_proc%model_"+grid, "EClock",self.__model.attrVects["x2c_cc"].name, \
+        args = ["metaData%"+grid, "EClock_"+grid,self.__model.attrVects["x2c_cc"].name, \
               self.__model.attrVects["c2x_cc"].name, "ierr=ierr"]
 
         subroutine = SubroutineParser()
@@ -402,7 +402,7 @@ class ModelParser:
         self.__model.model_init = subroutine.subroutine
         self.__model.model_init.argList = args
 
-        args = ["my_proc%model_"+grid ,"EClock", self.__model.attrVects["x2c_cc"].name, \
+        args = ["metaData%"+grid ,"EClock_"+grid, self.__model.attrVects["x2c_cc"].name, \
 		self.__model.attrVects["c2x_cc"].name, "ierr=ierr"]
         subroutine = SubroutineParser()
         subroutine.setRoot(root.find("run"))
@@ -424,8 +424,8 @@ class ModelParser:
         ### implementation detemine subroutine generating
         ###1 for x2a_ax to x2a_aa: this are all standard subroutine mapper_comp_comm, mappers \
         ###  are rearranger
-        mapper_name = "mapper_comp_name"
-        msg_tag = "msg_tag"
+        mapper_name = "mapper_comp_map"
+        msg_tag = "msgtag=103"  # need modi
         ierr = "ierr=ierr"
         argList = ["metaData%"+self.srcMapper.name, self.__model.attrVects["x2c_cx"].name, \
                self.__model.attrVects["x2c_cc"].name, msg_tag, ierr]
@@ -598,7 +598,8 @@ class CouplerParser: ###!!!!
                             mapper.method.setInit(mapperName, argList)
                         elif phaseIdx == 1:
                             field_arg = "field=\""+field+"\""
-                            argList = [prefix+mapperName, srcAttrVect.name, attrVect.name, tags, field_arg, "ierr=ierr"]
+                            msg = "msgtag="+str(tags)
+                            argList = [prefix+mapperName, srcAttrVect.name, attrVect.name, msg, field_arg, "ierr=ierr"]
                             tags+= 1
                             mapper.method.setRun(mapperName, argList)
                             string = toString(methodName, argList)
@@ -647,7 +648,7 @@ class CouplerParser: ###!!!!
                 outArg = mrg.find("out_args")
                 for arg in outArg:
                      out_args.append(arg.text)
-            args = ["my_proc"]
+            args = ["metaData"]
             for arg in in_args:
                  args.append(arg)
             for arg in out_args:
