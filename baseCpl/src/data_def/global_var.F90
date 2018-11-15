@@ -1,8 +1,9 @@
 module global_var
-
+use proc_def
+use field
    implicit none
    type Meta
-       type(field)       :: Fields
+       type(fldsMeta)    :: fldsMetaData
        type(procMeta)    :: my_proc
        type(confMeta)    :: conf
        type(compMeta)    :: atm
@@ -29,9 +30,9 @@ module global_var
        !-------------------------------------------
        ! used for mct_init
        !-------------------------------------------
-       integer, dimension(:)  :: comp_comm
-       integer, dimension(:)  :: comp_id
-       integer, dimension(:)  :: imain_model
+       integer, allocatable  :: comp_comm(:)
+       integer, allocatable  :: comp_id(:)
+       logical, allocatable  :: iamin_model(:)
 
        !------------------------------------------
        !   intermediate vars
@@ -74,20 +75,35 @@ module global_var
        logical    :: iamroot_modelocn2cpl
        logical    :: ocn_run
 
-       type(map_mod)   ::atm
-       type(map_mod)   ::ocn
+       !type(map_mod)   ::atm
+       !type(map_mod)   ::ocn
        
        type(map_mod)   :: mapper_Smatatm2ocn
        type(map_mod)   :: mapper_Smatocn2atm
 
+       character(FIELDSLEN) :: flds_dom 
+       character(FIELDSLEN) :: flds_x2ocn_fluxes 
+       character(FIELDSLEN) :: flds_ocn2x_states 
+       character(FIELDSLEN) :: flds_atm2x_fluxes 
+       character(FIELDSLEN) :: flds_x2ocn 
+       character(FIELDSLEN) :: flds_x2atm 
+       character(FIELDSLEN) :: flds_dom_coord 
+       character(FIELDSLEN) :: flds_x2atm_states 
+       character(FIELDSLEN) :: flds_x2ocn_states 
+       character(FIELDSLEN) :: flds_x2atm_fluxes 
+       character(FIELDSLEN) :: flds_atm2x 
+       character(FIELDSLEN) :: flds_ocn2x 
+       character(FIELDSLEN) :: flds_atm2x_states 
+       character(FIELDSLEN) :: flds_ocn2x_fluxes 
+
    end type Meta
     
    type(Meta)          :: metaData
-   integer, parameter  :: gloid
-   integer, parameter  :: cplid
-   integer, parameter  :: atmid
-   integer, parameter  :: atm2xid
-   integer, parameter  :: ocnid
-   integer, parameter  :: ocn2xid
+   integer, parameter  :: gloid = 1
+   integer, parameter  :: cplid = 2
+   integer, parameter  :: atmid = 3
+   integer, parameter  :: atm2xid = 4
+   integer, parameter  :: ocnid = 5
+   integer, parameter  :: ocn2xid = 6
 
 end module global_var

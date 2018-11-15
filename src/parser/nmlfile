@@ -1,0 +1,18 @@
+&time_args
+end_restart = .false.
+history_option = ''never''
+history_ymd = -999
+start_tod = 0
+histavg_option = ''never''
+histavg_ymd = -999
+restart_option = 'ndays'
+stop_option = ''ndays''
+history_n = -999
+atm_cpl_dt = 1800
+ocn_cpl_dt = 86400
+histavg_n = -999
+stop_ymd = 00010101
+calendar = 'NO_LEAP'
+start_ymd = 00010101
+restart_ymd = -999
+/

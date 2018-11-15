@@ -1,6 +1,6 @@
 module logUtil
 
     implicit none
-    integer :: logUnit = 6
+    integer, parameter :: logUnit = 6
 
 end module logUtil

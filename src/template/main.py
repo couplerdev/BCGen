@@ -82,6 +82,8 @@ if __name__ == "__main__":
     parser = Parser()
     parser.parse()
     proc_cfgs = [ parser.models[m] for m in parser.models]
+    field_cfgs = [ parser.fldMetaDict[m] for m in parser.fldMetaDict]
+    fieldVar_cfgs = parser.fldDict
     for m in parser.models:
         print parser.models[m].model_init.toString()
     merge_subroutines = [ parser.subroutine[m] for m in parser.subroutine]
@@ -100,22 +102,22 @@ if __name__ == "__main__":
 
     deployTmp = TempConfig("deploymod_Template.F90", "deploy_mod.F90",\
                           {'proc_cfgs':proc_cfgs, "deploy_cfgs":deploy_cfgs}) 
-
-    procdefTmp = TempConfig("procDef_Template.F90", "proc_def.F90",\
-                          {"proc_cfgs":proc_cfgs, "merge_cfgs": merge_cfgs})
-
+     
+    timeDefTmp = TempConfig("timeDef_Template.F90","time_def.F90",{"proc_cfgs":proc_cfgs})
+   
     timeCesmTmp = TempConfig("timeCesm_Template.F90", "timeCesm.F90",{"proc_cfgs":proc_cfgs})
  
     globalTmp = TempConfig("globalVar_Template.F90", "global_var.F90", {"proc_cfgs":proc_cfgs, \
-                                                                        "merge_cfgs":merge_cfgs}) 
+                                                                        "merge_cfgs":merge_cfgs, \
+                                                                        "fieldVar_cfgs":fieldVar_cfgs}) 
 
-    timeDefTmp = TempConfig("timeDef_Template.F90", "time_def.F90",{"proc_cfgs":proc_cfgs})
-
+    fieldTmp = TempConfig("baseField_Template.F90","base_field.F90", {"field_cfgs":field_cfgs, \
+                                                                      "fieldVar_cfgs":fieldVar_cfgs})
     baseCplTmp = TempConfig("baseCpl_Template.F90","baseCpl.F90",\
                            {'proc_cfgs':proc_cfgs, 'merge_subroutines':merge_subroutines,\
                             'merge_cfgs':merge_cfgs, 'model_cfgs':model_cfgs,\
                             'subrt_cfgs':subrt_cfgs, 'fraction_cfgs':fraction_cfgs})
-    confList = [searchTmp, manageTmp, deployTmp, procdefTmp, baseCplTmp, globalTmp, timeDefTmp, timeCesmTmp]
+    confList = [searchTmp, manageTmp, deployTmp, baseCplTmp, globalTmp, timeDefTmp, timeCesmTmp, fieldTmp]
 
     codeGen = CodeMapper(confList)
     codeGen.genCode()

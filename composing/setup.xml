@@ -2,46 +2,11 @@
 	<model>
 		<name>atm</name>
 		<input>
-			<src name='lnd'>
-				<field>Sl_tref:Sl_qref:Sl_t</field>
-				<file>idmap</file>
-			</src>
 			<src name='ocn'>
 				<field>So_t:So_s:So_u</field>
 				<file>map_fv4x5_to_gx3v7_aave_da_091218.nc</file>
-			</src>
-			<src name='ice'>
-				<field>Si_avsdr:Si_anidr:Si_anidf</field>
-				<file>map_gx3v7_to_fv4x5_aave_da_091218.nc</file>
-			</src>
-		</input>
-	</model>
-	<model>
-		<name>ice</name>
-		<input>
-			<src name='atm'>
-				<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>
-				<file>map_fv4x5_to_gx3v7_aave_da_091218.nc</file>
-			</src>
-		</input>
-	</model>
-	<model>
-		<name>rof</name>
-		<input>
-		</input>
-	</model>
-	<model>
-		<name>lnd</name>
-		<input>
-			<src name='atm'>
-				<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>
-				<file>idmap</file>
-			</src>
-			<src name='rof'>
-				<field>Slrr_volr</field>
-				<file>map_4x5_nomask_to_0.5x0.5_nomask_aave_da_c110822.nc</file>
-			</src>
-		</input>
+			</src>	
+               </input>
 	</model>
 	<model>
 		<name>ocn</name>
@@ -49,31 +14,6 @@
 			<src name='atm'>
 				<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>
 				<file>map_fv4x5_to_gx3v7_bilin_da_091218.nc</file>
-			</src>
-			<src name='wav'>
-				<field>Sw_hstokes:Sw_lamult</field>
-				<file>idmap</file>
-			</src>
-		</input>
-	</model>
-	<model>
-		<name>glc</name>
-		<input></input>
-	</model>
-	<model>
-		<name>wav</name>
-		<input>
-			<src name='atm'>
-				<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>
-				<file>idmap</file>
-			</src>
-			<src name='ocn'>
-				<field>So_t:So_s:So_u</field>
-				<file>idmap</file>
-			</src>
-			<src name='ice'>
-				<field>Si_avsdr:Si_anidr:Si_anidf</field>
-				<file>idmap</file>
 			</src>
 		</input>
 	</model>

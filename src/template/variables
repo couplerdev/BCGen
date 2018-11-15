@@ -1,0 +1,205 @@
+seq_flds_dom_coord =  ['lat', 'lon']
+seq_flds_a2x_states=  ['Sa_z', 'Sa_u', 'Sa_v', 'Sa_tbot', 'Sa_ptem', 'Sa_shum', 'Sa_pbot', 'Sa_dens', 'Sa_pslv']
+seq_flds_a2x_fluxes=  ['Faxa_rainc', 'Faxa_rainl', 'Faxa_snowc', 'Faxa_snowl', 'Faxa_lwdn', 'Faxa_swndr', 'Faxa_swvdr', 'Faxa_swndf', 'Faxa_swvdf', 'Faxa_swnet', 'Faxa_bcphidry', 'Faxa_bcphodry', 'Faxa_bcphiwet', 'Faxa_ocphidry', 'Faxa_ocphodry', 'Faxa_ocphiwet', 'Faxa_dstwet1', 'Faxa_dstwet2', 'Faxa_dstwet3', 'Faxa_dstwet4', 'Faxa_dstdry1', 'Faxa_dstdry2', 'Faxa_dstdry3', 'Faxa_dstdry4']
+seq_flds_x2a_states=  ['Sf_lfrac', 'Sf_ifrac', 'Sf_ofrac', 'Sx_avsdr', 'Sx_anidr', 'Sx_avsdf', 'Sx_anidf', 'Sx_tref', 'Sx_qref', 'So_t', 'Sx_t', 'Sl_fv', 'Sl_ram1', 'Sl_snowh', 'Si_snowh', 'So_ssq', 'So_re', 'Sx_u10', 'So_ustar']
+seq_flds_x2a_fluxes=  ['Faxx_taux', 'Faxx_tauy', 'Faxx_lat', 'Faxx_sen', 'Faxx_lwup', 'Faxx_evap', 'Fall_flxdst1', 'Fall_flxdst2', 'Fall_flxdst3', 'Fall_flxdst4']
+seq_flds_l2x_states=  ['Sl_avsdr', 'Sl_anidr', 'Sl_avsdf', 'Sl_anidf', 'Sl_tref', 'Sl_qref', 'Sl_t', 'Sl_fv', 'Sl_ram1', 'Sl_snowh', 'Sl_u10']
+seq_flds_l2x_fluxes=  ['Fall_swnet', 'Fall_taux', 'Fall_tauy', 'Fall_lat', 'Fall_sen', 'Fall_lwup', 'Fall_evap', 'Fall_flxdst1', 'Fall_flxdst2', 'Fall_flxdst3', 'Fall_flxdst4', 'Flrl_rofliq', 'Flrl_rofice']
+seq_flds_x2l_states=  ['Sa_z', 'Sa_u', 'Sa_v', 'Sa_tbot', 'Sa_ptem', 'Sa_shum', 'Sa_pbot', 'Slrr_volr']
+seq_flds_x2l_fluxes=  ['Faxa_rainc', 'Faxa_rainl', 'Faxa_snowc', 'Faxa_snowl', 'Faxa_lwdn', 'Faxa_swndr', 'Faxa_swvdr', 'Faxa_swndf', 'Faxa_swvdf', 'Faxa_bcphidry', 'Faxa_bcphodry', 'Faxa_bcphiwet', 'Faxa_ocphidry', 'Faxa_ocphodry', 'Faxa_ocphiwet', 'Faxa_dstwet1', 'Faxa_dstwet2', 'Faxa_dstwet3', 'Faxa_dstwet4', 'Faxa_dstdry1', 'Faxa_dstdry2', 'Faxa_dstdry3', 'Faxa_dstdry4', 'Flrr_flood']
+seq_flds_i2x_states=  ['Si_avsdr', 'Si_anidr', 'Si_avsdf', 'Si_anidf', 'Si_tref', 'Si_qref', 'Si_t', 'Si_snowh', 'Si_u10', 'Si_ifrac']
+seq_flds_i2x_fluxes=  ['Faii_swnet', 'Fioi_swpen', 'Faii_taux', 'Fioi_taux', 'Faii_tauy', 'Fioi_tauy', 'Faii_lat', 'Faii_sen', 'Faii_lwup', 'Faii_evap', 'Fioi_melth', 'Fioi_meltw', 'Fioi_salt']
+seq_flds_x2i_states=  ['Sa_z', 'Sa_u', 'Sa_v', 'Sa_tbot', 'Sa_ptem', 'Sa_shum', 'Sa_pbot', 'Sa_dens', 'So_t', 'So_s', 'So_u', 'So_v', 'So_dhdx', 'So_dhdy']
+seq_flds_x2i_fluxes=  ['Faxa_rain', 'Faxa_snow', 'Faxa_lwdn', 'Faxa_swndr', 'Faxa_swvdr', 'Faxa_swndf', 'Faxa_swvdf', 'Faxa_bcphidry', 'Faxa_bcphodry', 'Faxa_bcphiwet', 'Faxa_ocphidry', 'Faxa_ocphodry', 'Faxa_ocphiwet', 'Faxa_dstwet1', 'Faxa_dstwet2', 'Faxa_dstwet3', 'Faxa_dstwet4', 'Faxa_dstdry1', 'Faxa_dstdry2', 'Faxa_dstdry3', 'Faxa_dstdry4', 'Fioo_q']
+seq_flds_o2x_states=  ['So_t', 'So_s', 'So_u', 'So_v', 'So_dhdx', 'So_dhdy', 'So_bldepth']
+seq_flds_o2x_fluxes=  ['Fioo_q']
+seq_flds_x2o_states=  ['Sa_pslv', 'So_duu10n', 'Si_ifrac', 'Sw_lamult', 'Sw_ustokes', 'Sw_vstokes', 'Sw_hstokes']
+seq_flds_x2o_fluxes=  ['Faxa_rain', 'Faxa_snow', 'Faxa_prec', 'Faxa_lwdn', 'Foxx_swnet', 'Faxa_bcphidry', 'Faxa_bcphodry', 'Faxa_bcphiwet', 'Faxa_ocphidry', 'Faxa_ocphodry', 'Faxa_ocphiwet', 'Faxa_dstwet1', 'Faxa_dstwet2', 'Faxa_dstwet3', 'Faxa_dstwet4', 'Faxa_dstdry1', 'Faxa_dstdry2', 'Faxa_dstdry3', 'Faxa_dstdry4', 'Foxx_taux', 'Foxx_tauy', 'Foxx_lat', 'Foxx_sen', 'Foxx_lwup', 'Foxx_evap', 'Fioi_melth', 'Fioi_meltw', 'Fioi_salt', 'Forr_roff', 'Forr_ioff']
+seq_flds_s2x_states=  ['Ss_tsrf', 'Ss_topo']
+seq_flds_s2x_fluxes=  ['Fgss_qice']
+seq_flds_x2s_states=  ['Sg_frac', 'Sg_topo']
+seq_flds_x2s_fluxes=  ['Fsgg_rofi', 'Fsgg_rofl', 'Fsgg_hflx']
+seq_flds_g2x_states=  ['Sg_frac', 'Sg_topo']
+seq_flds_g2x_fluxes=  ['Fsgg_rofi', 'Fsgg_rofl', 'Fsgg_hflx']
+seq_flds_x2g_states=  ['Ss_tsrf', 'Ss_topo']
+seq_flds_x2g_fluxes=  ['Fgss_qice']
+seq_flds_xao_states=  ['So_tref', 'So_qref', 'So_ssq', 'So_re', 'So_u10', 'So_duu10n', 'So_ustar']
+seq_flds_xao_albedo=  ['So_avsdr', 'So_anidr', 'So_avsdf', 'So_anidf']
+seq_flds_r2x_states=  ['Slrr_volr']
+seq_flds_r2x_fluxes=  ['Forr_roff', 'Forr_ioff', 'Flrr_flood']
+seq_flds_x2r_states=  []
+seq_flds_x2r_fluxes=  ['Flrl_rofliq', 'Flrl_rofice']
+seq_flds_w2x_states=  ['Sw_lamult', 'Sw_ustokes', 'Sw_vstokes', 'Sw_hstokes']
+seq_flds_w2x_fluxes=  []
+seq_flds_x2w_states=  ['Sa_u', 'Sa_v', 'Sa_tbot', 'Si_ifrac', 'So_t', 'So_u', 'So_v', 'So_bldepth']
+seq_flds_x2w_fluxes=  []
+seq_flds_dom_fields= ['lat', 'lon', 'area', 'aream', 'mask', 'frac']
+seq_flds_a2x_fields= ['Sa_z', 'Sa_u', 'Sa_v', 'Sa_tbot', 'Sa_ptem', 'Sa_shum', 'Sa_pbot', 'Sa_dens', 'Sa_pslv', 'Faxa_rainc', 'Faxa_rainl', 'Faxa_snowc', 'Faxa_snowl', 'Faxa_lwdn', 'Faxa_swndr', 'Faxa_swvdr', 'Faxa_swndf', 'Faxa_swvdf', 'Faxa_swnet', 'Faxa_bcphidry', 'Faxa_bcphodry', 'Faxa_bcphiwet', 'Faxa_ocphidry', 'Faxa_ocphodry', 'Faxa_ocphiwet', 'Faxa_dstwet1', 'Faxa_dstwet2', 'Faxa_dstwet3', 'Faxa_dstwet4', 'Faxa_dstdry1', 'Faxa_dstdry2', 'Faxa_dstdry3', 'Faxa_dstdry4']
+seq_flds_x2a_fields= ['Sf_lfrac', 'Sf_ifrac', 'Sf_ofrac', 'Sx_avsdr', 'Sx_anidr', 'Sx_avsdf', 'Sx_anidf', 'Sx_tref', 'Sx_qref', 'So_t', 'Sx_t', 'Sl_fv', 'Sl_ram1', 'Sl_snowh', 'Si_snowh', 'So_ssq', 'So_re', 'Sx_u10', 'So_ustar', 'Faxx_taux', 'Faxx_tauy', 'Faxx_lat', 'Faxx_sen', 'Faxx_lwup', 'Faxx_evap', 'Fall_flxdst1', 'Fall_flxdst2', 'Fall_flxdst3', 'Fall_flxdst4']
+seq_flds_i2x_fields= ['Si_avsdr', 'Si_anidr', 'Si_avsdf', 'Si_anidf', 'Si_tref', 'Si_qref', 'Si_t', 'Si_snowh', 'Si_u10', 'Si_ifrac', 'Faii_swnet', 'Fioi_swpen', 'Faii_taux', 'Fioi_taux', 'Faii_tauy', 'Fioi_tauy', 'Faii_lat', 'Faii_sen', 'Faii_lwup', 'Faii_evap', 'Fioi_melth', 'Fioi_meltw', 'Fioi_salt']
+seq_flds_x2i_fields= ['Sa_z', 'Sa_u', 'Sa_v', 'Sa_tbot', 'Sa_ptem', 'Sa_shum', 'Sa_pbot', 'Sa_dens', 'So_t', 'So_s', 'So_u', 'So_v', 'So_dhdx', 'So_dhdy', 'Faxa_rain', 'Faxa_snow', 'Faxa_lwdn', 'Faxa_swndr', 'Faxa_swvdr', 'Faxa_swndf', 'Faxa_swvdf', 'Faxa_bcphidry', 'Faxa_bcphodry', 'Faxa_bcphiwet', 'Faxa_ocphidry', 'Faxa_ocphodry', 'Faxa_ocphiwet', 'Faxa_dstwet1', 'Faxa_dstwet2', 'Faxa_dstwet3', 'Faxa_dstwet4', 'Faxa_dstdry1', 'Faxa_dstdry2', 'Faxa_dstdry3', 'Faxa_dstdry4', 'Fioo_q']
+seq_flds_l2x_fields= ['Sl_avsdr', 'Sl_anidr', 'Sl_avsdf', 'Sl_anidf', 'Sl_tref', 'Sl_qref', 'Sl_t', 'Sl_fv', 'Sl_ram1', 'Sl_snowh', 'Sl_u10', 'Fall_swnet', 'Fall_taux', 'Fall_tauy', 'Fall_lat', 'Fall_sen', 'Fall_lwup', 'Fall_evap', 'Fall_flxdst1', 'Fall_flxdst2', 'Fall_flxdst3', 'Fall_flxdst4', 'Flrl_rofliq', 'Flrl_rofice']
+seq_flds_x2l_fields= ['Sa_z', 'Sa_u', 'Sa_v', 'Sa_tbot', 'Sa_ptem', 'Sa_shum', 'Sa_pbot', 'Slrr_volr', 'Faxa_rainc', 'Faxa_rainl', 'Faxa_snowc', 'Faxa_snowl', 'Faxa_lwdn', 'Faxa_swndr', 'Faxa_swvdr', 'Faxa_swndf', 'Faxa_swvdf', 'Faxa_bcphidry', 'Faxa_bcphodry', 'Faxa_bcphiwet', 'Faxa_ocphidry', 'Faxa_ocphodry', 'Faxa_ocphiwet', 'Faxa_dstwet1', 'Faxa_dstwet2', 'Faxa_dstwet3', 'Faxa_dstwet4', 'Faxa_dstdry1', 'Faxa_dstdry2', 'Faxa_dstdry3', 'Faxa_dstdry4', 'Flrr_flood']
+seq_flds_o2x_fields= ['So_t', 'So_s', 'So_u', 'So_v', 'So_dhdx', 'So_dhdy', 'So_bldepth', 'Fioo_q']
+seq_flds_x2o_fields= ['Sa_pslv', 'So_duu10n', 'Si_ifrac', 'Sw_lamult', 'Sw_ustokes', 'Sw_vstokes', 'Sw_hstokes', 'Faxa_rain', 'Faxa_snow', 'Faxa_prec', 'Faxa_lwdn', 'Foxx_swnet', 'Faxa_bcphidry', 'Faxa_bcphodry', 'Faxa_bcphiwet', 'Faxa_ocphidry', 'Faxa_ocphodry', 'Faxa_ocphiwet', 'Faxa_dstwet1', 'Faxa_dstwet2', 'Faxa_dstwet3', 'Faxa_dstwet4', 'Faxa_dstdry1', 'Faxa_dstdry2', 'Faxa_dstdry3', 'Faxa_dstdry4', 'Foxx_taux', 'Foxx_tauy', 'Foxx_lat', 'Foxx_sen', 'Foxx_lwup', 'Foxx_evap', 'Fioi_melth', 'Fioi_meltw', 'Fioi_salt', 'Forr_roff', 'Forr_ioff']
+seq_flds_g2x_fields= ['Sg_frac', 'Sg_topo', 'Fsgg_rofi', 'Fsgg_rofl', 'Fsgg_hflx']
+seq_flds_x2g_fields= ['Ss_tsrf', 'Ss_topo', 'Fgss_qice']
+seq_flds_s2x_fields= ['Ss_tsrf', 'Ss_topo', 'Fgss_qice']
+seq_flds_x2s_fields= ['Sg_frac', 'Sg_topo', 'Fsgg_rofi', 'Fsgg_rofl', 'Fsgg_hflx']
+seq_flds_xao_fields= ['So_avsdr', 'So_anidr', 'So_avsdf', 'So_anidf', 'So_tref', 'So_qref', 'So_ssq', 'So_re', 'So_u10', 'So_duu10n', 'So_ustar', 'Faox_taux', 'Faox_tauy', 'Faox_lat', 'Faox_sen', 'Faox_lwup', 'Faox_evap']
+seq_flds_r2x_fields= ['Slrr_volr', 'Forr_roff', 'Forr_ioff', 'Flrr_flood']
+seq_flds_x2r_fields= ['Flrl_rofliq', 'Flrl_rofice']
+seq_flds_w2x_fields= ['Sw_lamult', 'Sw_ustokes', 'Sw_vstokes', 'Sw_hstokes']
+seq_flds_x2w_fields= ['Sa_u', 'Sa_v', 'Sa_tbot', 'Si_ifrac', 'So_t', 'So_u', 'So_v', 'So_bldepth']
+
+
+
+{'attrname': 'lat', 'longname': '', 'stdname': 'latitude', 'units': 'degrees north'}
+{'attrname': 'lon', 'longname': '', 'stdname': 'longitude', 'units': 'degrees east'}
+{'attrname': 'area', 'longname': '', 'stdname': 'cell area', 'units': 'm^2'}
+{'attrname': 'aream', 'longname': '', 'stdname': 'cell area from mapping file', 'units': 'm^2'}
+{'attrname': 'mask', 'longname': '', 'stdname': 'mask', 'units': 'unitless'}
+{'attrname': 'frac', 'longname': 'area_fraction', 'stdname': 'area fraction', 'units': 'unitless'}
+{'attrname': 'Sa_z', 'longname': 'Height at the lowest model level', 'stdname': 'height', 'units': 'm'}
+{'attrname': 'Sa_u', 'longname': 'Zonal wind at the lowest model level', 'stdname': 'eastward_wind', 'units': 'm s-1'}
+{'attrname': 'Sa_v', 'longname': 'Meridional wind at the lowest model level', 'stdname': 'northward_wind', 'units': 'm s-1'}
+{'attrname': 'Sa_tbot', 'longname': 'Temperature at the lowest model level', 'stdname': 'air_temperature', 'units': 'K'}
+{'attrname': 'Sa_ptem', 'longname': 'Potential temperature at the lowest model level', 'stdname': 'air_potential_temperature', 'units': 'K'}
+{'attrname': 'Sa_shum', 'longname': 'Specific humidity at the lowest model level', 'stdname': 'specific_humidity', 'units': 'kg kg-1'}
+{'attrname': 'Sa_pbot', 'longname': 'Pressure at the lowest model level', 'stdname': 'air_pressure', 'units': 'Pa'}
+{'attrname': 'Sa_dens', 'longname': 'Density at the lowest model level', 'stdname': 'air_density', 'units': 'kg m-3'}
+{'attrname': 'Faxa_rainc', 'longname': 'Convective precipitation rate', 'stdname': 'convective_precipitation_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_rainl', 'longname': 'Large-scale (stable) precipitation rate', 'stdname': 'large_scale_precipitation_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_rain', 'longname': 'Water flux due to rain', 'stdname': 'rainfall_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_snowc', 'longname': 'Convective snow rate (water equivalent)', 'stdname': 'convective_snowfall_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_snowl', 'longname': 'Large-scale (stable) snow rate (water equivalent)', 'stdname': 'large_scale_snowfall_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_snow', 'longname': 'Water flux due to snow', 'stdname': 'surface_snow_melt_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_prec', 'longname': 'Water flux (rain+snow)', 'stdname': 'precipitation_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_lwdn', 'longname': 'Downward longwave heat flux', 'stdname': 'downwelling_longwave_flux', 'units': 'W m-2'}
+{'attrname': 'Faxa_swndr', 'longname': 'Direct near-infrared incident solar radiation', 'stdname': 'surface_downward_direct_shortwave_flux_due_to_near_infrared_radiation', 'units': 'W m-2'}
+{'attrname': 'Faxa_swvdr', 'longname': 'Direct visible incident solar radiation', 'stdname': 'surface_downward_direct_shortwave_flux_due_to_visible_radiation', 'units': 'W m-2'}
+{'attrname': 'Faxa_swndf', 'longname': 'Diffuse near-infrared incident solar radiation', 'stdname': 'surface_downward_diffuse_shortwave_flux_due_to_near_infrared_radiation', 'units': 'W m-2'}
+{'attrname': 'Faxa_swvdf', 'longname': 'Diffuse visible incident solar radiation', 'stdname': 'surface_downward_diffuse_shortwave_flux_due_to_visible_radiation', 'units': 'W m-2'}
+{'attrname': 'Faxa_swnet', 'longname': 'Net shortwave radiation', 'stdname': 'surface_net_shortwave_flux', 'units': 'W m-2'}
+{'attrname': 'Fall_swnet', 'longname': 'Net shortwave radiation', 'stdname': 'surface_net_shortwave_flux', 'units': 'W m-2'}
+{'attrname': 'Faii_swnet', 'longname': 'Net shortwave radiation', 'stdname': 'surface_net_shortwave_flux', 'units': 'W m-2'}
+{'attrname': 'Foxx_swnet', 'longname': 'Net shortwave radiation', 'stdname': 'surface_net_shortwave_flux', 'units': 'W m-2'}
+{'attrname': 'Fioi_swpen', 'longname': 'Net shortwave radiation penetrating into ice and ocean', 'stdname': 'net_downward_shortwave_flux_in_sea_ice_due_to_penetration', 'units': 'W m-2'}
+{'attrname': 'Faxa_bcphidry', 'longname': 'Hydrophylic black carbon dry deposition flux', 'stdname': 'dry_deposition_flux_of_hydrophylic_black_carbon', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_bcphodry', 'longname': 'Hydrophobic black carbon dry deposition flux', 'stdname': 'dry_deposition_flux_of_hydrophobic_black_carbon', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_bcphiwet', 'longname': 'Hydrophylic black carbon wet deposition flux', 'stdname': 'wet_deposition_flux_of_hydrophylic_black_carbon', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_ocphidry', 'longname': 'Hydrophylic organic carbon dry deposition flux', 'stdname': 'dry_deposition_flux_of_hydrophylic_organic_carbon', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_ocphodry', 'longname': 'Hydrophobic organic carbon dry deposition flux', 'stdname': 'dry_deposition_flux_of_hydrophobic_organic_carbon', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_ocphiwet', 'longname': 'Hydrophylic organic carbon wet deposition flux', 'stdname': 'wet_deposition_flux_of_hydrophylic_organic_carbon', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_dstwet1', 'longname': 'Dust wet deposition flux (size 1)', 'stdname': 'wet_deposition_flux_of_dust', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_dstwet2', 'longname': 'Dust wet deposition flux (size 2)', 'stdname': 'wet_deposition_flux_of_dust', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_dstwet3', 'longname': 'Dust wet deposition flux (size 3)', 'stdname': 'wet_deposition_flux_of_dust', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_dstwet4', 'longname': 'Dust wet deposition flux (size 4)', 'stdname': 'wet_deposition_flux_of_dust', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_dstdry1', 'longname': 'Dust dry deposition flux (size 1)', 'stdname': 'dry_deposition_flux_of_dust', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_dstdry2', 'longname': 'Dust dry deposition flux (size 2)', 'stdname': 'dry_deposition_flux_of_dust', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_dstdry3', 'longname': 'Dust dry deposition flux (size 3)', 'stdname': 'dry_deposition_flux_of_dust', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_dstdry4', 'longname': 'Dust dry deposition flux (size 4)', 'stdname': 'dry_deposition_flux_of_dust', 'units': 'kg m-2 s-1'}
+{'attrname': 'Sf_lfrac', 'longname': 'Surface land fraction', 'stdname': 'land_area_fraction', 'units': 'unitless'}
+{'attrname': 'Sf_ifrac', 'longname': 'Surface ice fraction', 'stdname': 'sea_ice_area_fraction', 'units': 'unitless'}
+{'attrname': 'Sf_ofrac', 'longname': 'Surface ocean fraction', 'stdname': 'sea_area_fraction', 'units': 'unitless'}
+{'attrname': 'Si_avsdr', 'longname': 'Direct albedo (visible radiation)', 'stdname': 'surface_direct_albedo_due_to_visible_radiation', 'units': 'unitless'}
+{'attrname': 'Sl_avsdr', 'longname': 'Direct albedo (visible radiation)', 'stdname': 'surface_direct_albedo_due_to_visible_radiation', 'units': 'unitless'}
+{'attrname': 'So_avsdr', 'longname': 'Direct albedo (visible radiation)', 'stdname': 'surface_direct_albedo_due_to_visible_radiation', 'units': 'unitless'}
+{'attrname': 'Sx_avsdr', 'longname': 'Direct albedo (visible radiation)', 'stdname': 'surface_direct_albedo_due_to_visible_radiation', 'units': 'unitless'}
+{'attrname': 'Si_anidr', 'longname': 'Direct albedo (near-infrared radiation)', 'stdname': 'surface_direct_albedo_due_to_near_infrared_radiation', 'units': 'unitless'}
+{'attrname': 'Sl_anidr', 'longname': 'Direct albedo (near-infrared radiation)', 'stdname': 'surface_direct_albedo_due_to_near_infrared_radiation', 'units': 'unitless'}
+{'attrname': 'So_anidr', 'longname': 'Direct albedo (near-infrared radiation)', 'stdname': 'surface_direct_albedo_due_to_near_infrared_radiation', 'units': 'unitless'}
+{'attrname': 'Sx_anidr', 'longname': 'Direct albedo (near-infrared radiation)', 'stdname': 'surface_direct_albedo_due_to_near_infrared_radiation', 'units': 'unitless'}
+{'attrname': 'Si_avsdf', 'longname': 'Diffuse albedo (visible radiation)', 'stdname': 'surface_diffuse_albedo_due_to_visible_radiation', 'units': 'unitless'}
+{'attrname': 'Sl_avsdf', 'longname': 'Diffuse albedo (visible radiation)', 'stdname': 'surface_diffuse_albedo_due_to_visible_radiation', 'units': 'unitless'}
+{'attrname': 'So_avsdf', 'longname': 'Diffuse albedo (visible radiation)', 'stdname': 'surface_diffuse_albedo_due_to_visible_radiation', 'units': 'unitless'}
+{'attrname': 'Sx_avsdf', 'longname': 'Diffuse albedo (visible radiation)', 'stdname': 'surface_diffuse_albedo_due_to_visible_radiation', 'units': 'unitless'}
+{'attrname': 'Si_anidf', 'longname': 'Diffuse albedo (near-infrared radiation)', 'stdname': 'surface_diffuse_albedo_due_to_near_infrared_radiation', 'units': 'unitless'}
+{'attrname': 'Sl_anidf', 'longname': 'Diffuse albedo (near-infrared radiation)', 'stdname': 'surface_diffuse_albedo_due_to_near_infrared_radiation', 'units': 'unitless'}
+{'attrname': 'So_anidf', 'longname': 'Diffuse albedo (near-infrared radiation)', 'stdname': 'surface_diffuse_albedo_due_to_near_infrared_radiation', 'units': 'unitless'}
+{'attrname': 'Sx_anidf', 'longname': 'Diffuse albedo (near-infrared radiation)', 'stdname': 'surface_diffuse_albedo_due_to_near_infrared_radiation', 'units': 'unitless'}
+{'attrname': 'Si_tref', 'longname': 'Reference temperature at 2 meters', 'stdname': 'air_temperature', 'units': 'K'}
+{'attrname': 'Sl_tref', 'longname': 'Reference temperature at 2 meters', 'stdname': 'air_temperature', 'units': 'K'}
+{'attrname': 'So_tref', 'longname': 'Reference temperature at 2 meters', 'stdname': 'air_temperature', 'units': 'K'}
+{'attrname': 'Sx_tref', 'longname': 'Reference temperature at 2 meters', 'stdname': 'air_temperature', 'units': 'K'}
+{'attrname': 'Si_qref', 'longname': 'Reference specific humidity at 2 meters', 'stdname': 'specific_humidity', 'units': 'kg kg-1'}
+{'attrname': 'Sl_qref', 'longname': 'Reference specific humidity at 2 meters', 'stdname': 'specific_humidity', 'units': 'kg kg-1'}
+{'attrname': 'So_qref', 'longname': 'Reference specific humidity at 2 meters', 'stdname': 'specific_humidity', 'units': 'kg kg-1'}
+{'attrname': 'Sx_qref', 'longname': 'Reference specific humidity at 2 meters', 'stdname': 'specific_humidity', 'units': 'kg kg-1'}
+{'attrname': 'Si_t', 'longname': 'Surface temperature', 'stdname': 'surface_temperature', 'units': 'K'}
+{'attrname': 'Sl_t', 'longname': 'Surface temperature', 'stdname': 'surface_temperature', 'units': 'K'}
+{'attrname': 'So_t', 'longname': 'Surface temperature', 'stdname': 'surface_temperature', 'units': 'K'}
+{'attrname': 'Sx_t', 'longname': 'Surface temperature', 'stdname': 'surface_temperature', 'units': 'K'}
+{'attrname': 'Sl_fv', 'longname': 'Surface fraction velocity in land', 'stdname': 'fraction_velocity', 'units': 'm s-1'}
+{'attrname': 'Sl_snowh', 'longname': 'Surface snow water equivalent', 'stdname': 'surface_snow_water_equivalent', 'units': 'm'}
+{'attrname': 'Si_snowh', 'longname': 'Surface snow depth', 'stdname': 'surface_snow_thickness', 'units': 'm'}
+{'attrname': 'So_ssq', 'longname': 'Surface saturation specific humidity in ocean', 'stdname': 'specific_humidity_at_saturation', 'units': 'kg kg-1'}
+{'attrname': 'So_re', 'longname': 'Square of exch. coeff (tracers)', 'stdname': '', 'units': ''}
+{'attrname': 'u10', 'longname': '10m wind', 'stdname': '10m_wind', 'units': 'm'}
+{'attrname': 'Fall_taux', 'longname': 'Zonal surface stress', 'stdname': 'surface_downward_eastward_stress', 'units': 'N m-2'}
+{'attrname': 'Faox_taux', 'longname': 'Zonal surface stress', 'stdname': 'surface_downward_eastward_stress', 'units': 'N m-2'}
+{'attrname': 'Faii_taux', 'longname': 'Zonal surface stress', 'stdname': 'surface_downward_eastward_stress', 'units': 'N m-2'}
+{'attrname': 'Fioi_taux', 'longname': 'Zonal surface stress', 'stdname': 'surface_downward_eastward_stress', 'units': 'N m-2'}
+{'attrname': 'Faxx_taux', 'longname': 'Zonal surface stress', 'stdname': 'surface_downward_eastward_stress', 'units': 'N m-2'}
+{'attrname': 'Foxx_taux', 'longname': 'Zonal surface stress', 'stdname': 'surface_downward_eastward_stress', 'units': 'N m-2'}
+{'attrname': 'Fall_tauy', 'longname': 'Meridional surface stress', 'stdname': 'surface_downward_northward_stress', 'units': 'N m-2'}
+{'attrname': 'Faox_tauy', 'longname': 'Meridional surface stress', 'stdname': 'surface_downward_northward_stress', 'units': 'N m-2'}
+{'attrname': 'Faii_tauy', 'longname': 'Meridional surface stress', 'stdname': 'surface_downward_northward_stress', 'units': 'N m-2'}
+{'attrname': 'Fioi_tauy', 'longname': 'Meridional surface stress', 'stdname': 'surface_downward_northward_stress', 'units': 'N m-2'}
+{'attrname': 'Faxx_tauy', 'longname': 'Meridional surface stress', 'stdname': 'surface_downward_northward_stress', 'units': 'N m-2'}
+{'attrname': 'Foxx_tauy', 'longname': 'Meridional surface stress', 'stdname': 'surface_downward_northward_stress', 'units': 'N m-2'}
+{'attrname': 'Fall_lat', 'longname': 'Surface latent heat flux', 'stdname': 'surface_upward_latent_heat_flux', 'units': 'W m-2'}
+{'attrname': 'Faox_lat', 'longname': 'Surface latent heat flux', 'stdname': 'surface_upward_latent_heat_flux', 'units': 'W m-2'}
+{'attrname': 'Faii_lat', 'longname': 'Surface latent heat flux', 'stdname': 'surface_upward_latent_heat_flux', 'units': 'W m-2'}
+{'attrname': 'Faxx_lat', 'longname': 'Surface latent heat flux', 'stdname': 'surface_upward_latent_heat_flux', 'units': 'W m-2'}
+{'attrname': 'Foxx_lat', 'longname': 'Surface latent heat flux', 'stdname': 'surface_upward_latent_heat_flux', 'units': 'W m-2'}
+{'attrname': 'Fall_sen', 'longname': 'Sensible heat flux', 'stdname': 'surface_upward_sensible_heat_flux', 'units': 'W m-2'}
+{'attrname': 'Faox_sen', 'longname': 'Sensible heat flux', 'stdname': 'surface_upward_sensible_heat_flux', 'units': 'W m-2'}
+{'attrname': 'Faii_sen', 'longname': 'Sensible heat flux', 'stdname': 'surface_upward_sensible_heat_flux', 'units': 'W m-2'}
+{'attrname': 'Faxx_sen', 'longname': 'Sensible heat flux', 'stdname': 'surface_upward_sensible_heat_flux', 'units': 'W m-2'}
+{'attrname': 'Foxx_sen', 'longname': 'Sensible heat flux', 'stdname': 'surface_upward_sensible_heat_flux', 'units': 'W m-2'}
+{'attrname': 'Fall_lwup', 'longname': 'Surface upward longwave heat flux', 'stdname': 'surface_net_upward_longwave_flux', 'units': 'W m-2'}
+{'attrname': 'Faox_lwup', 'longname': 'Surface upward longwave heat flux', 'stdname': 'surface_net_upward_longwave_flux', 'units': 'W m-2'}
+{'attrname': 'Faii_lwup', 'longname': 'Surface upward longwave heat flux', 'stdname': 'surface_net_upward_longwave_flux', 'units': 'W m-2'}
+{'attrname': 'Faxx_lwup', 'longname': 'Surface upward longwave heat flux', 'stdname': 'surface_net_upward_longwave_flux', 'units': 'W m-2'}
+{'attrname': 'Foxx_lwup', 'longname': 'Surface upward longwave heat flux', 'stdname': 'surface_net_upward_longwave_flux', 'units': 'W m-2'}
+{'attrname': 'Fall_evap', 'longname': 'Evaporation water flux', 'stdname': 'water_evaporation_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faox_evap', 'longname': 'Evaporation water flux', 'stdname': 'water_evaporation_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faii_evap', 'longname': 'Evaporation water flux', 'stdname': 'water_evaporation_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxx_evap', 'longname': 'Evaporation water flux', 'stdname': 'water_evaporation_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Fall_flxdst1', 'longname': 'Dust flux (particle bin number 1)', 'stdname': 'dust_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Fall_flxdst2', 'longname': 'Dust flux (particle bin number 2)', 'stdname': 'dust_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Fall_flxdst3', 'longname': 'Dust flux (particle bin number 3)', 'stdname': 'dust_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Fall_flxdst4', 'longname': 'Dust flux (particle bin number 4)', 'stdname': 'dust_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Sa_pslv', 'longname': 'Sea level pressure', 'stdname': 'air_pressure_at_sea_level', 'units': 'Pa'}
+{'attrname': 'So_duu10n', 'longname': 'Wind speed squared at 10 meters', 'stdname': 'square_of_wind_speed', 'units': 'm2 s-2'}
+{'attrname': 'So_ustar', 'longname': 'Surface fraction velocity in ocean', 'stdname': 'fraction_velocity', 'units': 'm s-1'}
+{'attrname': 'Si_ifrac', 'longname': 'Fractional ice coverage wrt ocean', 'stdname': 'sea_ice_area_fraction', 'units': 'unitless'}
+{'attrname': 'Fioo_q', 'longname': 'Ocean freeze (q>0) or melt (q<0) potential', 'stdname': 'surface_snow_and_ice_melt_heat_flux', 'units': 'W m-2'}
+{'attrname': 'Faxa_melth', 'longname': 'Heat flux from melting', 'stdname': 'surface_snow_melt_heat_flux', 'units': 'W m-2'}
+{'attrname': 'Faxa_meltw', 'longname': 'Water flux due to melting', 'stdname': 'surface_snow_melt_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Faxa_salt', 'longname': 'Salt flux', 'stdname': 'virtual_salt_flux_into_sea_water', 'units': 'kg m-2 s-1'}
+{'attrname': 'So_s', 'longname': 'Sea surface salinity', 'stdname': 'sea_surface_salinity', 'units': 'g kg-1'}
+{'attrname': 'So_u', 'longname': 'Zonal sea water velocity', 'stdname': 'eastward_sea_water_velocity', 'units': 'm s-1'}
+{'attrname': 'So_dhdx', 'longname': 'Zonal sea surface slope', 'stdname': 'sea_surface_eastward_slope', 'units': 'm m-1'}
+{'attrname': 'So_dhdy', 'longname': 'Meridional sea surface slope', 'stdname': 'sea_surface_northward_slope', 'units': 'm m-1'}
+{'attrname': 'So_bldepth', 'longname': 'Ocean Boundary Layer Depth', 'stdname': 'ocean_boundary_layer_depth', 'units': 'm'}
+{'attrname': 'Flrl_rofliq', 'longname': 'Water flux from land (liquid)', 'stdname': 'water_flux_into_runoff', 'units': 'kg m-2 s-1'}
+{'attrname': 'Flrl_rofice', 'longname': 'Water flux from land (frozen)', 'stdname': 'frozen_water_flux_into_runoff', 'units': 'kg m-2 s-1'}
+{'attrname': 'Forr_roff', 'longname': 'Water flux due to runoff (liquid)', 'stdname': 'water_flux_into_sea_water', 'units': 'kg m-2 s-1'}
+{'attrname': 'Forr_ioff', 'longname': 'Water flux due to runoff (frozen)', 'stdname': 'frozen_water_flux_into_sea_water', 'units': 'kg m-2 s-1'}
+{'attrname': 'Flrr_flood', 'longname': 'Waterrflux due to flooding', 'stdname': 'flooding_water_flux', 'units': 'kg m-2 s-1'}
+{'attrname': 'Slrr_volr', 'longname': 'River channel water volume', 'stdname': 'rtm_volr', 'units': 'm3'}
+{'attrname': 'Sw_lamult', 'longname': 'Langmuir multiplier', 'stdname': 'wave_model_langmuir_multiplier', 'units': ''}
+{'attrname': 'Sw_ustokes', 'longname': 'Stokes drift u component', 'stdname': 'wave_model_stokes_drift_eastward_velocity', 'units': 'm/s'}
+{'attrname': 'Sw_vstokes', 'longname': 'Stokes drift v component', 'stdname': 'wave_model_stokes_drift_northward_velocity', 'units': 'm/s'}
+{'attrname': 'Sw_hstokes', 'longname': 'Stokes drift depth', 'stdname': 'wave_model_stokes_drift_depth', 'units': 'm'}
+{'attrname': 'Ss_tsrf', 'longname': 'Surface temperature  of glacier elevation class ', 'stdname': 'surface_temperature', 'units': 'deg C'}
+{'attrname': 'Ss_topo', 'longname': 'Surface height of glacier elevation class ', 'stdname': 'height', 'units': 'm'}
+{'attrname': 'Fgss_qice', 'longname': 'New glacier ice flux of elevation class ', 'stdname': 'ice_flux_out_of_glacier', 'units': 'kg m-2 s-1'}
+{'attrname': 'Sg_frac', 'longname': 'Fraction of glacier area of elevation class ', 'stdname': 'glacier_area_fraction', 'units': 'unitless'}
+{'attrname': 'Sg_topo', 'longname': 'Surface height of glacier of elevation class ', 'stdname': 'height', 'units': 'm'}
+{'attrname': 'Fsgg_rofi', 'longname': 'Ice runoff flux of elevation class ', 'stdname': 'ice_runoff_flux_in_glacier', 'units': 'kg m-2 s-1'}
+{'attrname': 'Fsgg_rofl', 'longname': 'Liquid runoff flux of elevation class ', 'stdname': 'liquid_runoff_flux_in_glacier', 'units': 'kg m-2 s-1'}
+{'attrname': 'Fsgg_hflx', 'longname': 'Downward heat flux from glacier interior of elevation class ', 'stdname': 'downward_heat_flux_in_glacier', 'units': 'W m-2'}
+

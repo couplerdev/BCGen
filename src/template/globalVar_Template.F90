@@ -1,8 +1,9 @@
 module global_var
-
+use proc_def
+use field
    implicit none
    type Meta
-       type(field)       :: Fields
+       type(fldsMeta)    :: fldsMetaData
        type(procMeta)    :: my_proc
        type(confMeta)    :: conf
        #for $model in $proc_cfgs
@@ -35,9 +36,9 @@ module global_var
        !-------------------------------------------
        ! used for mct_init
        !-------------------------------------------
-       integer, dimension(:)  :: comp_comm
-       integer, dimension(:)  :: comp_id
-       integer, dimension(:)  :: imain_model
+       integer, allocatable  :: comp_comm(:)
+       integer, allocatable  :: comp_id(:)
+       integer, allocatable  :: imain_model(:)
 
        !------------------------------------------
        !   intermediate vars
@@ -79,10 +80,6 @@ module global_var
        logical    :: ${name}_run
        #end for
 
-       #for $model in $proc_cfgs
-            #set $name = $model.name
-       type(map_mod)   ::$name
-       #end for
        
        #for $model in $merge_cfgs
             #set $dst_info = $merge_cfgs[$model]['dst']
@@ -91,15 +88,21 @@ module global_var
             #end for
        #end for
 
+       #for $fld in $fieldVar_cfgs
+            #set $val = $fieldVar_cfgs[$fld]
+       character(FIELDSLEN) :: $fld 
+       #end for
+
    end type Meta
     
    type(Meta)          :: metaData
-   integer, parameter  :: gloid
-   integer, parameter  :: cplid
-   #for $model in $proc_cfgs
+   integer, parameter  :: gloid = 1
+   integer, parameter  :: cplid = 2
+   #for $index, $model in enumerate($proc_cfgs)
         #set $name = $model.name
-   integer, parameter  :: ${name}id
-   integer, parameter  :: ${name}2xid
+        #set $my_id = 2+2*$index
+   integer, parameter  :: ${name}id = $my_id
+   integer, parameter  :: ${name}2xid = $my_id+1
    #end for
 
 end module global_var

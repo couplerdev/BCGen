@@ -7,4 +7,5 @@ cp ./deploy_mod.F90 ../../baseCpl/src/procManage/
 cp ./global_var.F90 ../../baseCpl/src/data_def
 cp ./timeCesm.F90 ../../baseCpl/src/timeManage/
 cp ./time_def.F90 ../../baseCpl/src/data_def
+cp ./base_field.F90 ../../baseCpl/src/esm
 echo 'code moved'

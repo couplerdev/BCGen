@@ -1,0 +1,1 @@
+/usr/local/bin/mpicc  -std=c99 -g -O0  -rdynamic CMakeFiles/test_darray_multivar3.dir/test_darray_multivar3.c.o CMakeFiles/test_darray_multivar3.dir/test_common.c.o  -o test_darray_multivar3 ../../src/clib/libpioc.a ../../src/gptl/libgptl.a -lnetcdf /usr/local/Pnetcdf/lib/libpnetcdf.a -lmpifort -lgfortran -lm -lquadmath -lm 

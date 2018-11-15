@@ -78,7 +78,7 @@ implicit none
     integer             :: igcol
     integer             :: iweight
 
-    real        , allocatable :: rtemp(:)
+    real(8)        , allocatable :: rtemp(:)
     integer     , allocatable :: itemp(:) 
      
     integer                   :: rcode
@@ -194,8 +194,8 @@ implicit none
     integer          :: nread
     logical          :: mywt
 
-    real,    allocatable  :: rtemp(:)
-    real,    allocatable  :: Sbuf(:)
+    real(8),    allocatable  :: rtemp(:)
+    real(8),    allocatable  :: Sbuf(:)
     integer, allocatable  :: Rbuf(:)
     integer, allocatable  :: Cbuf(:)
 
@@ -207,7 +207,7 @@ implicit none
     integer               :: l1, l2
     logical               :: found
 
-    real,    allocatable  :: Snew(:), Sold(:)
+    real(8),    allocatable  :: Snew(:), Sold(:)
     integer, allocatable  :: Rnew(:), Rold(:)
     integer, allocatable  :: Cnew(:), Cold(:)
 
@@ -328,7 +328,7 @@ implicit none
       mygsmap => gsmap_src
    else
       write(*,*)'error'
-      call base_sys_abort()
+      call base_sys_abort(subName//" new dom error")
       !write(s_logunit,F00) 'ERROR: invalid newdom value = ',newdom
       !call shr_sys_abort(trim(subName)//" invalid newdom value")
    endif
@@ -365,7 +365,7 @@ implicit none
    do n = 1,lsize-1
       if (lsstart(n) > lsstart(n+1)) then
          !write(s_logunit,F00) ' ERROR: lsstart not properly sorted'
-         call base_sys_abort()
+         call base_sys_abort(subName//'lsstart not properly sorted')
       endif
    enddo
 

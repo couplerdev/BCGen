@@ -1,0 +1,1054 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<fieldMeta>
+		<fields>
+			<fieldVar name="flds_dom_coord">
+				<field>lat:lon</field>
+			</fieldVar>
+			<fieldVar name="flds_atm2x_states">
+				<field>Saz:Sau:Sav:Satbot:Saptem:Sashum:Sapbot:Sadens:Sapslv</field>
+			</fieldVar>
+			<fieldVar name="flds_atm2x_fluxes">
+				<field>Faxarainc:Faxarainl:Faxasnowc:Faxasnowl:Faxalwdn:Faxaswndr:Faxaswvdr:Faxaswndf:Faxaswvdf:Faxaswnet:Faxabcphidry:Faxabcphodry:Faxabcphiwet:Faxaocphidry:Faxaocphodry:Faxaocphiwet:Faxadstwet1:Faxadstwet2:Faxadstwet3:Faxadstwet4:Faxadstdry1:Faxadstdry2:Faxadstdry3:Faxadstdry4</field>
+			</fieldVar>
+			<fieldVar name="flds_x2atm_states">
+				<field>Sflfrac:Sfifrac:Sfofrac:Sxavsdr:Sxanidr:Sxavsdf:Sxanidf:Sxtref:Sxqref:Sot:Sxt:Slfv:Slram1:Slsnowh:Sisnowh:Sossq:Sore:Sxu10:Soustar</field>
+			</fieldVar>
+			<fieldVar name="flds_x2atm_fluxes">
+				<field>Faxxtaux:Faxxtauy:Faxxlat:Faxxsen:Faxxlwup:Faxxevap:Fallflxdst1:Fallflxdst2:Fallflxdst3:Fallflxdst4</field>
+			</fieldVar>
+			<fieldVar name="flds_lnd2x_states">
+				<field>Slavsdr:Slanidr:Slavsdf:Slanidf:Sltref:Slqref:Slt:Slfv:Slram1:Slsnowh:Slu10</field>
+			</fieldVar>
+			<fieldVar name="flds_lnd2x_fluxes">
+				<field>Fallswnet:Falltaux:Falltauy:Falllat:Fallsen:Falllwup:Fallevap:Fallflxdst1:Fallflxdst2:Fallflxdst3:Fallflxdst4:Flrlrofliq:Flrlrofice</field>
+			</fieldVar>
+			<fieldVar name="flds_x2lnd_states">
+				<field>Saz:Sau:Sav:Satbot:Saptem:Sashum:Sapbot:Slrrvolr</field>
+			</fieldVar>
+			<fieldVar name="flds_x2lnd_fluxes">
+				<field>Faxarainc:Faxarainl:Faxasnowc:Faxasnowl:Faxalwdn:Faxaswndr:Faxaswvdr:Faxaswndf:Faxaswvdf:Faxabcphidry:Faxabcphodry:Faxabcphiwet:Faxaocphidry:Faxaocphodry:Faxaocphiwet:Faxadstwet1:Faxadstwet2:Faxadstwet3:Faxadstwet4:Faxadstdry1:Faxadstdry2:Faxadstdry3:Faxadstdry4:Flrrflood</field>
+			</fieldVar>
+			<fieldVar name="flds_ice2x_states">
+				<field>Siavsdr:Sianidr:Siavsdf:Sianidf:Sitref:Siqref:Sit:Sisnowh:Siu10:Siifrac</field>
+			</fieldVar>
+			<fieldVar name="flds_ice2x_fluxes">
+				<field>Faiiswnet:Fioiswpen:Faiitaux:Fioitaux:Faiitauy:Fioitauy:Faiilat:Faiisen:Faiilwup:Faiievap:Fioimelth:Fioimeltw:Fioisalt</field>
+			</fieldVar>
+			<fieldVar name="flds_x2ice_states">
+				<field>Saz:Sau:Sav:Satbot:Saptem:Sashum:Sapbot:Sadens:Sot:Sos:Sou:Sov:Sodhdx:Sodhdy</field>
+			</fieldVar>
+			<fieldVar name="flds_x2ice_fluxes">
+				<field>Faxarain:Faxasnow:Faxalwdn:Faxaswndr:Faxaswvdr:Faxaswndf:Faxaswvdf:Faxabcphidry:Faxabcphodry:Faxabcphiwet:Faxaocphidry:Faxaocphodry:Faxaocphiwet:Faxadstwet1:Faxadstwet2:Faxadstwet3:Faxadstwet4:Faxadstdry1:Faxadstdry2:Faxadstdry3:Faxadstdry4:Fiooq</field>
+			</fieldVar>
+			<fieldVar name="flds_ocn2x_states">
+				<field>Sot:Sos:Sou:Sov:Sodhdx:Sodhdy:Sobldepth</field>
+			</fieldVar>
+			<fieldVar name="flds_ocn2x_fluxes">
+				<field>Fiooq</field>
+			</fieldVar>
+			<fieldVar name="flds_x2ocn_states">
+				<field>Sapslv:Soduu10n:Siifrac:Swlamult:Swustokes:Swvstokes:Swhstokes</field>
+			</fieldVar>
+			<fieldVar name="flds_x2ocn_fluxes">
+				<field>Faxarain:Faxasnow:Faxaprec:Faxalwdn:Foxxswnet:Faxabcphidry:Faxabcphodry:Faxabcphiwet:Faxaocphidry:Faxaocphodry:Faxaocphiwet:Faxadstwet1:Faxadstwet2:Faxadstwet3:Faxadstwet4:Faxadstdry1:Faxadstdry2:Faxadstdry3:Faxadstdry4:Foxxtaux:Foxxtauy:Foxxlat:Foxxsen:Foxxlwup:Foxxevap:Fioimelth:Fioimeltw:Fioisalt:Forrroff:Forrioff</field>
+			</fieldVar>
+			<fieldVar name="flds_sno2x_states">
+				<field>Sstsrf:Sstopo</field>
+			</fieldVar>
+			<fieldVar name="flds_sno2x_fluxes">
+				<field>Fgssqice</field>
+			</fieldVar>
+			<fieldVar name="flds_x2sno_states">
+				<field>Sgfrac:Sgtopo</field>
+			</fieldVar>
+			<fieldVar name="flds_x2sno_fluxes">
+				<field>Fsggrofi:Fsggrofl:Fsgghflx</field>
+			</fieldVar>
+			<fieldVar name="flds_glc2x_states">
+				<field>Sgfrac:Sgtopo</field>
+			</fieldVar>
+			<fieldVar name="flds_glc2x_fluxes">
+				<field>Fsggrofi:Fsggrofl:Fsgghflx</field>
+			</fieldVar>
+			<fieldVar name="flds_x2glc_states">
+				<field>Sstsrf:Sstopo</field>
+			</fieldVar>
+			<fieldVar name="flds_x2glc_fluxes">
+				<field>Fgssqice</field>
+			</fieldVar>
+			<fieldVar name="flds_x2ocn_states">
+				<field>Sotref:Soqref:Sossq:Sore:Sou10:Soduu10n:Soustar</field>
+			</fieldVar>
+			<fieldVar name="flds_x2ocn_albedo">
+				<field>Soavsdr:Soanidr:Soavsdf:Soanidf</field>
+			</fieldVar>
+			<fieldVar name="flds_rof2x_states">
+				<field>Slrrvolr</field>
+			</fieldVar>
+			<fieldVar name="flds_rof2x_fluxes">
+				<field>Forrroff:Forrioff:Flrrflood</field>
+			</fieldVar>
+			<fieldVar name="flds_x2rof_states">
+				<field></field>
+			</fieldVar>
+			<fieldVar name="flds_x2rof_fluxes">
+				<field>Flrlrofliq:Flrlrofice</field>
+			</fieldVar>
+			<fieldVar name="flds_wav2x_states">
+				<field>Swlamult:Swustokes:Swvstokes:Swhstokes</field>
+			</fieldVar>
+			<fieldVar name="flds_wav2x_fluxes">
+				<field></field>
+			</fieldVar>
+			<fieldVar name="flds_x2wav_states">
+				<field>Sau:Sav:Satbot:Siifrac:Sot:Sou:Sov:Sobldepth</field>
+			</fieldVar>
+			<fieldVar name="flds_x2wav_fluxes">
+				<field></field>
+			</fieldVar>
+			<fieldVar name="flds_dom_coord">
+				<field>lat:lon:area:aream:mask:frac</field>
+			</fieldVar>
+			<fieldVar name="flds_atm2x_fields">
+				<field>Saz:Sau:Sav:Satbot:Saptem:Sashum:Sapbot:Sadens:Sapslv:Faxarainc:Faxarainl:Faxasnowc:Faxasnowl:Faxalwdn:Faxaswndr:Faxaswvdr:Faxaswndf:Faxaswvdf:Faxaswnet:Faxabcphidry:Faxabcphodry:Faxabcphiwet:Faxaocphidry:Faxaocphodry:Faxaocphiwet:Faxadstwet1:Faxadstwet2:Faxadstwet3:Faxadstwet4:Faxadstdry1:Faxadstdry2:Faxadstdry3:Faxadstdry4</field>
+			</fieldVar>
+			<fieldVar name="flds_x2atm_fields">
+				<field>Sflfrac:Sfifrac:Sfofrac:Sxavsdr:Sxanidr:Sxavsdf:Sxanidf:Sxtref:Sxqref:Sot:Sxt:Slfv:Slram1:Slsnowh:Sisnowh:Sossq:Sore:Sxu10:Soustar:Faxxtaux:Faxxtauy:Faxxlat:Faxxsen:Faxxlwup:Faxxevap:Fallflxdst1:Fallflxdst2:Fallflxdst3:Fallflxdst4</field>
+			</fieldVar>
+			<fieldVar name="flds_ice2x_fields">
+				<field>Siavsdr:Sianidr:Siavsdf:Sianidf:Sitref:Siqref:Sit:Sisnowh:Siu10:Siifrac:Faiiswnet:Fioiswpen:Faiitaux:Fioitaux:Faiitauy:Fioitauy:Faiilat:Faiisen:Faiilwup:Faiievap:Fioimelth:Fioimeltw:Fioisalt</field>
+			</fieldVar>
+			<fieldVar name="flds_x2ice_fields">
+				<field>Saz:Sau:Sav:Satbot:Saptem:Sashum:Sapbot:Sadens:Sot:Sos:Sou:Sov:Sodhdx:Sodhdy:Faxarain:Faxasnow:Faxalwdn:Faxaswndr:Faxaswvdr:Faxaswndf:Faxaswvdf:Faxabcphidry:Faxabcphodry:Faxabcphiwet:Faxaocphidry:Faxaocphodry:Faxaocphiwet:Faxadstwet1:Faxadstwet2:Faxadstwet3:Faxadstwet4:Faxadstdry1:Faxadstdry2:Faxadstdry3:Faxadstdry4:Fiooq</field>
+			</fieldVar>
+			<fieldVar name="flds_lnd2x_fields">
+				<field>Slavsdr:Slanidr:Slavsdf:Slanidf:Sltref:Slqref:Slt:Slfv:Slram1:Slsnowh:Slu10:Fallswnet:Falltaux:Falltauy:Falllat:Fallsen:Falllwup:Fallevap:Fallflxdst1:Fallflxdst2:Fallflxdst3:Fallflxdst4:Flrlrofliq:Flrlrofice</field>
+			</fieldVar>
+			<fieldVar name="flds_x2lnd_fields">
+				<field>Saz:Sau:Sav:Satbot:Saptem:Sashum:Sapbot:Slrrvolr:Faxarainc:Faxarainl:Faxasnowc:Faxasnowl:Faxalwdn:Faxaswndr:Faxaswvdr:Faxaswndf:Faxaswvdf:Faxabcphidry:Faxabcphodry:Faxabcphiwet:Faxaocphidry:Faxaocphodry:Faxaocphiwet:Faxadstwet1:Faxadstwet2:Faxadstwet3:Faxadstwet4:Faxadstdry1:Faxadstdry2:Faxadstdry3:Faxadstdry4:Flrrflood</field>
+			</fieldVar>
+			<fieldVar name="flds_ocn2x_fields">
+				<field>Sot:Sos:Sou:Sov:Sodhdx:Sodhdy:Sobldepth:Fiooq</field>
+			</fieldVar>
+			<fieldVar name="flds_x2ocn_fields">
+				<field>Sapslv:Soduu10n:Siifrac:Swlamult:Swustokes:Swvstokes:Swhstokes:Faxarain:Faxasnow:Faxaprec:Faxalwdn:Foxxswnet:Faxabcphidry:Faxabcphodry:Faxabcphiwet:Faxaocphidry:Faxaocphodry:Faxaocphiwet:Faxadstwet1:Faxadstwet2:Faxadstwet3:Faxadstwet4:Faxadstdry1:Faxadstdry2:Faxadstdry3:Faxadstdry4:Foxxtaux:Foxxtauy:Foxxlat:Foxxsen:Foxxlwup:Foxxevap:Fioimelth:Fioimeltw:Fioisalt:Forrroff:Forrioff</field>
+			</fieldVar>
+			<fieldVar name="flds_glc2x_fields">
+				<field>Sgfrac:Sgtopo:Fsggrofi:Fsggrofl:Fsgghflx</field>
+			</fieldVar>
+			<fieldVar name="flds_x2glc_fields">
+				<field>Sstsrf:Sstopo:Fgssqice</field>
+			</fieldVar>
+			<fieldVar name="flds_sno2x_fields">
+				<field>Sstsrf:Sstopo:Fgssqice</field>
+			</fieldVar>
+			<fieldVar name="flds_x2sno_fields">
+				<field>Sgfrac:Sgtopo:Fsggrofi:Fsggrofl:Fsgghflx</field>
+			</fieldVar>
+			<fieldVar name="flds_x2ocn_fields">
+				<field>Soavsdr:Soanidr:Soavsdf:Soanidf:Sotref:Soqref:Sossq:Sore:Sou10:Soduu10n:Soustar:Faoxtaux:Faoxtauy:Faoxlat:Faoxsen:Faoxlwup:Faoxevap</field>
+			</fieldVar>
+			<fieldVar name="flds_rof2x_fields">
+				<field>Slrrvolr:Forrroff:Forrioff:Flrrflood</field>
+			</fieldVar>
+			<fieldVar name="flds_x2rof_fields">
+				<field>Flrlrofliq:Flrlrofice</field>
+			</fieldVar>
+			<fieldVar name="flds_wav2x_fields">
+				<field>Swlamult:Swustokes:Swvstokes:Swhstokes</field>
+			</fieldVar>
+			<fieldVar name="flds_x2wav_fields">
+				<field>Sau:Sav:Satbot:Siifrac:Sot:Sou:Sov:Sobldepth</field>
+			</fieldVar>
+		</fields>
+		<fldMeta>
+			<fld>
+				<shortname>lat</shortname>
+				<longname>unknow</longname>
+				<stdname> latitude</stdname>
+				<units> degrees north</units>
+			</fld>
+			<fld>
+				<shortname>lon</shortname>
+				<longname>unknow</longname>
+				<stdname> longitude</stdname>
+				<units> degrees east</units>
+			</fld>
+			<fld>
+				<shortname>area</shortname>
+				<longname>unknow</longname>
+				<stdname> cell area</stdname>
+				<units> m^2</units>
+			</fld>
+			<fld>
+				<shortname>aream</shortname>
+				<longname>unknow</longname>
+				<stdname> cell area from mapping file</stdname>
+				<units> m^2</units>
+			</fld>
+			<fld>
+				<shortname>mask</shortname>
+				<longname>unknow</longname>
+				<stdname> mask</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>frac</shortname>
+				<longname> area_fraction</longname>
+				<stdname> area fraction</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Sa_z</shortname>
+				<longname> Height at the lowest model level</longname>
+				<stdname> height</stdname>
+				<units> m</units>
+			</fld>
+			<fld>
+				<shortname>Sa_u</shortname>
+				<longname> Zonal wind at the lowest model level</longname>
+				<stdname> eastward_wind</stdname>
+				<units> m s-1</units>
+			</fld>
+			<fld>
+				<shortname>Sa_v</shortname>
+				<longname> Meridional wind at the lowest model level</longname>
+				<stdname> northward_wind</stdname>
+				<units> m s-1</units>
+			</fld>
+			<fld>
+				<shortname>Sa_tbot</shortname>
+				<longname> Temperature at the lowest model level</longname>
+				<stdname> air_temperature</stdname>
+				<units> K</units>
+			</fld>
+			<fld>
+				<shortname>Sa_ptem</shortname>
+				<longname> Potential temperature at the lowest model level</longname>
+				<stdname> air_potential_temperature</stdname>
+				<units> K</units>
+			</fld>
+			<fld>
+				<shortname>Sa_shum</shortname>
+				<longname> Specific humidity at the lowest model level</longname>
+				<stdname> specific_humidity</stdname>
+				<units> kg kg-1</units>
+			</fld>
+			<fld>
+				<shortname>Sa_pbot</shortname>
+				<longname> Pressure at the lowest model level</longname>
+				<stdname> air_pressure</stdname>
+				<units> Pa</units>
+			</fld>
+			<fld>
+				<shortname>Sa_dens</shortname>
+				<longname> Density at the lowest model level</longname>
+				<stdname> air_density</stdname>
+				<units> kg m-3</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_rainc</shortname>
+				<longname> Convective precipitation rate</longname>
+				<stdname> convective_precipitation_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_rainl</shortname>
+				<longname> Large-scale (stable) precipitation rate</longname>
+				<stdname> large_scale_precipitation_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_rain</shortname>
+				<longname> Water flux due to rain</longname>
+				<stdname> rainfall_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_snowc</shortname>
+				<longname> Convective snow rate (water equivalent)</longname>
+				<stdname> convective_snowfall_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_snowl</shortname>
+				<longname> Large-scale (stable) snow rate (water equivalent)</longname>
+				<stdname> large_scale_snowfall_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_snow</shortname>
+				<longname> Water flux due to snow</longname>
+				<stdname> surface_snow_melt_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_prec</shortname>
+				<longname> Water flux (rain+snow)</longname>
+				<stdname> precipitation_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_lwdn</shortname>
+				<longname> Downward longwave heat flux</longname>
+				<stdname> downwelling_longwave_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_swndr</shortname>
+				<longname> Direct near-infrared incident solar radiation</longname>
+				<stdname> surface_downward_direct_shortwave_flux_due_to_near_infrared_radiation</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_swvdr</shortname>
+				<longname> Direct visible incident solar radiation</longname>
+				<stdname> surface_downward_direct_shortwave_flux_due_to_visible_radiation</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_swndf</shortname>
+				<longname> Diffuse near-infrared incident solar radiation</longname>
+				<stdname> surface_downward_diffuse_shortwave_flux_due_to_near_infrared_radiation</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_swvdf</shortname>
+				<longname> Diffuse visible incident solar radiation</longname>
+				<stdname> surface_downward_diffuse_shortwave_flux_due_to_visible_radiation</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_swnet</shortname>
+				<longname> Net shortwave radiation</longname>
+				<stdname> surface_net_shortwave_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Fall_swnet</shortname>
+				<longname> Net shortwave radiation</longname>
+				<stdname> surface_net_shortwave_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faii_swnet</shortname>
+				<longname> Net shortwave radiation</longname>
+				<stdname> surface_net_shortwave_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Foxx_swnet</shortname>
+				<longname> Net shortwave radiation</longname>
+				<stdname> surface_net_shortwave_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Fioi_swpen</shortname>
+				<longname> Net shortwave radiation penetrating into ice and ocean</longname>
+				<stdname> net_downward_shortwave_flux_in_sea_ice_due_to_penetration</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_bcphidry</shortname>
+				<longname> Hydrophylic black carbon dry deposition flux</longname>
+				<stdname> dry_deposition_flux_of_hydrophylic_black_carbon</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_bcphodry</shortname>
+				<longname> Hydrophobic black carbon dry deposition flux</longname>
+				<stdname> dry_deposition_flux_of_hydrophobic_black_carbon</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_bcphiwet</shortname>
+				<longname> Hydrophylic black carbon wet deposition flux</longname>
+				<stdname> wet_deposition_flux_of_hydrophylic_black_carbon</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_ocphidry</shortname>
+				<longname> Hydrophylic organic carbon dry deposition flux</longname>
+				<stdname> dry_deposition_flux_of_hydrophylic_organic_carbon</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_ocphodry</shortname>
+				<longname> Hydrophobic organic carbon dry deposition flux</longname>
+				<stdname> dry_deposition_flux_of_hydrophobic_organic_carbon</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_ocphiwet</shortname>
+				<longname> Hydrophylic organic carbon wet deposition flux</longname>
+				<stdname> wet_deposition_flux_of_hydrophylic_organic_carbon</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_dstwet1</shortname>
+				<longname> Dust wet deposition flux (size 1)</longname>
+				<stdname> wet_deposition_flux_of_dust</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_dstwet2</shortname>
+				<longname> Dust wet deposition flux (size 2)</longname>
+				<stdname> wet_deposition_flux_of_dust</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_dstwet3</shortname>
+				<longname> Dust wet deposition flux (size 3)</longname>
+				<stdname> wet_deposition_flux_of_dust</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_dstwet4</shortname>
+				<longname> Dust wet deposition flux (size 4)</longname>
+				<stdname> wet_deposition_flux_of_dust</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_dstdry1</shortname>
+				<longname> Dust dry deposition flux (size 1)</longname>
+				<stdname> dry_deposition_flux_of_dust</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_dstdry2</shortname>
+				<longname> Dust dry deposition flux (size 2)</longname>
+				<stdname> dry_deposition_flux_of_dust</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_dstdry3</shortname>
+				<longname> Dust dry deposition flux (size 3)</longname>
+				<stdname> dry_deposition_flux_of_dust</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_dstdry4</shortname>
+				<longname> Dust dry deposition flux (size 4)</longname>
+				<stdname> dry_deposition_flux_of_dust</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Sf_lfrac</shortname>
+				<longname> Surface land fraction</longname>
+				<stdname> land_area_fraction</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Sf_ifrac</shortname>
+				<longname> Surface ice fraction</longname>
+				<stdname> sea_ice_area_fraction</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Sf_ofrac</shortname>
+				<longname> Surface ocean fraction</longname>
+				<stdname> sea_area_fraction</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Si_avsdr</shortname>
+				<longname> Direct albedo (visible radiation)</longname>
+				<stdname> surface_direct_albedo_due_to_visible_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Sl_avsdr</shortname>
+				<longname> Direct albedo (visible radiation)</longname>
+				<stdname> surface_direct_albedo_due_to_visible_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>So_avsdr</shortname>
+				<longname> Direct albedo (visible radiation)</longname>
+				<stdname> surface_direct_albedo_due_to_visible_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Sx_avsdr</shortname>
+				<longname> Direct albedo (visible radiation)</longname>
+				<stdname> surface_direct_albedo_due_to_visible_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Si_anidr</shortname>
+				<longname> Direct albedo (near-infrared radiation)</longname>
+				<stdname> surface_direct_albedo_due_to_near_infrared_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Sl_anidr</shortname>
+				<longname> Direct albedo (near-infrared radiation)</longname>
+				<stdname> surface_direct_albedo_due_to_near_infrared_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>So_anidr</shortname>
+				<longname> Direct albedo (near-infrared radiation)</longname>
+				<stdname> surface_direct_albedo_due_to_near_infrared_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Sx_anidr</shortname>
+				<longname> Direct albedo (near-infrared radiation)</longname>
+				<stdname> surface_direct_albedo_due_to_near_infrared_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Si_avsdf</shortname>
+				<longname> Diffuse albedo (visible radiation)</longname>
+				<stdname> surface_diffuse_albedo_due_to_visible_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Sl_avsdf</shortname>
+				<longname> Diffuse albedo (visible radiation)</longname>
+				<stdname> surface_diffuse_albedo_due_to_visible_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>So_avsdf</shortname>
+				<longname> Diffuse albedo (visible radiation)</longname>
+				<stdname> surface_diffuse_albedo_due_to_visible_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Sx_avsdf</shortname>
+				<longname> Diffuse albedo (visible radiation)</longname>
+				<stdname> surface_diffuse_albedo_due_to_visible_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Si_anidf</shortname>
+				<longname> Diffuse albedo (near-infrared radiation)</longname>
+				<stdname> surface_diffuse_albedo_due_to_near_infrared_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Sl_anidf</shortname>
+				<longname> Diffuse albedo (near-infrared radiation)</longname>
+				<stdname> surface_diffuse_albedo_due_to_near_infrared_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>So_anidf</shortname>
+				<longname> Diffuse albedo (near-infrared radiation)</longname>
+				<stdname> surface_diffuse_albedo_due_to_near_infrared_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Sx_anidf</shortname>
+				<longname> Diffuse albedo (near-infrared radiation)</longname>
+				<stdname> surface_diffuse_albedo_due_to_near_infrared_radiation</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Si_tref</shortname>
+				<longname> Reference temperature at 2 meters</longname>
+				<stdname> air_temperature</stdname>
+				<units> K</units>
+			</fld>
+			<fld>
+				<shortname>Sl_tref</shortname>
+				<longname> Reference temperature at 2 meters</longname>
+				<stdname> air_temperature</stdname>
+				<units> K</units>
+			</fld>
+			<fld>
+				<shortname>So_tref</shortname>
+				<longname> Reference temperature at 2 meters</longname>
+				<stdname> air_temperature</stdname>
+				<units> K</units>
+			</fld>
+			<fld>
+				<shortname>Sx_tref</shortname>
+				<longname> Reference temperature at 2 meters</longname>
+				<stdname> air_temperature</stdname>
+				<units> K</units>
+			</fld>
+			<fld>
+				<shortname>Si_qref</shortname>
+				<longname> Reference specific humidity at 2 meters</longname>
+				<stdname> specific_humidity</stdname>
+				<units> kg kg-1</units>
+			</fld>
+			<fld>
+				<shortname>Sl_qref</shortname>
+				<longname> Reference specific humidity at 2 meters</longname>
+				<stdname> specific_humidity</stdname>
+				<units> kg kg-1</units>
+			</fld>
+			<fld>
+				<shortname>So_qref</shortname>
+				<longname> Reference specific humidity at 2 meters</longname>
+				<stdname> specific_humidity</stdname>
+				<units> kg kg-1</units>
+			</fld>
+			<fld>
+				<shortname>Sx_qref</shortname>
+				<longname> Reference specific humidity at 2 meters</longname>
+				<stdname> specific_humidity</stdname>
+				<units> kg kg-1</units>
+			</fld>
+			<fld>
+				<shortname>Si_t</shortname>
+				<longname> Surface temperature</longname>
+				<stdname> surface_temperature</stdname>
+				<units> K</units>
+			</fld>
+			<fld>
+				<shortname>Sl_t</shortname>
+				<longname> Surface temperature</longname>
+				<stdname> surface_temperature</stdname>
+				<units> K</units>
+			</fld>
+			<fld>
+				<shortname>So_t</shortname>
+				<longname> Surface temperature</longname>
+				<stdname> surface_temperature</stdname>
+				<units> K</units>
+			</fld>
+			<fld>
+				<shortname>Sx_t</shortname>
+				<longname> Surface temperature</longname>
+				<stdname> surface_temperature</stdname>
+				<units> K</units>
+			</fld>
+			<fld>
+				<shortname>Sl_fv</shortname>
+				<longname> Surface fraction velocity in land</longname>
+				<stdname> fraction_velocity</stdname>
+				<units> m s-1</units>
+			</fld>
+			<fld>
+				<shortname>Sl_snowh</shortname>
+				<longname> Surface snow water equivalent</longname>
+				<stdname> surface_snow_water_equivalent</stdname>
+				<units> m</units>
+			</fld>
+			<fld>
+				<shortname>Si_snowh</shortname>
+				<longname> Surface snow depth</longname>
+				<stdname> surface_snow_thickness</stdname>
+				<units> m</units>
+			</fld>
+			<fld>
+				<shortname>So_ssq</shortname>
+				<longname> Surface saturation specific humidity in ocean</longname>
+				<stdname> specific_humidity_at_saturation</stdname>
+				<units> kg kg-1</units>
+			</fld>
+			<fld>
+				<shortname>So_re</shortname>
+				<longname> Square of exch. coeff (tracers)</longname>
+				<stdname>unknow</stdname>
+				<units>unknow</units>
+			</fld>
+			<fld>
+				<shortname>u10</shortname>
+				<longname> 10m wind</longname>
+				<stdname> 10m_wind</stdname>
+				<units> m</units>
+			</fld>
+			<fld>
+				<shortname>Fall_taux</shortname>
+				<longname> Zonal surface stress</longname>
+				<stdname> surface_downward_eastward_stress</stdname>
+				<units> N m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faox_taux</shortname>
+				<longname> Zonal surface stress</longname>
+				<stdname> surface_downward_eastward_stress</stdname>
+				<units> N m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faii_taux</shortname>
+				<longname> Zonal surface stress</longname>
+				<stdname> surface_downward_eastward_stress</stdname>
+				<units> N m-2</units>
+			</fld>
+			<fld>
+				<shortname>Fioi_taux</shortname>
+				<longname> Zonal surface stress</longname>
+				<stdname> surface_downward_eastward_stress</stdname>
+				<units> N m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxx_taux</shortname>
+				<longname> Zonal surface stress</longname>
+				<stdname> surface_downward_eastward_stress</stdname>
+				<units> N m-2</units>
+			</fld>
+			<fld>
+				<shortname>Foxx_taux</shortname>
+				<longname> Zonal surface stress</longname>
+				<stdname> surface_downward_eastward_stress</stdname>
+				<units> N m-2</units>
+			</fld>
+			<fld>
+				<shortname>Fall_tauy</shortname>
+				<longname> Meridional surface stress</longname>
+				<stdname> surface_downward_northward_stress</stdname>
+				<units> N m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faox_tauy</shortname>
+				<longname> Meridional surface stress</longname>
+				<stdname> surface_downward_northward_stress</stdname>
+				<units> N m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faii_tauy</shortname>
+				<longname> Meridional surface stress</longname>
+				<stdname> surface_downward_northward_stress</stdname>
+				<units> N m-2</units>
+			</fld>
+			<fld>
+				<shortname>Fioi_tauy</shortname>
+				<longname> Meridional surface stress</longname>
+				<stdname> surface_downward_northward_stress</stdname>
+				<units> N m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxx_tauy</shortname>
+				<longname> Meridional surface stress</longname>
+				<stdname> surface_downward_northward_stress</stdname>
+				<units> N m-2</units>
+			</fld>
+			<fld>
+				<shortname>Foxx_tauy</shortname>
+				<longname> Meridional surface stress</longname>
+				<stdname> surface_downward_northward_stress</stdname>
+				<units> N m-2</units>
+			</fld>
+			<fld>
+				<shortname>Fall_lat</shortname>
+				<longname> Surface latent heat flux</longname>
+				<stdname> surface_upward_latent_heat_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faox_lat</shortname>
+				<longname> Surface latent heat flux</longname>
+				<stdname> surface_upward_latent_heat_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faii_lat</shortname>
+				<longname> Surface latent heat flux</longname>
+				<stdname> surface_upward_latent_heat_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxx_lat</shortname>
+				<longname> Surface latent heat flux</longname>
+				<stdname> surface_upward_latent_heat_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Foxx_lat</shortname>
+				<longname> Surface latent heat flux</longname>
+				<stdname> surface_upward_latent_heat_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Fall_sen</shortname>
+				<longname> Sensible heat flux</longname>
+				<stdname> surface_upward_sensible_heat_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faox_sen</shortname>
+				<longname> Sensible heat flux</longname>
+				<stdname> surface_upward_sensible_heat_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faii_sen</shortname>
+				<longname> Sensible heat flux</longname>
+				<stdname> surface_upward_sensible_heat_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxx_sen</shortname>
+				<longname> Sensible heat flux</longname>
+				<stdname> surface_upward_sensible_heat_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Foxx_sen</shortname>
+				<longname> Sensible heat flux</longname>
+				<stdname> surface_upward_sensible_heat_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Fall_lwup</shortname>
+				<longname> Surface upward longwave heat flux</longname>
+				<stdname> surface_net_upward_longwave_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faox_lwup</shortname>
+				<longname> Surface upward longwave heat flux</longname>
+				<stdname> surface_net_upward_longwave_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faii_lwup</shortname>
+				<longname> Surface upward longwave heat flux</longname>
+				<stdname> surface_net_upward_longwave_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxx_lwup</shortname>
+				<longname> Surface upward longwave heat flux</longname>
+				<stdname> surface_net_upward_longwave_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Foxx_lwup</shortname>
+				<longname> Surface upward longwave heat flux</longname>
+				<stdname> surface_net_upward_longwave_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Fall_evap</shortname>
+				<longname> Evaporation water flux</longname>
+				<stdname> water_evaporation_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faox_evap</shortname>
+				<longname> Evaporation water flux</longname>
+				<stdname> water_evaporation_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faii_evap</shortname>
+				<longname> Evaporation water flux</longname>
+				<stdname> water_evaporation_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxx_evap</shortname>
+				<longname> Evaporation water flux</longname>
+				<stdname> water_evaporation_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Fall_flxdst1</shortname>
+				<longname> Dust flux (particle bin number 1)</longname>
+				<stdname> dust_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Fall_flxdst2</shortname>
+				<longname> Dust flux (particle bin number 2)</longname>
+				<stdname> dust_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Fall_flxdst3</shortname>
+				<longname> Dust flux (particle bin number 3)</longname>
+				<stdname> dust_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Fall_flxdst4</shortname>
+				<longname> Dust flux (particle bin number 4)</longname>
+				<stdname> dust_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Sa_pslv</shortname>
+				<longname> Sea level pressure</longname>
+				<stdname> air_pressure_at_sea_level</stdname>
+				<units> Pa</units>
+			</fld>
+			<fld>
+				<shortname>So_duu10n</shortname>
+				<longname> Wind speed squared at 10 meters</longname>
+				<stdname> square_of_wind_speed</stdname>
+				<units> m2 s-2</units>
+			</fld>
+			<fld>
+				<shortname>So_ustar</shortname>
+				<longname> Surface fraction velocity in ocean</longname>
+				<stdname> fraction_velocity</stdname>
+				<units> m s-1</units>
+			</fld>
+			<fld>
+				<shortname>Si_ifrac</shortname>
+				<longname> Fractional ice coverage wrt ocean</longname>
+				<stdname> sea_ice_area_fraction</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Fioo_q</shortname>
+				<longname> Ocean freeze (q&gt;0) or melt (q&lt;0) potential</longname>
+				<stdname> surface_snow_and_ice_melt_heat_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_melth</shortname>
+				<longname> Heat flux from melting</longname>
+				<stdname> surface_snow_melt_heat_flux</stdname>
+				<units> W m-2</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_meltw</shortname>
+				<longname> Water flux due to melting</longname>
+				<stdname> surface_snow_melt_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Faxa_salt</shortname>
+				<longname> Salt flux</longname>
+				<stdname> virtual_salt_flux_into_sea_water</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>So_s</shortname>
+				<longname> Sea surface salinity</longname>
+				<stdname> sea_surface_salinity</stdname>
+				<units> g kg-1</units>
+			</fld>
+			<fld>
+				<shortname>So_u</shortname>
+				<longname> Zonal sea water velocity</longname>
+				<stdname> eastward_sea_water_velocity</stdname>
+				<units> m s-1</units>
+			</fld>
+			<fld>
+				<shortname>So_dhdx</shortname>
+				<longname> Zonal sea surface slope</longname>
+				<stdname> sea_surface_eastward_slope</stdname>
+				<units> m m-1</units>
+			</fld>
+			<fld>
+				<shortname>So_dhdy</shortname>
+				<longname> Meridional sea surface slope</longname>
+				<stdname> sea_surface_northward_slope</stdname>
+				<units> m m-1</units>
+			</fld>
+			<fld>
+				<shortname>So_bldepth</shortname>
+				<longname> Ocean Boundary Layer Depth</longname>
+				<stdname> ocean_boundary_layer_depth</stdname>
+				<units> m</units>
+			</fld>
+			<fld>
+				<shortname>Flrl_rofliq</shortname>
+				<longname> Water flux from land (liquid)</longname>
+				<stdname> water_flux_into_runoff</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Flrl_rofice</shortname>
+				<longname> Water flux from land (frozen)</longname>
+				<stdname> frozen_water_flux_into_runoff</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Forr_roff</shortname>
+				<longname> Water flux due to runoff (liquid)</longname>
+				<stdname> water_flux_into_sea_water</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Forr_ioff</shortname>
+				<longname> Water flux due to runoff (frozen)</longname>
+				<stdname> frozen_water_flux_into_sea_water</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Flrr_flood</shortname>
+				<longname> Waterrflux due to flooding</longname>
+				<stdname> flooding_water_flux</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Slrr_volr</shortname>
+				<longname> River channel water volume</longname>
+				<stdname> rtm_volr</stdname>
+				<units> m3</units>
+			</fld>
+			<fld>
+				<shortname>Sw_lamult</shortname>
+				<longname> Langmuir multiplier</longname>
+				<stdname> wave_model_langmuir_multiplier</stdname>
+				<units>unknow</units>
+			</fld>
+			<fld>
+				<shortname>Sw_ustokes</shortname>
+				<longname> Stokes drift u component</longname>
+				<stdname> wave_model_stokes_drift_eastward_velocity</stdname>
+				<units> m/s</units>
+			</fld>
+			<fld>
+				<shortname>Sw_vstokes</shortname>
+				<longname> Stokes drift v component</longname>
+				<stdname> wave_model_stokes_drift_northward_velocity</stdname>
+				<units> m/s</units>
+			</fld>
+			<fld>
+				<shortname>Sw_hstokes</shortname>
+				<longname> Stokes drift depth</longname>
+				<stdname> wave_model_stokes_drift_depth</stdname>
+				<units> m</units>
+			</fld>
+			<fld>
+				<shortname>Ss_tsrf</shortname>
+				<longname> Surface temperature  of glacier elevation class </longname>
+				<stdname> surface_temperature</stdname>
+				<units> deg C</units>
+			</fld>
+			<fld>
+				<shortname>Ss_topo</shortname>
+				<longname> Surface height of glacier elevation class </longname>
+				<stdname> height</stdname>
+				<units> m</units>
+			</fld>
+			<fld>
+				<shortname>Fgss_qice</shortname>
+				<longname> New glacier ice flux of elevation class </longname>
+				<stdname> ice_flux_out_of_glacier</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Sg_frac</shortname>
+				<longname> Fraction of glacier area of elevation class </longname>
+				<stdname> glacier_area_fraction</stdname>
+				<units> unitless</units>
+			</fld>
+			<fld>
+				<shortname>Sg_topo</shortname>
+				<longname> Surface height of glacier of elevation class </longname>
+				<stdname> height</stdname>
+				<units> m</units>
+			</fld>
+			<fld>
+				<shortname>Fsgg_rofi</shortname>
+				<longname> Ice runoff flux of elevation class </longname>
+				<stdname> ice_runoff_flux_in_glacier</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Fsgg_rofl</shortname>
+				<longname> Liquid runoff flux of elevation class </longname>
+				<stdname> liquid_runoff_flux_in_glacier</stdname>
+				<units> kg m-2 s-1</units>
+			</fld>
+			<fld>
+				<shortname>Fsgg_hflx</shortname>
+				<longname> Downward heat flux from glacier interior of elevation class </longname>
+				<stdname> downward_heat_flux_in_glacier</stdname>
+				<units> W m-2</units>
+			</fld>
+		</fldMeta>
+	</fieldMeta>

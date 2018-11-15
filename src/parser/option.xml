@@ -1,0 +1,24 @@
+<option>
+	<time>
+		<calendar type='string'>NO_LEAP</calendar>
+		<stop_option type='string'>'ndays'</stop_option>
+		<stop_ymd type='int'>00010101</stop_ymd>
+		<restart_option type='string'>ndays</restart_option>
+		<restart_n type='int'>5</restart_n>
+		<restart_ymd type='int'>-999</restart_ymd>
+		<history_option type='string'>'never'</history_option>
+		<history_n type='int'>-999</history_n>
+		<history_ymd type='int'>-999</history_ymd>
+		<histavg_option type='string'>'never'</histavg_option>
+		<histavg_n type='int'>-999</histavg_n>
+		<histavg_ymd type='int'>-999</histavg_ymd>
+		<start_ymd type='int'>00010101</start_ymd>
+		<start_tod type='int'>0</start_tod>
+		<ref_ymd></ref_ymd>
+		<comps>
+			<atm_cpl_dt>1800</atm_cpl_dt>
+			<ocn_cpl_dt>86400</ocn_cpl_dt>
+		</comps>
+		<end_restart type='bool'>.false.</end_restart>
+	</time>
+</option>

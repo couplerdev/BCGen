@@ -1,0 +1,1 @@
+/usr/local/bin/mpicc  -std=c99 -g -O0  -rdynamic CMakeFiles/test_pioc.dir/test_pioc.c.o CMakeFiles/test_pioc.dir/test_common.c.o CMakeFiles/test_pioc.dir/test_shared.c.o  -o test_pioc ../../src/clib/libpioc.a ../../src/gptl/libgptl.a -lnetcdf /usr/local/Pnetcdf/lib/libpnetcdf.a -lmpifort -lgfortran -lm -lquadmath -lm 

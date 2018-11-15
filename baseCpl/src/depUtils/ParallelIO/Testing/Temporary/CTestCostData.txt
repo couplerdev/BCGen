@@ -1,0 +1,122 @@
+test_async_mpi 0 0
+test_spmd 0 0
+test_rearr 0 0
+test_intercomm2 0 0
+test_async_simple 2 0.015525
+test_async_3proc 2 0.0192494
+test_async_4proc 0 0
+test_iosystem2_simple 2 0.024307
+test_iosystem2_simple2 0 0
+test_iosystem2 0 0
+test_iosystem3_simple 0 0
+test_iosystem3_simple2 0 0
+test_iosystem3 0 0
+test_pioc 0 0
+test_pioc_unlim 0 0
+test_pioc_putget 0 0
+test_pioc_fill 0 0
+test_darray 0 0
+test_darray_frame 0 0
+test_darray_multi 0 0
+test_darray_multivar 0 0
+test_darray_multivar2 0 0
+test_darray_multivar3 0 0
+test_darray_1d 0 0
+test_darray_3d 0 0
+test_darray_fill 0 0
+test_decomp_uneven 0 0
+test_decomps 0 0
+pio_unit_test 2 0.43955
+init_finialize_1_proc 2 0.0124465
+init_finialize_2_proc 2 0.0253254
+init_finalize_2_proc_with_args 2 0.0252116
+pio_file_simple_tests 2 0.026981
+pio_file_fail 2 0.0260714
+ncdf_simple_tests 2 0.464561
+ncdf_get_put_1proc 2 0.0524811
+ncdf_get_put_2proc 2 0.0713096
+ncdf_fail 2 0.028021
+ncdf_inq 2 0.02711
+pio_rearr 2 5.81089
+pio_rearr_opts 2 59.778
+pio_rearr_opts2_1p 2 14.9087
+pio_rearr_opts2_3p 2 45.6976
+pio_rearr_opts2_4p 2 61.9106
+pio_decomp_tests_1p 2 1.47781
+pio_decomp_tests_2p 2 3.06487
+pio_decomp_tests_3p 2 4.52821
+pio_decomp_tests_4p_1agg 2 6.11972
+pio_decomp_tests_4p_2agg 2 6.14704
+pio_decomp_tests_4p_3agg 2 6.11858
+pio_decomp_tests_4p_1iop 2 4.78602
+pio_decomp_tests_4p_2iop 2 5.2348
+pio_decomp_tests_4p_3iop 2 5.67808
+pio_decomp_tests_4p_2iop_2str 2 5.24373
+pio_decomp_tests_4p_2iop_1agg 2 5.23435
+pio_decomp_tests_1d_1p 2 2.39292
+pio_decomp_tests_1d_2p 2 4.83658
+pio_decomp_tests_1d_3p 2 7.21641
+pio_decomp_tests_1d_4p_1agg 2 9.63362
+pio_decomp_tests_1d_4p_2agg 2 9.62949
+pio_decomp_tests_1d_4p_3agg 2 9.60838
+pio_decomp_tests_1d_4p_1iop 2 7.30302
+pio_decomp_tests_1d_4p_2iop 2 8.14142
+pio_decomp_tests_1d_4p_3iop 2 8.85547
+pio_decomp_tests_1d_4p_2iop_2str 2 8.12844
+pio_decomp_tests_1d_4p_2iop_1agg 2 8.167
+pio_decomp_tests_2d_1p 2 0.804528
+pio_decomp_tests_2d_2p 2 1.66087
+pio_decomp_tests_2d_3p 2 2.46119
+pio_decomp_tests_2d_4p_1agg 2 3.28441
+pio_decomp_tests_2d_4p_2agg 2 3.28182
+pio_decomp_tests_2d_4p_3agg 2 3.29219
+pio_decomp_tests_2d_4p_1iop 2 2.47357
+pio_decomp_tests_2d_4p_2iop 2 2.74026
+pio_decomp_tests_2d_4p_3iop 2 3.00911
+pio_decomp_tests_2d_4p_2iop_2str 2 2.73998
+pio_decomp_tests_2d_4p_2iop_1agg 2 2.75706
+pio_decomp_tests_3d_1p 2 0.277962
+pio_decomp_tests_3d_2p 2 0.554538
+pio_decomp_tests_3d_3p 2 0.816298
+pio_decomp_tests_3d_4p_1agg 2 1.10546
+pio_decomp_tests_3d_4p_2agg 2 1.10372
+pio_decomp_tests_3d_4p_3agg 2 1.10169
+pio_decomp_tests_3d_4p_1iop 2 0.833712
+pio_decomp_tests_3d_4p_2iop 2 0.925424
+pio_decomp_tests_3d_4p_3iop 2 1.01003
+pio_decomp_tests_3d_4p_2iop_2str 2 0.920186
+pio_decomp_tests_3d_4p_2iop_1agg 2 0.924457
+pio_decomp_frame_tests 2 13.1352
+pio_decomp_fillval 2 10.1515
+pio_iosystem_tests 2 0.0561509
+pio_iosystem_tests2 2 0.053556
+pio_iosystem_tests3 2 0.059498
+examplePio 2 0.112646
+example1 2 0.150517
+darray_no_async 2 0.10808
+---
+test_async_mpi
+test_spmd
+test_rearr
+test_intercomm2
+test_async_4proc
+test_iosystem2_simple2
+test_iosystem2
+test_iosystem3_simple
+test_iosystem3_simple2
+test_iosystem3
+test_pioc
+test_pioc_unlim
+test_pioc_putget
+test_pioc_fill
+test_darray
+test_darray_frame
+test_darray_multi
+test_darray_multivar
+test_darray_multivar2
+test_darray_multivar3
+test_darray_1d
+test_darray_3d
+test_darray_fill
+test_decomp_uneven
+test_decomps

@@ -1,0 +1,1 @@
+/usr/local/bin/mpicc  -std=c99 -g -O0  -rdynamic CMakeFiles/darray_no_async.dir/darray_no_async.c.o  -o darray_no_async ../../src/clib/libpioc.a ../../src/gptl/libgptl.a -lnetcdf /usr/local/Pnetcdf/lib/libpnetcdf.a -lmpifort -lgfortran -lm -lquadmath -lm 

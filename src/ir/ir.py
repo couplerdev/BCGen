@@ -251,7 +251,8 @@ class AttrVect(CoupleEntity):
 class Model(CoupleEntity):
     __slots__ = ['__name','__model_init','__model_run','__model_final',\
                  '__manager', '__type', '__attrVects','__gsMaps', '__mappers',\
-                 '__gSize', '__ID', '__time','__domain', '__nmlFile']
+                 '__gSize', '__ID', '__time','__domain', '__nmlFile', 'fields', \
+                 'myFields']
     def __init__(self,name="", gSize=8):
 	super(Model, self).__init__(name=name,_type="Model")
 	self.__model_init = ModelSubroutine() #optional?
@@ -262,6 +263,8 @@ class Model(CoupleEntity):
         self.__gsMaps = {}
         self.__mappers = {}       
         self.__domain = '' 
+        self.fields = {}   # fld name:i.e. fld_comp2x_states
+        self.myFields = {}  # fld_comp2x, fld_x2comp :经过计算可以得到
         self.__name = name
         self.__gSize = gSize
         self.__ID = -1

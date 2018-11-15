@@ -2,6 +2,7 @@ module comp_ice
 use mct_mod
 use timeM
 use proc_def
+use global_var
 use logUtil, only: logUnit
 use base_fields, only: flds_c2x => flds_ice2x_fields, &
                        flds_x2c => flds_x2ice_fields
@@ -19,9 +20,9 @@ use base_fields, only: flds_c2x => flds_ice2x_fields, &
 
 contains
 
-subroutine ice_init_mct(modelInfo, EClock, ice2x_iceice, x2ice_iceice, ierr)
+subroutine ice_init_mct(compInfo, EClock, ice2x_iceice, x2ice_iceice, ierr)
      implicit none
-     type(model_info), target, intent(inout)      :: modelInfo
+     type(compMeta), target, intent(inout)      :: compInfo
      type(Clock), intent(in)        :: EClock
      type(AttrVect), intent(inout)  :: ice2x_iceice
      type(AttrVect), intent(inout)  :: x2ice_iceice
@@ -53,11 +54,9 @@ subroutine ice_init_mct(modelInfo, EClock, ice2x_iceice, x2ice_iceice, ierr)
      character(*), parameter :: F91 ="('(ice_init_mct) ',73('-'))"
      character(*), parameter :: subName = "(ice_init_mct)"
 
-     local_comm = modelInfo%comm
-     ID = modelInfo%ID
-     domain => modelInfo%domain
-     gsMap_iceice => modelInfo%gsmap
-     gsize = modelInfo%gsize
+     call compMeta_getInfo(compInfo, ID=ID, gsmap=gsMap_iceice, domain=domain, &
+                          comm=local_comm, gsize=gsize)
+
      call mpi_comm_rank(local_comm, comm_rank, ierr)
      call mpi_comm_size(local_comm, comm_size, ierr)
  
@@ -122,10 +121,10 @@ subroutine ice_init_mct(modelInfo, EClock, ice2x_iceice, x2ice_iceice, ierr)
 end subroutine ice_init_mct
 
 
-subroutine ice_run_mct(modelInfo,  EClock, ice2x_iceice, x2ice_iceice, ierr)
+subroutine ice_run_mct(compInfo,  EClock, ice2x_iceice, x2ice_iceice, ierr)
     
     implicit none
-    type(model_info), target, intent(inout) :: modelInfo
+    type(compMeta), target, intent(inout) :: compInfo
     type(Clock), intent(in)         :: EClock
     type(AttrVect), intent(inout)   :: ice2x_iceice
     type(AttrVect), intent(inout)   :: x2ice_iceice
@@ -138,10 +137,9 @@ subroutine ice_run_mct(modelInfo,  EClock, ice2x_iceice, x2ice_iceice, ierr)
     integer :: comm_rank, i
     integer :: av_lsize, n_rflds, n_iflds
     integer :: n, nf
-
-    ID = modelInfo%ID 
-    local_comm = modelInfo%comm
-    domain => modelInfo%domain
+    
+    call compMeta_getInfo(compInfo, ID=ID, comm=local_comm, domain=domain)
+    
     call mpi_comm_rank(local_comm, comm_rank, ierr)
      
     av_lsize = avect_lsize(ice2x_iceice)

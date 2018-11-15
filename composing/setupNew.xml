@@ -1,0 +1,20 @@
+<setup>
+	<model>
+		<name>atm</name>
+		<input>
+			<src name='ocn'>
+				<field>fld_ocn_states</field>
+				<file>map_fv4x5_to_gx3v7_aave_da_091218.nc</file>
+			</src>	
+               </input>
+	</model>
+	<model>
+		<name>ocn</name>
+		<input>
+			<src name='atm'>
+				<field>fld_atm_states</field>
+				<file>map_fv4x5_to_gx3v7_bilin_da_091218.nc</file>
+			</src>
+		</input>
+	</model>
+</setup>

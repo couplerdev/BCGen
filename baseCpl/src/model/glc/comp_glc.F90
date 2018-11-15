@@ -2,6 +2,7 @@ module comp_glc
 use mct_mod
 use timeM
 use proc_def
+use global_var
 use logUtil, only: logUnit
 use base_fields, only: flds_c2x => flds_glc2x_fields, &
                        flds_x2c => flds_x2glc_fields
@@ -19,9 +20,9 @@ use base_fields, only: flds_c2x => flds_glc2x_fields, &
 
 contains
 
-subroutine glc_init_mct(modelInfo, EClock, glc2x_glcglc, x2glc_glcglc, ierr)
+subroutine glc_init_mct(compInfo, EClock, glc2x_glcglc, x2glc_glcglc, ierr)
      implicit none
-     type(model_info), target, intent(inout)      :: modelInfo
+     type(compMeta), target, intent(inout)      :: compInfo
      type(Clock), intent(in)        :: EClock
      type(AttrVect), intent(inout)  :: glc2x_glcglc
      type(AttrVect), intent(inout)  :: x2glc_glcglc
@@ -53,11 +54,9 @@ subroutine glc_init_mct(modelInfo, EClock, glc2x_glcglc, x2glc_glcglc, ierr)
      character(*), parameter :: F91 ="('(glc_init_mct) ',73('-'))"
      character(*), parameter :: subName = "(glc_init_mct)"
 
-     local_comm = modelInfo%comm
-     domain  => modelInfo%domain
-     gsmap_glcglc => modelInfo%gsmap
-     ID = modelInfo%ID
-     gsize = modelInfo%gsize
+     call compMeta_getInfo(compInfo, ID=ID, gsmap=gsmap_glcglc, domain=domain, &
+                          comm=local_comm, gsize=gsize)
+
 
      call mpi_comm_rank(local_comm, comm_rank, ierr)
      call mpi_comm_size(local_comm, comm_size, ierr)
@@ -123,10 +122,10 @@ subroutine glc_init_mct(modelInfo, EClock, glc2x_glcglc, x2glc_glcglc, ierr)
 end subroutine glc_init_mct
 
 
-subroutine glc_run_mct(modelInfo, EClock, glc2x_glcglc, x2glc_glcglc, ierr)
+subroutine glc_run_mct(compInfo, EClock, glc2x_glcglc, x2glc_glcglc, ierr)
     
     implicit none
-    type(model_info), target, intent(inout)      :: modelInfo
+    type(compMeta), target, intent(inout)      :: compInfo
     type(Clock), intent(in)        :: EClock
     type(AttrVect), intent(inout)  :: glc2x_glcglc
     type(AttrVect), intent(inout)  :: x2glc_glcglc
@@ -138,9 +137,8 @@ subroutine glc_run_mct(modelInfo, EClock, glc2x_glcglc, x2glc_glcglc, ierr)
     integer :: av_lsize, n_rflds, n_iflds
     integer :: n, nf
 
-    local_comm = modelInfo%comm
-    domain => modelInfo%domain
-    ID = modelInfo%ID
+    call compMeta_getInfo(compInfo, comm=local_comm, domain=domain, ID=ID)
+    
     call mpi_comm_rank(local_comm, comm_rank, ierr)
      
     av_lsize = avect_lsize(glc2x_glcglc)

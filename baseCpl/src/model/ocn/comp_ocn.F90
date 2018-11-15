@@ -2,6 +2,7 @@ module comp_ocn
 use mct_mod
 use timeM
 use proc_def
+use global_var
     implicit none
     integer  :: comp_id
     !---------------------------------------------------------
@@ -23,10 +24,10 @@ contains
 !  a_init_mct, init gsmap_aa, avect, avect init with zero, but not init
 !  dom at present
 !-------------------------------------------------------------------------
-subroutine ocn_init_mct(modelInfo, EClock, ocn2x_ocnocn, x2ocn_ocnocn, ierr)
+subroutine ocn_init_mct(compInfo, EClock, ocn2x_ocnocn, x2ocn_ocnocn, ierr)
 
     implicit none
-    type(model_info), target, intent(inout)  :: modelInfo
+    type(compMeta), target, intent(inout)  :: compInfo
     type(Clock), intent(in)          :: EClock
     type(AttrVect), intent(inout)    :: ocn2x_ocnocn
     type(AttrVect), intent(inout)    :: x2ocn_ocnocn
@@ -64,12 +65,9 @@ subroutine ocn_init_mct(modelInfo, EClock, ocn2x_ocnocn, x2ocn_ocnocn, ierr)
     character(*), parameter :: F91   = "('(ocn_init_mct) ',73('-'))"
     character(*), parameter :: subName = "(ocn_init_mct) "
 
+    call compMeta_getInfo(compInfo, comm=local_comm, domain=domain, ID=ID, &
+                          gsmap=gsMap_ocnocn, gsize=gsize)
     
-    local_comm = modelInfo%comm
-    domain => modelInfo%domain
-    gsMap_ocnocn => modelInfo%gsmap
-    ID = modelInfo%ID
-    gsize = modelInfo%gsize
     call mpi_comm_rank(local_comm, comm_rank, ierr)
     call mpi_comm_size(local_comm, comm_size, ierr)
 !---
@@ -147,10 +145,10 @@ subroutine ocn_init_mct(modelInfo, EClock, ocn2x_ocnocn, x2ocn_ocnocn, ierr)
 
 end subroutine ocn_init_mct
 
-subroutine ocn_run_mct(modelInfo, EClock, ocn2x, x2ocn, ierr)
+subroutine ocn_run_mct(compInfo, EClock, ocn2x, x2ocn, ierr)
 
     implicit none
-    type(model_info), target, intent(inout)  :: modelInfo
+    type(compMeta), target, intent(inout)  :: compInfo
     type(Clock), intent(in)          :: EClock
     type(AttrVect), intent(inout)    :: ocn2x
     type(AttrVect), intent(inout)    :: x2ocn
@@ -160,9 +158,8 @@ subroutine ocn_run_mct(modelInfo, EClock, ocn2x, x2ocn, ierr)
     type(gGrid), pointer  :: domain
     integer comm_rank,i, av_lsize, n_rflds, n_iflds, n,nf
     
-    local_comm = modelInfo%comm
-    ID = modelInfo%ID
-    domain => modelInfo%domain
+    call compMeta_getInfo(compInfo, comm=local_comm, ID=ID, domain=domain)
+    
 
     call mpi_comm_rank(local_comm, comm_rank, ierr)
     

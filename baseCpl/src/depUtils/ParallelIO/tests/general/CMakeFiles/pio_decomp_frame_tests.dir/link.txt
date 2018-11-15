@@ -1,0 +1,1 @@
+/usr/local/bin/mpif90    CMakeFiles/pio_decomp_frame_tests.dir/pio_decomp_frame_tests.F90.o CMakeFiles/pio_decomp_frame_tests.dir/util/pio_tutil.F90.o  -o pio_decomp_frame_tests ../../src/flib/libpiof.a ../../src/clib/libpioc.a /usr/local/lib/libnetcdf.so ../../src/gptl/libgptl.a /usr/local/lib/libnetcdff.so /usr/local/Pnetcdf/lib/libpnetcdf.a 

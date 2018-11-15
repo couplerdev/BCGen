@@ -1,31 +1,32 @@
 module time_mod
     use ESMF
-    use sys
+    use base_sys
     use global_var,  only: metaData
-    use time_def
+    use time_type
+    use base_mpi
+    use base_io
+    use base_file
     implicit none
     integer, parameter :: NUMALARMS = 7
-    #for $model in $proc_cfgs
-         #set $ncomps = len($proc_cfgs)
+    #set $ncomps = len($proc_cfgs)
     integer, parameter :: NUMCOMPS = $ncomps
-    #end for
     type(ESMF_Alarm) :: alarm(NUMALARMS)
     integer :: dtime(NUMCOMPS)
     public :: time_clockRegist
     public :: time_clockInit
     public :: time_clockAdvance
-    public :: time_clockPrint
+    public :: time_clockGetInfo
+    !public :: time_clockPrint
 
-    public :: time_EclockGetData
+    !public :: time_EclockGetData
     public :: time_EclockInit
     public :: time_alarmInit
     public :: time_alarmSetOn
     public :: time_alarmSetOff
     public :: time_timeYmdInit
-    public :: 
-    logical :: time_alarmIsOn
-    integer :: get_interval    
-    logical :: is_restart
+    public :: time_alarmIsOn
+    public :: get_interval    
+    !public :: is_restart
 
     character(len=*), private, parameter :: &
         time_optNONE     = "none", &
@@ -37,12 +38,13 @@ module time_mod
         time_optNHours   = "nhours", &
         time_optNDays    = "ndays", &
         time_optNMonths  = "nmonths", &
-        time_optYears    = "nyears", &
+        time_optNYears    = "nyears", &
         time_optYearly   = "yearly", &
         time_optDate     = "Date", &
         time_optMonthly  = "monthly"
 
     type(ESMF_Calendar), private, save :: time_cal
+    logical :: end_restart
     integer, parameter   :: SecPerDay = 86400
 
 contains
@@ -54,7 +56,7 @@ subroutine time_clockRegist(SyncClock, eclock, id)
     type(ESMF_Clock),    intent(in)     :: eclock
     integer,             intent(in)     :: id
  
-    SyncClock%ECP(id)%eclock
+    SyncClock%ECP(id)%eclock = eclock
 
 end subroutine time_clockRegist
 
@@ -84,13 +86,13 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     type(ESMF_Time) :: StopTime2
     type(ESMF_TimeInterval) :: TimeStep
     type(ESMF_CalKind_Flag) :: esmf_caltype
-    type(ESMF_Calender) :: calendar
                                      ! drv and comp
     type(ESMF_TimeInterval) :: intervals(NUMCOMPS)
     type(ESMF_Time) :: times(NUMCOMPS)   
     type(ESMF_Time) :: drv_time
-    type(ESMF_TimeINterval) :: tmp_interval
+    type(ESMF_TimeInterval) :: tmp_interval
 
+    character(len=64)  :: calendar
     character(len=64)  :: stop_option
     integer            :: stop_n
     integer            :: stop_ymd
@@ -109,21 +111,26 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     integer            :: curr_ymd
     integer            :: curr_tod
     integer            :: ref_ymd
-    integer            :: ref_ymd
+    integer            :: ref_tod
     #for $model in $proc_cfgs
          #set $name = $model.name
     integer            :: ${name}_cpl_dt
     integer            :: ${name}_cpl_offset
     #end for
-    logical            :: end_restart
+    !logical            :: end_restart
 
     ! local variables
-    integer :: i    
-    integer :: rc
+    integer :: i, iam, ierr   
+    integer :: rc, n
+    integer :: unitn
     integer :: sec
     integer :: step
     logical :: flag= .false.
     logical :: tempTrue = .true.
+    integer :: dtime(max_clocks)
+    integer :: offset(max_clocks)
+    character(*), parameter :: logs="./time_log"
+    character(*), parameter :: subname = "(time_clockInit)"
 
     namelist /time_args/ calendar, curr_ymd, curr_tod, &
           stop_option, stop_n, stop_ymd, stop_tod,     &
@@ -151,7 +158,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     call mpi_comm_rank(mpicom, iam, ierr)
 
     if(iam==0)then
-       calender       =  
+       calendar       = time_cal_noleap 
        stop_option    = ''
        stop_n         = -1
        stop_ymd       = -1
@@ -224,7 +231,6 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     call base_mpi_bcast(start_tod,      mpicom)
     call base_mpi_bcast(ref_ymd,        mpicom)
     call base_mpi_bcast(ref_tod,        mpicom)
-    call base_mpi_bcast(ref_tod,        mpicom)
     call base_mpi_bcast(curr_ymd,       mpicom)
     call base_mpi_bcast(curr_tod,       mpicom)
     #for $model in $proc_cfgs
@@ -249,19 +255,19 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
         stop_tod = 0
     endif 
 
-    flag = 
+    flag =  &
     #for $model in $proc_cfgs
          #set $name = $model.name
          abs(${name}_cpl_offset)>${name}_cpl_dt .or. &
     #end for
          (.false.)
     if(flag)then
-        write(logUnit, *)trim(subbname), ' ERROR: invalid offset'
+        write(logUnit, *)trim(subname), ' ERROR: invalid offset'
         call base_sys_abort('ERROR: invalid offset')
     end if
 
     if((start_ymd<101) .or. (start_ymd > 99991231))then
-        write(logUnit, *)trim(subname), ' ERROR: illegal start_ymd', ymd
+        write(logUnit, *)trim(subname), ' ERROR: illegal start_ymd', start_ymd
         call base_sys_abort('ERROR: illegal start_ymd')
     end if
 
@@ -280,8 +286,6 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     call ESMF_Initialize(vm=vm, defaultCalkind=esmf_caltype, defaultlogfilename=trim(logs), &
                          logkindflag=ESMF_LOGKIND_MULTI, rc=rc)
 
-    calendar = ESMF_CalendarCreate(esmf_caltype, name="calendar", rc=rc)
-    time_cal = calendar
 
     dtime = 0 
     #for $model in $proc_cfgs
@@ -291,9 +295,9 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     dtime(clock_drv) = maxval(dtime)
     dtime(clock_drv) = minval(dtime)
 
-    call time_TimeYmdInit(startTime, start_ymd, start_tod, "Start date")
-    call time_TimeYmdInit(refTime, ref_ymd, ref_ymd, "Reference date")
-    call time_TimeYmdInit(currTime, curr_ymd, curr_ymd, "Current date")
+    call time_TimeYmdInit(startTime, time_cal, start_ymd, start_tod, rc, "Start date")
+    call time_TimeYmdInit(refTime, time_cal, ref_ymd, ref_ymd, rc, "Reference date")
+    call time_TimeYmdInit(currTime, time_cal, curr_ymd, curr_ymd, rc, "Current date")
 
     do n = 1, max_clocks
         if(mod(dtime(n), dtime(clock_drv))/= 0)then
@@ -310,28 +314,28 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
         call time_EClockInit(TimeStep, startTime, refTime, currTime, SyncClock%ECP(n)%EClock)
 
         call time_AlarmInit(SyncClock%ECP(n)%EClock, EAlarm=SyncClock%EAlarm(n, alarm_run), &
-                            option=time_optNSeconds , opt_n = dtime(n), RefTime=currTime, &
+                            opt=time_optNSeconds , opt_n = dtime(n), RefTime=currTime, &
                             alarmname=trim(alarm_run_name))
         ! stop 
         call time_AlarmInit(SyncClock%ECP(n)%EClock, EAlarm=SyncClock%EAlarm(n,alarm_stop), &
-                            option=stop_option , opt_n=stop_n, opt_ymd=stop_ymd, &
+                            opt=stop_option , opt_n=stop_n, opt_ymd=stop_ymd, &
                             opt_tod = stop_tod, RefTime=currTime, alarmname=trim(alarm_stop_name))
         ! date stop
         call time_AlarmInit(SyncClock%ECP(n)%EClock, EAlarm =SyncClock%EAlarm(n, alarm_datestop), &
-                            option=time_optDate,   opt_ymd = stop_ymd, opt_tod = stop_tod, &
+                            opt=time_optDate,   opt_ymd = stop_ymd, opt_tod = stop_tod, &
                             RefTime=startTime, alarmname=trim(alarm_datestop_name)) 
-        ! restart 
+       ! restart 
         call time_AlarmInit(SyncClock%ECP(n)%EClock, EAlarm=SyncClock%EAlarm(n, alarm_restart), &
-                            option=restart_option, opt_n=restart_n, opt_ymd=restart_ymd, &
+                            opt=restart_option, opt_n=restart_n, opt_ymd=restart_ymd, &
                             RefTime=currTime, alarmname=trim(alarm_restart_name))
 
         ! history
         call time_AlarmInit(SyncClock%ECP(n)%EClock, EAlarm=SyncClock%EAlarm(n, alarm_history), &
-                            option=history_option, opt_n=history_n, opt_ymd=history_ymd, &
+                            opt=history_option, opt_n=history_n, opt_ymd=history_ymd, &
                             RefTime=startTime, alarmname=trim(alarm_history_name))
         ! histavg
         call time_AlarmInit(SyncClock%ECP(n)%EClock, EAlarm=SyncClock%EAlarm(n, alarm_histavg), &
-                            optiona=histavg_option, opt_n=histavg_n, opt_ymd=histavg_ymd, &
+                            opt=histavg_option, opt_n=histavg_n, opt_ymd=histavg_ymd, &
                             RefTime=startTime, alarmname=trim(alarm_histavg_name))
 
         call ESMF_AlarmGet(SyncClock%EAlarm(n, alarm_stop), RingTime=StopTime1, rc=rc)
@@ -344,6 +348,12 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
         end if
     end do
 
+    offset(clock_drv) = 0
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    offset(clock_$name) = $(name)_cpl_offset
+    #end for 
+
     do n = 1, max_clocks
         if(abs(offset(n))> dtime(n))then
             write(logUnit, *)subname, 'ERROR: offset too large', n, dtime(n), offset(n)
@@ -354,16 +364,17 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
 
         if(mod(offset(n), dtime(clock_drv))/=0)then
             write(logUnit, *)subname, "ERROR: offset not multiple", n, dtime(clock_drv), offset(n)
-            call base_sys_abort()
+            call base_sys_abort("ERROR:offset not multiple")
+        end if
     end do
     
     #for $model in $proc_cfgs
          #set $name = $model.name
     call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_${name}), rc=rc)
     OffsetTime=  currTime + TimeStep
-    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_${name}),&
-                  option=time_optNSeconds, opt_n=dtime(clock_${name}), RefTime=OffsetTime,&
-                  alarmname=trim(alarm_${name}_name))
+    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_${name}run),&
+                  opt=time_optNSeconds, opt_n=dtime(clock_${name}), RefTime=OffsetTime,&
+                  alarmname=trim(alarm_${name}run_name))
     #end for
 
     
@@ -382,15 +393,14 @@ subroutine time_clockGetInfo(EClock, curr_yr, curr_mon, curr_day, &
     integer,  optional,  intent(inout)   :: curr_day
     integer,  optional,  intent(inout)   :: curr_ymd
     integer,  optional,  intent(inout)   :: curr_tod
+    integer,  optional,  intent(inout)   :: prev_ymd
+    integer,  optional,  intent(inout)   :: prev_tod
+    integer,  optional,  intent(inout)   :: start_ymd
+    integer,  optional,  intent(inout)   :: start_tod
     integer,  optional,  intent(inout)   :: StepNo
     integer,  optional,  intent(inout)   :: ref_ymd
     integer,  optional,  intent(inout)   :: ref_tod
     integer,  optional,  intent(inout)   :: stop_ymd
-    integer,  optional,  intent(inout)   :: stop_tod
-    integer,  optional,  intent(inout)   :: dtime
-    integer,  optional,  intent(inout)   :: ECurrTime
-    integer,  optional,  intent(inout)   :: alarmcount
-    integer,  optional,  intent(inout)   :: curr_cday
     integer,  optional,  intent(inout)   :: stop_tod
     integer,  optional,  intent(inout)   :: dtime
     integer,  optional,  intent(inout)   :: alarmcount
@@ -407,10 +417,11 @@ subroutine time_clockGetInfo(EClock, curr_yr, curr_mon, curr_day, &
     type(ESMF_Time) :: prevTime
     type(ESMF_Time) :: startTime
     type(ESMF_Time) :: stopTime
+    type(ESMF_Time) :: refTime
     type(ESMF_TimeInterval) :: timeStep
     type(ESMF_TimeInterval) :: timediff
     integer :: rc
-    integer ::advSteps
+    integer(8) ::advSteps
     integer :: yy, mm, dd, sec
     integer :: ymd
     integer :: tod
@@ -421,27 +432,23 @@ subroutine time_clockGetInfo(EClock, curr_yr, curr_mon, curr_day, &
     integer :: days
     integer :: seconds
     integer :: acount
-    real    :: doy, tmpdoy
+    real(8)    :: doy, tmpdoy
+    type(ESMF_Calendar) :: tmpCal
     real, parameter :: cl=1.0
     type(ESMF_Time) :: tmpTime
     type(ESMF_TimeInterval) :: tmpDTime
 
-    if(present(calendar)) calendar = trim(time_cal_noleap) 
+    if(present(calendar) .and. (.not. present(next_cday))) calendar = trim(time_cal_noleap) 
      
     call  ESMF_ClockGet(EClock, currTime=currTime, &
            advanceCount=advSteps, prevTime=prevTime, TimeStep=timeStep, &
            startTime=startTime, stopTime=stopTime, refTime=refTime, &
-           AlarmCount=account, rc=rc)
-     
-    type(ESMF_Time) :: tmpTime
-    type(ESMF_TimeInterval) :: tmpDTime
-
-    if(present(calendar)) calendar = trim(time_cal_noleap) 
+           AlarmCount=acount, rc=rc)
      
     call  ESMF_ClockGet(EClock, currTime=currTime, &
            advanceCount=advSteps, prevTime=prevTime, TimeStep=timeStep, &
            startTime=startTime, stopTime=stopTime, refTime=refTime, &
-           AlarmCount=account, rc=rc)
+           AlarmCount=acount, rc=rc)
      
     call ESMF_TimeGet(currTime, yy=yy, mm=mm, dd=dd, s=sec, dayofyear_r8=doy, rc=rc)
     call time_TimeYmdGet(currTime, ymd=ymd, tod=tod)
@@ -458,7 +465,8 @@ subroutine time_clockGetInfo(EClock, curr_yr, curr_mon, curr_day, &
     if(present(curr_cday)) curr_cday = doy
     if(present(alarmcount)) alarmcount = acount
     if(present(next_cday))then
-        call ESMF_TimeSet(tmpTime, yy=yy, mm=mm, dd=dd, s=tod, calendar=)
+        tmpCal =  ESMF_CalendarCreate(time_cal_default, name='Noleap', rc=rc)
+        call ESMF_TimeSet(tmpTime, yy=yy, mm=mm, dd=dd, s=tod, calendar=tmpCal)
         call ESMF_TimeIntervalSet(tmpDtime, d=1, rc=rc)
         tmpTime = tmpTime + tmpDTime
         call ESMF_TimeGet(tmpTime, dayOfYear_r8=tmpdoy, rc=rc)
@@ -473,7 +481,7 @@ subroutine time_clockGetInfo(EClock, curr_yr, curr_mon, curr_day, &
     end if
 
     if(present(prev_time)) then
-        timediff = PreviousTime - RefTime
+        timediff = prevTime - RefTime
         call ESMF_TimeIntervalGet(timediff, d=days, s=seconds, rc=rc)
         prev_time = days + seconds/real(SecPerDay)
     end if
@@ -496,7 +504,7 @@ subroutine time_clockGetInfo(EClock, curr_yr, curr_mon, curr_day, &
         if(present(stop_tod)) stop_tod = tod
     end if
   
-    if(present(ref_ymd)) .or. present(ref_tod)then
+    if(present(ref_ymd) .or. present(ref_tod))then
         call time_TimeYmdGet(refTime, ymd=ref_ymd, tod=ref_tod)
         if(present(ref_ymd)) ref_ymd = ymd
         if(present(ref_tod)) ref_tod = tod
@@ -523,16 +531,16 @@ subroutine time_clockAdvance(SyncClock)
     
     #for $model in $proc_cfgs
          #set $name = $model.name
-    if(ESMF_AlarmIsRing(SyncClock%EAlarm(clock_drv,alarm_${name}run)))then
+    if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_${name}run)))then
         call ESMF_ClockAdvance(SyncClock%ECP(clock_${name})%EClock, rc=rc)
     end if
     #end for
 
     if(end_restart)then
         do n = 1, max_clocks
-            if(time_alarmIsOn(SyncClock%ECP(n)%EClock, alarm_stop) .or. &
-               time_alarmIsOn(SyncClock%ECP(n)%EClock, alarm_datestop))then
-                call time_alarmSetOn(SyncClock%ECP(n), alarm_restart)
+            if(time_alarmIsOn(SyncClock%ECP(n)%EClock, alarm_stop_name) .or. &
+               time_alarmIsOn(SyncClock%ECP(n)%EClock, alarm_datestop_name))then
+                call time_alarmSetOn(SyncClock%ECP(n)%EClock, alarm_restart_name)
             end if
         end do
     end if
@@ -542,10 +550,22 @@ end subroutine time_clockAdvance
 subroutine time_EClockInit(TimeStep, startTime, refTime, currTime, EClock)
 
     implicit none
+    type(ESMF_TimeInterval),  intent(in)    :: TimeStep
+    type(ESMF_Time),          intent(in)    :: startTime
+    type(ESMF_Time),          intent(in)    :: refTime
+    type(ESMF_Time),          intent(in)    :: currTime
+    type(ESMF_Clock),         intent(inout) :: EClock
 
-    type(ESMF_TimeInterval),   intent(in)  :: TimeStep
+    ! local
+    character(*),  parameter :: subname = '(time_EClockInit)'
+    integer :: rc
+    type(ESMF_Time) :: clocktime
+    type(ESMF_Calendar) :: tmpCal
+    character(len=128) :: desc
+
     desc =  'shared time_manager clock'
-    call time_timeYmdInit(clocktime, 99990101, 0, "default stop date")
+    tmpCal = ESMF_CalendarCreate(time_cal_default, name='NOLEAP', rc=rc)
+    call time_timeYmdInit(clocktime, tmpCal, 99990101, 0, rc, "default stop date")
    
     EClock = ESMF_ClockCreate(name=trim(desc), TimeStep=TimeStep, startTime=startTime, &
                               refTime=refTime, stopTime=clocktime, rc=rc)
@@ -598,28 +618,49 @@ logical function time_EClockDateInSync(EClock, ymd, tod, prev)
 
 end function time_EClockDateInSync
 
-subroutine time_alarmInit(EClock, alarm, opt, optN, refTime, alarmName)
+subroutine time_alarmInit(EClock, EAlarm, opt, opt_n, opt_ymd, opt_tod, refTime, alarmName)
 
     implicit none
     type(ESMF_Clock),    intent(inout)  :: EClock
-    type(ESMF_Alarm),    intent(inout)  :: alarm
+    type(ESMF_Alarm),    intent(inout)  :: EAlarm
     character(len=*),    intent(in),    optional :: opt
-    integer,             intent(in),    optional :: optN
+    integer,             intent(in),    optional :: opt_n
+    integer,             intent(in),    optional :: opt_ymd
+    integer,             intent(in),    optional :: opt_tod
     type(ESMF_Time),     intent(in),    optional :: refTime
-    type(ESMF_Alarm),    intent(in),    optional :: nextAlarm
+    character(*),        intent(in),    optional :: alarmName
 
     ! local data
+    character(len=*), parameter :: subname = "time_alarmInit"
+    integer  :: lymd
+    integer  :: ltod
+    integer  :: cyy, cmm, cdd, csec
+    integer  :: nyy, nmm, ndd, nsec 
+    type(ESMF_Calendar)  :: tmpCal
     type(ESMF_TimeInterval) :: alarmInterval
     type(ESMF_Time)  :: alarmTime
     type(ESMF_Time)  :: currTime
+    type(ESMF_Time)  :: nextAlarm
     logical :: update_nextAlarm = .true.
+    integer :: rc
 
     call ESMF_ClockGet(EClock, CurrTime=currTime, rc=rc)
+    call ESMF_TimeGet(currTime, yy=cyy, mm=cmm, dd=cdd, s=csec, rc=rc)
 
     if(present(refTime))then
         alarmTime = refTime
     else
         alarmTime = currTime
+    end if
+
+    ltod = 0
+    if(present(opt_tod))then
+        ltod = opt_tod
+    end if
+
+    lymd = - 1
+    if(present(opt_ymd))then
+        lymd = opt_ymd
     end if
 
     selectcase(trim(opt))
@@ -636,36 +677,36 @@ subroutine time_alarmInit(EClock, alarm, opt, optN, refTime, alarmName)
         if (opt_n <=0) call base_sys_abort(trim(alarmName)//" not valid opt_n")
         alarmInterval = alarmInterval*opt_n
     case (time_optEnd)
-        call base_sys_abort(subname//':end option'//trim(option))
+        call base_sys_abort(subname//':end option'//trim(opt))
     case (time_optNSeconds)
         call ESMF_TimeIntervalSet(AlarmInterval, s=1, rc=rc)
-        if(.not. present(opt_n))call base_sys_abort(subname//":"//trim(option)//' requires opt_n')
-        if(opt_n <= 0)call base_sys_call(subname//":"//trim(option)//' invalid opt_n')
+        if(.not. present(opt_n))call base_sys_abort(subname//":"//trim(opt)//' requires opt_n')
+        if(opt_n <= 0)call base_sys_call(subname//":"//trim(opt)//' invalid opt_n')
         alarmInterval = alarmInterval*opt_n
     case (time_optNMinutes)
         call ESMF_TimeIntervalSet(alarmInterval, s=60, rc=rc)
-        if(.not. present(opt_n))call base_sys_abort(subname//':'//trim(option)//'requires opt_n')
-        if(opt_n <=0)call base_sys_abort(subname//':'//trim(option)//' invalid opt_n')
+        if(.not. present(opt_n))call base_sys_abort(subname//':'//trim(opt)//'requires opt_n')
+        if(opt_n <=0)call base_sys_abort(subname//':'//trim(opt)//' invalid opt_n')
         alarmInterval = alarmInterval*opt_n 
     case (time_optNHours)
         call ESMF_TimeIntervalSet(alarmInterval, s=3600, rc=rc)
-        if(.not. present(opt_n))call base_sys_abort(subname//':'//trim(option)//'requires opt_n')
-        if(opt_n<=0)call base_sys_abort(subname//':'//trim(option)//' invalid opt_n')
+        if(.not. present(opt_n))call base_sys_abort(subname//':'//trim(opt)//'requires opt_n')
+        if(opt_n<=0)call base_sys_abort(subname//':'//trim(opt)//' invalid opt_n')
         alarmInterval = alarmInterval*opt_n
     case (time_optNDays)
         call ESMF_TimeIntervalSet(alarmInterval, d=1, rc=rc)
-        if(.not. present(opt_n))call base_sys_abort(subname//':'//trim(option)//'requires opt_n')
-        if(opt_n<=0)call base_sys_abort(subname//':'//trim(option)//' invalid opt_n')
+        if(.not. present(opt_n))call base_sys_abort(subname//':'//trim(opt)//'requires opt_n')
+        if(opt_n<=0)call base_sys_abort(subname//':'//trim(opt)//' invalid opt_n')
         alarmInterval = alarmInterval*opt_n
     case (time_optNMonths)
         call ESMF_TimeIntervalSet(alarmInterval, mm=1, rc=rc)
-        if(.not. present(opt_n))call base_sys_abort(subname//':'//trim(option)//'requires opt_n')
-        if(opt_n <= 0)call base_sys_abort(subname//':'//trim(option)//' invalid opt_n')
+        if(.not. present(opt_n))call base_sys_abort(subname//':'//trim(opt)//'requires opt_n')
+        if(opt_n <= 0)call base_sys_abort(subname//':'//trim(opt)//' invalid opt_n')
         alarmInterval = alarmInterval*opt_n
     case (time_optNYears)
         call ESMF_TimeIntervalSet(alarmInterval, yy=1, rc=rc)
-        if(.not. present(opt_n))call base_sys_abort(subname//':'//trim(option)//'requires opt_n')
-        if(opt_n <=0) call base_sys_abort(subname//':'//trim(option//' invalid opt_n'))
+        if(.not. present(opt_n))call base_sys_abort(subname//':'//trim(opt)//'requires opt_n')
+        if(opt_n <=0) call base_sys_abort(subname//':'//trim(opt)//' invalid opt_n')
         alarmInterval=alarmInterval*opt_n
     case (time_optYearly)
         call ESMF_TimeIntervalSet(alarmInterval, yy=1, rc=rc)
@@ -675,11 +716,12 @@ subroutine time_alarmInit(EClock, alarm, opt, optN, refTime, alarmName)
         call ESMF_TimeSet(nextAlarm, yy=cyy, mm=cmm, dd=1, s=0, calendar=time_cal, rc=rc)
     case (time_optDate)
         call ESMF_TimeIntervalSet(alarmInterval, yy=9999, rc=rc)
-        if(.not. present(opt_ymd))call base_sys_abort(subname//':'//trim(option)//' requires opt_ymd')
+        if(.not. present(opt_ymd))call base_sys_abort(subname//':'//trim(opt)//' requires opt_ymd')
         if(lymd <0 .or. ltod<0)then
-            call base_sys_abort(subname//':'//trim(option)//'opt_ymd, opt_tod invalid')
+            call base_sys_abort(subname//':'//trim(opt)//'opt_ymd, opt_tod invalid')
         end if
-        call time_TimeYmdInit(nextAlarm, lymd, ltod, "optDate")
+        tmpCal = ESMF_CalendarCreate(time_cal_default, name='NOLEAP', rc=rc)
+        call time_TimeYmdInit(nextAlarm, tmpCal,lymd, ltod,rc=rc, info="optDate")
         update_nextalarm = .false. 
     case default
         call base_sys_abort(trim(alarmName)//" unkown opt")
@@ -798,14 +840,16 @@ logical function time_alarmIsOn(EClock, alarmname)
     integer :: rc
     logical :: found 
     logical :: set
+    character(len=64) :: name
     type(ESMF_Time)  :: ETime1, ETime2
     type(ESMF_Alarm), pointer :: EAlarm
     type(ESMF_Alarm), pointer :: EAlarm_list(:)
     integer   :: AlarmCount 
 
+    time_alarmIsOn = .false.
     AlarmCount = 2
     allocate(EAlarm_list(AlarmCount))
-    call ESMF_ClockGetAlarmList(EClock, alarmLisFlag=ESMF_ALARMLIST_ALL, &
+    call ESMF_ClockGetAlarmList(EClock, alarmListFlag=ESMF_ALARMLIST_ALL, &
            alarmList=EAlarm_list, alarmCount=AlarmCount, rc=rc)
     do n = 1, AlarmCount
          name = trim('unset')
@@ -813,7 +857,10 @@ logical function time_alarmIsOn(EClock, alarmname)
          if (trim(name)==trim(alarmname))then
              found = .true.
              time_alarmIsOn = ESMF_AlarmIsRinging(alarm=EAlarm_list(n), rc=rc)
-             if (trim(alarmname==trim()))
+             if (trim(alarmname)==trim(alarm_datestop_name))then
+                 call ESMF_ClockGet(EClock, CurrTime=ETime1, rc=rc)
+                 call ESMF_AlarmGet(EAlarm_list(n), RingTime=ETime2, rc=rc)
+                 if(ETime1>=ETime2) time_alarmIsOn = .true.
              end if
           end if
      end do
@@ -826,27 +873,30 @@ logical function time_alarmIsOn(EClock, alarmname)
 
 end function time_alarmIsOn
 
-subroutine time_TimeYmdInit(time, cal, ymd, tod, rc)
+subroutine time_TimeYmdInit(time, cal, ymd, tod, rc, info)
 
     implicit none
     type(ESMF_Time),          intent(inout)  :: time
     type(ESMF_Calendar),      intent(in)     :: cal
-    integer,      optional,   intent(in)     :: ymd
+    integer,                  intent(in)     :: ymd
     integer,      optional,   intent(in)     :: tod
     integer,      optional,   intent(inout)  :: rc
+    character(*), optional,   intent(in)     :: info
 
     integer :: y, m, d, sec
-    
-    y = ymd/10000
-    ymd = mod(ymd, 10000)
-    m = ymd/100
-    ymd = mod(ymd, 100)
-    d = ymd
+    integer :: lymd   
+ 
+    lymd = ymd
+    y = lymd/10000
+    lymd = mod(lymd, 10000)
+    m = lymd/100
+    lymd = mod(lymd, 100)
+    d = lymd
     sec = 0
     if(present(tod))then
         sec = tod
     end if
-    if((sec<0) .or. (ymd<0)) then
+    if((sec<0) .or. (lymd<0)) then
         write(logUnit, *)  ":ERROR ymd or tod" 
         call base_sys_abort("ERROR ymd or tod")
     end if
@@ -904,7 +954,7 @@ integer function get_interval(time_interval)
     integer :: sec
     integer :: rc     
 
-    call ESMF_TimeIntervalSet(time_interval, s=sec, rc=rc)    
+    call ESMF_TimeIntervalGet(time_interval, s=sec, rc=rc)    
     get_interval = sec
 
 end function
