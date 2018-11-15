@@ -4,10 +4,12 @@ module extend
 ! comm set, they should extend themselves.
 !--------------------------------------------------------- 
 use mct_mod
+use mpi
 use proc_def
 use global_var
+
     implicit none
-    include 'mpif.h'    
+    !include 'mpif.h'    
     include 'netcdf.inc'
     public :: gsmap_init_ext
     public :: gsmap_extend
@@ -344,9 +346,9 @@ subroutine avect_create(metaData, AV_s, ID_s, AV_d, ID_d, lsize)
     ! becast the rank of comm_d who is the root in comm_s
     rank_s = -1
     srank = -1
-    if(metaData%iamin_model(ID_s)) &
+    if(metaData%iamin_model(ID_s)) then
         call mpi_comm_rank(mpi_comm_s, rank_s, ier)
-
+    end if
     call mpi_comm_rank(mpi_comm_d, rank_d, ier)
     if(rank_s == 0) then
         srank = rank_d

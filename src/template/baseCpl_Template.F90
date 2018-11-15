@@ -1,10 +1,15 @@
 module baseCpl
+use mpi
+use base_sys
+use logUtil
+use base_mpi
 use proc_def
 use comms_def
 use global_var
 use procm, only: pm_init => init, clean
 use comms
-use timeM
+use time_mod
+use ESMF
 use mct_mod
 #for $model in $proc_cfgs
      #set $name = $model.name
@@ -12,7 +17,7 @@ use comp_${name}
 #end for
 
     implicit none
-    type(Meta),  pointer :: metaData
+    !type(Meta),  pointer :: metaData
 
     !declare gsMap for each Model
     #for $model in $proc_cfgs
@@ -53,9 +58,9 @@ use comp_${name}
 
     #for $model in $proc_cfgs
          #set $name = $model.name
-    type(EClock)   :: EClock_${name}
+    type(ESMF_Clock), pointer   :: EClock_${name}
     #end for
-    type(EClock)   :: EClock_drv
+    type(ESMF_Clock), pointer   :: EClock_drv
 
     type(timeManager), target :: SyncClock
     logical :: restart_alarm
@@ -80,12 +85,17 @@ subroutine cpl_init()
     character(len=64)  :: nmlfile
     character(len=64)  :: restart_file
     logical :: iamroot
+    integer :: rc
     
     call pm_init(metaData)
-    call confMeta_getInfo(metaData%conf, nmlfile=nmlfile, restart=restart,
-restart_file=restart_file)
-    call time_ClockInit(SyncClock, nmlfile, restart, restart_file,
-time_cal_noleap)
+    call confMeta_getInfo(metaData%conf, nmlfile=nmlfile, restart=restart, &
+         restart_file=restart_file)
+    call time_ClockInit(SyncClock, nmlfile,MPI_COMM_WORLD, EClock_drv, &
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+         EClock_${name}, &
+    #end for
+         restart, restart_file, time_cal_default)
     call procMeta_getInfo(metaData%my_proc,ID=GLOID, iamroot=iamroot)
 
     !-------------------------------------------------------------
@@ -96,15 +106,15 @@ time_cal_noleap)
          #set $avs = $model.attrVects
          #for $av in $avs
               #set $name = $avs[$av].name
-    $name => metaData%name
+    $name => metaData%$name
          #end for
     #end for
 
     #for $model in $proc_cfgs
          #set $gm = $model.gsMaps["comp"].name
          #set $model_name = $model.name
-    domain_${model_name} =>   metaData%model_${model_name}%domain
-    $gm => metaData%model_${model_name}%gsMap
+    domain_${model_name} =>   metaData%${model_name}%domain
+    $gm => metaData%${model_name}%comp_gsMap
     #end for
      
     !-------------------------------------------------------
@@ -114,7 +124,7 @@ time_cal_noleap)
          #set $name = $cfg['model_unique_name']
          #set $subroutine  = $cfg['subroutine']
          #set $init_method = $subroutine['init_method']
-    if(metaData%iamin_model{name})then
+    if(metaData%iamin_model${name})then
          $init_method.getStrFormat()
     end if
     #end for
@@ -123,7 +133,7 @@ time_cal_noleap)
         if(iamroot)then
             write(logUnit, *) '-------------All Model init rank', comm_rank
         end if
-    call MPI_Barrier(MPI_COMM_WORLD)
+    call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
     !--------------------------------------------------------
     !  Model_x gsmap_ext av_ext
@@ -154,7 +164,7 @@ time_cal_noleap)
                          metaData%model${name}_id, $gm_mx, metaData%cplid, &
                          metaData%model${name}2cpl_id, ierr) 
         call mapper_rearrsplit_init(metaData%mapper_Cx2${name}, metaData, $gm_mx,&
-                         metaData%cpl_id, $gm_mm, metaData%model${name}_id, &
+                         metaData%cplid, $gm_mm, metaData%model${name}_id, &
                          metaData%model${name}2cpl_id, ierr)
         call MPI_Barrier(metaData%mpi_model${name}2cpl, ierr)
         call mapper_comp_map(metaData%mapper_C${name}2x, $av_mx_mm, $av_mx_mx, 100+10+1, ierr)
@@ -181,9 +191,9 @@ time_cal_noleap)
                   #set $mapper_file = $mn_av['w_file']
                   #set $smat_size = $mn_av['smat_size']
         call avect_init_ext(metaData, $av_mx_mx, metaData%cplid, &
-                           $av_mx_nx, metaData%cpplid, $gm_nx, &
+                           $av_mx_nx, metaData%cplid, $gm_nx, &
                            metaData%model${dst_model_name}2cpl_id)
-        call mapper_spmat_init(metaData%${mapper_name}, $gm_mx, $gm_nx, mpicom, &
+        call mapper_spmat_init(metaData%${mapper_name}, $gm_mx, $gm_nx, metaData%mpi_cpl, &
                            ${mapper_file}, 'X')   
              #end for
         #end for
@@ -199,22 +209,30 @@ subroutine cpl_run()
 
     implicit none
     integer  :: ierr, s, i, comm_rank
+    character(*), parameter :: subname = "(cpl_run)"
+    logical :: stop_alarm = .false.
+    logical :: history_alarm = .false.
+    logical :: histavg_alarm = .false.
+    logical :: restart_alarm = .false.
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    logical :: ${name}run_alarm
+    #end for
 
-    call mpi_comm_rank(MPI_COMM_WORLD, comm_rank)
+    call mpi_comm_rank(MPI_COMM_WORLD, comm_rank, ierr)
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     write(*,*)'----------rank:', comm_rank, ' begin run------------'
-    do while(.not. stop_clock)
+    do while(.not. stop_alarm)
         call time_clockAdvance(SyncClock)
-        stop_alarm = time_alarmIsOn(clock_drv, alarm_stop)
-        history_alarm = time_alarmIsOn(clock_drv, alarm_history)
-        histavg_alarm = time_alarmIsOn(clock_drv, alarm_histavg)
-        restart_alarm = time_alarmIsOn(clock_drv, alarm_restart)
+        stop_alarm = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_stop_name)
+        history_alarm = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_history_name)
+        histavg_alarm = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_histavg_name)
+        restart_alarm = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_restart_name)
         #for $model in $proc_cfgs
              #set $name = $model.name
-        ${name}run_alarm = time_alarmIsOn(clock_drv, alarm_${name}run)
-        ${name}run_alarm = time_alarmIsOn(clock_drv, alarm_${name}run)
+        ${name}run_alarm = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_${name}run_name)
         #end for
-        if(time_alarmIsOn(EClock_drv, alarm_datestop))
+        if(time_alarmIsOn(EClock_drv, alarm_datestop_name))then
             if(metaData%iamroot_cpl)then
                 write(logUnit,*)' '
                 write(logUnit,*)subname,'Note: Stopping from alarm date stop'

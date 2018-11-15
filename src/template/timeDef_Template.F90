@@ -41,6 +41,7 @@ module time_type
     #end for
     character(len=64), parameter :: time_cal_noleap = "NO_LEAP"
     character(len=64), parameter :: time_cal_gregorian = "GREGORIAN" 
+    type(ESMF_CalKind_Flag), parameter :: time_cal_default = ESMF_CALKIND_NOLEAP
     type EClockPointer
         type(ESMF_Clock), pointer :: EClock=> null()
     end type EClockPointer

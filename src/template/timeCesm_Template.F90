@@ -60,21 +60,25 @@ subroutine time_clockRegist(SyncClock, eclock, id)
 
 end subroutine time_clockRegist
 
-subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
-                          restart_file, cal)
+subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
+                          #for $model in $proc_cfgs
+                               #set $name = $model.name
+                          EClock_${name}, &
+                          #end for
+                          restart, restart_file, cal)
 
     implicit none
-    type(timeManager), intent(inout) :: SyncClock
-    character(len=*),  intent(in)    :: nmlfile
-    integer,           intent(in)    :: mpicom
-    logical,           intent(in)    :: restart
-    character(len=*),  intent(in)    :: restart_file
-    type(ESMF_CalKind_Flag), intent(inout), optional  :: cal
-    type(ESMF_Clock),  pointer :: EClock_drv
+    type(timeManager), intent(inout)         :: SyncClock
+    character(len=*),  intent(in)            :: nmlfile
+    integer,           intent(in)            :: mpicom
+    logical,           intent(in)            :: restart
+    character(len=*),  intent(in)            :: restart_file
+    type(ESMF_Clock), intent(inout), pointer :: EClock_drv
     #for $model in $proc_cfgs
          #set $name = $model.name
-    type(ESMF_Clock),  pointer :: EClock_${name}
+    type(ESMF_Clock), intent(inout), pointer :: EClock_${name}
     #end for
+    type(ESMF_CalKind_Flag), intent(in), optional  :: cal
     type(ESMF_VM) :: vm
     type(ESMF_Time) :: currTime
     type(ESMF_Time) :: stopTime

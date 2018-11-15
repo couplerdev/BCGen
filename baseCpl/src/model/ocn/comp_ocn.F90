@@ -1,6 +1,7 @@
 module comp_ocn
 use mct_mod
-use timeM
+use time_mod
+use ESMF
 use proc_def
 use global_var
     implicit none
@@ -28,7 +29,7 @@ subroutine ocn_init_mct(compInfo, EClock, ocn2x_ocnocn, x2ocn_ocnocn, ierr)
 
     implicit none
     type(compMeta), target, intent(inout)  :: compInfo
-    type(Clock), intent(in)          :: EClock
+    type(ESMF_Clock), intent(in)          :: EClock
     type(AttrVect), intent(inout)    :: ocn2x_ocnocn
     type(AttrVect), intent(inout)    :: x2ocn_ocnocn
     integer,  intent(inout)          :: ierr
@@ -66,7 +67,7 @@ subroutine ocn_init_mct(compInfo, EClock, ocn2x_ocnocn, x2ocn_ocnocn, ierr)
     character(*), parameter :: subName = "(ocn_init_mct) "
 
     call compMeta_getInfo(compInfo, comm=local_comm, domain=domain, ID=ID, &
-                          gsmap=gsMap_ocnocn, gsize=gsize)
+                          comp_gsmap=gsMap_ocnocn, gsize=gsize)
     
     call mpi_comm_rank(local_comm, comm_rank, ierr)
     call mpi_comm_size(local_comm, comm_size, ierr)
@@ -128,14 +129,7 @@ subroutine ocn_init_mct(compInfo, EClock, ocn2x_ocnocn, x2ocn_ocnocn, ierr)
 !Init Attrvect
 !----
   ! Init Field list
-  call seq_flds_add(fld_ar, 'Sa_z')
-  call seq_flds_add(fld_ar, 'Sa_u')
-  call seq_flds_add(fld_ar, 'Sa_v')
-  call seq_flds_add(fld_ar, 'Sa_tbot')
-  call seq_flds_add(fld_ar, 'Sa_ptem')
-  call seq_flds_add(fld_ar, 'Sa_shum')
-  call seq_flds_add(fld_ar, 'Sa_dens')
-  call seq_flds_add(fld_ar, 'Sa_ptem')
+  
 
   call avect_init(ocn2x_ocnocn, iList=fld_ai, rList=fld_ar, lsize=lsize)
   call avect_init(x2ocn_ocnocn, iList=fld_ai, rList=fld_ar, lsize=lsize)
@@ -149,7 +143,7 @@ subroutine ocn_run_mct(compInfo, EClock, ocn2x, x2ocn, ierr)
 
     implicit none
     type(compMeta), target, intent(inout)  :: compInfo
-    type(Clock), intent(in)          :: EClock
+    type(ESMF_Clock), intent(in)          :: EClock
     type(AttrVect), intent(inout)    :: ocn2x
     type(AttrVect), intent(inout)    :: x2ocn
     integer, intent(inout)           :: ierr    

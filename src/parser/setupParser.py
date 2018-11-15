@@ -60,7 +60,7 @@ class Setup:
                     phase_0["in_args"] = []
                     phase_0["out_args"] = []
                     phase = {}
-                    phaseName = "mapper_comp_comm"
+                    phaseName = "mapper_comp_map"
                     phase["name"] = phaseName
                     args=srcAttrVect
                     in_args = []

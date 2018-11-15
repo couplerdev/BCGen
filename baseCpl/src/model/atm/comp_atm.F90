@@ -1,7 +1,8 @@
 module comp_atm
 use mct_mod
-use timeM
+use time_mod
 use proc_def
+use ESMF
 use global_var
     implicit none
     integer  :: comp_id
@@ -29,7 +30,7 @@ subroutine atm_init_mct(compInfo, EClock, &
 
     implicit none
     type(compMeta), target, intent(inout)  :: compInfo
-    type(Clock), intent(in)          :: EClock
+    type(ESMF_Clock), intent(in)          :: EClock
     type(AttrVect), intent(inout)    :: atm2x_atmatm
     type(AttrVect), intent(inout)    :: x2atm_atmatm
     integer,        intent(inout)    :: ierr
@@ -66,7 +67,7 @@ subroutine atm_init_mct(compInfo, EClock, &
     character(*), parameter :: F91   = "('(atm_init_mct) ',73('-'))"
     character(*), parameter :: subName = "(atm_init_mct) "
 
-    call compMeta_getInfo(compInfo, ID=ID, gsmap=gsmap_atmatm, domain=domain, &
+    call compMeta_getInfo(compInfo, ID=ID, comp_gsmap=gsmap_atmatm, domain=domain, &
                           gsize =  gsize, comm=local_comm)
 
     call mpi_comm_rank(local_comm, comm_rank, ierr)
@@ -129,14 +130,14 @@ subroutine atm_init_mct(compInfo, EClock, &
 !Init Attrvect
 !----
   ! Init Field list
-  call seq_flds_add(fld_ar, 'Sa_z')
-  call seq_flds_add(fld_ar, 'Sa_u')
-  call seq_flds_add(fld_ar, 'Sa_v')
-  call seq_flds_add(fld_ar, 'Sa_tbot')
-  call seq_flds_add(fld_ar, 'Sa_ptem')
-  call seq_flds_add(fld_ar, 'Sa_shum')
-  call seq_flds_add(fld_ar, 'Sa_dens')
-  call seq_flds_add(fld_ar, 'Sa_ptem')
+  !call seq_flds_add(fld_ar, 'Sa_z')
+  !call seq_flds_add(fld_ar, 'Sa_u')
+  !call seq_flds_add(fld_ar, 'Sa_v')
+  !call seq_flds_add(fld_ar, 'Sa_tbot')
+  !call seq_flds_add(fld_ar, 'Sa_ptem')
+  !call seq_flds_add(fld_ar, 'Sa_shum')
+  !call seq_flds_add(fld_ar, 'Sa_dens')
+  !call seq_flds_add(fld_ar, 'Sa_ptem')
 
   call avect_init(atm2x_atmatm, iList=fld_ai, rList=fld_ar, lsize=lsize)
   call avect_init(x2atm_atmatm, iList=fld_ai, rList=fld_ar, lsize=lsize)
@@ -150,7 +151,7 @@ subroutine atm_run_mct(compInfo, EClock, atm2x, x2atm, ierr)
 
     implicit none
     type(compMeta), target, intent(inout)   :: compInfo
-    type(Clock), intent(in)           :: EClock
+    type(ESMF_Clock), intent(in)           :: EClock
     type(AttrVect), intent(inout)     :: atm2x
     type(AttrVect), intent(inout)     :: x2atm
     integer, intent(inout)            :: ierr

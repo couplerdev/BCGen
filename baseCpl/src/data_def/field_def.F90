@@ -1,4 +1,4 @@
-module field
+module field_def
 !--------------------------------------------------------
 !
 !    This is field manage mod
@@ -154,4 +154,4 @@ subroutine fldsMeta_final(fldsMetaData)
    
 end subroutine fldsMeta_final
 
-end module field
+end module field_def

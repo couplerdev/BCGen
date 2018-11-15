@@ -58,7 +58,9 @@ use field
        integer    :: mpi_glocomm
        integer    :: mpi_cpl
        integer    :: mpi_modelatm
+       integer    :: mpi_modelatm2cpl
        integer    :: mpi_modelocn
+       integer    :: mpi_modelocn2cpl
        
        logical    :: iam_root
        logical    :: iamin_cpl
@@ -75,8 +77,6 @@ use field
        logical    :: iamroot_modelocn2cpl
        logical    :: ocn_run
 
-       !type(map_mod)   ::atm
-       !type(map_mod)   ::ocn
        
        type(map_mod)   :: mapper_Smatatm2ocn
        type(map_mod)   :: mapper_Smatocn2atm
@@ -98,12 +98,12 @@ use field
 
    end type Meta
     
-   type(Meta)          :: metaData
+   type(Meta), target  :: metaData
    integer, parameter  :: gloid = 1
    integer, parameter  :: cplid = 2
-   integer, parameter  :: atmid = 3
-   integer, parameter  :: atm2xid = 4
-   integer, parameter  :: ocnid = 5
-   integer, parameter  :: ocn2xid = 6
+   integer, parameter  :: atmid = 2
+   integer, parameter  :: atm2xid = 2+1
+   integer, parameter  :: ocnid = 4
+   integer, parameter  :: ocn2xid = 4+1
 
 end module global_var

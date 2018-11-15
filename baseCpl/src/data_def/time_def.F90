@@ -30,11 +30,11 @@ module time_type
     character(len=32), parameter :: alarm_ocnrun_name = "alarm_ocnrun_name"
     character(len=64), parameter :: time_cal_noleap = "NO_LEAP"
     character(len=64), parameter :: time_cal_gregorian = "GREGORIAN" 
+    type(ESMF_CalKind_Flag), parameter :: time_cal_default = ESMF_CALKIND_NOLEAP
     type EClockPointer
         type(ESMF_Clock), pointer :: EClock=> null()
     end type EClockPointer
     type timeManager
-        private 
         type(EClockPointer) :: ECP(max_clocks)
         type(ESMF_Alarm) :: EAlarm(max_clocks, max_alarms)
     end type timeManager
