@@ -25,7 +25,7 @@ subroutine deploy_cpl(glo_comm, cpl_comm, cpl_id, iam_in, pattern, ierr)
     integer, intent(in)                            :: glo_comm
     integer, intent(inout)                         :: cpl_comm
     integer, intent(in)                            :: cpl_id
-    logical, dimension(:), pointer, intent(inout)  :: iam_in
+    logical, dimension(:), intent(inout)           :: iam_in
     integer, optional, intent(in)                  :: pattern
     integer, optional, intent(in)                  :: ierr
 
@@ -73,7 +73,7 @@ subroutine deploy(glo_comm, deploy_comm, deploy_join_comm, &
     integer, intent(in)              :: comp_id  
     integer, intent(in)              :: cpl_id
     integer, intent(in)              :: id_join
-    logical, dimension(:), pointer, intent(inout) :: iam_in
+    logical, dimension(:), intent(inout) :: iam_in
     integer, optional, intent(in)    :: pattern
     integer, optional, intent(inout) :: ierr    
 

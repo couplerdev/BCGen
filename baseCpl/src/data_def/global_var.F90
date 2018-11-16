@@ -1,6 +1,6 @@
 module global_var
 use proc_def
-use field
+use field_def
    implicit none
    type Meta
        type(fldsMeta)    :: fldsMetaData

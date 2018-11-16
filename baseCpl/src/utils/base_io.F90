@@ -1,9 +1,10 @@
 module base_io
+use base_mpi
 use global_var
 use ESMF
 use pio
 use time_type
-
+use mct_mod
     implicit none
     public :: base_io_init
     public :: base_io_wopen
@@ -193,7 +194,7 @@ subroutine base_io_read_av(filename, comp_gsmap, AV, dname, pre)
 
     call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam, comm=mpicom)
 
-    call gsmap_OrderedPoints(comp_gsmap, iam, Dof)
+    call gsmap_orderedPoints(comp_gsmap, iam, Dof)
     
     ns = avect_lsize(AV)
     nf = avect_nRattr(AV)
@@ -210,7 +211,7 @@ subroutine base_io_read_av(filename, comp_gsmap, AV, dname, pre)
     end if
 
     do k = 1, nf
-        call attrVect_getRList(mstring, k, AV)
+        call aVect_getRList(mstring, k, AV)
         itemc = string_toChar(mstring)
         call string_clean(mstring)
         if(trim(lversion)==trim(version))then

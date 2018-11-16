@@ -1,4 +1,5 @@
 module proc_def
+use base_sys
 use mct_mod
 use type_def
 use comms_def
@@ -32,6 +33,7 @@ use comms_def
     public :: procMeta_addToModel
     public :: procMeta_getInfo
     public :: compMeta_getInfo
+    public :: compMeta_final
     public :: confMeta_init
     public :: confMeta_getInfo
 
@@ -180,6 +182,14 @@ subroutine compMeta_getInfo(comp, ID, comp_gsmap, domain, comm, gsize, ierr)
     if(present(gsize)) gsize = comp%gsize
 
 end subroutine compMeta_getInfo
+
+subroutine compMeta_final(comp, ierr)
+
+    implicit none
+    type(compMeta),      intent(inout) :: comp
+    integer, optional,   intent(inout) :: ierr
+
+end subroutine compMeta_final
 
 subroutine confMeta_initFile(conf, conf_file, ierr)
 

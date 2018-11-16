@@ -59,19 +59,21 @@ subroutine time_clockRegist(SyncClock, eclock, id)
 
 end subroutine time_clockRegist
 
-subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
-                          restart_file, cal)
+subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
+                          EClock_atm, &
+                          EClock_ocn, &
+                          restart, restart_file, cal)
 
     implicit none
-    type(timeManager), intent(inout) :: SyncClock
-    character(len=*),  intent(in)    :: nmlfile
-    integer,           intent(in)    :: mpicom
-    logical,           intent(in)    :: restart
-    character(len=*),  intent(in)    :: restart_file
-    type(ESMF_CalKind_Flag), intent(inout), optional  :: cal
-    type(ESMF_Clock),  pointer :: EClock_drv
-    type(ESMF_Clock),  pointer :: EClock_atm
-    type(ESMF_Clock),  pointer :: EClock_ocn
+    type(timeManager), intent(inout)         :: SyncClock
+    character(len=*),  intent(in)            :: nmlfile
+    integer,           intent(in)            :: mpicom
+    logical,           intent(in)            :: restart
+    character(len=*),  intent(in)            :: restart_file
+    type(ESMF_Clock), intent(inout), pointer :: EClock_drv
+    type(ESMF_Clock), intent(inout), pointer :: EClock_atm
+    type(ESMF_Clock), intent(inout), pointer :: EClock_ocn
+    type(ESMF_CalKind_Flag), intent(in), optional  :: cal
     type(ESMF_VM) :: vm
     type(ESMF_Time) :: currTime
     type(ESMF_Time) :: stopTime
@@ -288,7 +290,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, restart, &
     do n = 1, max_clocks
         if(mod(dtime(n), dtime(clock_drv))/= 0)then
             write(logUnit, *)trim(subname), ' ERROR: dtime inconsistent'
-            call shr_sys_abort('ERROR: dtime inconsistent')
+            call base_sys_abort('ERROR: dtime inconsistent')
         end if
     enddo
     !--------------------------------------------------------------
@@ -667,7 +669,7 @@ subroutine time_alarmInit(EClock, EAlarm, opt, opt_n, opt_ymd, opt_tod, refTime,
     case (time_optNSeconds)
         call ESMF_TimeIntervalSet(AlarmInterval, s=1, rc=rc)
         if(.not. present(opt_n))call base_sys_abort(subname//":"//trim(opt)//' requires opt_n')
-        if(opt_n <= 0)call base_sys_call(subname//":"//trim(opt)//' invalid opt_n')
+        if(opt_n <= 0)call base_sys_abort(subname//":"//trim(opt)//' invalid opt_n')
         alarmInterval = alarmInterval*opt_n
     case (time_optNMinutes)
         call ESMF_TimeIntervalSet(alarmInterval, s=60, rc=rc)
