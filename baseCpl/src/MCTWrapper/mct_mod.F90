@@ -50,7 +50,7 @@ use m_GlobalSegMap ,only: gsMap_lsize  => lsize
 use m_GlobalSegMap ,only: gsMap_copy  => copy
 use m_GlobalSegMap ,only: gsMap_nlseg  => nlseg
 
-use m_GlobalSegMap ,only: gsMap_order  => OrderedPoints
+use m_GlobalSegMap ,only: gsMap_orderedPoints  => OrderedPoints
 
 use m_GlobalSegMapComms ,only: gsmap_bcast => bcast
 

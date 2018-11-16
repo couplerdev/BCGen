@@ -403,7 +403,7 @@ subroutine save_model_av(metaData, AV, gsMap_AV, ID, time)
 
         call mpi_comm_rank(mpi_comm, comm_rank, ierr)
         nlseg = gsMap_lsize(gsMap_AV, mpi_comm)        
-        call gsMap_order(gsMap_AV,comm_rank,points)
+        call gsMap_orderedPoints(gsMap_AV,comm_rank,points)
 
         call MPI_File_Open(mpi_comm, &
             check_point_path, MPI_MODE_WRONLY + MPI_MODE_CREATE, &
@@ -535,7 +535,7 @@ subroutine read_netcdf(metaData, ID, check_point_path, time, AV, gsMap_AV)
     if(mpi_comm /= MPI_COMM_NULL) then
         call mpi_comm_rank(mpi_comm, comm_rank, ierr)
         nlseg = gsMap_lsize(gsMap_AV, mpi_comm)        
-        call gsMap_order(gsMap_AV,comm_rank,points)
+        call gsMap_orderedPoints(gsMap_AV,comm_rank,points)
 
         do j=1,rlist_len 
             do i=1,nlseg

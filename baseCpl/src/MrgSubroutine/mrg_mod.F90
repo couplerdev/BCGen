@@ -1,10 +1,10 @@
 module mrg_mod
-
+use mpi
 use mct_mod
 use proc_def
 use global_var
     implicit none
-include "mpif.h"
+!include "mpif.h"
     public :: mrg_x2atm
 !    public :: mrg_x2lnd
     public :: mrg_x2ocn
