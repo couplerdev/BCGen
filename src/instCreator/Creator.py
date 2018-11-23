@@ -88,6 +88,7 @@ def get_SMat_relation(attrVects):
 
 
 class InstCreator:
+    couplerCodePath='../../baseCpl'
     def __init__(self):
         self.metaManager = MetaManager()        
         self.parser = None     
@@ -166,6 +167,30 @@ class InstCreator:
                                "merge_cfgs":merge_cfgs,"model_cfgs":model_cfgs, \
                                "subrt_cfgs":subrt_cfgs,'fraction_cfgs':fraction_cfgs})
 
+    def createMakefile(self):
+        # build prerequists libbcpl.a
+        currDir = os.getcwd()
+        os.chdir(InstCreator.couplerCodePath)
+        cmdBuild = 'make'
+        os.system(cmdBuild)
+        os.chdir(currDir)
+        # mv libbcpl.a to lib
+        
+        cmdMv = 'cp '+InstCreator.couplerCodePath+'/lib/libbcpl.a '+self.metaManager.instPath+'/lib'
+        os.system(cmdMv)
+        # mv required comp togather with its Makefile (may be modified) to models
+        for model in self.proc_cfgs:
+            name = model.name
+            modelDir = InstCreator.couplerCodePath+"/src/models/"+name
+            cmdCpComp = 'cp '+modelDir+"/* "+self.metaManager.instPath+"/models/"+name  
+            os.system(cmdCpComp)
+        # mv Cpl comp to models 
+        cplDir = InstCreator.couplerCodePath+"/src/models/cpl"
+        cmdCpCpl = 'cp '+cplDir+"/* "+self.metaManager.instPath+"/models/cpl"
+        os.system(cmdCpCpl)
+        # build Makefile from template
+        
+        # mv Makefile
 
     def instCreate(self):
         self.getIr()
@@ -202,7 +227,7 @@ class InstCreator:
         # copy all sorts of conf file to conf dir
         copyNmlCmd = "cp "+self.metaManager.nmlfile+" "+confPath
         os.system(copyNmlCmd)
-
+        self.createMakefile()
 
 if __name__ == "__main__":
     instCreator = InstCreator()

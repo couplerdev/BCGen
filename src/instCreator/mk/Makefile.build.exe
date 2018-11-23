@@ -1,0 +1,21 @@
+SRC=baseCpl.F90
+include ./Makefile.conf
+OBJS_ALL = ./*.o
+COMP_DEPS= $(LIBDIR)/libcpl.a \
+#for $model in $proc_cfgs
+     #set $name = $model.name
+	$(LIBDIR)/lib$(name).a
+#end for
+ESMF_DEPS=$(ESMF_LIB)/libesmf.a
+DEPS=-lmct -lnetcdf -lnetcdff -lmpeu -lpiof -lesmf -lpioc -lgptl -lpnetcdf
+ESMF_DEPS = -lesmf -lrt -lstdc++ -ldl
+FLAGS=-pthread
+EXE= main
+MAIN=main.F90
+
+EXE:
+	$(FC) -c -I$(INCLDIR) -I$(ESMF_MOD) -L$(LIBDIR) baseCpl.F90
+	echo 'finish mod'
+	$(FC) -o $(EXE) $(MAIN) $(OBJS_ALL) $(BASE_DEPS) $(FLAGS) -I$(INCLDIR) -L$(LIBDIR) -L$(COMPS_DEPS) \
+	$(DEPS) $(ESMF_DEPS)
+	mv $(EXE) $(BINDIR)

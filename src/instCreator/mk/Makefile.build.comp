@@ -1,0 +1,20 @@
+FC = mpif90
+LIB_A = libbcpl.a
+include ./Makefile.conf
+MAIN=./model/cpl
+models=$(shell ls -l ./model | grep ^d|grep -v 'cpl'|awk '{print $$9}')
+DEPS
+
+.PHONY : all
+all :
+	@for dir in $(models);\
+	do\
+		echo $$dir; \
+		cd ./model/$$dir; \ 
+		make; \
+		cd -; \
+	done
+	cd ./model/cpl
+	make
+
+
