@@ -18,6 +18,23 @@ from instParser import InstParser
 codeMapper work as a batch code generator:
 get a mapper: templateFile, codeFile, [cfgs_list]
 
+inst dict structure spec:
+
+inst----
+     |
+     \bin: excutive
+     \conf: config nml file
+     \include: relavent include and mod
+     \lib: relavent lib
+     \models------
+            |
+            \comp
+            \cpl
+     \src: nml describe input
+input----
+     |
+     \map  : map nc files
+     \models : comps depend data
 '''
 class TempConfig:
     def __init__(self, template, codeFile, cfgs):
@@ -88,6 +105,9 @@ def get_SMat_relation(attrVects):
 
 
 class InstCreator:
+    '''
+        presently, we can't support spec without enough xmls
+    '''
     couplerCodePath='../../baseCpl'
     def __init__(self):
         self.metaManager = MetaManager()        
@@ -135,7 +155,9 @@ class InstCreator:
                            for node in list_]
         self.fraction_cfgs = self.parser.fractions
         self.deploy_cfgs = self.parser.deploy
-        self.merge_Cfgs = get_SMat_relation(self.parser.attrVectCouple)
+        self.merge_cfgs = get_SMat_relation(self.parser.attrVectCouple)
+            #    print av['dst_av'].name
+            #    print av['w_file']
 
     def codeGenerate(self):
         if self.parser == None:
@@ -166,6 +188,19 @@ class InstCreator:
                               {"proc_cfgs":proc_cfgs, "merge_subroutines":merge_subroutines,\
                                "merge_cfgs":merge_cfgs,"model_cfgs":model_cfgs, \
                                "subrt_cfgs":subrt_cfgs,'fraction_cfgs':fraction_cfgs})
+    def createSrcConf(self):
+        dataPath = self.metaManager.dataPath
+        dataNml = self.metaManager.dataNml
+        with open(dataNml, 'w') as f:
+            for cfg in self.merge_cfgs:
+                dst_info = self.merge_cfgs[cfg] ['dst']
+                for av in dst_info:
+                    sname = av['dst_mapper']
+                    lname = av['w_file']
+                    f.write('&mapperFile\n')
+                    f.write('sname = '+sname+'\n')
+                    f.write('lname = '+lname+'\n')
+                    f.write('/')
 
     def createMakefile(self):
         # build prerequists libbcpl.a
@@ -228,6 +263,9 @@ class InstCreator:
         copyNmlCmd = "cp "+self.metaManager.nmlfile+" "+confPath
         os.system(copyNmlCmd)
         self.createMakefile()
+
+        self.createSrcConf()
+        copySrcConfCmd = "cp "+self.metaManager.dataNml+" "+srcPath
 
 if __name__ == "__main__":
     instCreator = InstCreator()

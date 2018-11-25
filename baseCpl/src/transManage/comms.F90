@@ -1,4 +1,5 @@
 module comms
+use base_file
 use mct_mod
 use comms_def
 use extend
@@ -13,6 +14,7 @@ use comms_nc, only : sMatPInitnc_mapfile
     public :: mapper_comp_interpolation  
     public :: mapper_comp_avMerge
     public :: mapper_spmat_init_nil
+    public :: mapper_spmat_init_nml
     private :: gsmap_check    
 
 interface mapper_init ; module procedure &
@@ -131,6 +133,48 @@ end subroutine mapper_spmat_init_nil
 !----------------------------------------
 !  read weight from nfl weight to init spmat
 !----------------------------------------
+subroutine mapper_spmat_init_nml(mapper, gsmap_src, gsmap_dst, mpicom, &
+                                nmlfile, mapname, maprctype, samegrid, string)
+    implicit none
+    type(map_mod),   intent(inout) :: mapper
+    type(gsmap),     intent(in)    :: gsmap_src
+    type(gsmap),     intent(in)    :: gsmap_dst
+    integer,         intent(in)    :: mpicom
+    character(*),    intent(in)    :: nmlfile
+    character(*),    intent(in)    :: mapname
+    character(*),    intent(in)    :: maprctype
+    logical,         intent(in), optional    :: samegrid
+    character(*),    intent(in), optional    :: string
+
+    character(*), parameter :: subname = "mapper_spmat_init_nml"
+    integer   :: ssize, dsize
+    character(len=256) :: maplname
+    character(len=256) :: maprcfile
+    character(len=256) :: mapsname
+    integer   :: unitn
+    integer   :: ierr
+ 
+
+    namelist /mapperFile/ mapsname, maplname
+
+    unitn = base_file_getUnit()
+    open(unitn, file=trim(nmlfile), status='old')
+    do while(ierr/=0)
+        read(unitn, nml=mapperFile, iostat=ierr)
+        if(ierr<0)then
+           call base_sys_abort(subname//'" namelist nmlfile error"')
+        end if
+        if(mapsname==mapname)then
+            maprcfile = maplname
+            cycle
+        end if
+    end do
+    close(unitn)
+    call sMatPinitnc_mapfile(mapper%sMatPlus, gsmap_src, gsmap_dst, &
+                        trim(maprcfile), trim(maprctype), mpicom)
+
+end subroutine mapper_spmat_init_nml
+
 
 subroutine mapper_spmat_init(mapper, gsmap_src, gsmap_dst, mpicom,&
                        maprcfile, maprctype, samegrid, string)
