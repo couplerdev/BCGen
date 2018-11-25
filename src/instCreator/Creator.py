@@ -108,12 +108,17 @@ class InstCreator:
     '''
         presently, we can't support spec without enough xmls
     '''
-    couplerCodePath='../../baseCpl'
-    def __init__(self):
-        self.metaManager = MetaManager()        
+    couplerCodePath='/../../baseCpl'
+    BCGenPath = '/../..'
+    def __init__(self,regen==False):
+        absPath = os.getpwd()
+        InstCreator.BCGenPath = absPath+InstCreator.BCGenPath
+        self.metaManager = MetaManager(InstCreator.BCGenPath)        
         self.parser = None     
         self.confXmlPath = {}
         self.setDefaultXmlPath()
+        self.args = {}
+        self.args['regen'] = regen
 
     def setDefaultXmlPath(self):
         self.absPath = os.getcwd()
@@ -188,6 +193,15 @@ class InstCreator:
                               {"proc_cfgs":proc_cfgs, "merge_subroutines":merge_subroutines,\
                                "merge_cfgs":merge_cfgs,"model_cfgs":model_cfgs, \
                                "subrt_cfgs":subrt_cfgs,'fraction_cfgs':fraction_cfgs})
+        if self.args['reGen']:
+            confList = [searchTmp, manageTmp, deployTmp, baseCplTmp, globalTmp, timeDefTmp, timeCesmTmp, fieldTmp]
+            codeGen = CodeMapper(confList)
+            codeGen.genCode()
+            # mv codeTo right place
+            for key in self.metaManager.codeGenList:
+                mvCmd = 'mv '+key+" "+self.metaManager.codePathDict[key].loc 
+                os.system(mvCmd)
+
     def createSrcConf(self):
         dataPath = self.metaManager.dataPath
         dataNml = self.metaManager.dataNml
@@ -224,6 +238,8 @@ class InstCreator:
         cmdCpCpl = 'cp '+cplDir+"/* "+self.metaManager.instPath+"/models/cpl"
         os.system(cmdCpCpl)
         # build Makefile from template
+        mkCompTmp = TempConfig('./mk/Makefile.build.comp', 'MakefileComp', {'proc_cfgs':self.proc_cfgs})         
+        mkExeTmp = TempConfig('./mk/Makefile.build.exe','MakefileExe',{'proc_cfgs':self.proc_cfgs})
         
         # mv Makefile
 
@@ -262,10 +278,14 @@ class InstCreator:
         # copy all sorts of conf file to conf dir
         copyNmlCmd = "cp "+self.metaManager.nmlfile+" "+confPath
         os.system(copyNmlCmd)
-        self.createMakefile()
 
+        #copy src conf file to src dir
         self.createSrcConf()
         copySrcConfCmd = "cp "+self.metaManager.dataNml+" "+srcPath
+        os.system(copySrcConfCmd)  
+
+        #copy Makefile to relavent dir
+        self.createMakefile()
 
 if __name__ == "__main__":
     instCreator = InstCreator()

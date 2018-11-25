@@ -7,6 +7,7 @@
 #
 import sys
 sys.path.append('../parser')
+import os
 from instParser import InstParser
 from configParser import ConfigParser
 #from MetaParser import
@@ -17,24 +18,32 @@ class CodeDesc:
         self.templateName = templateName
 
 codePathDict = {}
-codePathDict['baseCpl.F90']    = CodeDesc('','','baseCpl_Template.F90')
-codePathDict['baseField.F90']  = CodeDesc('','','baseField_Template.F90')
-codePathDict['deploy_mod.F90'] = CodeDesc('','', 'deploymod_Template.F90')
-codePathDict['global_var.F90'] = CodeDesc('','','globalVar_Template.F90')
-codePathDict['manage.F90']     = CodeDesc('','','procM_Template.F90')
-codePathDict['search_set.py']  = CodeDesc('','','searchSet_Template.py')
-codePathDict['timeCesm.F90']   = CodeDesc('','','timeCesm_Template.F90')
-codePathDict['time_def.F90']   = CodeDesc('','','timeDef_Template.F90')
+codePathDict['baseCpl.F90']    = CodeDesc('baseCpl.F90',     '/baseCpl/src/models/cpl', 'baseCpl_Template.F90')
+codePathDict['base_field.F90']  = CodeDesc('base_field.F90', '/baseCpl/src/esm',        'baseField_Template.F90')
+codePathDict['deploy_mod.F90'] = CodeDesc('deploy_mod.F90',  '/baseCpl/src/procManage', 'deploymod_Template.F90')
+codePathDict['global_var.F90'] = CodeDesc('global_var.F90',  '/baseCpl/src/data_def',   'globalVar_Template.F90')
+codePathDict['manage.F90']     = CodeDesc('manage.F90',      '/baseCpl/src/procManage', 'procM_Template.F90')
+codePathDict['search_set.py']  = CodeDesc('search_set.py',   '/src/template',           'searchSet_Template.py')
+codePathDict['timeCesm.F90']   = CodeDesc('timeCesm.F90',    '/baseCpl/src/timeManage', 'timeCesm_Template.F90')
+codePathDict['time_def.F90']   = CodeDesc('time_def.F90',    '/baseCpl/src/data_def',   'timeDef_Template.F90')
+codeGenList = [key for key in codePatgDict]
 
 class MetaManager:
     codePathDict = codePathDict
-    def __init__(self):
-        self.absPath = ""
+    codeGenList = codeGenList
+    def __init__(self,absPath):
+        self.absPath = absPath
         self.instPath= "" 
         self.nmlfile = ""
         self.confPath = ""
         self.dataPath = ""
         self.dataNml = ""
+        # init codePathDict absPath
+        tmpCodeList = ['baseCpl.F90', 'base_field.F90', 'deploy_mod.F90', 'global_var.F90','manage.F90','search_set.F90','timeCesm.F90',\
+                       'time_def.F90']
+        for key in tmpCodeList:
+            MetaManage.codePathDict[key].loc = self.absPath + MetaManage.codePathDict[key].loc
+        
 
     def setConfigMeta(self, confPath):
         confParser = ConfigParser(confPath)
