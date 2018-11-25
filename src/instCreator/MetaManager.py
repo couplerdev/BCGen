@@ -33,6 +33,8 @@ class MetaManager:
         self.instPath= "" 
         self.nmlfile = ""
         self.confPath = ""
+        self.dataPath = ""
+        self.dataNml = ""
 
     def setConfigMeta(self, confPath):
         confParser = ConfigParser(confPath)
@@ -45,3 +47,5 @@ class MetaManager:
         instParser.parse()
         self.instPath = instParser.instPath
         self.confPath = instParser.confPath
+        self.dataPath = instParser.dataPath
+        self.dataNml = instParser.datanml
