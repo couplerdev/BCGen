@@ -110,9 +110,10 @@ class InstCreator:
     '''
     couplerCodePath='/../../baseCpl'
     BCGenPath = '/../..'
-    def __init__(self,regen==False):
-        absPath = os.getpwd()
+    def __init__(self,regen=False):
+        absPath = os.getcwd()
         InstCreator.BCGenPath = absPath+InstCreator.BCGenPath
+        InstCreator.couplerCodePath = absPath+InstCreator.couplerCodePath
         self.metaManager = MetaManager(InstCreator.BCGenPath)        
         self.parser = None     
         self.confXmlPath = {}
@@ -237,11 +238,29 @@ class InstCreator:
         cplDir = InstCreator.couplerCodePath+"/src/models/cpl"
         cmdCpCpl = 'cp '+cplDir+"/* "+self.metaManager.instPath+"/models/cpl"
         os.system(cmdCpCpl)
+
         # build Makefile from template
-        mkCompTmp = TempConfig('./mk/Makefile.build.comp', 'MakefileComp', {'proc_cfgs':self.proc_cfgs})         
+        #mkCompTmp = TempConfig('./mk/Makefile.build.comp', 'MakefileComp', {'proc_cfgs':self.proc_cfgs})      
         mkExeTmp = TempConfig('./mk/Makefile.build.exe','MakefileExe',{'proc_cfgs':self.proc_cfgs})
+        mkConfTmp = TempConfig('./mk/Makefile.conf','Makefile.conf',{'meta_cfgs':self.metaManager})
+        mkList = [mkExeTmp, mkConfTmp] 
+        codeGen = CodeMapper(mkList) 
+        codeGen.genCode()
         
-        # mv Makefile
+        # mv Makefile 
+        mvCompCmd = 'cp ./mk/Makefile.build.comp '+self.metaManager.instPath + "/Makefile"
+        mvExeCmd = 'mv MakefileExe '+self.metaManager.instPath+"/models/cpl/Makefile"
+        cpMkConfCmd = 'cp Makefile.conf '+self.metaManager.instPath+"/"
+	mvMkConfCmd = 'mv Makefile.conf '+self.metaManager.instPath+"/models"
+        os.system(mvCompCmd)
+        os.system(mvExeCmd)
+	os.system(cpMkConfCmd)
+        os.system(mvMkConfCmd)
+
+	#cp scripts
+	cpBuildShCmd = 'cp ../instManager/instBuild.sh '+self.metaManager.instPath
+        os.system(cpBuildShCmd)
+       
 
     def instCreate(self):
         self.getIr()
