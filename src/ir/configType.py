@@ -9,9 +9,11 @@ class TimeConfig:
         self.timeConf = {}
         self.timeConf['calendar']=('NO_LEAP', 'string')
         self.timeConf['stop_option'] = ('never', 'string')
+        self.timeConf['stop_n'] = ('-1','int')
         self.timeConf['stop_ymd'] = ('99990101', 'int')
         self.timeConf['restart_option'] = ('never','int')
         self.timeConf['restart_ymd'] = ('-999', 'int')
+        self.timeConf['restart_n'] = ('-1','int')
         self.timeConf['history_option'] = ('never','string')
         self.timeConf['history_n'] = ('-999', 'int')
         self.timeConf['history_ymd'] = ('-999', 'int')

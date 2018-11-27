@@ -46,7 +46,6 @@ module time_type
         type(ESMF_Clock), pointer :: EClock=> null()
     end type EClockPointer
     type timeManager
-        private 
         type(EClockPointer) :: ECP(max_clocks)
         type(ESMF_Alarm) :: EAlarm(max_clocks, max_alarms)
     end type timeManager

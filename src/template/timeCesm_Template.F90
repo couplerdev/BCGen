@@ -133,7 +133,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     logical :: tempTrue = .true.
     integer :: dtime(max_clocks)
     integer :: offset(max_clocks)
-    character(*), parameter :: logs="./time_log"
+    character(*), parameter :: logs="time.log"
     character(*), parameter :: subname = "(time_clockInit)"
 
     namelist /time_args/ calendar, curr_ymd, curr_tod, &
@@ -147,6 +147,12 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
           ${name}_cpl_dt, ${name}_cpl_offset,      &
           #end for
           end_restart
+
+    allocate(SyncClock%ECP(clock_drv)%EClock)
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    allocate(SyncClock%ECP(clock_${name})%EClock)
+    #end for
 
     EClock_drv => SyncClock%ECP(clock_drv)%EClock
     #for $model in $proc_cfgs
@@ -243,7 +249,10 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     call base_mpi_bcast(${name}_cpl_offset,     mpicom)
     #end for
     call base_mpi_bcast(end_restart,    mpicom)
-    
+    if(iam==0)then
+        write(*,*)subname//' bcast end'
+    end if
+     
     if(ref_ymd == 0)then
         ref_ymd = start_ymd
         ref_tod = start_tod
@@ -287,6 +296,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     !  time init and clock init
     !-------------------------------------------------------------
 
+    
     call ESMF_Initialize(vm=vm, defaultCalkind=esmf_caltype, defaultlogfilename=trim(logs), &
                          logkindflag=ESMF_LOGKIND_MULTI, rc=rc)
 
@@ -306,7 +316,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     do n = 1, max_clocks
         if(mod(dtime(n), dtime(clock_drv))/= 0)then
             write(logUnit, *)trim(subname), ' ERROR: dtime inconsistent'
-            call shr_sys_abort('ERROR: dtime inconsistent')
+            call base_sys_abort('ERROR: dtime inconsistent')
         end if
     enddo
     !--------------------------------------------------------------
@@ -685,7 +695,7 @@ subroutine time_alarmInit(EClock, EAlarm, opt, opt_n, opt_ymd, opt_tod, refTime,
     case (time_optNSeconds)
         call ESMF_TimeIntervalSet(AlarmInterval, s=1, rc=rc)
         if(.not. present(opt_n))call base_sys_abort(subname//":"//trim(opt)//' requires opt_n')
-        if(opt_n <= 0)call base_sys_call(subname//":"//trim(opt)//' invalid opt_n')
+        if(opt_n <= 0)call base_sys_abort(subname//":"//trim(opt)//' invalid opt_n')
         alarmInterval = alarmInterval*opt_n
     case (time_optNMinutes)
         call ESMF_TimeIntervalSet(alarmInterval, s=60, rc=rc)

@@ -29,6 +29,10 @@ subroutine init(metaData)
     integer :: iter
     integer, dimension(:), pointer :: mycomms
     integer, dimension(:), pointer :: myids
+    #set $nmlfile = $conf_cfgs['nmlfile']
+    #set $datanml = $conf_cfgs['dataNml']
+    character(*), parameter :: nmlfile = "$nmlfile"
+    character(*), parameter :: datanml = "$datanml"
 
     #set $ncomps = len($proc_cfgs)
     metaData%num_models = $ncomps
@@ -81,6 +85,16 @@ subroutine init(metaData)
          #set $name = $model.name
     metaData%comp_comm(metaData%model${name}_id)     = metaData%mpi_model${name}
     metaData%comp_comm(metaData%model${name}2cpl_id) =metaData%mpi_model${name}2cpl 
+    #end for
+
+    call procMeta_init(metaData%my_proc, metaData%ncomps)
+    call procMeta_addToModel(metaData%my_proc, metaData%gloid, metaData%mpi_glocomm, 'global', ierr)
+    call procMeta_addToModel(metaData%my_proc, metaData%cplid, metaData%mpi_cpl, 'coupler', ierr)
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    call procMeta_addToModel(metaData%my_proc, metaData%model${name}_id, metaData%mpi_model${name}, '$name', ierr)
+    call procMeta_addToModel(metaData%my_proc, metaData%model${name}2cpl_id, &
+                             metaData%mpi_model${name},'${name}2cpl', ierr)
     #end for
 
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
@@ -155,6 +169,11 @@ subroutine init(metaData)
     !   init field 
     !-------------------------------------------
     call flds_init(metaData, ierr)
+
+    !-------------------------------------------
+    !   init nmlfile
+    !-------------------------------------------
+    call confMeta_init(metaData%conf, nmlfile, ierr=ierr)
 
 
 end subroutine init

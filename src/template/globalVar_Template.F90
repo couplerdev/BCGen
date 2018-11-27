@@ -1,6 +1,6 @@
 module global_var
 use proc_def
-use field
+use field_def
    implicit none
    type Meta
        type(fldsMeta)    :: fldsMetaData
@@ -38,7 +38,7 @@ use field
        !-------------------------------------------
        integer, allocatable  :: comp_comm(:)
        integer, allocatable  :: comp_id(:)
-       logical, allocatable  :: iamin_model(:)
+       logical, pointer      :: iamin_model(:)
 
        !------------------------------------------
        !   intermediate vars
