@@ -18,6 +18,8 @@ class InstParser:
         self.instPath = ""
         self.nmlfile = ""
         self.restartfile = ""
+        self.dataPath = ""
+        self.datanml = ""
 
     def parse(self):
         tree = ET.parse(self.xmlFile)
@@ -28,4 +30,8 @@ class InstParser:
         fileLoc = tree.find('file_location')
         self.nmlfile = fileLoc.find('nmlfile').text
         self.restart_file = fileLoc.find('restart_file').text
+
+        dataLoc = tree.find('data_location')
+        self.dataPath = dataLoc.find('data_path').text
+        self.datanml = dataLoc.find('data_nml').text
        

@@ -18,6 +18,23 @@ from instParser import InstParser
 codeMapper work as a batch code generator:
 get a mapper: templateFile, codeFile, [cfgs_list]
 
+inst dict structure spec:
+
+inst----
+     |
+     \bin: excutive
+     \conf: config nml file
+     \include: relavent include and mod
+     \lib: relavent lib
+     \models------
+            |
+            \comp
+            \cpl
+     \src: nml describe input
+input----
+     |
+     \map  : map nc files
+     \models : comps depend data
 '''
 class TempConfig:
     def __init__(self, template, codeFile, cfgs):
@@ -88,11 +105,21 @@ def get_SMat_relation(attrVects):
 
 
 class InstCreator:
-    def __init__(self):
-        self.metaManager = MetaManager()        
+    '''
+        presently, we can't support spec without enough xmls
+    '''
+    couplerCodePath='/../../baseCpl'
+    BCGenPath = '/../..'
+    def __init__(self,regen=False):
+        absPath = os.getcwd()
+        InstCreator.BCGenPath = absPath+InstCreator.BCGenPath
+        InstCreator.couplerCodePath = absPath+InstCreator.couplerCodePath
+        self.metaManager = MetaManager(InstCreator.BCGenPath)        
         self.parser = None     
         self.confXmlPath = {}
         self.setDefaultXmlPath()
+        self.args = {}
+        self.args['regen'] = regen
 
     def setDefaultXmlPath(self):
         self.absPath = os.getcwd()
@@ -134,7 +161,9 @@ class InstCreator:
                            for node in list_]
         self.fraction_cfgs = self.parser.fractions
         self.deploy_cfgs = self.parser.deploy
-        self.merge_Cfgs = get_SMat_relation(self.parser.attrVectCouple)
+        self.merge_cfgs = get_SMat_relation(self.parser.attrVectCouple)
+            #    print av['dst_av'].name
+            #    print av['w_file']
 
     def codeGenerate(self):
         if self.parser == None:
@@ -165,7 +194,73 @@ class InstCreator:
                               {"proc_cfgs":proc_cfgs, "merge_subroutines":merge_subroutines,\
                                "merge_cfgs":merge_cfgs,"model_cfgs":model_cfgs, \
                                "subrt_cfgs":subrt_cfgs,'fraction_cfgs':fraction_cfgs})
+        if self.args['reGen']:
+            confList = [searchTmp, manageTmp, deployTmp, baseCplTmp, globalTmp, timeDefTmp, timeCesmTmp, fieldTmp]
+            codeGen = CodeMapper(confList)
+            codeGen.genCode()
+            # mv codeTo right place
+            for key in self.metaManager.codeGenList:
+                mvCmd = 'mv '+key+" "+self.metaManager.codePathDict[key].loc 
+                os.system(mvCmd)
 
+    def createSrcConf(self):
+        dataPath = self.metaManager.dataPath
+        dataNml = self.metaManager.dataNml
+        with open(dataNml, 'w') as f:
+            for cfg in self.merge_cfgs:
+                dst_info = self.merge_cfgs[cfg] ['dst']
+                for av in dst_info:
+                    sname = av['dst_mapper']
+                    lname = av['w_file']
+                    f.write('&mapperFile\n')
+                    f.write('sname = '+sname+'\n')
+                    f.write('lname = '+lname+'\n')
+                    f.write('/')
+
+    def createMakefile(self):
+        # build prerequists libbcpl.a
+        currDir = os.getcwd()
+        os.chdir(InstCreator.couplerCodePath)
+        cmdBuild = 'make'
+        os.system(cmdBuild)
+        os.chdir(currDir)
+        # mv libbcpl.a to lib
+        
+        cmdMv = 'cp '+InstCreator.couplerCodePath+'/lib/libbcpl.a '+self.metaManager.instPath+'/lib'
+        os.system(cmdMv)
+        # mv required comp togather with its Makefile (may be modified) to models
+        for model in self.proc_cfgs:
+            name = model.name
+            modelDir = InstCreator.couplerCodePath+"/src/models/"+name
+            cmdCpComp = 'cp '+modelDir+"/* "+self.metaManager.instPath+"/models/"+name  
+            os.system(cmdCpComp)
+        # mv Cpl comp to models 
+        cplDir = InstCreator.couplerCodePath+"/src/models/cpl"
+        cmdCpCpl = 'cp '+cplDir+"/* "+self.metaManager.instPath+"/models/cpl"
+        os.system(cmdCpCpl)
+
+        # build Makefile from template
+        #mkCompTmp = TempConfig('./mk/Makefile.build.comp', 'MakefileComp', {'proc_cfgs':self.proc_cfgs})      
+        mkExeTmp = TempConfig('./mk/Makefile.build.exe','MakefileExe',{'proc_cfgs':self.proc_cfgs})
+        mkConfTmp = TempConfig('./mk/Makefile.conf','Makefile.conf',{'meta_cfgs':self.metaManager})
+        mkList = [mkExeTmp, mkConfTmp] 
+        codeGen = CodeMapper(mkList) 
+        codeGen.genCode()
+        
+        # mv Makefile 
+        mvCompCmd = 'cp ./mk/Makefile.build.comp '+self.metaManager.instPath + "/Makefile"
+        mvExeCmd = 'mv MakefileExe '+self.metaManager.instPath+"/models/cpl/Makefile"
+        cpMkConfCmd = 'cp Makefile.conf '+self.metaManager.instPath+"/"
+	mvMkConfCmd = 'mv Makefile.conf '+self.metaManager.instPath+"/models"
+        os.system(mvCompCmd)
+        os.system(mvExeCmd)
+	os.system(cpMkConfCmd)
+        os.system(mvMkConfCmd)
+
+	#cp scripts
+	cpBuildShCmd = 'cp ../instManager/instBuild.sh '+self.metaManager.instPath
+        os.system(cpBuildShCmd)
+       
 
     def instCreate(self):
         self.getIr()
@@ -203,6 +298,13 @@ class InstCreator:
         copyNmlCmd = "cp "+self.metaManager.nmlfile+" "+confPath
         os.system(copyNmlCmd)
 
+        #copy src conf file to src dir
+        self.createSrcConf()
+        copySrcConfCmd = "cp "+self.metaManager.dataNml+" "+srcPath
+        os.system(copySrcConfCmd)  
+
+        #copy Makefile to relavent dir
+        self.createMakefile()
 
 if __name__ == "__main__":
     instCreator = InstCreator()

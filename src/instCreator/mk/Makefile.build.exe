@@ -1,0 +1,31 @@
+SRC=baseCpl.F90
+include ../Makefile.conf
+OBJS_ALL = ./*.o
+#set $LIBDIR = '$(LIBDIR)'
+#set $ESMF_LIB = '$(ESMF_LIB)' 
+#set $INCLDIR = '$(INCLDIR)'
+#set $ESMF_MOD = '$(ESMF_MOD)'
+#set $FC= "$(FC)"
+#set $EXE =  "$(EXE)"
+#set $MAIN = "$(MAIN)"
+#set $OBJS_ALL = "$(OBJS_ALL)"
+#set $COMPS_DEPS = "$(COMPS_DEFS)"
+#set $ESMF_DEPS = "$(ESMF_DEPS)"
+#set $DEPS =  "$(DEPS)"
+#set $BINDIR = "$(BINDIR)"
+#set $BASE_DEPS = "$(BASE_DEPS)"
+#set $FLAGS= "$(FLAGS)"
+BASE_DEPS = $(LIBDIR)/*.o
+ESMF_DEPS=$(ESMF_LIB)/libesmf.a
+DEPS=-lmct -lnetcdf -lnetcdff -lmpeu -lpiof -lesmf -lpioc -lgptl -lpnetcdf
+ESMF_DEPS = -lesmf -lrt -lstdc++ -ldl
+FLAGS=-pthread
+EXE= main
+MAIN=main.F90
+
+EXE:
+	$(FC) -c -I$(INCLDIR) -I$(ESMF_MOD) -L$(LIBDIR) baseCpl.F90
+	echo 'finish mod'
+	$(FC) -o $(EXE) $(MAIN) $(OBJS_ALL) $(BASE_DEPS) $(FLAGS) -I$(INCLDIR) -L$(LIBDIR) \
+	$(DEPS) $(ESMF_DEPS)
+	#mv $(EXE) $(BINDIR)
