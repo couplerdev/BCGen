@@ -110,7 +110,7 @@ class InstCreator:
     '''
     couplerCodePath='/../../baseCpl'
     BCGenPath = '/../..'
-    def __init__(self,regen=False):
+    def __init__(self,regen=False, make=False, overwrite=False):
         absPath = os.getcwd()
         InstCreator.BCGenPath = absPath+InstCreator.BCGenPath
         InstCreator.couplerCodePath = absPath+InstCreator.couplerCodePath
@@ -120,6 +120,8 @@ class InstCreator:
         self.setDefaultXmlPath()
         self.args = {}
         self.args['regen'] = regen
+        self.args['make'] = make
+        self.args['overwrite'] = overwrite
 
     def setDefaultXmlPath(self):
         self.absPath = os.getcwd()
@@ -162,39 +164,49 @@ class InstCreator:
         self.fraction_cfgs = self.parser.fractions
         self.deploy_cfgs = self.parser.deploy
         self.merge_cfgs = get_SMat_relation(self.parser.attrVectCouple)
+        self.conf_cfgs = {}
+        self.conf_cfgs['instPath'] = self.metaManager.instPath
+        nmlfilePath = self.metaManager.instPath+"/conf/"+self.metaManager.nmlfile
+        self.conf_cfgs['nmlfile'] = nmlfilePath
+        self.conf_cfgs['confPath'] = self.metaManager.confPath
+        self.conf_cfgs['dataPath'] = self.metaManager.dataPath
+        dataNmlPath = self.metaManager.instPath+"/src/"+self.metaManager.dataNml
+        self.conf_cfgs['dataNml'] = dataNmlPath
             #    print av['dst_av'].name
             #    print av['w_file']
 
     def codeGenerate(self):
         if self.parser == None:
             raise NotSetError('parser not set in InstCreator!!!')
-        searchTmp = TmpConfig('searchSet_Template.py', "search_set.py",\
+        proc_cfgs = self.proc_cfgs
+        merge_cfgs = self.merge_cfgs
+        templateDirPrefix = "../template/"
+        searchTmp = TempConfig(templateDirPrefix+'searchSet_Template.py', "search_set.py",\
                               {'models':proc_cfgs,'merge_cfgs':merge_cfgs})
-        searchGen = codeMapper([searchTmp])
+        searchGen = CodeMapper([searchTmp])
         searchGen.genCode()
         from search_set import *
-        proc_cfgs = self.proc_cfgs
         deploy_cfgs = self.deploy_cfgs
-        merge_cfgs = self.merge_cfgs
         fieldVar_cfgs = self.fieldVar_cfgs
         field_cfgs = self.field_cfgs
         subrt_cfgs = self.subrt_cfgs
         merge_subroutines = self.merge_subroutines
         fraction_cfgs = self.fraction_cfgs 
-        manageTmp = TempConfig("procM_Template.F90", "manage.F90",{"proc_cfgs":proc_cfgs})
-        deployTmp = TempConfig("deploymod_Template.F90", "deploy_mod.F90",\
+        conf_cfgs = self.conf_cfgs
+        manageTmp = TempConfig(templateDirPrefix+"procM_Template.F90", "manage.F90",{"proc_cfgs":proc_cfgs, "conf_cfgs":conf_cfgs})
+        deployTmp = TempConfig(templateDirPrefix+"deploymod_Template.F90", "deploy_mod.F90",\
                               {'proc_cfgs':proc_cfgs,'deploy_cfgs':deploy_cfgs})
-        timeDefTmp = TempConfig("timeDef_Template.F90","time_def.F90",{"proc_cfgs":proc_cfgs})
-        timeCesmTmp = TempConfig("timeCesm_Template.F90", "global_var.F90", {"proc_cfgs":proc_cfgs})
-        globalTmp  = TempConfig("globalVar_Template.F90","global_var.F90",{"proc_cfgs":proc_cfgs,\
+        timeDefTmp = TempConfig(templateDirPrefix+"timeDef_Template.F90","time_def.F90",{"proc_cfgs":proc_cfgs})
+        timeCesmTmp = TempConfig(templateDirPrefix+"timeCesm_Template.F90", "timeCesm.F90", {"proc_cfgs":proc_cfgs})
+        globalTmp  = TempConfig(templateDirPrefix+"globalVar_Template.F90","global_var.F90",{"proc_cfgs":proc_cfgs,\
                                                           "merge_cfgs":merge_cfgs,"fieldVar_cfgs":fieldVar_cfgs})
-        fieldTmp = TempConfig("baseField_Template.F90","base_field_F90", {"field_cfgs":field_cfgs,\
+        fieldTmp = TempConfig(templateDirPrefix+"baseField_Template.F90","base_field.F90", {"field_cfgs":field_cfgs,\
                                                                           "fieldVar_cfgs":fieldVar_cfgs})
-        baseCplTmp = TempConfig("baseCpl_Template.F90","baseCpl.F90",\
+        baseCplTmp = TempConfig(templateDirPrefix+"baseCpl_Template.F90","baseCpl.F90",\
                               {"proc_cfgs":proc_cfgs, "merge_subroutines":merge_subroutines,\
                                "merge_cfgs":merge_cfgs,"model_cfgs":model_cfgs, \
                                "subrt_cfgs":subrt_cfgs,'fraction_cfgs':fraction_cfgs})
-        if self.args['reGen']:
+        if self.args['regen']:
             confList = [searchTmp, manageTmp, deployTmp, baseCplTmp, globalTmp, timeDefTmp, timeCesmTmp, fieldTmp]
             codeGen = CodeMapper(confList)
             codeGen.genCode()
@@ -226,8 +238,10 @@ class InstCreator:
         os.chdir(currDir)
         # mv libbcpl.a to lib
         
+        cmdMvObj = 'cp '+InstCreator.couplerCodePath+'/lib/* '+self.metaManager.instPath+'/lib'
         cmdMv = 'cp '+InstCreator.couplerCodePath+'/lib/libbcpl.a '+self.metaManager.instPath+'/lib'
         os.system(cmdMv)
+        os.system(cmdMvObj)
         # mv required comp togather with its Makefile (may be modified) to models
         for model in self.proc_cfgs:
             name = model.name
@@ -264,9 +278,18 @@ class InstCreator:
 
     def instCreate(self):
         self.getIr()
+        self.codeGenerate()
         instPath = self.metaManager.instPath
         confPath = self.metaManager.confPath
-        os.mkdir(instPath) 
+        try:
+            os.mkdir(instPath) 
+        except:
+            if self.args['overwrite']:
+                rmCmd = 'rm -rf '+instPath
+                os.system(rmCmd)
+                os.mkdir(instPath)
+            else:
+                raise SrcExistError("instPath already exist")
         confPath= instPath+"/"+confPath
         srcPath = instPath+"/src"
         libPath = instPath+"/lib"
@@ -295,17 +318,17 @@ class InstCreator:
         os.mkdir(cplDir)
         
         # copy all sorts of conf file to conf dir
-        copyNmlCmd = "cp "+self.metaManager.nmlfile+" "+confPath
+        copyNmlCmd = "mv "+self.metaManager.nmlfile+" "+confPath
         os.system(copyNmlCmd)
 
         #copy src conf file to src dir
         self.createSrcConf()
-        copySrcConfCmd = "cp "+self.metaManager.dataNml+" "+srcPath
+        copySrcConfCmd = "mv "+self.metaManager.dataNml+" "+srcPath
         os.system(copySrcConfCmd)  
 
         #copy Makefile to relavent dir
         self.createMakefile()
 
 if __name__ == "__main__":
-    instCreator = InstCreator()
+    instCreator = InstCreator(regen=True, make=True, overwrite=True)
     instCreator.instCreate()
