@@ -11,6 +11,7 @@ use comms
 use time_mod
 use ESMF
 use mct_mod
+use mrg_mod
 #for $model in $proc_cfgs
      #set $name = $model.name
 use comp_${name}
@@ -22,10 +23,10 @@ use comp_${name}
     !declare gsMap for each Model
     #for $model in $proc_cfgs
          #set $gms = $model.gsMaps
-         #for $gm in $gms
-              #set $name = $gms[$gm].name
-    type(gsMap), pointer ::$name
-         #end for
+         #set $cpl_name = $gms['cpl'].name
+         #set $comp_name = $gms['comp'].name
+    type(gsMap), pointer ::$comp_name
+    type(gsMap)          :: $cpl_name
     #end for    
 
     ! declare AttrVect of each Model(c2x_cx, c2x_cc, x2c_cx, x2c_cc)
