@@ -172,6 +172,8 @@ class InstCreator:
         self.conf_cfgs['dataPath'] = self.metaManager.dataPath
         dataNmlPath = self.metaManager.instPath+"/src/"+self.metaManager.dataNml
         self.conf_cfgs['dataNml'] = dataNmlPath
+        dataRcPath = self.metaManager.instPath+"/src/"+self.metaManager.datarc
+        self.conf_cfgs['datarc'] = dataRcPath
             #    print av['dst_av'].name
             #    print av['w_file']
 
@@ -225,9 +227,22 @@ class InstCreator:
                     sname = av['dst_mapper']
                     lname = av['w_file']
                     f.write('&mapperFile\n')
-                    f.write('sname = '+sname+'\n')
+                    f.write('sname = \''+sname+'\'\n')
                     f.write('lname = '+lname+'\n')
                     f.write('/')
+
+    def createRcConf(self):
+        dataPath = self.metaManager.dataPath
+        datarc = self.metaManager.datarc
+        with open(datarc, 'w') as f:
+            for cfg in self.merge_cfgs:
+                dst_info = self.merge_cfgs[cfg]['dst']
+                for av in dst_info:
+                    sname = av['dst_mapper']
+                    path = av['w_file']
+                    stype = sname+"_type"
+                    f.write(sname+'   '+path+'\n')
+                    f.write(stype+'    \'X\'\n')
 
     def createMakefile(self):
         # build prerequists libbcpl.a
@@ -300,13 +315,6 @@ class InstCreator:
         os.mkdir(libPath)
         os.mkdir(includePath)
         os.mkdir(binPath)
-
-        # copy src include mod and lib .a .o to instDir
-        BCGenPath = "../../baseCpl/"
-        copyIncludeCmd = "cp -r "+BCGenPath+"include/* "+includePath
-        copyLibCmd  = "cp -r "+BCGenPath+"lib/* "+libPath
-        os.system(copyIncludeCmd)
-        os.system(copyLibCmd)
         
         # create models dir & copy relavent code and Makefile
         modelsPath = instPath+"/models/"
@@ -322,12 +330,23 @@ class InstCreator:
         os.system(copyNmlCmd)
 
         #copy src conf file to src dir
-        self.createSrcConf()
-        copySrcConfCmd = "mv "+self.metaManager.dataNml+" "+srcPath
-        os.system(copySrcConfCmd)  
+        #self.createSrcConf()
+        #copySrcConfCmd = "mv "+self.metaManager.dataNml+" "+srcPath
+        #os.system(copySrcConfCmd)  
+        #copy src conf file to src dir rc version
+        self.createRcConf()
+        copyRcConfCmd = "mv "+ self.metaManager.datarc+" "+srcPath
+        os.system(copyRcConfCmd)
 
         #copy Makefile to relavent dir
         self.createMakefile()
+
+        #copy src include mod and lib .a .o to instDir
+        BCGenPath = "../../baseCpl/"
+        copyIncludeCmd = "cp -r " + BCGenPath+"include/* "+includePath
+        copyLibCmd = "cp -r "+ BCGenPath+"lib/* "+libPath
+        os.system(copyIncludeCmd)
+        os.system(copyLibCmd)
 
 if __name__ == "__main__":
     instCreator = InstCreator(regen=True, make=True, overwrite=True)

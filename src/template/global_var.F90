@@ -32,7 +32,7 @@ use field
        !-------------------------------------------
        integer, allocatable  :: comp_comm(:)
        integer, allocatable  :: comp_id(:)
-       integer, allocatable  :: imain_model(:)
+       logical, allocatable  :: iamin_model(:)
 
        !------------------------------------------
        !   intermediate vars
@@ -58,7 +58,9 @@ use field
        integer    :: mpi_glocomm
        integer    :: mpi_cpl
        integer    :: mpi_modelatm
+       integer    :: mpi_modelatm2cpl
        integer    :: mpi_modelocn
+       integer    :: mpi_modelocn2cpl
        
        logical    :: iam_root
        logical    :: iamin_cpl
@@ -96,7 +98,7 @@ use field
 
    end type Meta
     
-   type(Meta)          :: metaData
+   type(Meta), target  :: metaData
    integer, parameter  :: gloid = 1
    integer, parameter  :: cplid = 2
    integer, parameter  :: atmid = 2

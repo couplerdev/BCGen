@@ -26,7 +26,7 @@ codePathDict['manage.F90']     = CodeDesc('manage.F90',      '/baseCpl/src/procM
 codePathDict['search_set.py']  = CodeDesc('search_set.py',   '/src/template',           'searchSet_Template.py')
 codePathDict['timeCesm.F90']   = CodeDesc('timeCesm.F90',    '/baseCpl/src/timeManage', 'timeCesm_Template.F90')
 codePathDict['time_def.F90']   = CodeDesc('time_def.F90',    '/baseCpl/src/data_def',   'timeDef_Template.F90')
-codeGenList = [key for key in codePatgDict]
+codeGenList = [key for key in codePathDict]
 
 class MetaManager:
     codePathDict = codePathDict
@@ -38,11 +38,11 @@ class MetaManager:
         self.confPath = ""
         self.dataPath = ""
         self.dataNml = ""
+        self.datarc = ""
         # init codePathDict absPath
-        tmpCodeList = ['baseCpl.F90', 'base_field.F90', 'deploy_mod.F90', 'global_var.F90','manage.F90','search_set.F90','timeCesm.F90',\
-                       'time_def.F90']
-        for key in tmpCodeList:
-            MetaManage.codePathDict[key].loc = self.absPath + MetaManage.codePathDict[key].loc
+       
+        for key in MetaManager.codeGenList:
+            MetaManager.codePathDict[key].loc = self.absPath + MetaManager.codePathDict[key].loc
         
 
     def setConfigMeta(self, confPath):
@@ -58,3 +58,4 @@ class MetaManager:
         self.confPath = instParser.confPath
         self.dataPath = instParser.dataPath
         self.dataNml = instParser.datanml
+        self.datarc = instParser.datarc

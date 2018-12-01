@@ -88,6 +88,9 @@ use m_string,  only : string_clean
 
 !---Matrix-Vector multiply methods
 use m_MatAttrVectMul, only: sMatAvect_Mult => sMatAvMult
+use m_inpak90, only : I90_LoadF
+use m_inpak90, only : I90_Label
+use m_inpak90, only : I90_gtoken
 
 implicit none
     public :: noo

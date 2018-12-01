@@ -31,15 +31,20 @@ subroutine init(metaData)
     integer, dimension(:), pointer :: myids
     #set $nmlfile = $conf_cfgs['nmlfile']
     #set $datanml = $conf_cfgs['dataNml']
+    #set $datarc = $conf_cfgs['datarc']
     character(*), parameter :: nmlfile = "$nmlfile"
     character(*), parameter :: datanml = "$datanml"
+    character(*), parameter :: datarc = "$datarc"
+    integer :: testData ! if test
+    integer :: local_rank ! if test
 
+    ! 初始化comp数目，以及comms数
     #set $ncomps = len($proc_cfgs)
     metaData%num_models = $ncomps
     metaData%num_comms =  2*$ncomps+2
     
     
-
+    
     call MPI_Init(ierr)
     call MPI_Comm_rank(MPI_COMM_WORLD, num_rank, ierr)
     call MPI_Comm_size(MPI_COMM_WORLD, num_size, ierr)
@@ -57,10 +62,18 @@ subroutine init(metaData)
         metaData%iamin_model(iter) = .false.
     end do
     metaData%iamin_model(1) = .true.
-
+    print *,'glocomm:',metaData%mpi_glocomm, metaData%mpi_cpl
     ! deploy_cpl
     call deploy_cpl(metaData%mpi_glocomm, metaData%mpi_cpl, &
                   metaData%cplid, metaData%iamin_model, 0, ierr)
+    if(metaData%iamin_model(metaData%cplid))then
+        call MPI_Comm_rank(metaData%mpi_cpl, local_rank, ierr)
+        if(local_rank==0)then
+            testData = 100
+        end if
+        call MPI_Bcast(testData, 1, MPI_INTEGER, 0, metaData%mpi_cpl, ierr)
+    end if
+    call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
     #for $model in $proc_cfgs
          #set $name = $model.name
@@ -71,10 +84,11 @@ subroutine init(metaData)
     #end for
 
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
-    write(*,*), "my_world_rank:", num_rank, " my_in_model", metaData%iamin_model
+    !write(*,*), "my_world_rank:", num_rank, " my_in_model", metaData%iamin_model
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
 
+    !  初始化comp_comm
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     !write(*,*)'comm initiated'
     allocate(metaData%comp_comm(metaData%ncomps))
@@ -88,24 +102,35 @@ subroutine init(metaData)
     #end for
 
     call procMeta_init(metaData%my_proc, metaData%ncomps)
+    !allocate(metaData%my_proc%IDs(metaData%ncomps))
+    !allocate(metaData%my_proc%IDs(metaData%ncomps))
+    !allocate(metaData%my_proc%)
     call procMeta_addToModel(metaData%my_proc, metaData%gloid, metaData%mpi_glocomm, 'global', ierr)
-    call procMeta_addToModel(metaData%my_proc, metaData%cplid, metaData%mpi_cpl, 'coupler', ierr)
+    if(metaData%iamin_model(metaData%cplid))then
+        call procMeta_addToModel(metaData%my_proc, metaData%cplid, metaData%mpi_cpl, 'coupler', ierr)
+    end if
     #for $model in $proc_cfgs
          #set $name = $model.name
-    call procMeta_addToModel(metaData%my_proc, metaData%model${name}_id, metaData%mpi_model${name}, '$name', ierr)
-    call procMeta_addToModel(metaData%my_proc, metaData%model${name}2cpl_id, &
+    if(metaData%iamin_model(metaData%model${name}_id))then
+        call procMeta_addToModel(metaData%my_proc, metaData%model${name}_id, metaData%mpi_model${name}, '$name', ierr)
+    end if
+    if(metaData%iamin_model(metaData%model${name}2cpl_id))then
+        call procMeta_addToModel(metaData%my_proc, metaData%model${name}2cpl_id, &
                              metaData%mpi_model${name},'${name}2cpl', ierr)
+    end if
     #end for
 
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
-    write(*,*)'comp_comm initiated'
     allocate(metaData%comp_id(metaData%ncomps))
     do iter = 1, metaData%ncomps
         metaData%comp_id(iter) = iter
     end do
 
+
+    !  there are bugs in mycomms=>metaData%comp_comm, need modify
     mycomms => metaData%comp_comm
     myids => metaData%comp_id
+
 
     call mct_world_init(metaData%ncomps, MPI_COMM_WORLD, mycomms, myids)
 
@@ -129,6 +154,7 @@ subroutine init(metaData)
     if(metaData%iamin_model(metaData%model${name}_id))then
         call iam_comm_root(metaData%mpi_model${name}, metaData%iamroot_model${name}, ierr)
         metaData%iamin_model${name} = .true.
+        call MPI_Comm_rank(metaData%mpi_model${name},local_rank, ierr)
     end if
 
     metaData%iamin_model${name}2cpl = .false.
@@ -161,8 +187,10 @@ subroutine init(metaData)
     !-------------------------------------------
     #for $model in $proc_cfgs
          #set $name = $model.name
-    metaData%${name}%ID = ATMID
-    metaData%${name}%comm = metaData%comp_comm(${name}id)
+         #set $gsize = $model.gSize
+    metaData%${name}%ID = metaData%model${name}_id
+    metaData%${name}%comm = metaData%comp_comm(metaData%model${name}_id)
+    metaData%${name}%gsize = $gsize
     #end for
 
     !-------------------------------------------
@@ -174,7 +202,8 @@ subroutine init(metaData)
     !   init nmlfile
     !-------------------------------------------
     call confMeta_init(metaData%conf, nmlfile, ierr=ierr)
-
+    metaData%datanml = datanml
+    metaData%datarc = datarc
 
 end subroutine init
 

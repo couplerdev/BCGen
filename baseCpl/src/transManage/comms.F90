@@ -10,17 +10,24 @@ use comms_nc, only : sMatPInitnc_mapfile
     public :: mapper_init
     public :: mapper_rearrsplit_init
     public :: mapper_spmat_init
+    public :: mapper_spmat_init_rc
+    public :: mapper_spmat_init_nil
+    public :: mapper_spmat_init_nml
     public :: mapper_comp_map
     public :: mapper_comp_interpolation  
     public :: mapper_comp_avMerge
-    public :: mapper_spmat_init_nil
-    public :: mapper_spmat_init_nml
     private :: gsmap_check    
 
 interface mapper_init ; module procedure &
     mapper_init_nil, &
     mapper_init_func
 end interface mapper_init
+
+!interface mapper_spmat_init ; module procedure &
+!    mapper_spmat_init_file, &
+!    mapper_spmat_init_nil, &
+!    mapper_spmat_init_nml
+!end interface mapper_spmat_init
 
 contains
 
@@ -130,6 +137,48 @@ subroutine mapper_spmat_init_nil(metaData, mapper,&
 
 end subroutine mapper_spmat_init_nil
 
+subroutine mapper_spmat_init_rc(mapper, gsmap_src, gsmap_dst, mpicom, &
+                               rcfile, mapname, maprctype, samegrid, string)
+
+    implicit none
+    type(map_mod),   intent(inout)  :: mapper
+    type(gsmap),     intent(in)     :: gsmap_src
+    type(gsmap),     intent(in)     :: gsmap_dst
+    integer,         intent(in)     :: mpicom
+    character(*),    intent(in)     :: rcfile
+    character(*),    intent(in)     :: mapname
+    character(*),    intent(in)     :: maprctype
+    logical,         intent(in), optional :: samegrid
+    character(*),    intent(in), optional :: string
+
+    character(*), parameter :: subname = "mapper_spmat_init_rc"
+    integer :: ssize, dsize
+    character(len=PATHLEN) :: mapfilePath
+    character(len=64) :: maptype
+    integer :: ierr
+    call I90_LoadF(rcfile, ierr)
+    if(ierr/=0)then
+        call base_sys_abort(subname//':abort not find rcfile')
+    end if
+    call I90_Label(trim(mapname), ierr)
+    if(ierr/=0)then
+        call base_sys_abort(subname//':abort not find label'//trim(mapname))
+    end if
+    call I90_gtoken(mapfilePath, ierr)
+    if(ierr/=0)then
+        call base_sys_abort(subname//': abort not get mapfilePath')
+    end if
+    call I90_Label(trim(maprctype), ierr)
+    if(ierr/=0)then
+        call base_sys_abort(subname//': abort not find label'//trim(maprctype))
+    end if
+    call I90_gtoken(maptype, ierr)
+
+    call sMatPinitnc_mapfile(mapper%sMatPlus, gsmap_src, gsmap_dst, &
+                            trim(mapfilePath), trim(maptype), mpicom)
+
+end subroutine mapper_spmat_init_rc
+
 !----------------------------------------
 !  read weight from nfl weight to init spmat
 !----------------------------------------
@@ -158,6 +207,7 @@ subroutine mapper_spmat_init_nml(mapper, gsmap_src, gsmap_dst, mpicom, &
     namelist /mapperFile/ mapsname, maplname
 
     unitn = base_file_getUnit()
+    write(*,*)'your nmlfile:',trim(nmlfile)
     open(unitn, file=trim(nmlfile), status='old')
     do while(ierr/=0)
         read(unitn, nml=mapperFile, iostat=ierr)

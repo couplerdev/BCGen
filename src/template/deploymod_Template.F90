@@ -28,6 +28,10 @@ include 'mpif.h'
 
 contains 
 
+
+!
+!   从MPI_COMM_WORLD分出coupler的进程组
+!
 subroutine deploy_cpl(glo_comm, cpl_comm, cpl_id, iam_in, pattern, ierr)
 
     implicit none
@@ -46,6 +50,7 @@ subroutine deploy_cpl(glo_comm, cpl_comm, cpl_id, iam_in, pattern, ierr)
     integer :: stride
     integer :: me
     integer :: comm_size
+    integer :: num_rank
     integer :: ier
 
     !write(*,*)'they created us'
@@ -54,6 +59,7 @@ subroutine deploy_cpl(glo_comm, cpl_comm, cpl_id, iam_in, pattern, ierr)
         iam_in(cpl_id) = .true.
     else
         call mpi_comm_group(glo_comm, mpi_grp, ier)
+        call mpi_comm_rank(glo_comm, num_rank, ier)
         call mpi_comm_size(glo_comm, comm_size, ier)
         call deploy_readFile(cpl_id, comp_first, comp_last, stride, ier)
         !write(*,*)cpl_id,comp_first,comp_last,stride,comp(cpl_id-1,1),comp(cpl_id-1,2),comp(cpl_id-1,3)
@@ -61,7 +67,7 @@ subroutine deploy_cpl(glo_comm, cpl_comm, cpl_id, iam_in, pattern, ierr)
         peRange(1,2) = comp_last 
         peRange(1,3) = stride
         call mpi_group_range_incl(mpi_grp, 1, peRange, new_grp, ier)
-        call mpi_comm_create(glo_comm, new_grp, cpl_comm, ier)
+        call mpi_comm_create(glo_comm, new_grp, cpl_comm, ier) 
         call mpi_group_rank(new_grp, me, ier)
         if(me .ne. MPI_UNDEFINED)then
             iam_in(cpl_id) = .true.
@@ -69,9 +75,13 @@ subroutine deploy_cpl(glo_comm, cpl_comm, cpl_id, iam_in, pattern, ierr)
         end if
     end if 
     !write(*,*)'war protocal initiated'
-
+   
 end subroutine deploy_cpl
 
+
+!
+!   将MPI_COMM_WORLD 中的属于component的进程组分配给comp
+!
 subroutine deploy(glo_comm, deploy_comm, deploy_join_comm, &
                   comp_id, cpl_id, id_join, iam_in, pattern, ierr)
 

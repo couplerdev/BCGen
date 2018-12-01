@@ -11,6 +11,7 @@ use comms
 use time_mod
 use ESMF
 use mct_mod
+use mrg_mod
 #for $model in $proc_cfgs
      #set $name = $model.name
 use comp_${name}
@@ -22,10 +23,10 @@ use comp_${name}
     !declare gsMap for each Model
     #for $model in $proc_cfgs
          #set $gms = $model.gsMaps
-         #for $gm in $gms
-              #set $name = $gms[$gm].name
-    type(gsMap), pointer ::$name
-         #end for
+         #set $cpl_name = $gms['cpl'].name
+         #set $comp_name = $gms['comp'].name
+    type(gsMap), pointer ::$comp_name
+    type(gsMap)          :: $cpl_name
     #end for    
 
     ! declare AttrVect of each Model(c2x_cx, c2x_cc, x2c_cx, x2c_cc)
@@ -193,8 +194,8 @@ subroutine cpl_init()
         call avect_init_ext(metaData, $av_mx_mx, metaData%cplid, &
                            $av_mx_nx, metaData%cplid, $gm_nx, &
                            metaData%model${dst_model_name}2cpl_id)
-        call mapper_spmat_init(metaData%${mapper_name}, $gm_mx, $gm_nx, metaData%mpi_cpl, &
-                           ${mapper_file}, 'X')   
+        call mapper_spmat_init_rc(metaData%${mapper_name}, $gm_mx, $gm_nx, metaData%mpi_cpl,metaData%datarc, &
+                           '${mapper_name}', 'X')   
              #end for
         #end for
     end if
