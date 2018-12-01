@@ -31,8 +31,10 @@ subroutine init(metaData)
     integer, dimension(:), pointer :: myids
     #set $nmlfile = $conf_cfgs['nmlfile']
     #set $datanml = $conf_cfgs['dataNml']
+    #set $datarc = $conf_cfgs['datarc']
     character(*), parameter :: nmlfile = "$nmlfile"
     character(*), parameter :: datanml = "$datanml"
+    character(*), parameter :: datarc = "$datarc"
     integer :: testData ! if test
     integer :: local_rank ! if test
 
@@ -200,7 +202,8 @@ subroutine init(metaData)
     !   init nmlfile
     !-------------------------------------------
     call confMeta_init(metaData%conf, nmlfile, ierr=ierr)
-
+    metaData%datanml = datanml
+    metaData%datarc = datarc
 
 end subroutine init
 

@@ -1,4 +1,5 @@
 module global_var
+use type_def
 use proc_def
 use field_def
    implicit none
@@ -10,7 +11,8 @@ use field_def
            #set $name = $model.name
        type(compMeta)    :: $name
        #end for    
-       
+       character(len=PATHLEN) :: datanml
+       character(len=PATHLEN) :: datarc
        !-----------------------------------------
        ! meta desc of proc and comps
        !-----------------------------------------

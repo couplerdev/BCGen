@@ -194,8 +194,8 @@ subroutine cpl_init()
         call avect_init_ext(metaData, $av_mx_mx, metaData%cplid, &
                            $av_mx_nx, metaData%cplid, $gm_nx, &
                            metaData%model${dst_model_name}2cpl_id)
-        call mapper_spmat_init(metaData%${mapper_name}, $gm_mx, $gm_nx, metaData%mpi_cpl, &
-                           ${mapper_file}, 'X')   
+        call mapper_spmat_init_rc(metaData%${mapper_name}, $gm_mx, $gm_nx, metaData%mpi_cpl,metaData%datarc, &
+                           '${mapper_name}', 'X')   
              #end for
         #end for
     end if
