@@ -63,7 +63,7 @@ class CodeMapper:
 def get_SMat_relation(attrVects):
     model_names = []
     model_SMats = {}
-   
+    gsmap_dict = {}
     for av in attrVects:
         dst_model = attrVects[av][0].dstModel
         model_name = dst_model.name
@@ -71,9 +71,12 @@ def get_SMat_relation(attrVects):
         model_SMats[model_name] = {}
         model_SMats[model_name]['src'] = av
         model_SMats[model_name]['dst'] = []
-        model_SMats[model_name]['gm'] = model_gsmap_name
+        src_model_name = attrVects[av][0].srcModel.name
+        gsmap_dict[src_model_name] = model_gsmap_name
+        #model_SMats[model_name]['gm'] = model_gsmap_name
         model_names.append(model_name)
 
+    print model_SMats
     for av in attrVects:
         for src_x_dst_x_av in attrVects[av]:
             src_model = src_x_dst_x_av.srcModel
@@ -97,9 +100,12 @@ def get_SMat_relation(attrVects):
                 model_SMats[src_model_name] = {}
                 model_SMats[src_model_name]['src'] = src_x_dst_x_av.srcName
                 model_SMats[src_model_name]['dst'] = []
-                model_gsmap_name = dst_model.gsMaps['cpl'].name
+                model_gsmap_name = src_model.gsMaps['cpl'].name
                 model_SMats[src_model_name]['gm'] = model_gsmap_name
             model_SMats[src_model_name]['dst'].append(dst_info)
+    for src_model in model_SMats:
+        model_SMats[src_model]['gm'] = gsmap_dict[src_model]
+
     return model_SMats
 
 
@@ -240,6 +246,8 @@ class InstCreator:
                 for av in dst_info:
                     sname = av['dst_mapper']
                     path = av['w_file']
+                    path = path[1:-1]
+                    path = self.metaManager.inputPath+"/map/"+path
                     stype = sname+"_type"
                     f.write(sname+'   '+path+'\n')
                     f.write(stype+'    \'X\'\n')

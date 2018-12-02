@@ -30,11 +30,15 @@ subroutine gsmap_init_ext(metaData, gsmap_s, ID_s, gsmap_d, &
     type(gsMap), intent(inout) :: gsmap_d
     integer,     intent(inout) :: ID_d
     integer,     intent(in)    :: ID_join
+    integer :: ierr
     type(gsMap) gsmap_join
     integer :: mpi_comm_s, mpi_comm_d, mpi_comm_join, mct_compid_d, mct_compid_join
-    
+    integer :: num_rank
+    write(*,*)'ext?', ID_d, ID_join, metaData%cplid
     mpi_comm_s = metaData%comp_comm(ID_s)
     mpi_comm_d = metaData%comp_comm(ID_d)
+    call MPI_Comm_rank(MPI_COMM_WORLD, num_rank, ierr)
+    write(*,*)'num_rank:', num_rank, ' comm:',metaData%comp_comm
     mpi_comm_join = metaData%comp_comm(ID_join)
     
     mct_compid_join = metaData%comp_id(ID_join)
@@ -47,7 +51,7 @@ subroutine gsmap_init_ext(metaData, gsmap_s, ID_s, gsmap_d, &
     call gsmap_create(gsmap_join, mpi_comm_join, gsmap_d, mpi_comm_d,&
                     mct_compid_d)
     !todo clean
-    !call mct_gsMap_clean(gsmap_old_join)
+    !call gsMap_clean(gsmap_old_join)
 
 end subroutine gsmap_init_ext
 
@@ -203,10 +207,12 @@ subroutine gsmap_create(gsmapi, mpicomi, gsmapo, mpicomo, compido)
     !--- create a new gsmap on new pes based on the old gsmap
     !--- gsmapi must be known on all mpicomo pes, compute the same
     !--- thing on all pes in parallel
+    integer :: local_rank
 
     if (mpicomo /= MPI_COMM_NULL) then
     call mpi_comm_rank(mpicomi,mranki,ierr)
     call mpi_comm_size(mpicomi,msizei,ierr)
+    !call mpi_barrier(mpicomi, ierr)
     call mpi_comm_rank(mpicomo,mranko,ierr)
     call mpi_comm_size(mpicomo,msizeo,ierr)
 
@@ -232,7 +238,6 @@ subroutine gsmap_create(gsmapi, mpicomi, gsmapo, mpicomo, compido)
 
     !tcx       decomp_type = 3 ! over ride setting above for testing
     !       if (mranko == 0) write(logunit,'(2A,4I)') trim(subname),' decomp_type =',decomp_type,ngsegi,msizeo,apesi
-
     select case (decomp_type)
 
     case(1)   ! --- preserve segments and decomp ---------------------
@@ -263,6 +268,7 @@ subroutine gsmap_create(gsmapi, mpicomi, gsmapo, mpicomo, compido)
     rpeloc = (((msizeo*c1)*((n-1)*c1))/(ngsego*c1))      ! give each pe "equal" number of segments, use reals to avoid integer overflow
     peloc(n) = int(rpeloc)
     enddo
+    call MPI_Comm_rank(mpicomo, local_rank, ierr)
     call gsMap_init(gsmapo,ngsego,start,length,peloc,0,mpicomo,compido,gsizeo)
     deallocate(start,length,peloc,perm)
 
