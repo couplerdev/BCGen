@@ -4,15 +4,17 @@
 !       
 !
 module comms_nc
+use mpi
 use mct_mod
 use comms_def
 use base_sys, only: base_sys_abort
+use base_mpi
+use logUtil
 use netcdf
 
 !use logUnit, only: logUnit
 
     implicit none
-#include <mpif.h>
     public :: sMatReadnc
     public :: sMatReaddnc
     public :: sMatPInitnc_mapfile
@@ -224,25 +226,29 @@ implicit none
     type(attrVect)    :: areadst0
 
     character(*), parameter :: areaAV_field = "aream"
-    character(*), parameter :: subName = ""
+    character(*), parameter :: subName = "sMatReaddnc"
 
-    call mpi_comm_size(mpicom, commsize)
-    
+    call mpi_comm_size(mpicom, commsize, ierr)
+   
+    write(*,*)'filepath:',filename
     rcode = nf_open(filename, NF_NOWRITE,fid)
     if (rcode /= NF_NOERR)then
-        print *, 'fail'    
+        write(logUnit, *) 'fail to open file' 
+        call base_sys_abort(subName//":fail to open file")  
     end if
     
 
     !--- get matrix dimensions ----------
     !--- get matrix dimensions ----------
    rcode = nf90_inq_dimid (fid, 'n_s', did)  ! size of sparse matrix
+   print *, rcode,'<=rc'
    rcode = nf_inq_dimlen(fid, did  , ns)
    rcode = nf90_inq_dimid (fid, 'n_a', did)  ! size of  input vector
    rcode = nf_inq_dimlen(fid, did  , na)
    rcode = nf90_inq_dimid (fid, 'n_b', did)  ! size of output vector
    rcode = nf_inq_dimlen(fid, did  , nb)
-   
+  
+   print *, 'dimensions:',ns,na,nb 
    if (present(ni_i) .and. present(nj_i) .and. present(ni_o) .and. present(nj_o)) then
       rcode = nf90_inq_dimid (fid, 'ni_a', did)  ! number of lons in input grid
       rcode = nf_inq_dimlen(fid, did  , ni_i)
@@ -270,6 +276,7 @@ implicit none
       rcode = nf_get_var_double(fid, vid, areasrc0%rAttr)
       if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
    endif
+   print *, 'err below'
    call avect_scatter(areasrc0, areasrc, gsmap_src, 0, mpicom, rcode)
    if (rcode /= 0) then!call mct_die("shr_mct_sMatReaddnc","Error on scatter of areasrc0")
        write(*,*) 'failed'
@@ -285,7 +292,6 @@ implicit none
       call avect_clean(areasrc0)
    end if
    end if
-
    !--- read and load area_b ---
    if (present(areadst)) then
    if (mytask == 0) then
@@ -310,17 +316,18 @@ implicit none
       call avect_clean(areadst0)
    endif
    endif
-
+   print *,'zeta'
    if (present(ni_i) .and. present(nj_i) .and. present(ni_o) .and. present(nj_o)) then
-      call mpi_bcast(ni_i,mpicom,subName//" MPI in ni_i bcast")
-      call mpi_bcast(nj_i,mpicom,subName//" MPI in nj_i bcast")
-      call mpi_bcast(ni_o,mpicom,subName//" MPI in ni_o bcast")
-      call mpi_bcast(nj_o,mpicom,subName//" MPI in nj_o bcast")
+      call base_mpi_bcast(ni_i,mpicom,subName//" MPI in ni_i bcast")
+      call base_mpi_bcast(nj_i,mpicom,subName//" MPI in nj_i bcast")
+      call base_mpi_bcast(ni_o,mpicom,subName//" MPI in ni_o bcast")
+      call base_mpi_bcast(nj_o,mpicom,subName//" MPI in nj_o bcast")
    end if
 
-   call mpi_bcast(ns,mpicom,subName//" MPI in ns bcast")
-   call mpi_bcast(na,mpicom,subName//" MPI in na bcast")
-   call mpi_bcast(nb,mpicom,subName//" MPI in nb bcast")
+   call base_mpi_bcast(ns,mpicom,subName//" MPI in ns bcast")
+   call base_mpi_bcast(na,mpicom,subName//" MPI in na bcast")
+   call base_mpi_bcast(nb,mpicom,subName//" MPI in nb bcast")
+   print *,'bcast end'
    !--- setup local seg map, sorted
    if (newdom == 'src') then
       mygsmap => gsmap_dst
@@ -332,6 +339,7 @@ implicit none
       !write(s_logunit,F00) 'ERROR: invalid newdom value = ',newdom
       !call shr_sys_abort(trim(subName)//" invalid newdom value")
    endif
+   print *,'before pe_loc'
    lsize = 0
    do n = 1,size(mygsmap%start)
       if (mygsmap%pe_loc(n) == mytask) then
@@ -340,7 +348,6 @@ implicit none
    enddo
    allocate(lsstart(lsize),lscount(lsize),stat=rcode)
    !if (rcode /= 0) call mct_perr_die(subName,':: allocate Lsstart',rcode)
-
    lsize = 0
    do n = 1,size(mygsmap%start)
       if (mygsmap%pe_loc(n) == mytask) then  ! on my pe
@@ -382,6 +389,7 @@ implicit none
    allocate(Snew(bsize),Cnew(bsize),Rnew(bsize),stat=rcode)
    !if (rcode /= 0) call mct_perr_die(subName,':: allocate Snew1',rcode)
 
+   Rbuf = 0
    cnt = 0
    do n = 1,nread
       start(1) = (n-1)*rsize + 1
@@ -396,7 +404,6 @@ implicit none
          rcode = nf90_inq_varid      (fid,'row',vid)
          rcode = nf_get_vara_int   (fid,vid,start,count,Rbuf)
          !if (rcode /= NF_NOERR .and. s_loglev > 0) write(s_logunit,F00) nf_strerror(rcode)
-
          rcode = nf90_inq_varid      (fid,'col',vid)
          rcode = nf_get_vara_int   (fid,vid,start,count,Cbuf)
          !if (rcode /= NF_NOERR .and. s_loglev > 0) write(s_logunit,F00) nf_strerror(rcode)
@@ -410,11 +417,13 @@ implicit none
       !call shr_mpi_bcast(Rbuf,mpicom,subName//" MPI in Rbuf bcast")
       !call shr_mpi_bcast(Cbuf,mpicom,subName//" MPI in Cbuf bcast")
 
+      print *,'lsstart, lscount:',lsstart, lscount, count
       !--- now each pe keeps what it should
       do m = 1,count(1)
          !--- should this weight be on my pe
          if (newdom == 'src') then
             mywt = binary_search(Rbuf(m),lsstart,lscount)
+            !print *, lsstart, lscount
          elseif (newdom == 'dst') then
             mywt = binary_search(Cbuf(m),lsstart,lscount)
          endif
@@ -464,9 +473,11 @@ implicit none
    ! mct_sMat_init must be given the number of rows and columns that
    ! would be in the full matrix.  Nrows= size of output vector=nb.
    ! Ncols = size of input vector = na.
+   print *, nb,na
    call sMat_init(sMat, nb, na, cnt)
-
+   print *, 'cnt:',cnt
    igrow = sMat_indexIA(sMat,'grow')
+   print *,'igrow:',igrow
    igcol = sMat_indexIA(sMat,'gcol')
    iwgt  = sMat_indexRA(sMat,'weight')
 
@@ -486,7 +497,6 @@ implicit none
       !if (s_loglev > 0) write(s_logunit,F00) "... done reading file"
       !call shr_sys_flush(s_logunit)
    endif
-
 
 end subroutine sMatReaddnc
 
@@ -515,21 +525,25 @@ subroutine sMatPInitnc_mapfile(sMatP, gsmapX_, gsmapY_, filename, maptype, &
     type(AttrVect)     :: areadst_map
    
     integer         :: lsize
-    integer         :: iret
+    integer         :: iret, ierr
     integer         :: pe_loc
     character(3)    :: Smaptype
     logical         :: usevector = .true.
     character(*), parameter :: areaAV_field = 'aream'    
 
 
-    call mpi_comm_rank(mpicom, pe_loc)
+    sMaptype=  'src'
+    call mpi_comm_rank(mpicom, pe_loc,ierr)
 
     lsize = gsmap_lsize(gsmapX_, mpicom)
+    print *, 'see lsize'
     call avect_init(areasrc_map, rList=areaAV_field, lsize=lsize)
  
     lsize = gsmap_lsize(gsmapY_, mpicom)
     call avect_init(areadst_map, rList=areaAV_field, lsize=lsize)
-
+    call MPI_Barrier(mpicom, iret)
+   
+    !print *,'begin readnc:', ni_i, nj_i, ni_o, nj_o
     if (present(ni_i) .and. present(nj_i) .and. present(ni_o) .and. present(nj_o)) then
         call sMatReaddnc(sMat, gsmapX_, gsmapY_, Smaptype, areasrc_map, areadst_map, &
                    filename, pe_loc, mpicom, ni_i, nj_i, ni_o, nj_o)
@@ -537,7 +551,8 @@ subroutine sMatPInitnc_mapfile(sMatP, gsmapX_, gsmapY_, filename, maptype, &
         call sMatReaddnc(sMat, gsmapX_, gsmapY_, Smaptype, areasrc_map, areadst_map, &
                    filename, pe_loc, mpicom)
     end if
-
+    !call MPI_Barrier(mpicom, iret)
+    print *,'nc read?'
     call sMatPlus_init(sMatP, sMat, gsmapX_, gsmapY_, 0, mpicom, gsmapX_%comp_id)
     lsize = smat_gNumEl(sMatP%Matrix, mpicom)
 
