@@ -7,8 +7,8 @@ module time_mod
     use base_io
     use base_file
     implicit none
-    integer, parameter :: NUMALARMS = 7
     #set $ncomps = len($proc_cfgs)
+    integer, parameter :: NUMALARMS = $ncomps+6
     integer, parameter :: NUMCOMPS = $ncomps
     type(ESMF_Alarm) :: alarm(NUMALARMS)
     integer :: dtime(NUMCOMPS)
@@ -821,6 +821,7 @@ subroutine time_alarmSetOff(EClock, alarmname)
     integer :: AlarmCount
 
     set = .false.
+    alarmCount = NUMALARMS
     allocate(EAlarm_list(NUMALARMS))  
     call ESMF_ClockGetAlarmList(EClock, alarmListFlag=ESMF_ALARMLIST_ALL, &
            alarmList=EAlarm_list, alarmCount=AlarmCount, rc=rc)
