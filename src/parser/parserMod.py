@@ -28,7 +28,7 @@ DEBUG = 1
 class Parser():
     def __init__(self, couplerFile="../../composing/coupler.xml",  modelFile="../../composing/models.xml", \
                  scheduleFile="../../composing/schedule.xml", deployFile="../../composing/deploy.xml", \
-                 fieldFile="../../composing/field.xml",setup=True):
+                 fieldFile="../../composing/field.xml",setupFile="../../composing/setup.xml",setup=True):
         self.__NameManager = NameManager()
         self.__models = {}
         self.__attrVectCouple = {}
@@ -39,7 +39,7 @@ class Parser():
         self.__setupModels = []
         self.__enable_setup = setup
         if setup:
-            setup = Setup()
+            setup = Setup(fileName=setupFile)
             setup.setupParse()
             setup.genXml()
             couplerFile = setup.couplerFile
@@ -80,6 +80,10 @@ class Parser():
     def fldDict(self):
         return self.__fldDict
 
+    @property
+    def sMapper(self):
+        return self.__sMapper
+ 
     @property
     def fldMetaDict(self):
         return self.__fldMetaDict
