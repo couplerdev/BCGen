@@ -39,6 +39,7 @@ class MetaManager:
         self.dataPath = ""
         self.dataNml = ""
         self.datarc = ""
+        self.inputPath = ""
         # init codePathDict absPath
        
         for key in MetaManager.codeGenList:
@@ -59,3 +60,4 @@ class MetaManager:
         self.dataPath = instParser.dataPath
         self.dataNml = instParser.datanml
         self.datarc = instParser.datarc
+        self.inputPath = instParser.inputPath
