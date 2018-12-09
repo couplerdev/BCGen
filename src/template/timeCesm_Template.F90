@@ -7,8 +7,8 @@ module time_mod
     use base_io
     use base_file
     implicit none
-    integer, parameter :: NUMALARMS = 7
     #set $ncomps = len($proc_cfgs)
+    integer, parameter :: NUMALARMS = $ncomps+6
     integer, parameter :: NUMCOMPS = $ncomps
     type(ESMF_Alarm) :: alarm(NUMALARMS)
     integer :: dtime(NUMCOMPS)
@@ -299,8 +299,9 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     
     call ESMF_Initialize(vm=vm, defaultCalkind=esmf_caltype, defaultlogfilename=trim(logs), &
                          logkindflag=ESMF_LOGKIND_MULTI, rc=rc)
-
-
+    print *, 'ESMF_INIT STAT:',rc
+    !call ESMF_CalendarPrint(esmf_caltype, rc=rc)
+    time_cal = ESMF_CalendarCreate(esmf_caltype, rc=rc)
     dtime = 0 
     #for $model in $proc_cfgs
          #set $name = $model.name
@@ -325,6 +326,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     !--------------------------------------------------------------
     do n = 1, max_clocks
         call ESMF_TimeIntervalSet(TimeStep, s=dtime(n), rc=rc)
+        print *,'interval set rc:',rc
         call time_EClockInit(TimeStep, startTime, refTime, currTime, SyncClock%ECP(n)%EClock)
 
         call time_AlarmInit(SyncClock%ECP(n)%EClock, EAlarm=SyncClock%EAlarm(n, alarm_run), &
@@ -362,6 +364,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
         end if
     end do
 
+    !call base_sys_abort('end clock init')
     offset(clock_drv) = 0
     #for $model in $proc_cfgs
          #set $name = $model.name
@@ -542,14 +545,12 @@ subroutine time_clockAdvance(SyncClock)
     end do
 
     call ESMF_ClockAdvance(SyncClock%ECP(clock_drv)%EClock, rc=rc)
-    
     #for $model in $proc_cfgs
          #set $name = $model.name
     if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_${name}run)))then
         call ESMF_ClockAdvance(SyncClock%ECP(clock_${name})%EClock, rc=rc)
     end if
     #end for
-
     if(end_restart)then
         do n = 1, max_clocks
             if(time_alarmIsOn(SyncClock%ECP(n)%EClock, alarm_stop_name) .or. &
@@ -579,11 +580,14 @@ subroutine time_EClockInit(TimeStep, startTime, refTime, currTime, EClock)
 
     desc =  'shared time_manager clock'
     tmpCal = ESMF_CalendarCreate(time_cal_default, name='NOLEAP', rc=rc)
+    print *, 'calendar create rc:', rc
     call time_timeYmdInit(clocktime, tmpCal, 99990101, 0, rc, "default stop date")
-   
+  
+     
     EClock = ESMF_ClockCreate(name=trim(desc), TimeStep=TimeStep, startTime=startTime, &
                               refTime=refTime, stopTime=clocktime, rc=rc)
-    
+    call ESMF_TimePrint(refTime, rc=rc)
+    !call ESMF_TimeIntervalPrint(TimeStep, rc=rc)
     !---------advance clock to current time-------
     call ESMF_ClockGet(EClock, currTime=clocktime, rc=rc)
     do while(clockTime < currTime)
@@ -747,10 +751,11 @@ subroutine time_alarmInit(EClock, EAlarm, opt, opt_n, opt_ymd, opt_tod, refTime,
             alarmTime= alarmTime + alarmInterval
         end do
     end if
-
-    alarm = ESMF_AlarmCreate(name=alarmname, clock=EClock, ringTime=alarmTime, &
+    EAlarm = ESMF_AlarmCreate(name=alarmname, clock=EClock, ringTime=alarmTime, &
       ringInterval=alarmInterval, rc=rc)
-
+    !if(rc/=0)then
+    !    print *, 'in alarm Create:',alarmname, rc
+    !end if
 end subroutine time_alarmInit
 
 subroutine time_alarmSetOn(EClock, alarmname)
@@ -816,12 +821,11 @@ subroutine time_alarmSetOff(EClock, alarmname)
     integer :: AlarmCount
 
     set = .false.
-    
-    allocate(EAlarm_list(AlarmCount))
+    alarmCount = NUMALARMS
+    allocate(EAlarm_list(NUMALARMS))  
     call ESMF_ClockGetAlarmList(EClock, alarmListFlag=ESMF_ALARMLIST_ALL, &
            alarmList=EAlarm_list, alarmCount=AlarmCount, rc=rc)
-   
-    do n = 1, AlarmCount
+    do n = 1, NUMALARMS
         found = .false.
         if(present(alarmname))then
             call ESMF_AlarmGet(EAlarm_list(n), name=tempName)
@@ -834,7 +838,6 @@ subroutine time_alarmSetOff(EClock, alarmname)
             call ESMF_AlarmRingerOff(EAlarm_list(n), rc=rc)
         end if
     end do
-    
     if(present(alarmname) .and. .not. set)then
         write(logUnit, *) subname, ' ERROR in alarmname ', trim(alarmname)
         call base_sys_abort('ERROR: in  alarmname')
@@ -862,12 +865,12 @@ logical function time_alarmIsOn(EClock, alarmname)
 
     time_alarmIsOn = .false.
     AlarmCount = 2
-    allocate(EAlarm_list(AlarmCount))
+    allocate(EAlarm_list(NUMALARMS))
     call ESMF_ClockGetAlarmList(EClock, alarmListFlag=ESMF_ALARMLIST_ALL, &
            alarmList=EAlarm_list, alarmCount=AlarmCount, rc=rc)
     do n = 1, AlarmCount
          name = trim('unset')
-         call ESMF_AlarmGet(EAlarm_list(n), name=name)
+         call ESMF_AlarmGet(EAlarm_list(n), name=name) 
          if (trim(name)==trim(alarmname))then
              found = .true.
              time_alarmIsOn = ESMF_AlarmIsRinging(alarm=EAlarm_list(n), rc=rc)
@@ -898,7 +901,8 @@ subroutine time_TimeYmdInit(time, cal, ymd, tod, rc, info)
     character(*), optional,   intent(in)     :: info
 
     integer :: y, m, d, sec
-    integer :: lymd   
+    integer :: lymd  
+    type(ESMF_Time) :: ltime 
  
     lymd = ymd
     y = lymd/10000
@@ -914,7 +918,8 @@ subroutine time_TimeYmdInit(time, cal, ymd, tod, rc, info)
         write(logUnit, *)  ":ERROR ymd or tod" 
         call base_sys_abort("ERROR ymd or tod")
     end if
-
+  
+   
     call ESMF_TimeSet(time, yy=y, mm=m, dd=d, s=sec, calendar=cal, rc=rc)
 
 end subroutine time_TimeYmdInit

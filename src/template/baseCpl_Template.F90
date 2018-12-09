@@ -217,7 +217,7 @@ subroutine cpl_run()
     logical :: restart_alarm = .false.
     #for $model in $proc_cfgs
          #set $name = $model.name
-    logical :: ${name}run_alarm
+    logical :: ${name}_run
     #end for
 
     call mpi_comm_rank(MPI_COMM_WORLD, comm_rank, ierr)
@@ -231,7 +231,7 @@ subroutine cpl_run()
         restart_alarm = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_restart_name)
         #for $model in $proc_cfgs
              #set $name = $model.name
-        ${name}run_alarm = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_${name}run_name)
+        ${name}_run = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_${name}run_name)
         #end for
         if(time_alarmIsOn(EClock_drv, alarm_datestop_name))then
             if(metaData%iamroot_cpl)then
