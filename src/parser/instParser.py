@@ -21,6 +21,7 @@ class InstParser:
         self.dataPath = ""
         self.datanml = ""
         self.datarc = ""
+        self.inputPath = ""
 
     def parse(self):
         tree = ET.parse(self.xmlFile)
@@ -36,4 +37,7 @@ class InstParser:
         self.dataPath = dataLoc.find('data_path').text
         self.datanml = dataLoc.find('data_nml').text
         self.datarc = dataLoc.find('data_rc').text
+ 
+        inputLoc = tree.find('input')
+        self.inputPath = inputLoc.find('input_path').text
        
