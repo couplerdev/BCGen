@@ -6,7 +6,7 @@ module time_type
     implicit none
     #set $clockCnt = len($proc_cfgs)
     integer,   parameter :: max_clocks = $clockCnt+1
-    integer,   parameter :: max_alarms = $clockCnt+7
+    integer,   parameter :: max_alarms = $clockCnt+6
     integer,   parameter :: clock_drv = 1
     #for $index, $model in enumerate($proc_cfgs)
          #set $name = $model.name
