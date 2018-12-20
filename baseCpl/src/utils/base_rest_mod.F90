@@ -69,10 +69,11 @@ module base_rest_mod
 contains
 !===============================================================================
 
-subroutine seq_rest_read(rest_file)
+subroutine base_rest_read(metaData, rest_file)
 
    implicit none
 
+   type(Meta),  intent(in) :: metaData
    character(*),intent(in) :: rest_file  ! restart file path/name
 
    integer(IN)          :: n,n1,n2,n3
@@ -90,89 +91,29 @@ subroutine seq_rest_read(rest_file)
    !----------------------------------------------------------------------------
    ! get required infodata
    !----------------------------------------------------------------------------
-   iamin_CPLID  = seq_comm_iamin(CPLID)
-   call seq_comm_setptrs(GLOID,mpicom=mpicom_GLOID,nthreads=nthreads_GLOID)
-   call seq_comm_setptrs(CPLID,mpicom=mpicom_CPLID,nthreads=nthreads_CPLID)
-   call seq_infodata_getData(infodata,drv_threading=drv_threading)
-   call seq_infodata_getData(infodata, &
-        atm_present=atm_present, &
-        lnd_present=lnd_present, &
-        rof_present=rof_present, &
-        ice_present=ice_present, &
-        ocn_present=ocn_present, &
-        glc_present=glc_present, &
-        wav_present=wav_present, &
-        sno_present=sno_present  )
-   call seq_infodata_getData(infodata, &
-        atm_prognostic=atm_prognostic, &
-        lnd_prognostic=lnd_prognostic, &
-        ice_prognostic=ice_prognostic, &
-        ocn_prognostic=ocn_prognostic, &
-        rof_prognostic=rof_prognostic, &
-        ocnrof_prognostic=ocnrof_prognostic, &
-        glc_prognostic=glc_prognostic, &
-        wav_prognostic=wav_prognostic, &
-        sno_prognostic=sno_prognostic  )
-
+   iamin_CPLID  = metaData%iamin_CPLID
+   mpicom_gloid = metaData%mpicom_gloid
+   mpicom_cplid = metaData%mpicom_cplid
+   #for $model in $proc_cfgs
+        #set $model_name = $model.name
+   call comp_getInfo(metaData%${model_name}, prognostic=${model_name}_prognostic)
+   #end for
+ 
    if (iamin_CPLID) then
-      if (drv_threading) call seq_comm_setnthreads(nthreads_CPLID)
-      if (atm_present) then
-         call seq_cdata_setptrs(cdata_ax,gsmap=gsmap)
-         call seq_io_read(rest_file,gsmap,fractions_ax,'fractions_ax')
-         call seq_io_read(rest_file,gsmap,a2x_ax,'a2x_ax')
-      endif
-      if (lnd_present) then
-         call seq_cdata_setptrs(cdata_lx,gsmap=gsmap)
-         call seq_io_read(rest_file,gsmap,fractions_lx,'fractions_lx')
-      endif
-      if (ocn_present) then
-         call seq_cdata_setptrs(cdata_ox,gsmap=gsmap)
-         call seq_io_read(rest_file,gsmap,fractions_ox,'fractions_ox')
-         call seq_io_read(rest_file,gsmap,o2x_ox,'o2x_ox')
-         call seq_io_read(rest_file,gsmap,x2oacc_ox,'x2oacc_ox')
-         call seq_io_read(rest_file,gsmap,xao_ox,'xao_ox')
-         call seq_io_read(rest_file,      x2oacc_ox_cnt,'x2oacc_ox_cnt')
-         call seq_cdata_setptrs(cdata_ax,gsmap=gsmap)
-         call seq_io_read(rest_file,gsmap,xao_ax,'xao_ax')
-      endif
-      if (ice_present) then
-         call seq_cdata_setptrs(cdata_ix,gsmap=gsmap)
-         call seq_io_read(rest_file,gsmap,fractions_ix,'fractions_ix')
-         call seq_io_read(rest_file,gsmap,i2x_ix,'i2x_ix')
-      endif
-      if (rof_present) then
-         call seq_cdata_setptrs(cdata_rx,gsmap=gsmap)
-         call seq_io_read(rest_file,gsmap,fractions_rx,'fractions_rx')
-         call seq_io_read(rest_file,gsmap,r2x_rx,'r2x_rx')
-      endif
-      if (lnd_present .and. rof_present .and. rof_prognostic) then
-         call seq_cdata_setptrs(cdata_lx,gsmap=gsmap)
-         call seq_io_read(rest_file,gsmap,x2racc_lx,'x2racc_lx')
-         call seq_io_read(rest_file,      x2racc_lx_cnt ,'x2racc_lx_cnt')
+      !if (drv_threading) call seq_comm_setnthreads(nthreads_CPLID)
+      #for $model in $proc_cfgs
+      !if(${model_name}_present)then
+           #set $model_name = $model.name
+         call comp_getInfo(metaData%${model_name}, comp_gsmap=gsmap)
+         call base_io_read(rest_file,gsmap,fractions_${model_name}x,'fractions_${model_name}x')
+         call base_io_read(rest_file,gsmap,${model_name}2x_${model_name}x,'${model_name}2x_${model_name}x'
       end if
-      if (rof_present .and. ocnrof_prognostic) then
-         call seq_cdata_setptrs(cdata_rx,gsmap=gsmap)
-         call seq_io_read(rest_file,gsmap,r2xacc_rx,'r2xacc_rx')
-         call seq_io_read(rest_file,      r2xacc_rx_cnt,'r2xacc_rx_cnt')
-      endif
-      if (glc_present) then
-         call seq_cdata_setptrs(cdata_gx,gsmap=gsmap)
-         call seq_io_read(rest_file,gsmap,fractions_gx,'fractions_gx')
-      endif
-      if (sno_present) then
-         call seq_cdata_setptrs(cdata_sx,gsmap=gsmap)
-         call seq_io_read(rest_file,gsmap,x2s_sx,'x2s_sx')
-      endif
-      if (wav_present) then
-         call seq_cdata_setptrs(cdata_wx,gsmap=gsmap)
-         call seq_io_read(rest_file,gsmap,fractions_wx,'fractions_wx')
-         call seq_io_read(rest_file,gsmap,w2x_wx,'w2x_wx')
-      endif
-
+      #end for
+      
       n = size(budg_dataG)
       allocate(ds(n),ns(n))
-      call seq_io_read(rest_file,ds,'budg_dataG')
-      call seq_io_read(rest_file,ns,'budg_ns')
+      call base_io_read(rest_file,ds,'budg_dataG')
+      call base_io_read(rest_file,ns,'budg_ns')
 
       n = 0
       do n1 = 1,size(budg_dataG,dim=1)
@@ -188,20 +129,21 @@ subroutine seq_rest_read(rest_file)
 
       deallocate(ds,ns)
 
-      if (drv_threading) call seq_comm_setnthreads(nthreads_GLOID)
+      !if (drv_threading) call seq_comm_setnthreads(nthreads_GLOID)
 
    endif
 
-end subroutine seq_rest_read
+end subroutine base_rest_read
 
 !===============================================================================
 
-subroutine seq_rest_write(EClock_d,seq_SyncClock)
+subroutine base_rest_write(metaData, EClock_d,SyncClock)
 
    implicit none
 
+   type(Meta),            intent(in)    :: metaData
    type(ESMF_Clock)      ,intent(in)    :: EClock_d      ! driver clock
-   type(seq_timemgr_type),intent(inout) :: seq_SyncClock ! contains ptr to driver clock
+   !type(seq_timemgr_type),intent(inout) :: seq_SyncClock ! contains ptr to driver clock
 
    integer(IN)   :: n,n1,n2,n3,fk
    integer(IN)   :: curr_ymd         ! Current date YYYYMMDD
@@ -221,7 +163,7 @@ subroutine seq_rest_write(EClock_d,seq_SyncClock)
 
    real(r8),allocatable :: ds(:)     ! for reshaping diag data for restart file
    real(r8),allocatable :: ns(:)     ! for reshaping diag data for restart file
-   character(len=*),parameter :: subname = "(seq_rest_write) "
+   character(len=*),parameter :: subname = "(base_rest_write) "
 
 !-------------------------------------------------------------------------------
 !
@@ -230,36 +172,19 @@ subroutine seq_rest_write(EClock_d,seq_SyncClock)
    !----------------------------------------------------------------------------
    ! get required infodata
    !----------------------------------------------------------------------------
-   iamin_CPLID  = seq_comm_iamin(CPLID)
-   call seq_comm_setptrs(GLOID,mpicom=mpicom_GLOID,nthreads=nthreads_GLOID)
-   call seq_comm_setptrs(CPLID,mpicom=mpicom_CPLID,nthreads=nthreads_CPLID)
-   call seq_comm_setptrs(CPLID,iamroot=cplroot)
-   call seq_infodata_getData(infodata,drv_threading=drv_threading)
-   call seq_infodata_getData(infodata, &
-        atm_present=atm_present, &
-        lnd_present=lnd_present, &
-        rof_present=rof_present, &
-        ice_present=ice_present, &
-        ocn_present=ocn_present, &
-        glc_present=glc_present, &
-        wav_present=wav_present, &
-        sno_present=sno_present  )
-   call seq_infodata_getData(infodata, &
-        atm_prognostic=atm_prognostic, &
-        lnd_prognostic=lnd_prognostic, &
-        ice_prognostic=ice_prognostic, &
-        rof_prognostic=rof_prognostic, &
-        ocn_prognostic=ocn_prognostic, &
-        ocnrof_prognostic=ocnrof_prognostic, &
-        glc_prognostic=glc_prognostic, &
-        wav_prognostic=wav_prognostic, &
-        sno_prognostic=sno_prognostic  )
-   call seq_infodata_getData(infodata, cpl_cdf64=cdf64 )
+   iamin_CPLID  = metaData%imain_CPLID
+   mpicom_gloid = metaData%mpicom_gloid
+   mpicom_cplid = metaData%mpicom_cplid
+   cplroot = metaData%iamroot_cpl
 
+   #for $model in $proc_cfgs
+        #set $model_name =  $model.name
+   call comp_getInfo(metaData%${model_name}, prognostic=${model_name}_prognostic)
+   #end for
    ! Write out infodata and time manager data to restart file
 
-   call seq_infodata_GetData( infodata, case_name=case_name)
-   call seq_timemgr_EClockGetData( EClock_d, curr_ymd=curr_ymd, curr_tod=curr_tod)
+   call meta_getInfo( metaData, case_name=case_name)
+   call time_EClockGetInfo( EClock_d, curr_ymd=curr_ymd, curr_tod=curr_tod)
    call shr_cal_date2ymd(curr_ymd,yy,mm,dd)
    write(rest_file,"(2a,i4.4,a,i2.2,a,i2.2,a,i5.5,a)") &
       trim(case_name), '.cpl.r.', yy,'-',mm,'-',dd,'-',curr_tod,'.nc'
@@ -268,7 +193,7 @@ subroutine seq_rest_write(EClock_d,seq_SyncClock)
 
    if (iamin_CPLID) then
 
-      if (drv_threading) call seq_comm_setnthreads(nthreads_CPLID)
+      !if (drv_threading) call seq_comm_setnthreads(nthreads_CPLID)
 
       ! copy budg_dataG into 1d array
       n = size(budg_dataG)
@@ -288,7 +213,8 @@ subroutine seq_rest_write(EClock_d,seq_SyncClock)
 
       if (cplroot) then
          iun = shr_file_getUnit()
-         call seq_infodata_GetData(infodata,restart_pfile=cvar)
+         call meta_getInfo(metaData, restart_pfile=cvar)
+         !call seq_infodata_GetData(infodata,restart_pfile=cvar)
          if (loglevel > 0) write(logunit,"(3A)") subname," write rpointer file ", &
             trim(cvar)
          open(iun, file=cvar, form='FORMATTED')
@@ -298,7 +224,7 @@ subroutine seq_rest_write(EClock_d,seq_SyncClock)
       endif
 
       call shr_mpi_bcast(rest_file,mpicom_CPLID)
-      call seq_io_wopen(rest_file,clobber=.true.,cdf64=cdf64)
+      call base_io_wopen(rest_file,clobber=.true.,cdf64=cdf64)
 
       ! loop twice (for perf), first time write header, second time write data
       do fk = 1,2
@@ -313,90 +239,46 @@ subroutine seq_rest_write(EClock_d,seq_SyncClock)
          else
             call shr_sys_abort('driver_write_rstart fk illegal')
          end if
-         call seq_infodata_GetData(infodata,nextsw_cday=rvar)
-         call seq_io_write(rest_file,rvar,'seq_infodata_nextsw_cday',whead=whead,wdata=wdata)
-         call seq_infodata_GetData(infodata,precip_fact=rvar)
-         call seq_io_write(rest_file,rvar,'seq_infodata_precip_fact',whead=whead,wdata=wdata)
-         call seq_infodata_GetData(infodata,case_name=cvar)
-         call seq_io_write(rest_file,trim(cvar),'seq_infodata_case_name',whead=whead,wdata=wdata)
+         !call seq_infodata_GetData(infodata,nextsw_cday=rvar)
+         call base_io_write(rest_file,rvar,'nextsw_cday',whead=whead,wdata=wdata)
+         !call seq_infodata_GetData(infodata,precip_fact=rvar)
+         call base_io_write(rest_file,rvar,'precip_fact',whead=whead,wdata=wdata)
+         !call seq_infodata_GetData(infodata,case_name=cvar)
+         call base_io_write(rest_file,trim(cvar),'case_name',whead=whead,wdata=wdata)
 
-         call seq_timemgr_EClockGetData( EClock_d, start_ymd=ivar)
-         call seq_io_write(rest_file,ivar,'seq_timemgr_start_ymd',whead=whead,wdata=wdata)
-         call seq_timemgr_EClockGetData( EClock_d, start_tod=ivar)
-         call seq_io_write(rest_file,ivar,'seq_timemgr_start_tod',whead=whead,wdata=wdata)
-         call seq_timemgr_EClockGetData( EClock_d, ref_ymd=ivar)
-         call seq_io_write(rest_file,ivar,'seq_timemgr_ref_ymd'  ,whead=whead,wdata=wdata)
-         call seq_timemgr_EClockGetData( EClock_d, ref_tod=ivar)
-         call seq_io_write(rest_file,ivar,'seq_timemgr_ref_tod'  ,whead=whead,wdata=wdata)
-         call seq_timemgr_EClockGetData( EClock_d, curr_ymd=ivar)
-         call seq_io_write(rest_file,ivar,'seq_timemgr_curr_ymd' ,whead=whead,wdata=wdata)
-         call seq_timemgr_EClockGetData( EClock_d, curr_tod=ivar)
-         call seq_io_write(rest_file,ivar,'seq_timemgr_curr_tod' ,whead=whead,wdata=wdata)
+         call time_EClockGetInfo( EClock_d, start_ymd=ivar)
+         call base_io_write(rest_file,ivar,'timemgr_start_ymd',whead=whead,wdata=wdata)
+         call time_EClockGetInfo( EClock_d, start_tod=ivar)
+         call base_io_write(rest_file,ivar,'timemgr_start_tod',whead=whead,wdata=wdata)
+         call time_EClockGetInfo( EClock_d, ref_ymd=ivar)
+         call base_io_write(rest_file,ivar,'timemgr_ref_ymd'  ,whead=whead,wdata=wdata)
+         call time_EClockGetInfo( EClock_d, ref_tod=ivar)
+         call base_io_write(rest_file,ivar,'timemgr_ref_tod'  ,whead=whead,wdata=wdata)
+         call time_EClockGetInfo( EClock_d, curr_ymd=ivar)
+         call base_io_write(rest_file,ivar,'timemgr_curr_ymd' ,whead=whead,wdata=wdata)
+         call time_EClockGetInfo( EClock_d, curr_tod=ivar)
+         call base_io_write(rest_file,ivar,'timemgr_curr_tod' ,whead=whead,wdata=wdata)
 
-         call seq_io_write(rest_file,ds,'budg_dataG',whead=whead,wdata=wdata)
-         call seq_io_write(rest_file,ns,'budg_ns',whead=whead,wdata=wdata)
+         call base_io_write(rest_file,ds,'budg_dataG',whead=whead,wdata=wdata)
+         call base_io_write(rest_file,ns,'budg_ns',whead=whead,wdata=wdata)
 
-         if (atm_present) then
-            call seq_cdata_setptrs(cdata_ax,gsmap=gsmap)
-            call seq_io_write(rest_file,gsmap,fractions_ax,'fractions_ax',whead=whead,wdata=wdata)
-            call seq_io_write(rest_file,gsmap,a2x_ax,'a2x_ax',whead=whead,wdata=wdata)
+         #for $model in $proc_cfgs
+              #set $model_name = $model.name
+         if (${model_name}_present) then
+            call comp_getInfo(metaData%${model_name}, comp_gsmap=gsmap)
+            call base_io_write(rest_file,gsmap,fractions_${model_name}x,'fractions_${model_name}x',whead=whead,wdata=wdata)
+            call base_io_write(rest_file,gsmap,${model_name}2x_${model_name}x,'${model_name}2x_${model_name}x',whead=whead,wdata=wdata)
          endif
-         if (lnd_present) then
-            call seq_cdata_setptrs(cdata_lx,gsmap=gsmap)
-            call seq_io_write(rest_file,gsmap,fractions_lx,'fractions_lx',whead=whead,wdata=wdata)
-         endif
-         if (ocn_present) then
-            call seq_cdata_setptrs(cdata_ox,gsmap=gsmap)
-            call seq_io_write(rest_file,gsmap,fractions_ox,'fractions_ox',whead=whead,wdata=wdata)
-            call seq_io_write(rest_file,gsmap,o2x_ox,'o2x_ox',whead=whead,wdata=wdata)
-            call seq_io_write(rest_file,gsmap,x2oacc_ox,'x2oacc_ox',whead=whead,wdata=wdata)
-            call seq_io_write(rest_file,      x2oacc_ox_cnt,'x2oacc_ox_cnt',whead=whead,wdata=wdata)
-            call seq_io_write(rest_file,gsmap,xao_ox,'xao_ox',whead=whead,wdata=wdata)
-            call seq_cdata_setptrs(cdata_ax,gsmap=gsmap)
-            call seq_io_write(rest_file,gsmap,xao_ax,'xao_ax',whead=whead,wdata=wdata)
-         endif
-         if (ice_present) then
-            call seq_cdata_setptrs(cdata_ix,gsmap=gsmap)
-            call seq_io_write(rest_file,gsmap,fractions_ix,'fractions_ix',whead=whead,wdata=wdata)
-            call seq_io_write(rest_file,gsmap,i2x_ix,'i2x_ix',whead=whead,wdata=wdata)
-         endif
-         if (rof_present) then
-            call seq_cdata_setptrs(cdata_rx,gsmap=gsmap)
-            call seq_io_write(rest_file,gsmap,fractions_rx,'fractions_rx',whead=whead,wdata=wdata)
-            call seq_io_write(rest_file,gsmap,r2x_rx,'r2x_rx',whead=whead,wdata=wdata)
-         endif
-         if (lnd_present .and. rof_present .and. rof_prognostic) then
-            call seq_cdata_setptrs(cdata_lx,gsmap=gsmap)
-            call seq_io_write(rest_file,gsmap,x2racc_lx,'x2racc_lx'    ,whead=whead,wdata=wdata)
-            call seq_io_write(rest_file,      x2racc_lx_cnt ,'x2racc_lx_cnt',whead=whead,wdata=wdata)
-         end if
-         if (rof_present .and. ocnrof_prognostic) then
-            call seq_cdata_setptrs(cdata_rx,gsmap=gsmap)
-            call seq_io_write(rest_file,gsmap,r2xacc_rx,'r2xacc_rx',whead=whead,wdata=wdata)
-            call seq_io_write(rest_file,      r2xacc_rx_cnt,'r2xacc_rx_cnt',whead=whead,wdata=wdata)
-         endif
-         if (glc_present) then
-            call seq_cdata_setptrs(cdata_gx,gsmap=gsmap)
-            call seq_io_write(rest_file,gsmap,fractions_gx,'fractions_gx',whead=whead,wdata=wdata)
-         endif
-         if (sno_present) then
-            call seq_cdata_setptrs(cdata_sx,gsmap=gsmap)
-            call seq_io_write(rest_file,gsmap,x2s_sx,'x2s_sx',whead=whead,wdata=wdata)
-         endif
-         if (wav_present) then
-            call seq_cdata_setptrs(cdata_wx,gsmap=gsmap)
-            call seq_io_write(rest_file,gsmap,fractions_wx,'fractions_wx',whead=whead,wdata=wdata)
-            call seq_io_write(rest_file,gsmap,w2x_wx,'w2x_wx',whead=whead,wdata=wdata)
-         endif
+         #end for
       enddo
 
-      call seq_io_close(rest_file)
+      call base_io_close(rest_file)
       deallocate(ds,ns)
 
-      if (drv_threading) call seq_comm_setnthreads(nthreads_GLOID)
+      !if (drv_threading) call seq_comm_setnthreads(nthreads_GLOID)
    endif
-end subroutine seq_rest_write
+end subroutine base_rest_write
 
 !===============================================================================
 
-end module seq_rest_mod
+end module base_rest_mod
