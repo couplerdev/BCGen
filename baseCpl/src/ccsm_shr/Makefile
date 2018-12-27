@@ -9,7 +9,7 @@ ifneq ($(ESMF_BLD),$(null))
 cpp_dirs += $(ESMF_LIB)
 endif
 
-.PHONY: debug clean all
+.PHONY: debug clean all install
 
 SRCS_F90 = shr/shr_kind_mod.F90 \
 	   shr/shr_log_mod.F90 \
@@ -28,17 +28,39 @@ SRCS_F90 = shr/shr_kind_mod.F90 \
            shr/shr_orb_mod.F90 \
            shr/shr_nl_mod.F90 \
     	   shr/shr_flux_mod.F90	\
-	   shr/shr_pio_mod.F90
+	   shr/shr_pio_mod.F90 \
+	   shr/shr_reprosum_mod.F90 \
+           shr/shr_tInterp_mod.F90 \
+ 	   shr/shr_stream_mod.F90 \
+           shr/shr_pcdf_mod.F90 \
+	   shr/shr_mct_mod.F90 \
+  	   shr/shr_nl_mod.F90 \
+	   shr/shr_ncread_mod.F90 \
+  	   shr/shr_stream_mod.F90 \
+	   shr/shr_dmodel_mod.F90 \
+	   shr/shr_strdata_mod.F90 \
+	   shr/shr_flux_mod.F90 \
+ 	   shr/shr_vmath_mod.F90 \
+	   shr/shr_isnan.h \
+	   shr/shr_test_infnan_mod.F90 \
+	   shr/shr_infnan_mod.F90 
 
 OBJS_ALL = $(SRCS_F90:.F90=.o)
 
-OBJS_ALL: $(SRCS_F90)
-	$(FC) -c $(CCFLAGS) $^
 
+OBJS_ALL: $(SRCS_F90)
+	$(FC) -c  $(CCFLAGS) shr/shr_isnan.h
+	$(FC) -c $(FLAGS) $(CCFLAGS) $^
+
+install:
+	$(MV) *.mod $(INCLDIR)
+	$(MV) *.o $(LIBDIR)
+
+	
 clean:
 	$(RM) *.o *.mod
 
-mct_mod.o:  shr_kind_mod.o shr_sys_mod.o shr_mpi_mod.o shr_const_mod.o shr_log_mod.o
+mct_mod .o:  shr_kind_mod.o shr_sys_mod.o shr_mpi_mod.o shr_const_mod.o shr_log_mod.o
 shr_kind_mod.o:
 shr_log_mod.o:
 shr_mpi_mod.o: shr_kind_mod.o shr_log_mod.o
@@ -65,7 +87,7 @@ shr_scam_mod.o: shr_kind_mod.o shr_sys_mod.o shr_file_mod.o shr_log_mod.o shr_nc
                 shr_dmodel_mod.o mct_mod.o shr_strdata_mod.o 
 shr_stream_mod.o: shr_kind_mod.o shr_sys_mod.o shr_const_mod.o shr_string_mod.o shr_mpi_mod.o \
                   shr_file_mod.o shr_cal_mod.o shr_log_mod.o
-shr_ifnan_mod.o:
+shr_infnan_mod.o: shr_test_infnan_mod.o
 shr_test_infnan_mod.o:
 shr_assert_mod.o: shr_infnan_mod.o shr_kind_mod.o shr_sys_mod.o shr_log_mod.o
 shr_tInterp_mod.o: shr_sys_mod.o shr_cal_mod.o shr_kind_mod.o shr_const_mod.o shr_log_mod.o \
