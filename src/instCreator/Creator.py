@@ -10,6 +10,7 @@ sys.path.append('../ir')
 from codeGen import codeGenerator
 from parserMod import Parser
 from ir import Model
+import argparse
 from configType import TimeConfig
 from MetaManager import MetaManager
 from instParser import InstParser
@@ -36,6 +37,27 @@ input----
      \map  : map nc files
      \models : comps depend data
 '''
+
+class InstArgsParser:
+    def __init__(self):
+        self.argParser = argparse.ArgumentParser()
+        self.args = None
+        self.argParser.add_argument("-regen", "--regenerate",help="whether to regenerate coupler code", action="store_true")
+        self.argParser.add_argument("-make","--makeCode", help="whether to build code to executabels", action="store_true")
+        self.argParser.add_argument("-overwrite","--overwriteDir", help="whether to recreate new inst dir", action="store_true")
+        #self.argParser.add_argument("")
+        self.argParser.add_argument("-rest","--restart", help="whether do restart", action="store_true")
+        self.argParser.add_argument("-hist","--history", help="wheter do hist archive", action="store_true")
+
+    def argSet(self):
+        self.args = self.argParser.parse_args()
+
+    def instCreate(self):
+        instCreator = InstCreator(regen=self.args.regenerate, make=self.args.makeCode,\
+                                  overwrite=self.args.overwriteDir, restart=self.args.restart, \
+                                  history=self.args.history)
+        instCreator.instCreate()
+
 class TempConfig:
     def __init__(self, template, codeFile, cfgs):
         self.template = template
@@ -116,7 +138,7 @@ class InstCreator:
     '''
     couplerCodePath='/../../baseCpl'
     BCGenPath = '/../..'
-    def __init__(self,regen=False, make=False, overwrite=False):
+    def __init__(self,regen=False, make=False, overwrite=False, restart=False, history=False):
         absPath = os.getcwd()
         InstCreator.BCGenPath = absPath+InstCreator.BCGenPath
         InstCreator.couplerCodePath = absPath+InstCreator.couplerCodePath
@@ -128,6 +150,8 @@ class InstCreator:
         self.args['regen'] = regen
         self.args['make'] = make
         self.args['overwrite'] = overwrite
+        self.args['rest'] = restart
+        self.args['hist'] = history
 
     def setDefaultXmlPath(self):
         self.absPath = os.getcwd()
@@ -156,7 +180,8 @@ class InstCreator:
         instSetupPath = self.confXmlPath['instSetup.xml']
         self.parser = Parser(couplerFile=couplerPath, modelFile=modelsPath, \
                              deployFile=deployPath, fieldFile=fieldPath, \
-                             setupFile=setupPath,setup=True)
+                             setupFile=setupPath,setup=True, rest=self.args['rest'],\
+                             hist=self.args['hist'])
         self.parser.parse()
         self.metaManager.setConfigMeta(optionPath)
         self.metaManager.setMacroMeta(instSetupPath)
@@ -180,8 +205,18 @@ class InstCreator:
         self.conf_cfgs['dataNml'] = dataNmlPath
         dataRcPath = self.metaManager.instPath+"/src/"+self.metaManager.datarc
         self.conf_cfgs['datarc'] = dataRcPath
+        if self.args['rest'] :
+            self.conf_cfgs['rest'] = True
+            self.conf_cfgs['rest_file'] = "\""+self.metaManager.instPath+"/archive/rest.nc\""
+        else:
+            self.conf_cfgs['rest'] = False
+        if self.args['hist']:
+            self.conf_cfgs['hist'] = True
+            self.conf_cfgs['hist_file'] =  "\""+self.metaManager.instPath+"/archive/hist.nc\""
             #    print av['dst_av'].name
             #    print av['w_file']
+        else:
+            self.conf_cfgs['hist'] = False
 
     def codeGenerate(self):
         if self.parser == None:
@@ -210,17 +245,21 @@ class InstCreator:
                                                           "merge_cfgs":merge_cfgs,"fieldVar_cfgs":fieldVar_cfgs})
         fieldTmp = TempConfig(templateDirPrefix+"baseField_Template.F90","base_field.F90", {"field_cfgs":field_cfgs,\
                                                                           "fieldVar_cfgs":fieldVar_cfgs})
+        baseHistTmp = TempConfig(templateDirPrefix+"baseHistMod_Template.F90","base_hist_mod.F90",{"proc_cfgs":proc_cfgs})
+        baseRestTmp = TempConfig(templateDirPrefix+"baseRestMod_Template.F90","base_rest_mod.F90", {"proc_cfgs":proc_cfgs})
         baseCplTmp = TempConfig(templateDirPrefix+"baseCpl_Template.F90","baseCpl.F90",\
                               {"proc_cfgs":proc_cfgs, "merge_subroutines":merge_subroutines,\
                                "merge_cfgs":merge_cfgs,"model_cfgs":model_cfgs, \
-                               "subrt_cfgs":subrt_cfgs,'fraction_cfgs':fraction_cfgs})
+                               "subrt_cfgs":subrt_cfgs,'fraction_cfgs':fraction_cfgs,\
+                               "conf_cfgs":conf_cfgs})
         if self.args['regen']:
-            confList = [searchTmp, manageTmp, deployTmp, baseCplTmp, globalTmp, timeDefTmp, timeCesmTmp, fieldTmp]
+            confList = [searchTmp, manageTmp, deployTmp, baseCplTmp, globalTmp, timeDefTmp, timeCesmTmp, fieldTmp,\
+                        baseHistTmp, baseRestTmp]
             codeGen = CodeMapper(confList)
             codeGen.genCode()
             # mv codeTo right place
             for key in self.metaManager.codeGenList:
-                mvCmd = 'mv '+key+" "+self.metaManager.codePathDict[key].loc 
+                mvCmd = 'mv '+key+" "+self.metaManager.codePathDict[key].loc
                 os.system(mvCmd)
 
     def createSrcConf(self):
@@ -300,8 +339,11 @@ class InstCreator:
        
 
     def instCreate(self):
-        self.getIr()
-        self.codeGenerate()
+        if self.args["regen"]:
+            self.getIr()
+            self.codeGenerate()
+        if not self.args["make"]:
+            return 
         instPath = self.metaManager.instPath
         confPath = self.metaManager.confPath
         try:
@@ -318,11 +360,13 @@ class InstCreator:
         libPath = instPath+"/lib"
         includePath = instPath+"/include"
         binPath = instPath+"/bin"
+        archPath = instPath+"/archive"
         os.mkdir(confPath)
         os.mkdir(srcPath)
         os.mkdir(libPath)
         os.mkdir(includePath)
         os.mkdir(binPath)
+        os.mkdir(archPath)
         
         # create models dir & copy relavent code and Makefile
         modelsPath = instPath+"/models/"
@@ -356,6 +400,9 @@ class InstCreator:
         os.system(copyIncludeCmd)
         os.system(copyLibCmd)
 
+
+
 if __name__ == "__main__":
-    instCreator = InstCreator(regen=True, make=True, overwrite=True)
-    instCreator.instCreate()
+    instParser = InstArgsParser()
+    instParser.argSet()
+    instParser.instCreate()

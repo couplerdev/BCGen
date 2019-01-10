@@ -1,5 +1,5 @@
 module base_field
-
+    use shr_kind_mod
     use global_var
     implicit none
     public :: flds_init
@@ -14,10 +14,10 @@ subroutine flds_init(metaData, ierr)
     
     ! local data
     type(fieldDesc)  :: fldDesc
-    character(FIELDSLEN)   :: shortname
-    character(FIELDSLEN)   :: longname
-    character(FIELDSLEN)   :: stdname
-    character(FIELDSLEN)   :: units
+    character(SHR_KIND_CL)   :: shortname
+    character(SHR_KIND_CL)   :: longname
+    character(SHR_KIND_CL)   :: stdname
+    character(SHR_KIND_CL)   :: units
     integer :: idx, totalFld
 
     #set totalFld = len($field_cfgs)

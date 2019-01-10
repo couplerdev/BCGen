@@ -1,5 +1,6 @@
 module procM
 
+use shr_kind_mod
 use mct_mod
 use comms_def, only: map_mod
 use proc_def, only: procMeta, compMeta
@@ -62,10 +63,10 @@ subroutine init(metaData)
         metaData%iamin_model(iter) = .false.
     end do
     metaData%iamin_model(1) = .true.
-    print *,'glocomm:',metaData%mpi_glocomm, metaData%mpi_cpl
     ! deploy_cpl
     call deploy_cpl(metaData%mpi_glocomm, metaData%mpi_cpl, &
                   metaData%cplid, metaData%iamin_model, 0, ierr)
+    print *,'cpl deployed'
     if(metaData%iamin_model(metaData%cplid))then
         call MPI_Comm_rank(metaData%mpi_cpl, local_rank, ierr)
         if(local_rank==0)then
@@ -73,6 +74,7 @@ subroutine init(metaData)
         end if
         call MPI_Bcast(testData, 1, MPI_INTEGER, 0, metaData%mpi_cpl, ierr)
     end if
+    print *, 'bcast end'
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
     #for $model in $proc_cfgs
@@ -82,12 +84,18 @@ subroutine init(metaData)
                 metaData%model${name}_id, metaData%cplid, &
                 metaData%model${name}2cpl_id, metaData%iamin_model, 0, ierr)
     #end for
-
+    print *, 'comp deployed'
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     !write(*,*), "my_world_rank:", num_rank, " my_in_model", metaData%iamin_model
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
-
+    #for $model in $proc_cfgs
+         #set $name = $model.name
+    if(metaData%iamin_model(metaData%model${name}_id))then
+        call MPI_Comm_rank(metaData%mpi_model${name}, local_rank, ierr)
+        print *,'Im ${name}: in comp:',local_rank, ' in glo:',num_rank
+    end if
+    #end for
     !  初始化comp_comm
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     !write(*,*)'comm initiated'
@@ -100,7 +108,7 @@ subroutine init(metaData)
     metaData%comp_comm(metaData%model${name}_id)     = metaData%mpi_model${name}
     metaData%comp_comm(metaData%model${name}2cpl_id) =metaData%mpi_model${name}2cpl 
     #end for
-
+    
     call procMeta_init(metaData%my_proc, metaData%ncomps)
     !allocate(metaData%my_proc%IDs(metaData%ncomps))
     !allocate(metaData%my_proc%IDs(metaData%ncomps))
@@ -116,10 +124,10 @@ subroutine init(metaData)
     end if
     if(metaData%iamin_model(metaData%model${name}2cpl_id))then
         call procMeta_addToModel(metaData%my_proc, metaData%model${name}2cpl_id, &
-                             metaData%mpi_model${name},'${name}2cpl', ierr)
+                             metaData%mpi_model${name}2cpl,'${name}2cpl', ierr)
     end if
     #end for
-
+    print *,'procMeta_add finished'
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     allocate(metaData%comp_id(metaData%ncomps))
     do iter = 1, metaData%ncomps

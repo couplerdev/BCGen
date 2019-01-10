@@ -1,4 +1,5 @@
 module global_var
+use shr_kind_mod
 use type_def
 use proc_def
 use field_def
@@ -11,8 +12,8 @@ use field_def
            #set $name = $model.name
        type(compMeta)    :: $name
        #end for    
-       character(len=PATHLEN) :: datanml
-       character(len=PATHLEN) :: datarc
+       character(SHR_KIND_CL) :: datanml
+       character(SHR_KIND_CL) :: datarc
        !-----------------------------------------
        ! meta desc of proc and comps
        !-----------------------------------------
@@ -93,7 +94,7 @@ use field_def
 
        #for $fld in $fieldVar_cfgs
             #set $val = $fieldVar_cfgs[$fld]
-       character(FIELDSLEN) :: $fld 
+       character(SHR_KIND_CL) :: $fld 
        #end for
 
    end type Meta

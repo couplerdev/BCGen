@@ -18,7 +18,7 @@ from Datatype import *
 sys.path.append('../ErrorHandle')
 from ErrorHandle import *
 from NameManager import *
-from runCodeParser import SubroutineNode, SeqRun
+from runCodeParser import SubroutineNode, SeqRun, Node
 from codeWrapper import CodeWrapper, toString
 from setupParser import Setup
 from fieldManager import FieldMeta, FieldManager
@@ -28,7 +28,8 @@ DEBUG = 1
 class Parser():
     def __init__(self, couplerFile="../../composing/coupler.xml",  modelFile="../../composing/models.xml", \
                  scheduleFile="../../composing/schedule.xml", deployFile="../../composing/deploy.xml", \
-                 fieldFile="../../composing/field.xml",setupFile="../../composing/setup.xml",setup=True):
+                 fieldFile="../../composing/field.xml",setupFile="../../composing/setup.xml",setup=True,
+                 rest=False, hist=False):
         self.__NameManager = NameManager()
         self.__models = {}
         self.__attrVectCouple = {}
@@ -55,6 +56,9 @@ class Parser():
         self.runSubroutine = []
         self.__fldDict = {}
         self.__fldMetaDict = {}
+        # util optional
+        self.__hist = hist
+        self.__rest = rest
 
     @property
     def models(self):
@@ -196,6 +200,28 @@ class Parser():
 
 
         self.runSubroutine = self.__seqRun.topology()
+        # add rest and hist subroutine here 
+        # this is a temp solution
+        utilSubroutineNodeList = []
+        if self.__rest:
+            cw = CodeWrapper()
+            restStr = "base_rest_write(metaData, EClock_drv)" 
+            cw.appendStr(restStr)
+            restBlock = cw.codeBlock("cpl", "cpl",flag="restart") 
+            restNode = SubroutineNode("rest",strFormat=restBlock)
+            addNode = Node("rest", data=restNode)
+            utilSubroutineNodeList.append(addNode)
+        if self.__hist:
+            cw = CodeWrapper()
+            histStr = "base_hist_write(metaData, EClock_drv)"
+            cw.appendStr(histStr)
+            histBlock = cw.codeBlock("cpl","cpl", flag="hist")
+            histNode = SubroutineNode("hist", strFormat=histBlock)
+            addNode = Node("hist", data=histNode)
+            utilSubroutineNodeList.append(addNode)
+        self.runSubroutine.append(utilSubroutineNodeList)
+        
+        # parse field
         self.fieldParse()
 
     def append(self, obj):
@@ -416,7 +442,7 @@ class ModelParser:
         string = toString(subroutineModel.subroutineName, args)
         cw = CodeWrapper()
         cw.appendStr(string)
-        strFormat = cw.getStr(grid, grid,flag= "comp")
+        strFormat = cw.codeBlock(grid, grid,flag= "comp")
         #print toString(subroutine.subroutine.subroutineName, args)
         self.SeqRun.addSubroutine(subroutine.getSubroutineNode(model=grid, phase=2, strFormat=strFormat))
 
@@ -439,9 +465,9 @@ class ModelParser:
         in_args.append(self.__model.attrVects["x2c_cx"].name)
         out_args.append(self.__model.attrVects["x2c_cc"].name)
         string = toString(mapper_name, argList)
-        cw = CodeWrapper(grid, grid+"2cpl")
+        cw = CodeWrapper()
         cw.appendStr(string)
-        strFormat = cw.getStr(grid, grid+"2cpl", flag="comp")
+        strFormat = cw.codeBlock(grid, grid+"2cpl", flag="comp")
         subroutineNode = SubroutineNode(mapper_name, model=grid, phase=1, inputArg=in_args, \
                                       outputArg=out_args, strFormat=strFormat)
         self.SeqRun.addSubroutine(subroutineNode)
@@ -456,7 +482,7 @@ class ModelParser:
         string = toString(mapper_name, argList)
         cw = CodeWrapper()
         cw.appendStr(string)
-        strFormat = cw.getStr(grid, grid+"2cpl", flag="comp")
+        strFormat = cw.codeBlock(grid, grid+"2cpl", flag="comp")
         subroutineNode = SubroutineNode(mapper_name, model=grid, phase=3, inputArg=in_args, \
                                        outputArg=out_args, strFormat=strFormat)
         self.SeqRun.addSubroutine(subroutineNode)
@@ -610,7 +636,7 @@ class CouplerParser: ###!!!!
                             string = toString(methodName, argList)
                             cw = CodeWrapper()
                             cw.appendStr(string)
-                            strFormat = cw.getStr(grid, grid+"2cpl",flag="comp")
+                            strFormat = cw.codeBlock(grid, grid+"2cpl",flag="comp")
                             subroutine = SubroutineNode(methodName, model=grid, phase=4, inputArg=in_args, \
                                                     outputArg=out_args, strFormat=strFormat)
                             self.seqRun.addSubroutine(subroutine)
@@ -661,9 +687,9 @@ class CouplerParser: ###!!!!
             merge.argList = args
             self.__mergeSubroutine = merge
             string = toString(name, args)
-            cw = CodeWrapper(modelGrid, modelGrid+"2cpl")
+            cw = CodeWrapper()
             cw.appendStr(string)
-            strFormat=cw.getStr(modelGrid, modelGrid+"2cpl",flag="comp")
+            strFormat=cw.codeBlock(modelGrid, modelGrid+"2cpl",flag="comp")
             subroutine =  SubroutineNode(name, model=modelGrid, phase=5,inputArg=in_args, outputArg=out_args,\
                                         strFormat=strFormat)
             self.seqRun.addSubroutine(subroutine)
