@@ -201,6 +201,8 @@ class InstCreator:
         self.conf_cfgs['nmlfile'] = nmlfilePath
         self.conf_cfgs['confPath'] = self.metaManager.confPath
         self.conf_cfgs['dataPath'] = self.metaManager.dataPath
+        pioNml = self.metaManager.instPath+"/conf/"+self.metaManager.pioNml
+        self.conf_cfgs['pioNml'] = pioNml
         dataNmlPath = self.metaManager.instPath+"/src/"+self.metaManager.dataNml
         self.conf_cfgs['dataNml'] = dataNmlPath
         dataRcPath = self.metaManager.instPath+"/src/"+self.metaManager.datarc
@@ -275,6 +277,21 @@ class InstCreator:
                     f.write('sname = \''+sname+'\'\n')
                     f.write('lname = '+lname+'\n')
                     f.write('/')
+
+    def createPioNml(self):
+        pioNml = self.metaManager.pioNml
+        with open(pioNml, 'w') as f:
+            f.write('&pio_default_inparm\n')
+            f.write(' pio_async_interface = .false.\n')
+            f.write(' pio_blocksize = -1\n')
+            f.write(' pio_buffer_size_limit = -1\n')
+            f.write(' pio_debug_level = 0\n')
+            f.write(' pio_numiotasks = -1\n')
+            f.write(' pio_root = 1\n')
+            f.write(' pio_stride = -1\n')
+            f.write(' pio_typename = \'netcdf\'\n')
+            f.write('/')
+
 
     def createRcConf(self):
         dataPath = self.metaManager.dataPath
@@ -389,6 +406,10 @@ class InstCreator:
         self.createRcConf()
         copyRcConfCmd = "mv "+ self.metaManager.datarc+" "+srcPath
         os.system(copyRcConfCmd)
+
+        self.createPioNml()
+        copyPioCmd = "mv "+ self.metaManager.pioNml+" "+confPath
+        os.system(copyPioCmd)
 
         #copy Makefile to relavent dir
         self.createMakefile()

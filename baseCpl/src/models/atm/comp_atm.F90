@@ -1,4 +1,5 @@
 module comp_atm
+use shr_kind_mod
 use mct_mod
 use time_mod
 use proc_def
@@ -10,9 +11,9 @@ use global_var
     ! notice that the fields of a2x and x2a maybe different
     ! but here we just assume they are same
     !---------------------------------------------------------
-    integer,parameter :: CXX=4096
-    character(CXX) :: fld_ar='r:r1'
-    character(CXX) :: fld_ai='i:i1'
+    !integer,parameter :: CXX=4096
+    character(SHR_KIND_CXX) :: fld_ar='Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem'
+    character(SHR_KIND_CXX) :: fld_ai='i:i1'
     character(*),parameter :: model_name='atm'
 
     public :: atm_init_mct
@@ -26,17 +27,17 @@ contains
 !  dom at present
 !-------------------------------------------------------------------------
 subroutine atm_init_mct(compInfo, EClock, &
-    atm2x_atmatm, x2atm_atmatm, ierr)
+    x2atm_atmatm, atm2x_atmatm, ierr)
 
     implicit none
     type(compMeta), target, intent(inout)  :: compInfo
     type(ESMF_Clock), intent(in)          :: EClock
-    type(AttrVect), intent(inout)    :: atm2x_atmatm
-    type(AttrVect), intent(inout)    :: x2atm_atmatm
+    type(mct_aVect), intent(inout)    :: atm2x_atmatm
+    type(mct_aVect), intent(inout)    :: x2atm_atmatm
     integer,        intent(inout)    :: ierr
     integer                :: ID
-    type(gsMap), pointer   :: gsMap_atmatm   
-    type(gGrid)    :: domain
+    type(mct_gsMap), pointer   :: gsMap_atmatm   
+    type(mct_gGrid)    :: domain
     integer ::local_comm,i
 
     ! control signal
@@ -122,11 +123,11 @@ subroutine atm_init_mct(compInfo, EClock, &
 !---
 ! Init MCT Global seg map
 !---
-  call gsMap_init(compInfo%comp_gsmap, start, length, root, local_comm, ID)
+  call mct_gsMap_init(compInfo%comp_gsmap, start, length, root, local_comm, ID)
 !---
 ! Init MCT Domain todo(now is use constant number to init domain data),
 !---
-  call atm_domain_init(local_comm, compInfo%comp_gsmap, domain)
+  call atm_domain_init(local_comm, compInfo%comp_gsmap, compInfo%domain)
 !----
 !Init Attrvect
 !----
@@ -140,37 +141,41 @@ subroutine atm_init_mct(compInfo, EClock, &
   !call seq_flds_add(fld_ar, 'Sa_dens')
   !call seq_flds_add(fld_ar, 'Sa_ptem')
 
-  call avect_init(atm2x_atmatm, iList=fld_ai, rList=fld_ar, lsize=lsize)
-  call avect_init(x2atm_atmatm, iList=fld_ai, rList=fld_ar, lsize=lsize)
+  call mct_avect_init(atm2x_atmatm, iList=fld_ai, rList=fld_ar, lsize=lsize)
+  call mct_avect_init(x2atm_atmatm, iList=fld_ai, rList=fld_ar, lsize=lsize)
  
-  call avect_zero(atm2x_atmatm)
-  call avect_zero(x2atm_atmatm) 
+  call mct_avect_zero(atm2x_atmatm)
+  call mct_avect_zero(x2atm_atmatm) 
 
 end subroutine atm_init_mct
 
-subroutine atm_run_mct(compInfo, EClock, atm2x, x2atm, ierr)
+subroutine atm_run_mct(compInfo, EClock, x2atm, atm2x, ierr)
 
     implicit none
     type(compMeta), target, intent(inout)   :: compInfo
     type(ESMF_Clock), intent(in)           :: EClock
-    type(AttrVect), intent(inout)     :: atm2x
-    type(AttrVect), intent(inout)     :: x2atm
+    type(mct_aVect), intent(inout)     :: atm2x
+    type(mct_aVect), intent(inout)     :: x2atm
     integer, intent(inout)            :: ierr
-    type(gGrid), pointer  :: domain
+    type(mct_gGrid)                   :: domain
+    integer :: ymd, tod
     integer               :: ID 
     integer  :: comm_rank,i, av_lsize, n_rflds, n_iflds, n,nf
     integer :: local_comm
 
+    call time_clockGetInfo(EClock, curr_ymd=ymd, curr_tod=tod)
+
+    print *, '========== atm_run at', " ymd:", ymd, " tod:" , tod, ' =========='
     call compMeta_getInfo(compInfo, comm=local_comm, domain=domain)
     call mpi_comm_rank(local_comm, comm_rank, ierr)
     
-    av_lsize = avect_lsize(atm2x) 
-    n_rflds = avect_nRattr(x2atm)
-    n_iflds = avect_nRattr(x2atm)
+    av_lsize = mct_avect_lsize(atm2x) 
+    n_rflds = mct_avect_nRattr(x2atm)
+    n_iflds = mct_avect_nRattr(x2atm)
 
     do nf=1,n_rflds
       do n=1,av_lsize
-        atm2x%rAttr(nf,n) = (nf*100)                   
+        atm2x%rAttr(nf,n) = x2atm%rAttr(nf, n)+0.1!(nf*100)                   
       enddo
     enddo
 
@@ -205,33 +210,33 @@ end subroutine seq_flds_add
 subroutine atm_domain_init(mpicomm, gsMap_atmatm, domain)
 
   integer    , intent(in)   :: mpicomm
-  type(gsMap), intent(in)   :: gsMap_atmatm
-  type(gGrid), intent(inout)             :: domain
+  type(mct_gsMap), intent(in)   :: gsMap_atmatm
+  type(mct_gGrid), intent(inout)             :: domain
 
   !---local variables---
   real(8)    , pointer  :: data(:)     ! temporary
   integer , pointer  :: idata(:)    ! temporary
   integer ::ierr,lsize
 
-  call gGrid_init(GGrid=domain, &
+  call mct_gGrid_init(GGrid=domain, &
       CoordChars=trim('x:y:z'), &
       otherchars=trim('lat:lon:area:frac:mask:aream'),&
-      lsize=gsMap_lsize(gsMap_atmatm, mpicomm))
-  call avect_zero(domain%data)
+      lsize=mct_gsMap_lsize(gsMap_atmatm, mpicomm))
+  call mct_avect_zero(domain%data)
 
-  lsize=gsMap_lsize(gsMap_atmatm, mpicomm)
+  lsize=mct_gsMap_lsize(gsMap_atmatm, mpicomm)
 
   allocate(data(lsize))
   allocate(idata(lsize))
   data(:) = -9999.0  ! generic special value 	
-  call gGrid_importRAttr(domain,"lat" ,data,lsize) 
-  call gGrid_importRAttr(domain,"lon" ,data,lsize) 
-  call gGrid_importRAttr(domain,"area",data,lsize) 
-  call gGrid_importRAttr(domain,"frac",data,lsize) 
+  call mct_gGrid_importRAttr(domain,"lat" ,data,lsize) 
+  call mct_gGrid_importRAttr(domain,"lon" ,data,lsize) 
+  call mct_gGrid_importRAttr(domain,"area",data,lsize) 
+  call mct_gGrid_importRAttr(domain,"frac",data,lsize) 
 
   data(:) = 0.0  ! generic special value 	
-  call gGrid_importRAttr(domain,"mask" ,data,lsize) 
-  call gGrid_importRAttr(domain,"aream",data,lsize) 
+  call mct_gGrid_importRAttr(domain,"mask" ,data,lsize) 
+  call mct_gGrid_importRAttr(domain,"aream",data,lsize) 
   deallocate(data)
   deallocate(idata)
 

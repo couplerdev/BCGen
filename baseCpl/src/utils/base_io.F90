@@ -3,6 +3,7 @@ module base_io
 use shr_mpi_mod
 use shr_kind_mod, only: R8 => SHR_KIND_R8, IN => SHR_KIND_IN
 use shr_kind_mod, only: CL => SHR_KIND_CL, CS => SHR_KIND_CS
+use shr_pio_mod
 use field_def
 use base_field
 use global_var
@@ -54,14 +55,13 @@ use mct_mod
 contains
 
 subroutine base_io_init()
-
     implicit none
     character(CL) ::cpl_name
 
-    cpl_name = metaData%cpl_name
-    cpl_io_subsystem => shr_pio_getiosys(cpl_name)
-    cpl_pio_iotype = shr_pio_getiotype(cpl_name)
-
+    cpl_name = metaData%comp_name(metaData%cplid)
+    cpl_io_subsystem => shr_pio_getiosys(trim(cpl_name))
+    cpl_pio_iotype = shr_pio_getiotype(trim(cpl_name))
+    print *,'io_type:', cpl_pio_iotype
 
 end subroutine base_io_init
 
@@ -92,6 +92,7 @@ subroutine base_io_wopen(my_proc, filename, clobber, cdf64)
     lcdf64 = .false.
     if(present(cdf64)) lcdf64 = cdf64
 
+    PRINT *, 'LOOK FILE:',filename
     if (.not. pio_file_is_open(cpl_io_file))then
         if(iam==0)inquire(file=trim(filename), exist=exists)
         call shr_mpi_bcast(exists, mpicom, 'base_io_wopen exists')
@@ -127,7 +128,6 @@ subroutine base_io_wopen(my_proc, filename, clobber, cdf64)
     else
 
     end if
-
 end subroutine base_io_wopen
 
 subroutine base_io_close(filename)
@@ -161,8 +161,11 @@ subroutine base_io_redef(filename)
     implicit none
     character(len=*), intent(in)  :: filename
     integer :: rcode
- 
+
+   
     rcode = pio_redef(cpl_io_file)
+ 
+
 
 end subroutine base_io_redef
 
@@ -487,7 +490,7 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
     integer, pointer :: Dof(:)
     logical :: luse_float
 
-    lfillvalue = fillval
+
     if(present(fillval))then
         lfillvalue = fillval
     end if
@@ -501,14 +504,12 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
     lwdata = .true.
     if(present(whead)) lwhead = whead
     if(present(wdata)) lwdata = wdata
-
     if(.not. lwhead .and. .not. lwdata)then
         return
     end if
-   
     luse_float = .false.
     if(present(use_float)) luse_float = use_float
-    
+   
     call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam)
 
     ng = mct_gsmap_gsize(comp_gsmap)
@@ -532,10 +533,10 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
         call shr_sys_abort(subname//" ERROR: grid2d size not consitent")
     end if
 
+
     if(lwhead) then
         rcode = pio_def_dim(cpl_io_file, trim(lpre)//'_nx', lnx, dimid2(1)) 
         rcode = pio_def_dim(cpl_io_file, trim(lpre)//'_ny', lny, dimid2(2))
-
         if(present(nt)) then
             dimid3(1:2) = dimid2
             rcode =  pio_inq_dimid(cpl_io_file, 'time', dimid3(3))
@@ -544,22 +545,54 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
             dimid => dimid2
         end if
 
-        frame = 1
-        if(present(nt))then
-            frame = nt
-        end if
         do k = 1, nf
             call mct_avect_getRList(mstring,k, AV)  ! check defined
             itemc = mct_string_toChar(mstring)  ! not defined
             call mct_string_clean(mstring)
             name1 = trim(lpre)//'_'//trim(itemc)
+            lname = 'lname:' 
+            sname = 'sname:'
+            cunit = 'cunit:'
+            !call fldsMeta_lookup(metaData%fld, itemc, longname=lname,stdname=sname, units=cunits)
+            if(luse_float)then
+                rcode = pio_def_var(cpl_io_file, trim(name1), PIO_REAL, dimid, varid)
+            else
+                rcode = pio_def_var(cpl_io_file, trim(name1), PIO_DOUBLE, dimid, varid)
+            end if
+            rcode = pio_put_att(cpl_io_file, varid, '_FillValue', lfillvalue)
+            rcode = pio_put_att(cpl_io_file, varid, 'units', trim(cunit))
+            rcode = pio_put_att(cpl_io_file, varid, 'long_name', trim(lname))
+            rcode = pio_put_att(cpl_io_file, varid, 'standard_name',trim(sname))
+            rcode = pio_put_att(cpl_io_file, varid, 'internal_name', trim(dname))
+            if(present(tavg))then
+                if(tavg)then
+                    rcode = pio_put_att(cpl_io_file, varid, "cell_methods", "time: mean")
+                end if
+            end if
+        end do
+        if (lwdata)call base_io_enddef(filename)
+    end if
+            
+    if(lwdata)then
+        call mct_gsmap_OrderedPoints(comp_gsmap, iam, Dof)
+        call pio_initdecomp(cpl_io_subsystem, pio_double, (/lnx, lny/), dof, iodesc)
+        deallocate(dof)
+        do k = 1, nf
+            call mct_avect_getRList(mstring, k, AV)
+            itemc = mct_string_toChar(mstring)
+            call mct_string_clean(mstring)
+            name1 = trim(lpre)//'_'//trim(itemc)
             rcode = pio_inq_varid(cpl_io_file, trim(name1), varid)
-            !call pio_setframe(varid, frame)
+            if(present(nt))then
+                frame = nt
+            else
+                frame =  1
+            end if
+            call pio_setframe(varid, frame)
             call pio_write_darray(cpl_io_file, varid, iodesc, av%rattr(k,:), rcode, fillval=lfillvalue)
         end do
-
+ 
         call pio_freedecomp(cpl_io_file, iodesc)
-
     end if
 
 end subroutine base_io_write_av

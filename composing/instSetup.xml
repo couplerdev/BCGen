@@ -5,11 +5,14 @@
 	</macro>
 	<file_location>
 		<nmlfile></nmlfile>
-		<restart_file></restart_file>
+	        <restart_file></restart_file>
 	</file_location>
         <data_location>
 		<data_path>/share/BCGen_case/input</data_path><!--data dict structure has been defined--> 
 		<data_nml>nmlfile_src</data_nml>
 		<data_rc>mapper.rc</data_rc>
 	</data_location>
+        <input>
+		<input_path>/share/BCGen_case/input</input_path>
+        </input>
 </instSetup>

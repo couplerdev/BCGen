@@ -32,7 +32,7 @@ module time_mod
     public :: get_interval    
     !public :: is_restart
 
-    character(len=*), private, parameter :: &
+    character(len=*), public, parameter :: &
         time_optNONE     = "none", &
         time_optNever    = "never", &
         time_optNsteps   = "nsteps", &
@@ -422,10 +422,10 @@ subroutine time_clockGetInfo(EClock, curr_yr, curr_mon, curr_day, &
     integer,  optional,  intent(inout)   :: dtime
     integer,  optional,  intent(inout)   :: alarmcount
     type(ESMF_Time), optional, intent(inout) :: ECurrTime
-    real,     optional,  intent(inout)   :: curr_cday
-    real,     optional,  intent(inout)   :: next_cday
-    real,     optional,  intent(inout)   :: curr_time
-    real,     optional,  intent(inout)   :: prev_time
+    real(R8),     optional,  intent(inout)   :: curr_cday
+    real(R8),     optional,  intent(inout)   :: next_cday
+    real(R8),     optional,  intent(inout)   :: curr_time
+    real(R8),     optional,  intent(inout)   :: prev_time
     character(len=*), optional, intent(inout)  :: calendar
 
     !---local

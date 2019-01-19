@@ -2,6 +2,7 @@ module time_type
     !------------------------------------
     ! time relative macros and types
     !------------------------------------
+    use shr_kind_mod
     use ESMF
     implicit none
     #set $clockCnt = len($proc_cfgs)

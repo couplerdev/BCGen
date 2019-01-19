@@ -41,6 +41,7 @@ class MetaManager:
         self.dataPath = ""
         self.dataNml = ""
         self.datarc = ""
+        self.pioNml = "pioNml"
         self.inputPath = ""
         # init codePathDict absPath
        

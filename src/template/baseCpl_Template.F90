@@ -25,7 +25,7 @@ use base_rest_mod
 #if $conf_cfgs['hist']
 use base_hist_mod
 #end if
-
+use base_io
 
     implicit none
     !type(Meta),  pointer :: metaData
@@ -244,6 +244,8 @@ subroutine cpl_run()
     logical :: ${name}_run
     #end for
 
+
+    call base_io_init()
     call mpi_comm_rank(MPI_COMM_WORLD, comm_rank, ierr)
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     write(*,*)'----------rank:', comm_rank, ' begin run------------'
@@ -276,7 +278,7 @@ end subroutine cpl_run
 subroutine cpl_final()
 
     implicit none
-
+    integer :: ierr
     !----------------------------------------
     !     end component
     !----------------------------------------
@@ -299,6 +301,10 @@ subroutine cpl_final()
     end if
 
     #end for
+
+    call MPI_Barrier(MPI_COMM_WORLD, ierr)
+    print *,'========== end of coupled climate models =========='
+    call MPI_Finalize(ierr)
 
 end subroutine cpl_final
 

@@ -3,7 +3,7 @@
 		<name>atm</name>
 		<attrVect>
 			<name></name>
-			<gsize>12</gsize>
+			<gsize>3312</gsize>
 			<nx>3</nx>
 			<ny>4</ny>
 			<field>flds_atm2x_states,flds_atm2x_fluxes,flds_x2atm_states,flds_x2atm_fluxes</field>
@@ -46,7 +46,7 @@
 		<name>ocn</name>
 		<attrVect>
 			<name></name>
-			<gsize>12</gsize>
+			<gsize>11600</gsize>
 			<nx>3</nx>
 			<ny>4</ny>
 			<field>flds_ocn2x_states,flds_ocn2x_fluxes,flds_x2ocn_states,flds_x2ocn_fluxes</field>

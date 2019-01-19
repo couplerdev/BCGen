@@ -167,9 +167,10 @@ subroutine base_rest_write(metaData, EClock_d)
    character(len=*),parameter :: subname = "(base_rest_write) "
    #for $model in $proc_cfgs
        #set $_name = $model.name
-   type(mct_aVect),  pointer :: $(_name)2x_$(_name)x
+   type(mct_aVect)           :: $(_name)2x_$(_name)x
    type(mct_aVect)           :: fractions_$(_name)x
    #end for
+   character(len=*), parameter :: prefix="./archive/"
 
 
 !-------------------------------------------------------------------------------
@@ -187,7 +188,7 @@ subroutine base_rest_write(metaData, EClock_d)
 
    #for $model in $proc_cfgs
        #set $_name = $model.name
-   $(_name)2x_$(_name)x => metaData%$(_name)2x_$(_name)x
+   !$(_name)2x_$(_name)x => metaData%$(_name)2x_$(_name)x
    #end for
 
    #for $model in $proc_cfgs
@@ -199,8 +200,8 @@ subroutine base_rest_write(metaData, EClock_d)
    case_name = metaData%case_name
    call time_clockGetInfo( EClock_d, curr_ymd=curr_ymd, curr_tod=curr_tod)
    call shr_cal_date2ymd(curr_ymd,yy,mm,dd)
-   write(rest_file,"(2a,i4.4,a,i2.2,a,i2.2,a,i5.5,a)") &
-      trim(case_name), '.cpl.r.', yy,'-',mm,'-',dd,'-',curr_tod,'.nc'
+   write(rest_file,"(3a,i4.4,a,i2.2,a,i2.2,a,i5.5,a)") &
+      trim(prefix),trim(case_name), '.cpl.r.', yy,'-',mm,'-',dd,'-',curr_tod,'.nc'
 
    ! Write driver data to restart file
 
@@ -245,8 +246,9 @@ subroutine base_rest_write(metaData, EClock_d)
          if (fk == 1) then
             whead = .true.
             wdata = .false.
-            call base_io_redef(rest_file)
+            !call base_io_redef(rest_file)
          elseif (fk == 2) then
+            call mpi_barrier(metaData%mpi_cpl, ierr)
             whead = .false.
             wdata = .true.
             call base_io_enddef(rest_file)
@@ -280,16 +282,18 @@ subroutine base_rest_write(metaData, EClock_d)
               #set $model_name = $model.name
          
          call compMeta_getInfo(metaData%${model_name}, comp_gsmap=gsmap)
-         call base_io_write(rest_file,gsmap,fractions_${model_name}x,'fractions_${model_name}x',whead=whead,wdata=wdata)
-         call base_io_write(rest_file,gsmap,${model_name}2x_${model_name}x,'${model_name}2x_${model_name}x',whead=whead,wdata=wdata)
+         !call base_io_write(rest_file,gsmap,fractions_${model_name}x,'fractions_${model_name}x',whead=whead,wdata=wdata)
+         call base_io_write(rest_file,gsmap,metaData%${model_name}2x_${model_name}x,'${model_name}2x_${model_name}x',whead=whead,wdata=wdata)
          #end for
       enddo
 
       call base_io_close(rest_file)
-      deallocate(ds,ns)
+      !deallocate(ds,ns)
 
       !if (drv_threading) call seq_comm_setnthreads(nthreads_GLOID)
    endif
+   write(*,*)'========== restart file has been written =========='
+
 end subroutine base_rest_write
 
 !===============================================================================

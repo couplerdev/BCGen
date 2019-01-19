@@ -1,6 +1,8 @@
 module procM
 
 use shr_kind_mod
+use shr_pio_mod
+use shr_string_mod
 use mct_mod
 use comms_def, only: map_mod
 use proc_def, only: procMeta, compMeta
@@ -10,6 +12,7 @@ use base_field
 use comms, only: mapper_init
 use deploy_mod, only: deploy, deploy_cpl
 use mpi_comm, only:  iam_comm_root
+
 !use deploy_mod
 !use m_attrvect, only: AttrVect, mct_init => init, mct_clean => clean
     implicit none
@@ -33,9 +36,11 @@ subroutine init(metaData)
     #set $nmlfile = $conf_cfgs['nmlfile']
     #set $datanml = $conf_cfgs['dataNml']
     #set $datarc = $conf_cfgs['datarc']
+    #set $pionml = $conf_cfgs['pioNml']
     character(*), parameter :: nmlfile = "$nmlfile"
     character(*), parameter :: datanml = "$datanml"
     character(*), parameter :: datarc = "$datarc"
+    character(*), parameter :: pionml = "$pionml"
     integer :: testData ! if test
     integer :: local_rank ! if test
 
@@ -43,22 +48,38 @@ subroutine init(metaData)
     #set $ncomps = len($proc_cfgs)
     metaData%num_models = $ncomps
     metaData%num_comms =  2*$ncomps+2
+    metaData%case_name = "my_case"
     
     
     
     call MPI_Init(ierr)
     call MPI_Comm_rank(MPI_COMM_WORLD, num_rank, ierr)
     call MPI_Comm_size(MPI_COMM_WORLD, num_size, ierr)
-   
+    call confMeta_init(metaData%conf, nmlfile, pionml, ierr=ierr)
     !call mct_world_init(ncomps, MPI_COMM_WORLD, comms, comps) ! comms? comps?
 
-    
+    !call shr_pio_init1(metaData%ncomps, pionml, MPI_COMM_WORLD)
     !----------------------------------------------------------
     ! set up every comp's comm
     !----------------------------------------------------------
     metaData%mpi_glocomm = MPI_COMM_WORLD
+    call shr_pio_init1(metaData%ncomps, pionml, metaData%mpi_glocomm)
 
     allocate(metaData%iamin_model(metaData%ncomps))
+    allocate(metaData%comp_name(metaData%ncomps))
+    allocate(metaData%comp_comm_iam(metaData%ncomps))
+
+    metaData%comp_comm_iam = -1
+
+
+    metaData%comp_name(metaData%gloid) = shr_string_toUpper(trim("global"))
+    metaData%comp_name(metaData%cplid) = shr_string_toUpper(trim("coupler"))
+    #for $model in $proc_cfgs
+         #set $_name = $model.name
+    metaData%comp_name(metaData%model${_name}_id) = shr_string_toUpper(trim("${_name}"))
+    metaData%comp_name(metaData%model${_name}2cpl_id) = shr_string_toUpper(trim("${_name}2cpl"))
+    #end for
+
     do iter = 1, metaData%ncomps
         metaData%iamin_model(iter) = .false.
     end do
@@ -85,6 +106,8 @@ subroutine init(metaData)
                 metaData%model${name}2cpl_id, metaData%iamin_model, 0, ierr)
     #end for
     print *, 'comp deployed'
+
+
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     !write(*,*), "my_world_rank:", num_rank, " my_in_model", metaData%iamin_model
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
@@ -96,6 +119,7 @@ subroutine init(metaData)
         print *,'Im ${name}: in comp:',local_rank, ' in glo:',num_rank
     end if
     #end for
+    print *,'before comm init'
     !  初始化comp_comm
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     !write(*,*)'comm initiated'
@@ -108,7 +132,7 @@ subroutine init(metaData)
     metaData%comp_comm(metaData%model${name}_id)     = metaData%mpi_model${name}
     metaData%comp_comm(metaData%model${name}2cpl_id) =metaData%mpi_model${name}2cpl 
     #end for
-    
+    print *, 'comm set' 
     call procMeta_init(metaData%my_proc, metaData%ncomps)
     !allocate(metaData%my_proc%IDs(metaData%ncomps))
     !allocate(metaData%my_proc%IDs(metaData%ncomps))
@@ -139,6 +163,12 @@ subroutine init(metaData)
     mycomms => metaData%comp_comm
     myids => metaData%comp_id
 
+    do iter = 1, metaData%ncomps
+        if(metaData%iamin_model(iter))then
+            call MPI_COMM_RANK(metaData%comp_comm(iter), local_rank, ierr)
+            metaData%comp_comm_iam(iter) = local_rank
+        end if
+    end do
 
     call mct_world_init(metaData%ncomps, MPI_COMM_WORLD, mycomms, myids)
 
@@ -158,7 +188,8 @@ subroutine init(metaData)
 
     #for $model in $proc_cfgs
          #set $name = $model.name 
-    metaData%iamin_model${name} = .false.
+    metaData%iamin_model${name} = .false. 
+    
     if(metaData%iamin_model(metaData%model${name}_id))then
         call iam_comm_root(metaData%mpi_model${name}, metaData%iamroot_model${name}, ierr)
         metaData%iamin_model${name} = .true.
@@ -209,9 +240,17 @@ subroutine init(metaData)
     !-------------------------------------------
     !   init nmlfile
     !-------------------------------------------
-    call confMeta_init(metaData%conf, nmlfile, ierr=ierr)
+    !call confMeta_init(metaData%conf, nmlfile, ierr=ierr)
     metaData%datanml = datanml
     metaData%datarc = datarc
+
+    !-------------------------------------------
+    !   init pio
+    !-------------------------------------------
+    call shr_pio_init2(metaData%comp_id, metaData%comp_name, metaData%iamin_model,&
+          metaData%comp_comm, metaData%comp_comm_iam)
+
+
 
 end subroutine init
 

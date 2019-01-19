@@ -91,7 +91,7 @@ subroutine base_hist_write(metaData, EClock_d)
    integer(IN)   :: lsize        ! local size of an aVect
    real(R8)      :: tbnds(2)     ! CF1.0 time bounds
    logical       :: whead,wdata  ! for writing restart/history cdf files
-   type(mct_gsMap),pointer :: gsmap
+   type(mct_gsMap) :: gsmap
    #for $model in $proc_cfgs
        #set $_name = $model.name
    type(mct_aVect), pointer :: $(_name)2x_$(_name)x
@@ -100,6 +100,8 @@ subroutine base_hist_write(metaData, EClock_d)
    type(mct_gGrid)          :: dom_$(_name)x
    #end for
    type(procMeta), pointer :: my_proc
+   character(*), parameter :: prefix = "./archive/"
+
  
 !-------------------------------------------------------------------------------
 !
@@ -132,8 +134,10 @@ subroutine base_hist_write(metaData, EClock_d)
         start_ymd=start_ymd, start_tod=start_tod, curr_time=curr_time, &
         calendar=calendar)
    call shr_cal_date2ymd(curr_ymd,yy,mm,dd)
-   write(hist_file,"(2a,i4.4,a,i2.2,a,i2.2,a,i5.5,a)") &
-      trim(case_name), '.cpl.hi.', yy,'-',mm,'-',dd,'-',curr_tod,'.nc'
+
+   case_name = metaData%case_name
+   write(hist_file,"(3a,i4.4,a,i2.2,a,i2.2,a,i5.5,a)") &
+      trim(prefix), trim(case_name), '.cpl.hi.', yy,'-',mm,'-',dd,'-',curr_tod,'.nc'
 
    time_units = 'days since ' &
         // base_io_date2yyyymmdd(start_ymd) // ' ' // base_io_sec2hms(start_tod)
@@ -155,9 +159,10 @@ subroutine base_hist_write(metaData, EClock_d)
             wdata = .true.
             call base_io_enddef(hist_file)
          else
-            call shr_sys_abort('seq_hist_write fk illegal')
+            call shr_sys_abort('base_hist_write fk illegal')
          end if
 
+         !print *, '---------curr_time---------', fk
          tbnds = curr_time
 !------- tcx nov 2011 tbnds of same values causes problems in ferret
          if (tbnds(1) >= tbnds(2)) then
@@ -170,24 +175,30 @@ subroutine base_hist_write(metaData, EClock_d)
                               whead=whead,wdata=wdata,tbnds=tbnds)
          endif
 
+         !print *,'call :-----------------'
          #for $model in $proc_cfgs
              #set $model_name = $model.name
          !if (${model_name}_present) then
             call compMeta_GetInfo(metaData%${model_name}, comp_gsmap=gsmap)
+            !print *, 'base io'
             call base_io_write(hist_file,gsmap,dom_${model_name}x%data,'dom_${model_name}x', &
                               nx=${model_name}_nx,ny=${model_name}_ny,nt=1,whead=whead,wdata=wdata,pre='dom${model_name}')
-            call base_io_write(hist_file,gsmap,fractions_${model_name}x,'fractions_${model_name}x', &
-                              nx=${model_name}_nx,ny=${model_name}_ny,nt=1,whead=whead,wdata=wdata,pre='frac${model_name}')
-            call base_io_write(hist_file,gsmap,x2${model_name}_${model_name}x,'x2${model_name}_ax', &
+            !print *, 'data write'
+            !call base_io_write(hist_file,gsmap,fractions_${model_name}x,'fractions_${model_name}x', &
+            !                  nx=${model_name}_nx,ny=${model_name}_ny,nt=1,whead=whead,wdata=wdata,pre='frac${model_name}')
+            call base_io_write(hist_file,gsmap,x2${model_name}_${model_name}x,'x2${model_name}_${model_name}x', &
                               nx=${model_name}_nx,ny=${model_name}_ny,nt=1,whead=whead,wdata=wdata,pre='x2${model_name}')
             call base_io_write(hist_file,gsmap,${model_name}2x_${model_name}x,'${model_name}2x_${model_name}x', &
                               nx=${model_name}_nx,ny=${model_name}_ny,nt=1,whead=whead,wdata=wdata,pre='${model_name}2x')
          !endif
          #end for
+         !print *,'***********'
       end do
       call base_io_close(hist_file)
       
    endif
+
+   write(*,*)'========== history file has been written =========='
 
 end subroutine base_hist_write
 

@@ -4,7 +4,7 @@
 		<input>
 			<src name='ocn'>
 				<field>So_t:So_s:So_u</field>
-				<file>map_fv4x5_to_gx3v7_aave_da_091218.nc</file>
+				<file>map_gx3v7_to_fv4x5_aave_da_091218.nc</file>
 			</src>	
                </input>
 	</model>
