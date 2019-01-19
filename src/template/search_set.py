@@ -60,7 +60,7 @@ params = {
         'x2atm_atmatm':'x2atm_atmatm', 
         'ierr':'ierr'
     }
-atm_init = Temp(funcname=method_name, params=params, strFmt='atm_init_mct(my_proc%model_atm, EClock, x2atm_atmatm, atm2x_atmatm, ierr=ierr)')
+atm_init = Temp(funcname=method_name, params=params, strFmt='atm_init_mct(metaData%atm, EClock_atm, x2atm_atmatm, atm2x_atmatm, ierr=ierr)')
 
 method_name = 'ocn_init_mct'
 params = {
@@ -72,7 +72,7 @@ params = {
         'x2ocn_ocnocn':'x2ocn_ocnocn', 
         'ierr':'ierr'
     }
-ocn_init = Temp(funcname=method_name, params=params, strFmt='ocn_init_mct(my_proc%model_ocn, EClock, x2ocn_ocnocn, ocn2x_ocnocn, ierr=ierr)')
+ocn_init = Temp(funcname=method_name, params=params, strFmt='ocn_init_mct(metaData%ocn, EClock_ocn, x2ocn_ocnocn, ocn2x_ocnocn, ierr=ierr)')
 
 
 method_name='mapper_comp_map'
