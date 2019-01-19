@@ -160,10 +160,11 @@ subroutine base_rest_write(metaData, EClock_d)
    real(r8),allocatable :: ds(:)     ! for reshaping diag data for restart file
    real(r8),allocatable :: ns(:)     ! for reshaping diag data for restart file
    character(len=*),parameter :: subname = "(base_rest_write) "
-   type(mct_aVect),  pointer :: atm2x_atmx
+   type(mct_aVect)           :: atm2x_atmx
    type(mct_aVect)           :: fractions_atmx
-   type(mct_aVect),  pointer :: ocn2x_ocnx
+   type(mct_aVect)           :: ocn2x_ocnx
    type(mct_aVect)           :: fractions_ocnx
+   character(len=*), parameter :: prefix="./archive/"
 
 
 !-------------------------------------------------------------------------------
@@ -179,8 +180,8 @@ subroutine base_rest_write(metaData, EClock_d)
    cplroot = metaData%iamroot_cpl
    my_proc => metaData%my_proc
 
-   atm2x_atmx => metaData%atm2x_atmx
-   ocn2x_ocnx => metaData%ocn2x_ocnx
+   !atm2x_atmx => metaData%atm2x_atmx
+   !ocn2x_ocnx => metaData%ocn2x_ocnx
 
    call compMeta_getInfo(metaData%atm, prognostic=atm_prognostic)
    call compMeta_getInfo(metaData%ocn, prognostic=ocn_prognostic)
@@ -189,8 +190,8 @@ subroutine base_rest_write(metaData, EClock_d)
    case_name = metaData%case_name
    call time_clockGetInfo( EClock_d, curr_ymd=curr_ymd, curr_tod=curr_tod)
    call shr_cal_date2ymd(curr_ymd,yy,mm,dd)
-   write(rest_file,"(2a,i4.4,a,i2.2,a,i2.2,a,i5.5,a)") &
-      trim(case_name), '.cpl.r.', yy,'-',mm,'-',dd,'-',curr_tod,'.nc'
+   write(rest_file,"(3a,i4.4,a,i2.2,a,i2.2,a,i5.5,a)") &
+      trim(prefix),trim(case_name), '.cpl.r.', yy,'-',mm,'-',dd,'-',curr_tod,'.nc'
 
    ! Write driver data to restart file
 
@@ -235,8 +236,9 @@ subroutine base_rest_write(metaData, EClock_d)
          if (fk == 1) then
             whead = .true.
             wdata = .false.
-            call base_io_redef(rest_file)
+            !call base_io_redef(rest_file)
          elseif (fk == 2) then
+            call mpi_barrier(metaData%mpi_cpl, ierr)
             whead = .false.
             wdata = .true.
             call base_io_enddef(rest_file)
@@ -268,19 +270,21 @@ subroutine base_rest_write(metaData, EClock_d)
 
          
          call compMeta_getInfo(metaData%atm, comp_gsmap=gsmap)
-         call base_io_write(rest_file,gsmap,fractions_atmx,'fractions_atmx',whead=whead,wdata=wdata)
-         call base_io_write(rest_file,gsmap,atm2x_atmx,'atm2x_atmx',whead=whead,wdata=wdata)
+         !call base_io_write(rest_file,gsmap,fractions_atmx,'fractions_atmx',whead=whead,wdata=wdata)
+         call base_io_write(rest_file,gsmap,metaData%atm2x_atmx,'atm2x_atmx',whead=whead,wdata=wdata)
          
          call compMeta_getInfo(metaData%ocn, comp_gsmap=gsmap)
-         call base_io_write(rest_file,gsmap,fractions_ocnx,'fractions_ocnx',whead=whead,wdata=wdata)
-         call base_io_write(rest_file,gsmap,ocn2x_ocnx,'ocn2x_ocnx',whead=whead,wdata=wdata)
+         !call base_io_write(rest_file,gsmap,fractions_ocnx,'fractions_ocnx',whead=whead,wdata=wdata)
+         call base_io_write(rest_file,gsmap,metaData%ocn2x_ocnx,'ocn2x_ocnx',whead=whead,wdata=wdata)
       enddo
 
       call base_io_close(rest_file)
-      deallocate(ds,ns)
+      !deallocate(ds,ns)
 
       !if (drv_threading) call seq_comm_setnthreads(nthreads_GLOID)
    endif
+   write(*,*)'========== restart file has been written =========='
+
 end subroutine base_rest_write
 
 !===============================================================================

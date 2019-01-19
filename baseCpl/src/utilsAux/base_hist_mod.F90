@@ -88,7 +88,7 @@ subroutine base_hist_write(metaData, EClock_d)
    integer(IN)   :: lsize        ! local size of an aVect
    real(R8)      :: tbnds(2)     ! CF1.0 time bounds
    logical       :: whead,wdata  ! for writing restart/history cdf files
-   type(mct_gsMap),pointer :: gsmap
+   type(mct_gsMap) :: gsmap
    type(mct_aVect), pointer :: atm2x_atmx
    type(mct_aVect), pointer :: x2atm_atmx
    type(mct_aVect)          :: fractions_atmx   ! need to support latter
@@ -98,6 +98,8 @@ subroutine base_hist_write(metaData, EClock_d)
    type(mct_aVect)          :: fractions_ocnx   ! need to support latter
    type(mct_gGrid)          :: dom_ocnx
    type(procMeta), pointer :: my_proc
+   character(*), parameter :: prefix = "./archive/"
+
  
 !-------------------------------------------------------------------------------
 !
@@ -127,8 +129,10 @@ subroutine base_hist_write(metaData, EClock_d)
         start_ymd=start_ymd, start_tod=start_tod, curr_time=curr_time, &
         calendar=calendar)
    call shr_cal_date2ymd(curr_ymd,yy,mm,dd)
-   write(hist_file,"(2a,i4.4,a,i2.2,a,i2.2,a,i5.5,a)") &
-      trim(case_name), '.cpl.hi.', yy,'-',mm,'-',dd,'-',curr_tod,'.nc'
+
+   case_name = metaData%case_name
+   write(hist_file,"(3a,i4.4,a,i2.2,a,i2.2,a,i5.5,a)") &
+      trim(prefix), trim(case_name), '.cpl.hi.', yy,'-',mm,'-',dd,'-',curr_tod,'.nc'
 
    time_units = 'days since ' &
         // base_io_date2yyyymmdd(start_ymd) // ' ' // base_io_sec2hms(start_tod)
@@ -150,9 +154,10 @@ subroutine base_hist_write(metaData, EClock_d)
             wdata = .true.
             call base_io_enddef(hist_file)
          else
-            call shr_sys_abort('seq_hist_write fk illegal')
+            call shr_sys_abort('base_hist_write fk illegal')
          end if
 
+         !print *, '---------curr_time---------', fk
          tbnds = curr_time
 !------- tcx nov 2011 tbnds of same values causes problems in ferret
          if (tbnds(1) >= tbnds(2)) then
@@ -165,32 +170,40 @@ subroutine base_hist_write(metaData, EClock_d)
                               whead=whead,wdata=wdata,tbnds=tbnds)
          endif
 
+         !print *,'call :-----------------'
          !if (atm_present) then
             call compMeta_GetInfo(metaData%atm, comp_gsmap=gsmap)
+            !print *, 'base io'
             call base_io_write(hist_file,gsmap,dom_atmx%data,'dom_atmx', &
                               nx=atm_nx,ny=atm_ny,nt=1,whead=whead,wdata=wdata,pre='domatm')
-            call base_io_write(hist_file,gsmap,fractions_atmx,'fractions_atmx', &
-                              nx=atm_nx,ny=atm_ny,nt=1,whead=whead,wdata=wdata,pre='fracatm')
-            call base_io_write(hist_file,gsmap,x2atm_atmx,'x2atm_ax', &
+            !print *, 'data write'
+            !call base_io_write(hist_file,gsmap,fractions_atmx,'fractions_atmx', &
+            !                  nx=atm_nx,ny=atm_ny,nt=1,whead=whead,wdata=wdata,pre='fracatm')
+            call base_io_write(hist_file,gsmap,x2atm_atmx,'x2atm_atmx', &
                               nx=atm_nx,ny=atm_ny,nt=1,whead=whead,wdata=wdata,pre='x2atm')
             call base_io_write(hist_file,gsmap,atm2x_atmx,'atm2x_atmx', &
                               nx=atm_nx,ny=atm_ny,nt=1,whead=whead,wdata=wdata,pre='atm2x')
          !endif
          !if (ocn_present) then
             call compMeta_GetInfo(metaData%ocn, comp_gsmap=gsmap)
+            !print *, 'base io'
             call base_io_write(hist_file,gsmap,dom_ocnx%data,'dom_ocnx', &
                               nx=ocn_nx,ny=ocn_ny,nt=1,whead=whead,wdata=wdata,pre='domocn')
-            call base_io_write(hist_file,gsmap,fractions_ocnx,'fractions_ocnx', &
-                              nx=ocn_nx,ny=ocn_ny,nt=1,whead=whead,wdata=wdata,pre='fracocn')
-            call base_io_write(hist_file,gsmap,x2ocn_ocnx,'x2ocn_ax', &
+            !print *, 'data write'
+            !call base_io_write(hist_file,gsmap,fractions_ocnx,'fractions_ocnx', &
+            !                  nx=ocn_nx,ny=ocn_ny,nt=1,whead=whead,wdata=wdata,pre='fracocn')
+            call base_io_write(hist_file,gsmap,x2ocn_ocnx,'x2ocn_ocnx', &
                               nx=ocn_nx,ny=ocn_ny,nt=1,whead=whead,wdata=wdata,pre='x2ocn')
             call base_io_write(hist_file,gsmap,ocn2x_ocnx,'ocn2x_ocnx', &
                               nx=ocn_nx,ny=ocn_ny,nt=1,whead=whead,wdata=wdata,pre='ocn2x')
          !endif
+         !print *,'***********'
       end do
       call base_io_close(hist_file)
       
    endif
+
+   write(*,*)'========== history file has been written =========='
 
 end subroutine base_hist_write
 

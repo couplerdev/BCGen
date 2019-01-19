@@ -49,8 +49,10 @@ OBJS_ALL = $(SRCS_F90:.F90=.o)
 
 
 OBJS_ALL: $(SRCS_F90)
-	$(FC) -c  $(CCFLAGS) shr/shr_isnan.h
+	$(CC) -c shr/shr_isnan.c -I./shr -D FORTRANUNDERSCORE
+	$(CC) -c shr/shr_reprosumx86.c -D x86 -D FORTRANUNDERSCORE
 	$(FC) -c $(FLAGS) $(CCFLAGS) $^
+	make install
 
 install:
 	$(MV) *.mod $(INCLDIR)
@@ -81,7 +83,7 @@ shr_orb_mod.o: shr_kind_mod.o shr_sys_mod.o shr_const_mod.o shr_log_mod.o
 shr_pcdf_mod.o: shr_kind_mod.o shr_sys_mod.o shr_const_mod.o shr_log_mod.o mct_mod.o
 shr_pio_mod.o: shr_kind_mod.o shr_file_mod.o shr_log_mod.o shr_mpi_mod.o shr_sys_mod.o \
              shr_string_mod.o 
-shr_reprosum_mod.o: shr_kind_mod.o shr_log_mod.o shr_sys_mod.o 
+shr_reprosum_mod.o: shr_kind_mod.o shr_log_mod.o shr_sys_mod.o shr_reprosumx86.o 
 shr_spfn_mod.o: shr_kind_mod.o shr_const_mod.o
 shr_scam_mod.o: shr_kind_mod.o shr_sys_mod.o shr_file_mod.o shr_log_mod.o shr_ncread_mod.o \
                 shr_dmodel_mod.o mct_mod.o shr_strdata_mod.o 

@@ -7,8 +7,11 @@ module comms_nc
 use mpi
 use mct_mod
 use comms_def
-use base_sys, only: base_sys_abort
-use base_mpi
+use shr_kind_mod
+use shr_sys_mod
+use shr_mpi_mod
+!use base_sys, only: base_sys_abort
+!use base_mpi
 use logUtil
 use netcdf
 
@@ -24,43 +27,47 @@ use netcdf
 
 contains
 
-logical function binary_search(idx, starti, counti)
+subroutine binary_search(idx, starti, counti, isIn, first)
 
     implicit none
     integer, intent(in) :: idx
     integer, intent(in) :: starti(:)
     integer, intent(in) :: counti(:)
+    logical, intent(inout) :: isIn
+    integer, intent(in) :: first
 
     integer :: lsize
  
     integer :: l, r, i
-
-    logical :: break = .false.
- 
-    binary_search = .false.
+    logical :: prt
+    logical :: break 
+    break = .false.
+    isIn = .false.
     lsize = size(starti)
-    if (lsize < 1)return     
-   
+    
     l = 0
     r = lsize+1
     i = (l+r)/2
-
+    prt = .false.
+    !print *,'in binary search:', i, starti(i), counti(i)
+    !print *, 'idx:',idx, ' starti:', starti , counti
     do while( .not. break)
         if(idx<starti(i))then
             r = i
-        else if(idx>counti(i)+starti(i))then
+        else if(idx>counti(i)+starti(i)-1)then
             l = i
         else
             break = .true.
+            isIn = .true.
             return 
         end if
         i = (l+r)/2
-        if (i<0 .or. i> lsize+1 .or. r-l<=2)then
+        if (i<0 .or. i> lsize+1 .or. r-l<=1)then
             break = .true.
         end if
     end do
     return 
-end function binary_search
+end subroutine 
 
 
 subroutine sMatReadnc(mapper, filename)
@@ -106,11 +113,11 @@ implicit none
     rcode = nf90_inq_dimid(fid, 'n_b', did)
     rcode = nf_inq_dimlen(fid, did, nb)
     
-    call sMat_init(mapper%sMat, nb, na, ns)
+    call mct_sMat_init(mapper%sMat, nb, na, ns)
     
-    igrow = sMat_indexIA(mapper%sMat, 'grow')
-    igcol = sMat_indexIA(mapper%sMat, 'gcol')
-    iweight = sMat_indexRA(mapper%sMat, 'weight')
+    igrow = mct_sMat_indexIA(mapper%sMat, 'grow')
+    igcol = mct_sMat_indexIA(mapper%sMat, 'gcol')
+    iweight = mct_sMat_indexRA(mapper%sMat, 'weight')
     
     allocate(rtemp(ns), stat=rcode)
 
@@ -164,19 +171,19 @@ subroutine sMatReaddnc(sMat, gsmap_src, gsmap_dst, newdom, areasrc, areadst, &
 implicit none
 #include <netcdf.inc>
 
-    type(SparseMatrix),   intent(out)           :: sMat
-    type(gsmap),          intent(in),  target   :: gsmap_src
-    type(gsmap),          intent(in),  target   :: gsmap_dst
-    character(*),         intent(in)            :: newdom
-    type(attrVect),       intent(out), optional :: areasrc
-    type(attrVect),       intent(out), optional :: areadst
-    character(*),         intent(in)            :: filename
-    integer,              intent(in)            :: mytask
-    integer,              intent(in)            :: mpicom
-    integer,              intent(out), optional :: ni_i
-    integer,              intent(out), optional :: nj_i
-    integer,              intent(out), optional :: ni_o
-    integer,              intent(out), optional :: nj_o
+    type(mct_sMat),        intent(out)           :: sMat
+    type(mct_gsmap),       intent(in),  target   :: gsmap_src
+    type(mct_gsmap),       intent(in),  target   :: gsmap_dst
+    character(*),          intent(in)            :: newdom
+    type(mct_aVect),       intent(out), optional :: areasrc
+    type(mct_aVect),       intent(out), optional :: areadst
+    character(*),          intent(in)            :: filename
+    integer,               intent(in)            :: mytask
+    integer,               intent(in)            :: mpicom
+    integer,               intent(out), optional :: ni_i
+    integer,               intent(out), optional :: nj_i
+    integer,               intent(out), optional :: ni_o
+    integer,               intent(out), optional :: nj_o
 
     integer          :: n,m
     integer          :: na
@@ -201,20 +208,20 @@ implicit none
     integer, allocatable  :: Rbuf(:)
     integer, allocatable  :: Cbuf(:)
 
-    integer               :: lsize
-    integer               :: commsize
-    integer, allocatable  :: lsstart(:)
-    integer, allocatable  :: lscount(:)
-    type(gsmap), pointer  :: mygsmap
-    integer               :: l1, l2
-    logical               :: found
+    integer                   :: lsize
+    integer                   :: commsize
+    integer, allocatable      :: lsstart(:)
+    integer, allocatable      :: lscount(:)
+    type(mct_gsmap), pointer  :: mygsmap
+    integer                   :: l1, l2
+    logical                   :: found
 
     real(8),    allocatable  :: Snew(:), Sold(:)
     integer, allocatable  :: Rnew(:), Rold(:)
     integer, allocatable  :: Cnew(:), Cold(:)
 
     character, allocatable :: str(:)
-    character(256)         :: attrstr
+    character(SHR_KIND_CL)         :: attrstr
     integer                :: rcode
     integer                :: fid
     integer                :: vid
@@ -222,33 +229,33 @@ implicit none
     integer, parameter     :: rbuf_size = 100000
     integer               :: ierr
 
-    type(attrVect)    :: areasrc0
-    type(attrVect)    :: areadst0
+    ! debug var
+    integer    :: first = 0
+
+    type(mct_aVect)    :: areasrc0
+    type(mct_aVect)    :: areadst0
 
     character(*), parameter :: areaAV_field = "aream"
     character(*), parameter :: subName = "sMatReaddnc"
 
     call mpi_comm_size(mpicom, commsize, ierr)
    
-    write(*,*)'filepath:',filename
     rcode = nf_open(filename, NF_NOWRITE,fid)
     if (rcode /= NF_NOERR)then
         write(logUnit, *) 'fail to open file' 
-        call base_sys_abort(subName//":fail to open file")  
+        call shr_sys_abort(subName//":fail to open file")  
     end if
     
 
     !--- get matrix dimensions ----------
     !--- get matrix dimensions ----------
    rcode = nf90_inq_dimid (fid, 'n_s', did)  ! size of sparse matrix
-   print *, rcode,'<=rc'
    rcode = nf_inq_dimlen(fid, did  , ns)
    rcode = nf90_inq_dimid (fid, 'n_a', did)  ! size of  input vector
    rcode = nf_inq_dimlen(fid, did  , na)
    rcode = nf90_inq_dimid (fid, 'n_b', did)  ! size of output vector
    rcode = nf_inq_dimlen(fid, did  , nb)
   
-   print *, 'dimensions:',ns,na,nb 
    if (present(ni_i) .and. present(nj_i) .and. present(ni_o) .and. present(nj_o)) then
       rcode = nf90_inq_dimid (fid, 'ni_a', did)  ! number of lons in input grid
       rcode = nf_inq_dimlen(fid, did  , ni_i)
@@ -270,14 +277,13 @@ implicit none
    !--- read and load area_a ---
    if (present(areasrc)) then
    if (mytask == 0) then
-      call avect_init(areasrc0,' ',areaAV_field,na)
+      call mct_aVect_init(areasrc0,' ',areaAV_field,na)
       rcode = nf90_inq_varid     (fid,'area_a',vid)
       if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
       rcode = nf_get_var_double(fid, vid, areasrc0%rAttr)
       if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
    endif
-   print *, 'err below'
-   call avect_scatter(areasrc0, areasrc, gsmap_src, 0, mpicom, rcode)
+   call mct_aVect_scatter(areasrc0, areasrc, gsmap_src, 0, mpicom, rcode)
    if (rcode /= 0) then!call mct_die("shr_mct_sMatReaddnc","Error on scatter of areasrc0")
        write(*,*) 'failed'
        return
@@ -289,19 +295,19 @@ implicit none
 !            write(6,*) subName,'min/max src ',minval(areasrc0%rAttr(1,:)),maxval(areasrc0%rAttr(1,:))
 !         endif
 !      end if
-      call avect_clean(areasrc0)
+      call mct_aVect_clean(areasrc0)
    end if
    end if
    !--- read and load area_b ---
    if (present(areadst)) then
    if (mytask == 0) then
-      call avect_init(areadst0,' ',areaAV_field,nb)
+      call mct_aVect_init(areadst0,' ',areaAV_field,nb)
       rcode = nf90_inq_varid(fid,'area_b',vid)
       if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
       rcode = nf_get_var_double(fid, vid, areadst0%rAttr)
       if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
    endif
-   call avect_scatter(areadst0, areadst, gsmap_dst, 0, mpicom, rcode)
+   call mct_aVect_scatter(areadst0, areadst, gsmap_dst, 0, mpicom, rcode)
    if (rcode /= 0) then!call mct_die("shr_mct_sMatReaddnc","Error on scatter of areadst0")
         write(*,*)'failed'
         return 
@@ -313,21 +319,19 @@ implicit none
 !            write(6,*) subName,'min/max dst ',minval(areadst0%rAttr(1,:)),maxval(areadst0%rAttr(1,:))
 !         endif
 !      end if
-      call avect_clean(areadst0)
+      call mct_aVect_clean(areadst0)
    endif
    endif
-   print *,'zeta'
    if (present(ni_i) .and. present(nj_i) .and. present(ni_o) .and. present(nj_o)) then
-      call base_mpi_bcast(ni_i,mpicom,subName//" MPI in ni_i bcast")
-      call base_mpi_bcast(nj_i,mpicom,subName//" MPI in nj_i bcast")
-      call base_mpi_bcast(ni_o,mpicom,subName//" MPI in ni_o bcast")
-      call base_mpi_bcast(nj_o,mpicom,subName//" MPI in nj_o bcast")
+      call shr_mpi_bcast(ni_i,mpicom,subName//" MPI in ni_i bcast")
+      call shr_mpi_bcast(nj_i,mpicom,subName//" MPI in nj_i bcast")
+      call shr_mpi_bcast(ni_o,mpicom,subName//" MPI in ni_o bcast")
+      call shr_mpi_bcast(nj_o,mpicom,subName//" MPI in nj_o bcast")
    end if
 
-   call base_mpi_bcast(ns,mpicom,subName//" MPI in ns bcast")
-   call base_mpi_bcast(na,mpicom,subName//" MPI in na bcast")
-   call base_mpi_bcast(nb,mpicom,subName//" MPI in nb bcast")
-   print *,'bcast end'
+   call shr_mpi_bcast(ns,mpicom,subName//" MPI in ns bcast")
+   call shr_mpi_bcast(na,mpicom,subName//" MPI in na bcast")
+   call shr_mpi_bcast(nb,mpicom,subName//" MPI in nb bcast")
    !--- setup local seg map, sorted
    if (newdom == 'src') then
       mygsmap => gsmap_dst
@@ -335,11 +339,10 @@ implicit none
       mygsmap => gsmap_src
    else
       write(*,*)'error'
-      call base_sys_abort(subName//" new dom error")
+      call shr_sys_abort(subName//" new dom error")
       !write(s_logunit,F00) 'ERROR: invalid newdom value = ',newdom
       !call shr_sys_abort(trim(subName)//" invalid newdom value")
    endif
-   print *,'before pe_loc'
    lsize = 0
    do n = 1,size(mygsmap%start)
       if (mygsmap%pe_loc(n) == mytask) then
@@ -372,7 +375,7 @@ implicit none
    do n = 1,lsize-1
       if (lsstart(n) > lsstart(n+1)) then
          !write(s_logunit,F00) ' ERROR: lsstart not properly sorted'
-         call base_sys_abort(subName//'lsstart not properly sorted')
+         call shr_sys_abort(subName//'lsstart not properly sorted')
       endif
    enddo
 
@@ -417,17 +420,14 @@ implicit none
       !call shr_mpi_bcast(Rbuf,mpicom,subName//" MPI in Rbuf bcast")
       !call shr_mpi_bcast(Cbuf,mpicom,subName//" MPI in Cbuf bcast")
 
-      print *,'lsstart, lscount:',lsstart, lscount, count
       !--- now each pe keeps what it should
       do m = 1,count(1)
          !--- should this weight be on my pe
          if (newdom == 'src') then
-            mywt = binary_search(Rbuf(m),lsstart,lscount)
-            !print *, lsstart, lscount
+            call binary_search(Rbuf(m),lsstart,lscount, mywt,first)
          elseif (newdom == 'dst') then
-            mywt = binary_search(Cbuf(m),lsstart,lscount)
+            call binary_search(Cbuf(m),lsstart,lscount, mywt, first)
          endif
-
          if (mywt) then
             cntold = cnt
             cnt = cnt + 1
@@ -473,14 +473,11 @@ implicit none
    ! mct_sMat_init must be given the number of rows and columns that
    ! would be in the full matrix.  Nrows= size of output vector=nb.
    ! Ncols = size of input vector = na.
-   print *, nb,na
-   call sMat_init(sMat, nb, na, cnt)
-   print *, 'cnt:',cnt
-   igrow = sMat_indexIA(sMat,'grow')
-   print *,'igrow:',igrow
-   igcol = sMat_indexIA(sMat,'gcol')
-   iwgt  = sMat_indexRA(sMat,'weight')
-
+   print *, nb,na, cnt
+   call mct_sMat_Init(sMat, nb, na, cnt)
+   igrow = mct_sMat_indexIA(sMat,'grow')
+   igcol = mct_sMat_indexIA(sMat,'gcol')
+   iwgt  = mct_sMat_indexRA(sMat,'weight')
    if (cnt /= 0) then
       sMat%data%rAttr(iwgt ,1:cnt) = Snew(1:cnt)
       sMat%data%iAttr(igrow,1:cnt) = Rnew(1:cnt)
@@ -506,9 +503,9 @@ end subroutine sMatReaddnc
 subroutine sMatPInitnc_mapfile(sMatP, gsmapX_, gsmapY_, filename, maptype, &
                                   mpicom, ni_i, nj_i, ni_o, nj_o, areasrc,areadst)
 
-    type(SparseMatrixPlus), intent(inout) :: sMatP
-    type(gsmap),            intent(in)    :: gsmapX_
-    type(gsmap),            intent(in)    :: gsmapY_
+    type(mct_sMatP),        intent(inout) :: sMatP
+    type(mct_gsmap),        intent(in)    :: gsmapX_
+    type(mct_gsmap),        intent(in)    :: gsmapY_
     character(*),           intent(in)    :: filename
     character(*),           intent(in)    :: maptype
     integer,                intent(in)    :: mpicom
@@ -517,12 +514,12 @@ subroutine sMatPInitnc_mapfile(sMatP, gsmapX_, gsmapY_, filename, maptype, &
     integer,                intent(out), optional :: ni_o
     integer,                intent(out), optional :: nj_o
     
-    type(AttrVect),         intent(out), optional :: areasrc
-    type(AttrVect),         intent(out), optional :: areadst
+    type(mct_aVect),         intent(out), optional :: areasrc
+    type(mct_aVect),         intent(out), optional :: areadst
 
-    type(SparseMatrix) :: sMat
-    type(AttrVect)     :: areasrc_map
-    type(AttrVect)     :: areadst_map
+    type(mct_sMat)      :: sMat
+    type(mct_aVect)     :: areasrc_map
+    type(mct_aVect)     :: areadst_map
    
     integer         :: lsize
     integer         :: iret, ierr
@@ -535,12 +532,11 @@ subroutine sMatPInitnc_mapfile(sMatP, gsmapX_, gsmapY_, filename, maptype, &
     sMaptype=  'src'
     call mpi_comm_rank(mpicom, pe_loc,ierr)
 
-    lsize = gsmap_lsize(gsmapX_, mpicom)
-    print *, 'see lsize'
-    call avect_init(areasrc_map, rList=areaAV_field, lsize=lsize)
+    lsize = mct_gsMap_lsize(gsmapX_, mpicom)
+    call mct_aVect_init(areasrc_map, rList=areaAV_field, lsize=lsize)
  
-    lsize = gsmap_lsize(gsmapY_, mpicom)
-    call avect_init(areadst_map, rList=areaAV_field, lsize=lsize)
+    lsize = mct_gsMap_lsize(gsmapY_, mpicom)
+    call mct_aVect_init(areadst_map, rList=areaAV_field, lsize=lsize)
     call MPI_Barrier(mpicom, iret)
    
     !print *,'begin readnc:', ni_i, nj_i, ni_o, nj_o
@@ -551,22 +547,22 @@ subroutine sMatPInitnc_mapfile(sMatP, gsmapX_, gsmapY_, filename, maptype, &
         call sMatReaddnc(sMat, gsmapX_, gsmapY_, Smaptype, areasrc_map, areadst_map, &
                    filename, pe_loc, mpicom)
     end if
-    !call MPI_Barrier(mpicom, iret)
-    print *,'nc read?'
-    call sMatPlus_init(sMatP, sMat, gsmapX_, gsmapY_, 0, mpicom, gsmapX_%comp_id)
-    lsize = smat_gNumEl(sMatP%Matrix, mpicom)
+    call MPI_Barrier(mpicom, iret)
+    call MPI_Barrier(mpicom, ierr)
+    call mct_sMatP_init(sMatP, sMat, gsmapX_, gsmapY_, 0, mpicom, gsmapX_%comp_id)
+    lsize = mct_smat_gNumEl(sMatP%Matrix, mpicom)
 
     if(present(areasrc))then
-        call avect_copy(aVin=areasrc_map, aVout=areasrc, vector=usevector)
+        call mct_aVect_copy(aVin=areasrc_map, aVout=areasrc, vector=usevector)
     end if
     if(present(areadst))then
-        call avect_copy(avIn=areadst_map, aVout=areadst, vector=usevector)
+        call mct_aVect_copy(avIn=areadst_map, aVout=areadst, vector=usevector)
     end if
 
-    call avect_clean(areasrc_map)
-    call avect_clean(areadst_map)
+    call mct_aVect_clean(areasrc_map)
+    call mct_aVect_clean(areadst_map)
 
-    call sMat_clean(sMat)
+    call mct_sMat_Clean(sMat)
 
 end subroutine sMatPInitnc_mapfile
 
