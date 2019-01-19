@@ -2,6 +2,7 @@ module time_type
     !------------------------------------
     ! time relative macros and types
     !------------------------------------
+    use shr_kind_mod
     use ESMF
     implicit none
     #set $clockCnt = len($proc_cfgs)
@@ -24,23 +25,23 @@ module time_type
          #set $id = $index+7
     integer,   parameter :: alarm_${name}run = $id
     #end for
-    character(len=32), parameter :: clock_drv_name = "clock_drv"
+    character(SHR_KIND_CS), parameter :: clock_drv_name = "clock_drv"
     #for $model in $proc_cfgs
          #set $name = $model.name
-    character(len=32), parameter :: clock_${name}_name = "clock_${name}"
+    character(SHR_KIND_CS), parameter :: clock_${name}_name = "clock_${name}"
     #end for
-    character(len=32), parameter :: alarm_restart_name = "alarm_restart_name"
-    character(len=32), parameter :: alarm_run_name = "alarm_run_name"
-    character(len=32), parameter :: alarm_stop_name = "alarm_stop_name"
-    character(len=32), parameter :: alarm_datestop_name = "alarm_datestop_name"
-    character(len=32), parameter :: alarm_history_name = "alarm_history_name"
-    character(len=32), parameter :: alarm_histavg_name = "alarm_histavg_name"
+    character(SHR_KIND_CS), parameter :: alarm_restart_name = "alarm_restart_name"
+    character(SHR_KIND_CS), parameter :: alarm_run_name = "alarm_run_name"
+    character(SHR_KIND_CS), parameter :: alarm_stop_name = "alarm_stop_name"
+    character(SHR_KIND_CS), parameter :: alarm_datestop_name = "alarm_datestop_name"
+    character(SHR_KIND_CS), parameter :: alarm_history_name = "alarm_history_name"
+    character(SHR_KIND_CS), parameter :: alarm_histavg_name = "alarm_histavg_name"
     #for $model in $proc_cfgs
          #set $name = $model.name
-    character(len=32), parameter :: alarm_${name}run_name = "alarm_${name}run_name"
+    character(SHR_KIND_CS), parameter :: alarm_${name}run_name = "alarm_${name}run_name"
     #end for
-    character(len=64), parameter :: time_cal_noleap = "NO_LEAP"
-    character(len=64), parameter :: time_cal_gregorian = "GREGORIAN" 
+    character(SHR_KIND_CL), parameter :: time_cal_noleap = "NO_LEAP"
+    character(SHR_KIND_CL), parameter :: time_cal_gregorian = "GREGORIAN" 
     type(ESMF_CalKind_Flag), parameter :: time_cal_default = ESMF_CALKIND_NOLEAP
     type EClockPointer
         type(ESMF_Clock), pointer :: EClock=> null()

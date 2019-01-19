@@ -1,4 +1,4 @@
-SRC=base_mpi.F90 base_io.F90
+SRC= base_io.F90 
 include ../Makefile.conf
 OBJ_ALL=$(SRC: .F90=.o)
 

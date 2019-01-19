@@ -1,8 +1,11 @@
 module baseCpl
 use mpi
-use base_sys
+use shr_kind_mod
+use shr_sys_mod
+!use base_sys
 use logUtil
-use base_mpi
+use shr_mpi_mod
+!use base_mpi
 use proc_def
 use comms_def
 use global_var
@@ -16,6 +19,13 @@ use mrg_mod
      #set $name = $model.name
 use comp_${name}
 #end for
+#if $conf_cfgs['rest']
+use base_rest_mod
+#end if
+#if $conf_cfgs['hist']
+use base_hist_mod
+#end if
+use base_io
 
     implicit none
     !type(Meta),  pointer :: metaData
@@ -25,8 +35,8 @@ use comp_${name}
          #set $gms = $model.gsMaps
          #set $cpl_name = $gms['cpl'].name
          #set $comp_name = $gms['comp'].name
-    type(gsMap), pointer ::$comp_name
-    type(gsMap)          :: $cpl_name
+    type(mct_gsMap), pointer ::$comp_name
+    type(mct_gsMap)          :: $cpl_name
     #end for    
 
     ! declare AttrVect of each Model(c2x_cx, c2x_cc, x2c_cx, x2c_cc)
@@ -34,7 +44,7 @@ use comp_${name}
          #set $avs = $model.attrVects
          #for $av in $avs
               #set $name = $avs[$av].name
-    type(AttrVect), pointer :: $name
+    type(mct_aVect), pointer :: $name
          #end for
     #end for
 
@@ -43,13 +53,13 @@ use comp_${name}
          #set $cfg = $merge_cfgs[$cfg]
          #for $mn_av in $cfg['dst']
               #set $av_mx_nx = $mn_av['dst_av']
-    type(AttrVect) ::$av_mx_nx.name
+    type(mct_aVect) ::$av_mx_nx.name
          #end for
     #end for
 
     #for $model in $proc_cfgs
          #set $domain = $model.domain
-    type(gGrid),  pointer :: $domain
+    type(mct_gGrid),  pointer :: $domain
     #end for
 
     #for $model in $proc_cfgs
@@ -76,6 +86,15 @@ use comp_${name}
     public  :: cpl_run
     public  :: cpl_final
 
+    #if $conf_cfgs['rest']==True
+    character(SHR_KIND_CL) :: rest_file = $conf_cfgs['rest_file']     
+    #end if
+    #if $conf_cfgs['hist']
+    character(SHR_KIND_CL) :: hist_file = $conf_cfgs['hist_file']
+    #end if
+
+
+
 contains 
 
 subroutine cpl_init()
@@ -83,8 +102,8 @@ subroutine cpl_init()
     integer :: ierr
     integer :: comm_rank
     logical :: restart
-    character(len=64)  :: nmlfile
-    character(len=64)  :: restart_file
+    character(SHR_KIND_CL)  :: nmlfile
+    character(SHR_KIND_CL)  :: restart_file
     logical :: iamroot
     integer :: rc
     
@@ -200,6 +219,11 @@ subroutine cpl_init()
         #end for
     end if
 
+    ! read driver restart file
+    #if $conf_cfgs['rest']
+    if(restart)call base_rest_read(metaData, rest_file)
+    #end if
+
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     write(logUnit, *)'---------------Init End------------'
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
@@ -212,23 +236,25 @@ subroutine cpl_run()
     integer  :: ierr, s, i, comm_rank
     character(*), parameter :: subname = "(cpl_run)"
     logical :: stop_alarm = .false.
-    logical :: history_alarm = .false.
-    logical :: histavg_alarm = .false.
-    logical :: restart_alarm = .false.
+    logical :: hist_run = .false.
+    logical :: histavg_run = .false.
+    logical :: restart_run = .false.
     #for $model in $proc_cfgs
          #set $name = $model.name
     logical :: ${name}_run
     #end for
 
+
+    call base_io_init()
     call mpi_comm_rank(MPI_COMM_WORLD, comm_rank, ierr)
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     write(*,*)'----------rank:', comm_rank, ' begin run------------'
     do while(.not. stop_alarm)
         call time_clockAdvance(SyncClock)
         stop_alarm = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_stop_name)
-        history_alarm = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_history_name)
-        histavg_alarm = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_histavg_name)
-        restart_alarm = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_restart_name)
+        hist_run = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_history_name)
+        histavg_run = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_histavg_name)
+        restart_run = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_restart_name)
         #for $model in $proc_cfgs
              #set $name = $model.name
         ${name}_run = time_alarmIsOn(SyncClock%ECP(clock_drv)%EClock, alarm_${name}run_name)
@@ -252,7 +278,7 @@ end subroutine cpl_run
 subroutine cpl_final()
 
     implicit none
-
+    integer :: ierr
     !----------------------------------------
     !     end component
     !----------------------------------------
@@ -275,6 +301,10 @@ subroutine cpl_final()
     end if
 
     #end for
+
+    call MPI_Barrier(MPI_COMM_WORLD, ierr)
+    print *,'========== end of coupled climate models =========='
+    call MPI_Finalize(ierr)
 
 end subroutine cpl_final
 

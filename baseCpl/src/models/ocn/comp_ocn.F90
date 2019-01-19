@@ -1,4 +1,5 @@
 module comp_ocn
+use shr_kind_mod
 use mct_mod
 use time_mod
 use ESMF
@@ -10,9 +11,9 @@ use global_var
     ! notice that the fields of a2x and x2a maybe different
     ! but here we just assume they are same
     !---------------------------------------------------------
-    integer,parameter :: CXX=4096
-    character(CXX) :: fld_ar='r:r1'
-    character(CXX) :: fld_ai='i:i1'
+    !integer,parameter :: CXX=4096
+    character(SHR_KIND_CXX) :: fld_ar='So_t:So_s:So_u'
+    character(SHR_KIND_CXX) :: fld_ai='i:i1'
     character(*),parameter :: model_name='ocn'
 
     public :: ocn_init_mct
@@ -25,18 +26,18 @@ contains
 !  a_init_mct, init gsmap_aa, avect, avect init with zero, but not init
 !  dom at present
 !-------------------------------------------------------------------------
-subroutine ocn_init_mct(compInfo, EClock, ocn2x_ocnocn, x2ocn_ocnocn, ierr)
+subroutine ocn_init_mct(compInfo, EClock, x2ocn_ocnocn, ocn2x_ocnocn, ierr)
 
     implicit none
     type(compMeta), target, intent(inout)  :: compInfo
     type(ESMF_Clock), intent(in)          :: EClock
-    type(AttrVect), intent(inout)    :: ocn2x_ocnocn
-    type(AttrVect), intent(inout)    :: x2ocn_ocnocn
+    type(mct_aVect), intent(inout)    :: ocn2x_ocnocn
+    type(mct_aVect), intent(inout)    :: x2ocn_ocnocn
     integer,  intent(inout)          :: ierr
     integer     :: ID
     integer     :: local_comm,i
-    type(gGrid) :: domain
-    type(gsMap), pointer :: gsMap_ocnocn
+    type(mct_gGrid) :: domain
+    type(mct_gsMap), pointer :: gsMap_ocnocn
 
     ! control signal
     logical :: first_time = .true. ! if the first time to run or restart
@@ -120,50 +121,54 @@ subroutine ocn_init_mct(compInfo, EClock, ocn2x_ocnocn, x2ocn_ocnocn, ierr)
 !---
 ! Init MCT Global seg map
 !---
-  call gsMap_init(compInfo%comp_gsmap, start, length, root, local_comm, ID)
+  call mct_gsMap_init(compInfo%comp_gsmap, start, length, root, local_comm, ID)
 !---
 ! Init MCT Domain todo(now is use constant number to init domain data),
 !---
-  call ocn_domain_init(local_comm, compInfo%comp_gsmap, domain)
+  call ocn_domain_init(local_comm, compInfo%comp_gsmap, compInfo%domain)
 !----
 !Init Attrvect
 !----
   ! Init Field list
   
 
-  call avect_init(ocn2x_ocnocn, iList=fld_ai, rList=fld_ar, lsize=lsize)
-  call avect_init(x2ocn_ocnocn, iList=fld_ai, rList=fld_ar, lsize=lsize)
+  call mct_avect_init(ocn2x_ocnocn, iList=fld_ai, rList=fld_ar, lsize=lsize)
+  call mct_avect_init(x2ocn_ocnocn, iList=fld_ai, rList=fld_ar, lsize=lsize)
  
-  call avect_zero(ocn2x_ocnocn)
-  call avect_zero(x2ocn_ocnocn) 
+  call mct_avect_zero(ocn2x_ocnocn)
+  call mct_avect_zero(x2ocn_ocnocn) 
 
 end subroutine ocn_init_mct
 
-subroutine ocn_run_mct(compInfo, EClock, ocn2x, x2ocn, ierr)
+subroutine ocn_run_mct(compInfo, EClock, x2ocn, ocn2x, ierr)
 
     implicit none
     type(compMeta), target, intent(inout)  :: compInfo
     type(ESMF_Clock), intent(in)          :: EClock
-    type(AttrVect), intent(inout)    :: ocn2x
-    type(AttrVect), intent(inout)    :: x2ocn
+    type(mct_aVect), intent(inout)    :: ocn2x
+    type(mct_aVect), intent(inout)    :: x2ocn
     integer, intent(inout)           :: ierr    
     integer               :: local_comm
     integer               :: ID
-    type(gGrid), pointer  :: domain
+    integer               :: ymd
+    integer               :: tod
+    type(mct_gGrid)       :: domain
     integer comm_rank,i, av_lsize, n_rflds, n_iflds, n,nf
     
     call compMeta_getInfo(compInfo, comm=local_comm, ID=ID, domain=domain)
     
 
     call mpi_comm_rank(local_comm, comm_rank, ierr)
-    
-    av_lsize = avect_lsize(ocn2x) 
-    n_rflds = avect_nRattr(x2ocn)
-    n_iflds = avect_nRattr(x2ocn)
+
+    call time_clockGetInfo(EClock, curr_ymd=ymd, curr_tod=tod)
+    print *, '========== ocn run at:'," ymd:" , ymd, " tod:", tod,' =========='  
+    av_lsize = mct_avect_lsize(ocn2x) 
+    n_rflds = mct_avect_nRattr(x2ocn)
+    n_iflds = mct_avect_nRattr(x2ocn)
 
     do nf=1,n_rflds
       do n=1,av_lsize
-        ocn2x%rAttr(nf,n) = (nf*100)                   
+        ocn2x%rAttr(nf,n) = 0.1!(nf*100)                   
       enddo
     enddo
 
@@ -198,33 +203,33 @@ end subroutine seq_flds_add
 subroutine ocn_domain_init(mpicomm, gsMap_ocnocn, domain)
 
   integer    , intent(in)   :: mpicomm
-  type(gsMap), intent(in)   :: gsMap_ocnocn
-  type(gGrid), intent(inout)             :: domain
+  type(mct_gsMap), intent(in)   :: gsMap_ocnocn
+  type(mct_gGrid), intent(inout)             :: domain
 
   !---local variables---
   real(8)    , pointer  :: data(:)     ! temporary
   integer , pointer  :: idata(:)    ! temporary
   integer ::ierr,lsize
 
-  call gGrid_init(GGrid=domain, &
+  call mct_gGrid_init(GGrid=domain, &
       CoordChars=trim('x:y:z'), &
       otherchars=trim('lat:lon:area:frac:mask:aream'),&
-      lsize=gsMap_lsize(gsMap_ocnocn, mpicomm))
-  call avect_zero(domain%data)
+      lsize=mct_gsMap_lsize(gsMap_ocnocn, mpicomm))
+  call mct_avect_zero(domain%data)
 
-  lsize=gsMap_lsize(gsMap_ocnocn, mpicomm)
+  lsize=mct_gsMap_lsize(gsMap_ocnocn, mpicomm)
 
   allocate(data(lsize))
   allocate(idata(lsize))
   data(:) = -9999.0  ! generic special value 	
-  call gGrid_importRAttr(domain,"lat" ,data,lsize) 
-  call gGrid_importRAttr(domain,"lon" ,data,lsize) 
-  call gGrid_importRAttr(domain,"area",data,lsize) 
-  call gGrid_importRAttr(domain,"frac",data,lsize) 
+  call mct_gGrid_importRAttr(domain,"lat" ,data,lsize) 
+  call mct_gGrid_importRAttr(domain,"lon" ,data,lsize) 
+  call mct_gGrid_importRAttr(domain,"area",data,lsize) 
+  call mct_gGrid_importRAttr(domain,"frac",data,lsize) 
 
   data(:) = 0.0  ! generic special value 	
-  call gGrid_importRAttr(domain,"mask" ,data,lsize) 
-  call gGrid_importRAttr(domain,"aream",data,lsize) 
+  call mct_gGrid_importRAttr(domain,"mask" ,data,lsize) 
+  call mct_gGrid_importRAttr(domain,"aream",data,lsize) 
   deallocate(data)
   deallocate(idata)
 

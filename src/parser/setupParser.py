@@ -103,6 +103,9 @@ class Setup:
         return key
 
     def genXml(self):
+    
+    #    生成coupler.xml
+    
         doc = Document()
         root = doc.createElement('coupler')
         #doc.appendChild(root)

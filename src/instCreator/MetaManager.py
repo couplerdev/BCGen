@@ -26,6 +26,8 @@ codePathDict['manage.F90']     = CodeDesc('manage.F90',      '/baseCpl/src/procM
 codePathDict['search_set.py']  = CodeDesc('search_set.py',   '/src/template',           'searchSet_Template.py')
 codePathDict['timeCesm.F90']   = CodeDesc('timeCesm.F90',    '/baseCpl/src/timeManage', 'timeCesm_Template.F90')
 codePathDict['time_def.F90']   = CodeDesc('time_def.F90',    '/baseCpl/src/data_def',   'timeDef_Template.F90')
+codePathDict['base_hist_mod.F90'] = CodeDesc('base_hist_mod.F90','/baseCpl/src/utilsAux','baseHistMod_Template.F90')
+codePathDict['base_rest_mod.F90'] = CodeDesc('base_rest_mod.F90','/baseCpl/src/utilsAux', 'baseRestMod_Template.F90')
 codeGenList = [key for key in codePathDict]
 
 class MetaManager:
@@ -39,6 +41,7 @@ class MetaManager:
         self.dataPath = ""
         self.dataNml = ""
         self.datarc = ""
+        self.pioNml = "pioNml"
         self.inputPath = ""
         # init codePathDict absPath
        

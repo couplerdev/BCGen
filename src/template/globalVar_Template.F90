@@ -1,4 +1,6 @@
 module global_var
+use shr_kind_mod
+use mct_mod
 use type_def
 use proc_def
 use field_def
@@ -11,8 +13,9 @@ use field_def
            #set $name = $model.name
        type(compMeta)    :: $name
        #end for    
-       character(len=PATHLEN) :: datanml
-       character(len=PATHLEN) :: datarc
+       character(SHR_KIND_CL) :: datanml
+       character(SHR_KIND_CL) :: datarc
+       character(SHR_KIND_CL) :: case_name
        !-----------------------------------------
        ! meta desc of proc and comps
        !-----------------------------------------
@@ -41,6 +44,8 @@ use field_def
        integer, allocatable  :: comp_comm(:)
        integer, allocatable  :: comp_id(:)
        logical, pointer      :: iamin_model(:)
+       character(SHR_KIND_CL), allocatable :: comp_name(:)
+       integer, allocatable  :: comp_comm_iam(:)
 
        !------------------------------------------
        !   intermediate vars
@@ -51,9 +56,9 @@ use field_def
            #set $mappers = $model.mappers
            #set $grid = $model.domain
            #for $av in $avs
-       type(AttrVect)   :: $avs[$av].name
+       type(mct_aVect)   :: $avs[$av].name
            #end for
-       type(gGrid)      :: $model.domain
+       type(mct_gGrid)      :: $model.domain
            #for $mapper in $mappers
        type(map_mod)    :: $mappers[$mapper].name
            #end for
@@ -93,7 +98,7 @@ use field_def
 
        #for $fld in $fieldVar_cfgs
             #set $val = $fieldVar_cfgs[$fld]
-       character(FIELDSLEN) :: $fld 
+       character(SHR_KIND_CL) :: $fld 
        #end for
 
    end type Meta
