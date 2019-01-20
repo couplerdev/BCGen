@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+#coding:utf-8
 ################################################################################
 #
 #   read the ir to instantialize the template, the template is formed by the xml
@@ -9,6 +9,9 @@
 
 from Cheetah.Template import Template
 #import xml.tree.ElementTree as ET
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 class codeGenerator:
 	def __init__(self, template, target_file):
