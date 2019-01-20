@@ -1,7 +1,9 @@
 module proc_def
-use base_sys
+!use base_sys
+use shr_sys_mod
 use mct_mod
 use type_def
+use shr_kind_mod
 use comms_def
     implicit none
     type procMeta
@@ -10,20 +12,26 @@ use comms_def
         integer, allocatable :: ranks(:)
         integer :: groupLen
         integer :: predefSize
-        character(len=MODELNAMELEN), allocatable ::  models(:)
+        character(SHR_KIND_CS), allocatable ::  models(:)
     end type procMeta 
 
     type compMeta
         integer :: ID
-        type(gsMap) :: comp_gsmap
-        type(gGrid) :: domain
+        type(mct_gsMap) :: comp_gsmap
+        type(mct_gGrid) :: domain
+        character(SHR_KIND_CL) :: srcFile
         integer :: comm
         integer :: gsize
+        integer :: nx
+        integer :: ny
+        logical :: prognostic
+        character(SHR_KIND_CL) :: case_name
     end type compMeta 
 
     type confMeta
         character(len=64)  :: nmlfile
         character(len=64)  :: restart_file
+        character(len=64)  :: pio_nmlfile
         logical :: restart
     end type confMeta
 
@@ -61,6 +69,8 @@ subroutine procMeta_init(proc, predefSize, ierr)
     allocate(proc%IDs(proc%predefSize))
     allocate(proc%comms(proc%predefSize))
     allocate(proc%models(proc%predefSize))
+    allocate(proc%ranks(proc%predefSize))
+
 
 end subroutine procMeta_init 
 
@@ -73,6 +83,7 @@ subroutine procMeta_final(proc, ierr)
     deallocate(proc%IDs)
     deallocate(proc%comms)
     deallocate(proc%models)
+    deallocate(proc%ranks)
 
 end subroutine procMeta_final
 
@@ -101,7 +112,7 @@ subroutine procMeta_addToModel(proc, ID, comm, modelName, ierr)
     type(procMeta),     intent(inout)   :: proc
     integer,            intent(in)      :: ID
     integer,            intent(in)      :: comm
-    character(len=MODELNAMELEN), intent(in)  :: modelName
+    character(SHR_KIND_CS), intent(in)  :: modelName
     integer, optional,  intent(in)      :: ierr
 
     !local
@@ -109,12 +120,11 @@ subroutine procMeta_addToModel(proc, ID, comm, modelName, ierr)
     integer, allocatable :: IDs(:)
     integer, allocatable :: comms(:)
     integer :: rank
-    character(len=MODELNAMELEN), allocatable :: models(:)
+    character(SHR_KIND_CS), allocatable :: models(:)
 
     if(proc%groupLen==proc%predefSize)then
-        call base_sys_abort('predef size not enough')
+        call shr_sys_abort('predef size not enough')
     end if
-
     n = proc%groupLen+1
     proc%IDs(n) = ID
     proc%comms(n) = comm
@@ -164,15 +174,20 @@ subroutine procMeta_getInfo(proc, ID, comm, rank, iamroot, modelName, ierr)
 
 end subroutine procMeta_getInfo
 
-subroutine compMeta_getInfo(comp, ID, comp_gsmap, domain, comm, gsize, ierr)
+subroutine compMeta_getInfo(comp, ID, comp_gsmap, domain,case_name, comm, gsize, nx, ny, srcFile, prognostic,ierr)
 
     implicit none
     type(compMeta),         intent(inout)   :: comp
     integer,     optional,  intent(inout)   :: ID
-    type(gsMap), optional,  intent(inout)   :: comp_gsmap
-    type(gGrid), optional,  intent(inout)   :: domain
+    type(mct_gsMap), optional,  intent(inout)   :: comp_gsmap
+    type(mct_gGrid), optional,  intent(inout)   :: domain
+    logical,     optional,  intent(inout)   :: prognostic
+    character(*), optional, intent(inout)   :: case_name
     integer,     optional,  intent(inout)   :: comm
     integer,     optional,  intent(inout)   :: gsize
+    integer,     optional,  intent(inout)   :: nx
+    integer,     optional,  intent(inout)   :: ny
+    character(*), optional, intent(inout)   :: srcFile
     integer,     optional,  intent(inout)   :: ierr
 
     if(present(ID)) ID = comp%ID
@@ -180,6 +195,13 @@ subroutine compMeta_getInfo(comp, ID, comp_gsmap, domain, comm, gsize, ierr)
     if(present(domain)) domain =  comp%domain
     if(present(comm)) comm = comp%comm
     if(present(gsize)) gsize = comp%gsize
+    if(present(srcFile)) srcFile = comp%srcFile
+    if(present(prognostic)) prognostic = comp%prognostic
+    if(present(case_name)) case_name = comp%case_name
+    if(present(nx)) nx = comp%nx
+    if(present(ny)) ny = comp%ny
+    if(present(ierr)) ierr=0
+
 
 end subroutine compMeta_getInfo
 
@@ -191,12 +213,16 @@ subroutine compMeta_final(comp, ierr)
 
 end subroutine compMeta_final
 
-subroutine confMeta_initFile(conf, conf_file, ierr)
+subroutine confMeta_initFile(conf, conf_file, pio_nmlfile,  ierr)
 
     implicit none
     type(confMeta),         intent(inout)    :: conf
-    character(*),           intent(inout)    :: conf_file
+    character(*),           intent(in)       :: conf_file
+    character(*),           intent(in)       :: pio_nmlfile
     integer,      optional, intent(inout)    :: ierr 
+
+    conf%nmlfile = conf_file
+    conf%pio_nmlfile = pio_nmlfile
 
 end subroutine confMeta_initFile
 
@@ -208,16 +234,21 @@ subroutine confMeta_initDefault(conf, ierr)
 
 end subroutine confMeta_initDefault 
 
-subroutine confMeta_getInfo(conf, nmlfile, restart, restart_file)
+subroutine confMeta_getInfo(conf, nmlfile, restart, restart_file, pio_nmlfile)
 
     implicit none
     type(confMeta),             intent(in)    :: conf
     character(len=*), optional, intent(inout) :: nmlfile
+    character(len=*), optional, intent(inout) :: pio_nmlfile
     character(len=*), optional, intent(inout) :: restart_file
     logical,          optional, intent(inout) :: restart
 
     if(present(nmlfile))then
         nmlfile = conf%nmlfile
+    end if
+
+    if(present(pio_nmlfile))then
+        pio_nmlfile = conf%pio_nmlfile
     end if
 
     if(present(restart_file))then

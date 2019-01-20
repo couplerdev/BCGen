@@ -2,10 +2,11 @@ module time_type
     !------------------------------------
     ! time relative macros and types
     !------------------------------------
+    use shr_kind_mod
     use ESMF
     implicit none
     integer,   parameter :: max_clocks = 2+1
-    integer,   parameter :: max_alarms = 2+7
+    integer,   parameter :: max_alarms = 2+6
     integer,   parameter :: clock_drv = 1
     integer,   parameter :: clock_atm = 2
     integer,   parameter :: clock_ocn = 3
@@ -17,19 +18,19 @@ module time_type
     integer,   parameter :: alarm_histavg = 6
     integer,   parameter :: alarm_atmrun = 7
     integer,   parameter :: alarm_ocnrun = 8
-    character(len=32), parameter :: clock_drv_name = "clock_drv"
-    character(len=32), parameter :: clock_atm_name = "clock_atm"
-    character(len=32), parameter :: clock_ocn_name = "clock_ocn"
-    character(len=32), parameter :: alarm_restart_name = "alarm_restart_name"
-    character(len=32), parameter :: alarm_run_name = "alarm_run_name"
-    character(len=32), parameter :: alarm_stop_name = "alarm_stop_name"
-    character(len=32), parameter :: alarm_datestop_name = "alarm_datestop_name"
-    character(len=32), parameter :: alarm_history_name = "alarm_history_name"
-    character(len=32), parameter :: alarm_histavg_name = "alarm_histavg_name"
-    character(len=32), parameter :: alarm_atmrun_name = "alarm_atmrun_name"
-    character(len=32), parameter :: alarm_ocnrun_name = "alarm_ocnrun_name"
-    character(len=64), parameter :: time_cal_noleap = "NO_LEAP"
-    character(len=64), parameter :: time_cal_gregorian = "GREGORIAN" 
+    character(SHR_KIND_CS), parameter :: clock_drv_name = "clock_drv"
+    character(SHR_KIND_CS), parameter :: clock_atm_name = "clock_atm"
+    character(SHR_KIND_CS), parameter :: clock_ocn_name = "clock_ocn"
+    character(SHR_KIND_CS), parameter :: alarm_restart_name = "alarm_restart_name"
+    character(SHR_KIND_CS), parameter :: alarm_run_name = "alarm_run_name"
+    character(SHR_KIND_CS), parameter :: alarm_stop_name = "alarm_stop_name"
+    character(SHR_KIND_CS), parameter :: alarm_datestop_name = "alarm_datestop_name"
+    character(SHR_KIND_CS), parameter :: alarm_history_name = "alarm_history_name"
+    character(SHR_KIND_CS), parameter :: alarm_histavg_name = "alarm_histavg_name"
+    character(SHR_KIND_CS), parameter :: alarm_atmrun_name = "alarm_atmrun_name"
+    character(SHR_KIND_CS), parameter :: alarm_ocnrun_name = "alarm_ocnrun_name"
+    character(SHR_KIND_CL), parameter :: time_cal_noleap = "NO_LEAP"
+    character(SHR_KIND_CL), parameter :: time_cal_gregorian = "GREGORIAN" 
     type(ESMF_CalKind_Flag), parameter :: time_cal_default = ESMF_CALKIND_NOLEAP
     type EClockPointer
         type(ESMF_Clock), pointer :: EClock=> null()

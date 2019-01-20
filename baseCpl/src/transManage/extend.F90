@@ -24,14 +24,14 @@ subroutine gsmap_init_ext(metaData, gsmap_s, ID_s, gsmap_d, &
                       ID_d, ID_join)
 
     implicit none
-    type(Meta), intent(in)     :: metaData
-    type(gsMap), intent(in)    :: gsmap_s
-    integer,     intent(in)    :: ID_s
-    type(gsMap), intent(inout) :: gsmap_d
-    integer,     intent(inout) :: ID_d
-    integer,     intent(in)    :: ID_join
+    type(Meta),      intent(in)    :: metaData
+    type(mct_gsMap), intent(in)    :: gsmap_s
+    integer,         intent(in)    :: ID_s
+    type(mct_gsMap), intent(inout) :: gsmap_d
+    integer,         intent(inout) :: ID_d
+    integer,         intent(in)    :: ID_join
     integer :: ierr
-    type(gsMap) gsmap_join
+    type(mct_gsMap) gsmap_join
     integer :: mpi_comm_s, mpi_comm_d, mpi_comm_join, mct_compid_d, mct_compid_join
     integer :: num_rank
     write(*,*)'ext?', ID_d, ID_join, metaData%cplid
@@ -57,15 +57,15 @@ end subroutine gsmap_init_ext
 
 subroutine avect_init_ext(metaData, AV_s, ID_s, AV_d, ID_d, gsMap_d, ID_join)
     implicit none
-    type(Meta),     intent(in)    :: metaData
-    type(AttrVect), intent(inout) :: AV_s
-    integer,        intent(in)    :: ID_s
-    type(AttrVect), intent(inout) :: AV_d
-    integer,        intent(in)    :: ID_d
-    type(gsMap),        intent(in):: gsMap_d
-    integer,        intent(in)    :: ID_join
+    type(Meta),      intent(in)    :: metaData
+    type(mct_aVect), intent(inout) :: AV_s
+    integer,         intent(in)    :: ID_s
+    type(mct_aVect), intent(inout) :: AV_d
+    integer,         intent(in)    :: ID_d
+    type(mct_gsMap), intent(in)    :: gsMap_d
+    integer,         intent(in)    :: ID_join
     integer lsize
-    lsize = gsMap_lsize(gsMap_d, metaData%comp_comm(ID_d))
+    lsize = mct_gsMap_lsize(gsMap_d, metaData%comp_comm(ID_d))
     call avect_extend(metaData, AV_s, ID_s, ID_d)
     call avect_create(metaData, AV_s, ID_s,&
                         AV_d, ID_d, &
@@ -78,10 +78,10 @@ subroutine gsmap_extend(gsmap_i, gsmap_o, &
               mpi_comm_i,mpi_comm_o, &
               mct_compid_o)
     implicit none
-    type(gsMap), intent(in)    :: gsmap_i
-    type(gsMap), intent(inout) :: gsmap_o
-    integer,     intent(in) :: mpi_comm_i, mpi_comm_o, &
-                               mct_compid_o
+    type(mct_gsMap), intent(in)    :: gsmap_i
+    type(mct_gsMap), intent(inout) :: gsmap_o
+    integer,         intent(in)    :: mpi_comm_i, mpi_comm_o, &
+                                      mct_compid_o
     integer :: procs_i, rank_in_comm_i, ngseg_i, gsize_i
     integer :: rank_in_comm_o
     integer, pointer :: pei(:), peo(:)
@@ -108,7 +108,7 @@ subroutine gsmap_extend(gsmap_i, gsmap_o, &
                 start(j) = gsmap_i%start(j)
                 peloc(j) = gsmap_i%pe_loc(j)
             enddo
-            call gsMap_init(gsMap_o, mct_compid_o, ngseg_i, &
+            call mct_gsMap_init(gsMap_o, mct_compid_o, ngseg_i, &
                                 gsize_i, start, length, peloc)
             deallocate(start, length, peloc)
         endif
@@ -123,7 +123,7 @@ subroutine gsmap_extend(gsmap_i, gsmap_o, &
         mpi_comm_o, ier)
 
     ! bcast gsMap of mpi_comm_i to all the pe in mpi_comm_o
-    call gsmap_bcast(gsMap_o, rrank, mpi_comm_o, status)
+    call mct_gsmap_bcast(gsMap_o, rrank, mpi_comm_o, status)
     !write(6,*)'status: ', status, " rank:", rank_in_comm_i
     call MPI_Barrier(mpi_comm_o, ier)
 end subroutine gsmap_extend
@@ -133,9 +133,9 @@ end subroutine gsmap_extend
 subroutine avect_extend(metaData, AV_s, &
               ID_s, ID_d)
     implicit none
-    type(Meta)    , intent(in)    :: metaData
-    type(AttrVect), intent(inout) :: AV_s
-    integer, intent(in) ::  ID_s, ID_d
+    type(Meta)    ,  intent(in)    :: metaData
+    type(mct_aVect), intent(inout) :: AV_s
+    integer,         intent(in)    ::  ID_s, ID_d
     integer  ::  mpi_comm_s, mpi_comm_d, ier,srank,rrank,rank_s,rank_d
     character(len=100) :: iList,rList
 
@@ -161,18 +161,18 @@ subroutine avect_extend(metaData, AV_s, &
     iList = " "
     rList = " "
     if(metaData%iamin_model(ID_s)) then
-        iList = avect_exportIList2c(AV_s)
-        rList = avect_exportRList2c(AV_s)
+        iList = mct_avect_exportIList2c(AV_s)
+        rList = mct_avect_exportRList2c(AV_s)
     endif
     call mpi_bcast(iList, len(iList), MPI_CHARACTER, rrank, mpi_comm_d, ier)
     call mpi_bcast(rList, len(rList), MPI_CHARACTER, rrank, mpi_comm_d, ier)
     if(.not. metaData%iamin_model(ID_s)) then
         if(len_trim(iList) > 0 .and. len_trim(rList) > 0) then
-          call avect_init(AV_s,rList=rList,iList=iList, lsize=0)
+          call mct_aVect_init(AV_s,rList=rList,iList=iList, lsize=0)
         else if(len_trim(iList) > 0 .and. len_trim(rList) == 0) then
-          call avect_init(AV_s,iList=iList,lsize=0)
+          call mct_aVect_init(AV_s,iList=iList,lsize=0)
         else if(len_trim(iList) == 0 .and. len_trim(rList) > 0) then
-          call avect_init(AV_s,rList=rList,lsize=0)
+          call mct_aVect_init(AV_s,rList=rList,lsize=0)
         endif
     endif
 end subroutine avect_extend
@@ -184,11 +184,11 @@ subroutine gsmap_create(gsmapi, mpicomi, gsmapo, mpicomo, compido)
     !-------------------------------------------------------------------------
 
     implicit none
-    type(gsMap), intent(in)      :: gsmapi
-    integer    , intent(in)      :: mpicomi
-    type(gsMap), intent(inout)   :: gsmapo
-    integer    , intent(in)      :: mpicomo
-    integer    , intent(in)      :: compido
+    type(mct_gsMap), intent(in)      :: gsmapi
+    integer    ,     intent(in)      :: mpicomi
+    type(mct_gsMap), intent(inout)   :: gsmapo
+    integer    ,     intent(in)      :: mpicomo
+    integer    ,     intent(in)      :: compido
 
     integer  :: n,m,k
     integer  :: ktot            ! num of active cells in gsmap
@@ -219,7 +219,7 @@ subroutine gsmap_create(gsmapi, mpicomi, gsmapo, mpicomo, compido)
     ngsegi = gsmapi%ngseg
     gsizei = gsmapi%gsize
     gsizeo = gsizei
-    call gsMap_activepes(gsmapi,apesi)
+    call mct_gsMap_activepes(gsmapi,apesi)
 
     decomp_type = 0
 
@@ -243,7 +243,7 @@ subroutine gsmap_create(gsmapi, mpicomi, gsmapo, mpicomo, compido)
     case(1)   ! --- preserve segments and decomp ---------------------
 
     ! -- copy the gsmap and translate the pes
-    call gsMap_copy(gsmapi,gsmapo)
+    call mct_gsMap_copy(gsmapi,gsmapo)
     ngsego = ngsegi
     do n = 1,ngsego
     gsmapo%pe_loc(n) = mod(gsmapo%pe_loc(n),msizeo)    ! translate pes 1:1 from old to new
@@ -269,7 +269,7 @@ subroutine gsmap_create(gsmapi, mpicomi, gsmapo, mpicomo, compido)
     peloc(n) = int(rpeloc)
     enddo
     call MPI_Comm_rank(mpicomo, local_rank, ierr)
-    call gsMap_init(gsmapo,ngsego,start,length,peloc,0,mpicomo,compido,gsizeo)
+    call mct_gsMap_init(gsmapo,ngsego,start,length,peloc,0,mpicomo,compido,gsizeo)
     deallocate(start,length,peloc,perm)
 
     case(3)   ! --- new segments, new decomp -------------------------
@@ -319,7 +319,7 @@ subroutine gsmap_create(gsmapi, mpicomi, gsmapo, mpicomo, compido)
         write(6,*)' ERROR: decomp incomplete ',k,ktot
     endif
 
-    call gsMap_init(gsmapo,lindex,mpicomo,compido,size(lindex),gsizeo)
+    call mct_gsMap_init(gsmapo,lindex,mpicomo,compido,size(lindex),gsizeo)
     deallocate(gindex,perm,lindex)
 
     case default   ! --- unknown ---
@@ -327,7 +327,7 @@ subroutine gsmap_create(gsmapi, mpicomi, gsmapo, mpicomo, compido)
     end select
 
     if (mranko == 0) then
-        call gsMap_activepes(gsmapo,apeso)
+        call mct_gsMap_activepes(gsmapo,apeso)
     endif
 
 
@@ -336,12 +336,12 @@ end subroutine gsmap_create
 
 subroutine avect_create(metaData, AV_s, ID_s, AV_d, ID_d, lsize)
     implicit none
-    type(Meta),     intent(in)      :: metaData
-    type(AttrVect), intent(inout)   :: AV_s
-    integer,        intent(in)      :: ID_s
-    type(AttrVect), intent(inout)   :: AV_d
-    integer,        intent(in)      :: ID_d
-    integer,        intent(in)      :: lsize
+    type(Meta),      intent(in)      :: metaData
+    type(mct_aVect), intent(inout)   :: AV_s
+    integer,         intent(in)      :: ID_s
+    type(mct_aVect), intent(inout)   :: AV_d
+    integer,         intent(in)      :: ID_d
+    integer,         intent(in)      :: lsize
     integer ::  mpi_comm_s, mpi_comm_d
     integer pid_in_d,ier, rank_s, rank_d, srank, rrank
     character(len=1000) :: iList,rList
@@ -368,8 +368,8 @@ subroutine avect_create(metaData, AV_s, ID_s, AV_d, ID_d, lsize)
     iList = " "
     rList = " "
     if(metaData%iamin_model(ID_s)) then
-        iList = avect_exportIList2c(AV_s)
-        rList = avect_exportRList2c(AV_s)
+        iList = mct_aVect_exportIList2c(AV_s)
+        rList = mct_aVect_exportRList2c(AV_s)
     endif
 
 
@@ -381,21 +381,21 @@ subroutine avect_create(metaData, AV_s, ID_s, AV_d, ID_d, lsize)
 
 
     if(len_trim(iList) > 0 .and. len_trim(rList) > 0) then
-        call avect_init(AV_d,rList=rList,iList=iList, lsize=lsize)
+        call mct_aVect_init(AV_d,rList=rList,iList=iList, lsize=lsize)
     else if(len_trim(iList) > 0 .and. len_trim(rList) == 0) then
-        call avect_init(AV_d,iList=iList,lsize=lsize)
+        call mct_aVect_init(AV_d,iList=iList,lsize=lsize)
     else if(len_trim(iList) == 0 .and. len_trim(rList) > 0) then
-        call avect_init(AV_d,rList=rList,lsize=lsize)
+        call mct_aVect_init(AV_d,rList=rList,lsize=lsize)
     endif
 end subroutine avect_create
 
 subroutine save_model_av(metaData, AV, gsMap_AV, ID, time)
     implicit none
-    type(Meta),     intent(in)      :: metaData
-    type(AttrVect), intent(in)   :: AV
-    type(gsMap), intent(in)   :: gsMap_AV
-    integer,        intent(in)      :: ID
-    integer,        intent(in)      :: time
+    type(Meta),      intent(in)   :: metaData
+    type(mct_aVect), intent(in)   :: AV
+    type(mct_gsMap), intent(in)   :: gsMap_AV
+    integer,         intent(in)   :: ID
+    integer,         intent(in)   :: time
     integer ::  mpi_comm
     integer i, fd, ierr, nlseg, comm_rank
     INTEGER(KIND=MPI_OFFSET_KIND) :: offset
@@ -408,8 +408,8 @@ subroutine save_model_av(metaData, AV, gsMap_AV, ID, time)
         check_point_path = "file.txt"
 
         call mpi_comm_rank(mpi_comm, comm_rank, ierr)
-        nlseg = gsMap_lsize(gsMap_AV, mpi_comm)        
-        call gsMap_orderedPoints(gsMap_AV,comm_rank,points)
+        nlseg = mct_gsMap_lsize(gsMap_AV, mpi_comm)        
+        call mct_gsMap_orderedPoints(gsMap_AV,comm_rank,points)
 
         call MPI_File_Open(mpi_comm, &
             check_point_path, MPI_MODE_WRONLY + MPI_MODE_CREATE, &
@@ -501,30 +501,30 @@ end subroutine log_run_msg
 subroutine read_netcdf(metaData, ID, check_point_path, time, AV, gsMap_AV)
     !读取id model的全网格数据，并根据在GSMAP上的网格数据分布 设置到对应AV
     implicit none
-    type(Meta),     intent(in)      :: metaData
-    integer,        intent(in)      :: ID
+    type(Meta),      intent(in)      :: metaData
+    integer,         intent(in)      :: ID
     character(len=*), intent(in) :: check_point_path
-    integer,        intent(in)      :: time
-    type(AttrVect), intent(in)      :: AV
-    type(gsMap), intent(in)      :: gsMap_AV
+    integer,         intent(in)      :: time
+    type(mct_aVect), intent(in)      :: AV
+    type(mct_gsMap), intent(in)      :: gsMap_AV
     integer :: comm_rank, mpi_comm, nlseg, gsize, ierr 
     integer :: ncid, rvarid, ivarid,  j,i
     integer, dimension(:),pointer :: points
-    type(AttrVect)      :: sAV
+    type(mct_aVect)      :: sAV
     character(len=100) :: iList,rList
     character(len=100),dimension(100) :: iList_s, rList_s
     integer ::ilist_len,rlist_len
 
 
     
-    iList = avect_exportIList2c(AV)
-    rList = avect_exportRList2c(AV)
+    iList = mct_aVect_exportIList2c(AV)
+    rList = mct_aVect_exportRList2c(AV)
     call StringSplit(rList,":",rList_s,rlist_len) 
     call StringSplit(iList,":",iList_s,ilist_len) 
 
     write(*,*) "List: ", trim(rList),' ', trim(iList), gsMap_AV%gsize
     !todo 
-    call avect_init(sAV,rList=trim(rList),iList=trim(iList), lsize=2)!gsMap_AV%gsize)
+    call mct_aVect_init(sAV,rList=trim(rList),iList=trim(iList), lsize=2)!gsMap_AV%gsize)
 
     call check(nf_open(trim(check_point_path),nf_nowrite,ncid))
     write(*,*) 'read open ok:'
@@ -540,8 +540,8 @@ subroutine read_netcdf(metaData, ID, check_point_path, time, AV, gsMap_AV)
     mpi_comm = metaData%comp_comm(ID)
     if(mpi_comm /= MPI_COMM_NULL) then
         call mpi_comm_rank(mpi_comm, comm_rank, ierr)
-        nlseg = gsMap_lsize(gsMap_AV, mpi_comm)        
-        call gsMap_orderedPoints(gsMap_AV,comm_rank,points)
+        nlseg = mct_gsMap_lsize(gsMap_AV, mpi_comm)        
+        call mct_gsMap_orderedPoints(gsMap_AV,comm_rank,points)
 
         do j=1,rlist_len 
             do i=1,nlseg
@@ -570,12 +570,12 @@ subroutine write_netcdf(metaData, ID, log_path, time, AV, gsMap_AV)
     !todo
     !将AV数据写入netcdf文件， 需要增加AV gather步骤, 即需要将AV转为全局AV
     implicit none
-    type(Meta),     intent(in)      :: metaData
-    integer,        intent(in)      :: ID
+    type(Meta),      intent(in)      :: metaData
+    integer,         intent(in)      :: ID
     character(len=*), intent(in) :: log_path
-    integer,        intent(in)      :: time
-    type(AttrVect), intent(in)      :: AV
-    type(gsMap), intent(in)      :: gsMap_AV
+    integer,         intent(in)      :: time
+    type(mct_aVect), intent(in)      :: AV
+    type(mct_gsMap), intent(in)      :: gsMap_AV
     integer :: comm_rank, mpi_comm, ierr, lsize
     integer :: ncid, ivarid, rvarid
     integer :: list_len,i
@@ -584,8 +584,8 @@ subroutine write_netcdf(metaData, ID, log_path, time, AV, gsMap_AV)
     character(len=100),dimension(100) :: iList_s, rList_s
     integer ::ilist_len,rlist_len
     
-    iList = avect_exportIList2c(AV)
-    rList = avect_exportRList2c(AV)
+    iList = mct_aVect_exportIList2c(AV)
+    rList = mct_aVect_exportRList2c(AV)
     call StringSplit(rList,":",rList_s,rlist_len) 
     call StringSplit(iList,":",iList_s,ilist_len) 
 
@@ -594,7 +594,7 @@ subroutine write_netcdf(metaData, ID, log_path, time, AV, gsMap_AV)
 
     mpi_comm = metaData%comp_comm(ID)
     if(mpi_comm /= MPI_COMM_NULL) then
-        lsize = gsMap_lsize(gsMap_AV, mpi_comm)
+        lsize = mct_gsMap_lsize(gsMap_AV, mpi_comm)
         call check(nf_create(log_path, NF_CLOBBER, ncid))
         write(*,*) " create ok"
 

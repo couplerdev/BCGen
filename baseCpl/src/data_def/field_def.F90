@@ -4,19 +4,20 @@ module field_def
 !    This is field manage mod
 !
 !--------------------------------------------------------
-use base_sys
+use shr_sys_mod
 use logUtil
-use type_def, only : FIELDSLEN
+!use type_def, only : FIELDSLEN
+use shr_kind_mod
 use proc_def
     implicit none
     type fieldDesc
-        character(len=FIELDSLEN) :: shortname
-        character(len=FIELDSLEN) :: longname
-        character(len=FIELDSLEN) :: stdname
-        character(len=FIELDSLEN) :: units
+        character(SHR_KIND_CL) :: shortname
+        character(SHR_KIND_CL) :: longname
+        character(SHR_KIND_CL) :: stdname
+        character(SHR_KIND_CL) :: units
     end type fieldDesc
     type fldsMeta
-        character(len=FIELDSLEN) :: domain_fld
+        character(SHR_KIND_CL) :: domain_fld
         integer   :: capacity
         integer   :: items
         type(fieldDesc), allocatable :: lookup(:)
@@ -77,10 +78,10 @@ subroutine fldsMeta_add_name(fldsMetaData, shortname, longname, stdname, units, 
     integer,      optional, intent(inout)  :: ierr
 
     ! local
-    character(FIELDSLEN) :: unkown = "unkown"
-    character(FIELDSLEN) :: llongname = ''
-    character(FIELDSLEN) :: lstdname = ''
-    character(FIELDSLEN) :: lunits = ''
+    character(SHR_KIND_CL) :: unkown = "unkown"
+    character(SHR_KIND_CL) :: llongname = ''
+    character(SHR_KIND_CL) :: lstdname = ''
+    character(SHR_KIND_CL) :: lunits = ''
     type(fieldDesc)     :: fldDesc
 
     llongname = unkown
@@ -121,10 +122,10 @@ subroutine fldsMeta_lookup(fldsMetaData, shortname, longname, stdname, units)
 
     ! local 
     integer                 :: i
-    character(len=FIELDSLEN) :: unkown = "unkown"
-    character(len=FIELDSLEN) :: llongname = ''
-    character(len=FIELDSLEN) :: lstdname = ''
-    character(len=FIELDSLEN) :: lunits = ''
+    character(SHR_KIND_CL) :: unkown = "unkown"
+    character(SHR_KIND_CL) :: llongname = ''
+    character(SHR_KIND_CL) :: lstdname = ''
+    character(SHR_KIND_CL) :: lunits = ''
 
     llongname = unkown
     lstdname  = unkown

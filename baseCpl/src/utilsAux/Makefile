@@ -1,4 +1,4 @@
-SRC= base_rest_mod.F90 base_hist_mod.F90 
+SRC= base_rest_mod.F90  base_hist_mod.F90
 include ../Makefile.conf
 OBJ_ALL=$(SRC: .F90=.o)
 
