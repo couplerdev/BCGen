@@ -1,0 +1,10 @@
+<camDescXml>
+	<configure>
+		<script></script>
+		<args>
+			<arg></arg>
+			<arg></arg>
+		</args>
+	</configure>
+	<build-namelist></build-namelist>
+</camDescXml>

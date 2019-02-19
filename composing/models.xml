@@ -1,6 +1,7 @@
 <models>
 	<model>
 		<name>atm</name>
+		<metaFile>None</metaFile>
 		<attrVect>
 			<name></name>
 			<gsize>3312</gsize>
