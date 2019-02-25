@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/utils/pilgrim/unit_testers
+END
+ghosttest.F90
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/utils/pilgrim/unit_testers/ghosttest.F90
+END
+redistributetest.F90
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/utils/pilgrim/unit_testers/redistributetest.F90
+END
+decomptest.F90
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/utils/pilgrim/unit_testers/decomptest.F90
+END
+unstructured.F90
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/utils/pilgrim/unit_testers/unstructured.F90
+END
+parutilitiestest.F90
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/utils/pilgrim/unit_testers/parutilitiestest.F90
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/utils/pilgrim/unit_testers/Makefile
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/utils/pilgrim/unit_testers/README
+END
+parpatterntest.F90
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/utils/pilgrim/unit_testers/parpatterntest.F90
+END

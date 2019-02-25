@@ -1,0 +1,617 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam
+END
+cam3_aero_data.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cam3_aero_data.F90
+END
+ppgrid.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/ppgrid.F90
+END
+molec_diff.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/molec_diff.F90
+END
+comsrf.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/comsrf.F90
+END
+cloud_diagnostics.F90
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cloud_diagnostics.F90
+END
+hirsbtpar.f90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/hirsbtpar.f90
+END
+carma_flags_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/carma_flags_mod.F90
+END
+microp_aero.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/microp_aero.F90
+END
+tphysidl.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/tphysidl.F90
+END
+rayleigh_friction.F90
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/rayleigh_friction.F90
+END
+ndrop_bam.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/ndrop_bam.F90
+END
+zenith.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/zenith.F90
+END
+tropopause.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/tropopause.F90
+END
+tracers.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/tracers.F90
+END
+radheat.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/radheat.F90
+END
+trb_mtn_stress.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/trb_mtn_stress.F90
+END
+radiation.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/radiation.F90
+END
+flux_avg.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/flux_avg.F90
+END
+cloud_cover_diags.F90
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cloud_cover_diags.F90
+END
+micro_mg_cam.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/micro_mg_cam.F90
+END
+tracers_suite.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/tracers_suite.F90
+END
+boundarydata.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/boundarydata.F90
+END
+carma_model_flags_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/carma_model_flags_mod.F90
+END
+aer_rad_props.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/aer_rad_props.F90
+END
+radsw.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/radsw.F90
+END
+phys_control.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/phys_control.F90
+END
+phys_prop.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/phys_prop.F90
+END
+check_energy.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/check_energy.F90
+END
+restart_physics.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/restart_physics.F90
+END
+hk_conv.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/hk_conv.F90
+END
+cam_diagnostics.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cam_diagnostics.F90
+END
+geopotential.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/geopotential.F90
+END
+phys_gmean.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/phys_gmean.F90
+END
+stratiform.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/stratiform.F90
+END
+hirsbt.f90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/hirsbt.f90
+END
+ghg_data.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/ghg_data.F90
+END
+chem_surfvals.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/chem_surfvals.F90
+END
+constituents.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/constituents.F90
+END
+radiation_data.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/radiation_data.F90
+END
+radconstants.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/radconstants.F90
+END
+sslt_rebin.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/sslt_rebin.F90
+END
+modal_aer_opt.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/modal_aer_opt.F90
+END
+physics_types.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/physics_types.F90
+END
+radlw.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/radlw.F90
+END
+tsinti.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/tsinti.F90
+END
+co2_data_flux.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/co2_data_flux.F90
+END
+radae.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/radae.F90
+END
+cmparray_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cmparray_mod.F90
+END
+cloud_rad_props.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cloud_rad_props.F90
+END
+carma_intr.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/carma_intr.F90
+END
+diffusion_solver.F90
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/diffusion_solver.F90
+END
+hb_diff.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/hb_diff.F90
+END
+ndrop.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/ndrop.F90
+END
+clubb_intr.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/clubb_intr.F90
+END
+physpkg.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/physpkg.F90
+END
+cam3_ozone_data.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cam3_ozone_data.F90
+END
+phys_debug_util.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/phys_debug_util.F90
+END
+cosp_share.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cosp_share.F90
+END
+wv_sat_methods.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/wv_sat_methods.F90
+END
+rad_constituents.F90
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/rad_constituents.F90
+END
+convect_shallow.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/convect_shallow.F90
+END
+cloud_fraction.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cloud_fraction.F90
+END
+pkg_cld_sediment.F90
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/pkg_cld_sediment.F90
+END
+micro_mg1_0.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/micro_mg1_0.F90
+END
+macrop_driver.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/macrop_driver.F90
+END
+cldwat2m_macro.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cldwat2m_macro.F90
+END
+convect_deep.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/convect_deep.F90
+END
+cospsimulator_intr.F90
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cospsimulator_intr.F90
+END
+micro_mg1_5.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/micro_mg1_5.F90
+END
+co2_cycle.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/co2_cycle.F90
+END
+microp_driver.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/microp_driver.F90
+END
+wv_saturation.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/wv_saturation.F90
+END
+dadadj.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/dadadj.F90
+END
+cpslec.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cpslec.F90
+END
+polar_avg.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/polar_avg.F90
+END
+gw_drag.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/gw_drag.F90
+END
+physics_buffer.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/physics_buffer.F90
+END
+rad_solar_var.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/rad_solar_var.F90
+END
+physics_buffer.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/physics_buffer.F90.in
+END
+nucleate_ice.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/nucleate_ice.F90
+END
+tidal_diag.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/tidal_diag.F90
+END
+aoa_tracers.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/aoa_tracers.F90
+END
+iondrag.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/iondrag.F90
+END
+pkg_cldoptics.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/pkg_cldoptics.F90
+END
+iop_surf.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/iop_surf.F90
+END
+phys_grid.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/phys_grid.F90
+END
+phys_debug.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/phys_debug.F90
+END
+pbl_utils.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/pbl_utils.F90
+END
+scyc.F90
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/scyc.F90
+END
+ref_pres.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/ref_pres.F90
+END
+zm_conv_intr.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/zm_conv_intr.F90
+END
+conv_water.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/conv_water.F90
+END
+ionosphere.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/ionosphere.F90
+END
+zm_conv.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/zm_conv.F90
+END
+qneg3.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/qneg3.F90
+END
+eddy_diff.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/eddy_diff.F90
+END
+qneg4.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/qneg4.F90
+END
+uwshcu.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/uwshcu.F90
+END
+constituent_burden.F90
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/constituent_burden.F90
+END
+cldwat.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/cldwat.F90
+END
+vertical_diffusion.F90
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/vertical_diffusion.F90
+END
+majorsp_diffusion.F90
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/cam/majorsp_diffusion.F90
+END

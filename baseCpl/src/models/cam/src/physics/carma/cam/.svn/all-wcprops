@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/carma/cam
+END
+carma_getT.F90
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/carma/cam/carma_getT.F90
+END
+carma_precision_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/carma/cam/carma_precision_mod.F90
+END
+carma_constants_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/carma/cam/carma_constants_mod.F90
+END
+carma_cloudfraction.F90
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/carma/cam/carma_cloudfraction.F90
+END
+carma_intr.F90
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/carma/cam/carma_intr.F90
+END

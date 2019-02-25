@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/cpl_share
+END
+cam_cpl_indices.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/cpl_share/cam_cpl_indices.F90
+END

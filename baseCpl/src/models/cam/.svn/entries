@@ -1,0 +1,77 @@
+10
+
+dir
+86919
+https://svn-ccsm-models.cgd.ucar.edu/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam
+https://svn-ccsm-models.cgd.ucar.edu
+
+
+
+2014-06-10T22:47:24.697431Z
+61011
+jshollen
+has-props
+
+
+svn:externals
+
+
+
+
+
+
+
+
+
+
+fe37f545-8307-0410-aea5-b40df96820b5
+
+test
+dir
+
+tools
+dir
+
+bld
+dir
+
+SVN_EXTERNAL_DIRECTORIES
+file
+
+
+
+
+2017-10-08T13:21:31.025810Z
+08d268a7633ec679ac9d09eac161b704
+2014-06-10T22:47:24.697431Z
+61011
+jshollen
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+729
+
+doc
+dir
+
+src
+dir
+

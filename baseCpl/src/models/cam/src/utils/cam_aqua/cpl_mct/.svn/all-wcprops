@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/utils/cam_aqua/cpl_mct
+END
+ocn_comp_mct.F90
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/utils/cam_aqua/cpl_mct/ocn_comp_mct.F90
+END

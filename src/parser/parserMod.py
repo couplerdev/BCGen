@@ -504,6 +504,11 @@ class ModelParser:
         self.__name = name
         self.__model = Model(name=name)
         self.__model.BindToManager(self.__NameManager)
+   
+        # set metaFile
+        metaFile = self.__root.find("metaFile").text
+        self.__model.metaFile = metaFile
+
 
         #self.__model.interval = root.find('interval').text
         root = root.find('attrVect')

@@ -1,0 +1,143 @@
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils
+END
+prescribed_aero.F90
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/prescribed_aero.F90
+END
+aerodep_flx.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/aerodep_flx.F90
+END
+unit_driver.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/unit_driver.F90
+END
+prescribed_ozone.F90
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/prescribed_ozone.F90
+END
+offline_driver.F90
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/offline_driver.F90
+END
+modal_aero_deposition.F90
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/modal_aero_deposition.F90
+END
+mo_msis_ubc.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/mo_msis_ubc.F90
+END
+horizontal_interpolate.F90
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/horizontal_interpolate.F90
+END
+mo_flbc.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/mo_flbc.F90
+END
+drv_input_data.F90
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/drv_input_data.F90
+END
+mo_constants.F90
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/mo_constants.F90
+END
+prescribed_ghg.F90
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/prescribed_ghg.F90
+END
+mo_util.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/mo_util.F90
+END
+tracer_data.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/tracer_data.F90
+END
+solar_data.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/solar_data.F90
+END
+aircraft_emit.F90
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/aircraft_emit.F90
+END
+prescribed_volcaero.F90
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/prescribed_volcaero.F90
+END
+mo_solar_parms.F90
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/mo_solar_parms.F90
+END
+modal_aero_wateruptake.F90
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/modal_aero_wateruptake.F90
+END
+time_utils.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/time_utils.F90
+END
+modal_aero_calcsize.F90
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/modal_aero_calcsize.F90
+END
+m_types.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/m_types.F90
+END
+msise00.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/utils/msise00.F90
+END

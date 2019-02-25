@@ -2,11 +2,11 @@
 #
 #   strategy pattern for a model manager
 #
-from ErrorHandling import NoModelTypeError
+import sys, os
+sys.path.append('../ErrorHandle')
+from ErrorHandle import NoneProperValueError
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import Document
-
-
 
 
 innerModelSets = "../../composing/innerModels.xml"
@@ -15,7 +15,7 @@ innerModelSets = "../../composing/innerModels.xml"
 modelSetsDict = {}
 
 def getModelSetDict():
-    tree = ET.parse(self.xmlFile)
+    tree = ET.parse(innerModelSets)
     models = tree.find('models')    
     for model in models:
         modelName = model.find('name').text
@@ -36,22 +36,26 @@ class NormalModel:
 
 class ConfModel:
     def __init__(self, modelName, fileDesc):
-       self.modelName = self.modelName
+       self.modelName = modelName
        self.fileDesc = fileDesc
 
     def createModelInst(self):
         tree = ET.parse(self.fileDesc)
         # confModel
+        packageDir = tree.find('packageDir').text
         conf = tree.find('configure')
         confScripts = conf.find("script").text
+        confScripts = packageDir+"/"+confScripts
+        print confScripts
         args = ""
         argsIn = conf.find('args')
         for argIn in argsIn:
-            arg = argIn.find('arg').text
+            arg = argIn.text
             args+=arg+" "
-        cmdConf = confScript+"   "+args
+        cmdConf = confScripts+"   "+args
         os.system(cmdConf)
         # build namelist
+        '''
         bldNml = tree.find("build-namelist")
         bldNmlScripts = bldNml.find("script").text
         args = ""
@@ -61,6 +65,7 @@ class ConfModel:
             args += arg+" "
         cmdBld = bldNml + "   "+ args
         os.system(cmdBld)
+        '''
         #copy to target dict
         
        
@@ -75,10 +80,15 @@ class ModelManager:
             model.createModelInst()
         elif modelType == 1:
             if fileName == "None":
-                raise NotProperValueError("in ModelManager.creatModelInst when modelType ==1:")
+                raise NoneProperValueError("in ModelManager.creatModelInst when modelType ==1:")
             model = ConfModel(modelName, fileName)
             model.createModelInst()
         else:
-            raise NoModelTypeError("modelType not supported")
+            raise NoneProperValueError("in ModelManager.createModel when modelType not find:")
 
-
+if __name__ == "__main__":
+    modelName = "cam"
+    fileName = modelSetsDict[modelName]
+    print fileName
+    model = ConfModel(modelName, fileName)
+    model.createModelInst()

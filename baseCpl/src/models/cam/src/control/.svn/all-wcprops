@@ -1,0 +1,221 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control
+END
+readinitial.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/readinitial.F90
+END
+mpishorthand.F
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/mpishorthand.F
+END
+runtime_opts.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/runtime_opts.F90
+END
+history_defaults.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/history_defaults.F90
+END
+physconst.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/physconst.F90
+END
+ncdio_atm.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/ncdio_atm.F90
+END
+cam_history_buffers.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/cam_history_buffers.F90
+END
+cam_logfile.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/cam_logfile.F90
+END
+cam_initfiles.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/cam_initfiles.F90
+END
+rgrid.F90
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/rgrid.F90
+END
+intp_util.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/intp_util.F90
+END
+bnddyi.F90
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/bnddyi.F90
+END
+sat_hist.F90
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/sat_hist.F90
+END
+interpolate_data.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/interpolate_data.F90
+END
+scamMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/scamMod.F90
+END
+camsrfexch.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/camsrfexch.F90
+END
+cam_instance.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/cam_instance.F90
+END
+wrap_nf.F90
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/wrap_nf.F90
+END
+datetime.F90
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/datetime.F90
+END
+srchutil.F90
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/srchutil.F90
+END
+pspect.F90
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/pspect.F90
+END
+cam_control_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/cam_control_mod.F90
+END
+units.F90
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/units.F90
+END
+startup_initialconds.F90
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/startup_initialconds.F90
+END
+filenames.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/filenames.F90
+END
+gauaw_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/gauaw_mod.F90
+END
+cam_restart.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/cam_restart.F90
+END
+history_scam.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/history_scam.F90
+END
+ioFileMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/ioFileMod.F90
+END
+vrtmap.F90
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/vrtmap.F90
+END
+infnan.F90
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/infnan.F90
+END
+cam_history_support.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/cam_history_support.F90
+END
+cam_comp.F90
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/cam_comp.F90
+END
+wrap_mpi.F90
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/wrap_mpi.F90
+END
+error_messages.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/error_messages.F90
+END
+cam_history.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/control/cam_history.F90
+END

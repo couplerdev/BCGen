@@ -1,0 +1,107 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld
+END
+run-pc.csh
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/run-pc.csh
+END
+configure
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/configure
+END
+cam.buildnml.csh
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/cam.buildnml.csh
+END
+Makefile.in
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/Makefile.in
+END
+run-ibm.csh
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/run-ibm.csh
+END
+user_nl_cam
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/user_nl_cam
+END
+run-scam.csh
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/run-scam.csh
+END
+run-darwin.csh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/run-darwin.csh
+END
+mkSrcfiles
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/mkSrcfiles
+END
+run-yellowstone.csh
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/run-yellowstone.csh
+END
+get_nxny.pl
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/get_nxny.pl
+END
+run-lynx.csh
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/run-lynx.csh
+END
+build-namelist
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/build-namelist
+END
+mkDepends
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/mkDepends
+END
+run-cray.csh
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/run-cray.csh
+END
+cam.buildexe.csh
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/cam.buildexe.csh
+END
+cam.cpl7.template
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/cam.cpl7.template
+END
