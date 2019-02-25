@@ -1,4 +1,7 @@
 module global_var
+use shr_kind_mod
+use mct_mod
+use type_def
 use proc_def
 use field_def
    implicit none
@@ -8,7 +11,9 @@ use field_def
        type(confMeta)    :: conf
        type(compMeta)    :: atm
        type(compMeta)    :: ocn
-       
+       character(SHR_KIND_CL) :: datanml
+       character(SHR_KIND_CL) :: datarc
+       character(SHR_KIND_CL) :: case_name
        !-----------------------------------------
        ! meta desc of proc and comps
        !-----------------------------------------
@@ -32,23 +37,25 @@ use field_def
        !-------------------------------------------
        integer, allocatable  :: comp_comm(:)
        integer, allocatable  :: comp_id(:)
-       logical, allocatable  :: iamin_model(:)
+       logical, pointer      :: iamin_model(:)
+       character(SHR_KIND_CL), allocatable :: comp_name(:)
+       integer, allocatable  :: comp_comm_iam(:)
 
        !------------------------------------------
        !   intermediate vars
        !------------------------------------------
-       type(AttrVect)   :: atm2x_atmatm
-       type(AttrVect)   :: atm2x_atmx
-       type(AttrVect)   :: x2atm_atmatm
-       type(AttrVect)   :: x2atm_atmx
-       type(gGrid)      :: domain_atm
+       type(mct_aVect)   :: atm2x_atmatm
+       type(mct_aVect)   :: atm2x_atmx
+       type(mct_aVect)   :: x2atm_atmatm
+       type(mct_aVect)   :: x2atm_atmx
+       type(mct_gGrid)      :: domain_atm
        type(map_mod)    :: Mapper_Catm2x
        type(map_mod)    :: Mapper_Cx2atm
-       type(AttrVect)   :: ocn2x_ocnocn
-       type(AttrVect)   :: ocn2x_ocnx
-       type(AttrVect)   :: x2ocn_ocnocn
-       type(AttrVect)   :: x2ocn_ocnx
-       type(gGrid)      :: domain_ocn
+       type(mct_aVect)   :: ocn2x_ocnocn
+       type(mct_aVect)   :: ocn2x_ocnx
+       type(mct_aVect)   :: x2ocn_ocnocn
+       type(mct_aVect)   :: x2ocn_ocnx
+       type(mct_gGrid)      :: domain_ocn
        type(map_mod)    :: Mapper_Cocn2x
        type(map_mod)    :: Mapper_Cx2ocn
 
@@ -81,20 +88,20 @@ use field_def
        type(map_mod)   :: mapper_Smatatm2ocn
        type(map_mod)   :: mapper_Smatocn2atm
 
-       character(FIELDSLEN) :: flds_dom 
-       character(FIELDSLEN) :: flds_x2ocn_fluxes 
-       character(FIELDSLEN) :: flds_ocn2x_states 
-       character(FIELDSLEN) :: flds_atm2x_fluxes 
-       character(FIELDSLEN) :: flds_x2ocn 
-       character(FIELDSLEN) :: flds_x2atm 
-       character(FIELDSLEN) :: flds_dom_coord 
-       character(FIELDSLEN) :: flds_x2atm_states 
-       character(FIELDSLEN) :: flds_x2ocn_states 
-       character(FIELDSLEN) :: flds_x2atm_fluxes 
-       character(FIELDSLEN) :: flds_atm2x 
-       character(FIELDSLEN) :: flds_ocn2x 
-       character(FIELDSLEN) :: flds_atm2x_states 
-       character(FIELDSLEN) :: flds_ocn2x_fluxes 
+       character(SHR_KIND_CL) :: flds_dom 
+       character(SHR_KIND_CL) :: flds_x2ocn_fluxes 
+       character(SHR_KIND_CL) :: flds_ocn2x_states 
+       character(SHR_KIND_CL) :: flds_atm2x_fluxes 
+       character(SHR_KIND_CL) :: flds_x2ocn 
+       character(SHR_KIND_CL) :: flds_x2atm 
+       character(SHR_KIND_CL) :: flds_dom_coord 
+       character(SHR_KIND_CL) :: flds_x2atm_states 
+       character(SHR_KIND_CL) :: flds_x2ocn_states 
+       character(SHR_KIND_CL) :: flds_x2atm_fluxes 
+       character(SHR_KIND_CL) :: flds_atm2x 
+       character(SHR_KIND_CL) :: flds_ocn2x 
+       character(SHR_KIND_CL) :: flds_atm2x_states 
+       character(SHR_KIND_CL) :: flds_ocn2x_fluxes 
 
    end type Meta
     
