@@ -3,7 +3,7 @@
 <config_definition>
 
 <commandline>
-/share/BCGen/develDir/BCGenV1.0/BCGen/baseCpl/src/models/cam/bld/configure -dyn fv -hgrid 10x15 -nospmd -nosmp -test -noc_bld
+/share/BCGen/develDir/BCGenV1.0/BCGen/baseCpl/src/models/cam/bld/configure -dyn fv -hgrid 10x15 -spmd -nosmp -test -noc_bld -ntasks 4 -fc mpif90 -fc_type gnu
 </commandline>
 <entry id="age_of_air_trcs" value="0" list="" valid_values="0,1">
 Switch on (off) age of air tracers: 0=off, 1=on.
@@ -30,7 +30,7 @@ none (disabled), bc_strat (Stratospheric Black Carbon), cirrus (Cirrus Clouds), 
 sulfate (Sulfate Aerosols), test_detrain (Detrainment), test_growth (Particle Growth), test_passive (Passive Dust), 
 test_radiative (Radiatively Active Dust), test_swelling (Sea Salt), test_tracers (age trajectories).
 </entry>
-<entry id="cc" value="pgcc" list="" valid_values="">
+<entry id="cc" value="mpicc" list="" valid_values="">
 User specified C compiler overrides Makefile default (linux only).
 </entry>
 <entry id="ccsm_seq" value="0" list="" valid_values="0,1">
@@ -108,10 +108,10 @@ Directory containing ESMF library (for linking to external ESMF).
 <entry id="esmf_libvers" value="" list="" valid_values="">
 Version of ESMF library.
 </entry>
-<entry id="fc" value="pgf95" list="" valid_values="">
+<entry id="fc" value="mpif90" list="" valid_values="">
 User specified Fortran compiler overrides Makefile default.
 </entry>
-<entry id="fc_type" value="pgi" list="" valid_values="pgi,intel,gnu,pathscale,lahey,xlf,nag">
+<entry id="fc_type" value="gnu" list="" valid_values="pgi,intel,gnu,pathscale,lahey,xlf,nag">
 Type of Fortran compiler.  Used when -fc specifies a generic wrapper script
 such as mpif90 or ftn.
 </entry>
@@ -191,7 +191,7 @@ Number of unique longitude points in rectangular lat/lon grid.
 Switch specifies wheter CAM is being build by the NOC coupler, if NOC is set ccsm_seq is disabled. 0 => no, 1 => yes.
               
 </entry>
-<entry id="ntasks" value="" list="" valid_values="">
+<entry id="ntasks" value="4" list="" valid_values="">
 Number of MPI tasks.  This is used to determine default grid
 decompositions.  Currently only used by CICE.
 </entry>
@@ -251,7 +251,7 @@ supported for the Eulerian dycore.
 <entry id="smp" value="0" list="" valid_values="0,1">
 Switch to enable or disable building SMP version (OPENMP) of CAM: 0=off, 1=on.
 </entry>
-<entry id="spmd" value="0" list="" valid_values="0,1">
+<entry id="spmd" value="1" list="" valid_values="0,1">
 Switch to enable or disable building SPMD version of CAM: 0=off, 1=on.
 </entry>
 <entry id="target_os" value="linux" list="" valid_values="">

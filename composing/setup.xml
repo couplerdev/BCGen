@@ -1,6 +1,7 @@
 <setup>
 	<model>
 		<name>atm</name>
+		<version>cam</version>
 		<input>
 			<src name='ocn'>
 				<field>So_t:So_s:So_u</field>
@@ -10,6 +11,7 @@
 	</model>
 	<model>
 		<name>ocn</name>
+		<version>xocn</version>
 		<input>
 			<src name='atm'>
 				<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>

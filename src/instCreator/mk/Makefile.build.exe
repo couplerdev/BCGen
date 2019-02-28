@@ -15,17 +15,21 @@ OBJS_ALL = ./*.o
 #set $BINDIR = "$(BINDIR)"
 #set $BASE_DEPS = "$(BASE_DEPS)"
 #set $FLAGS= "$(FLAGS)"
+#set $CPPDEFS= "$(CPPDEFS)"
+#set $MCTDEPS= "$(MCTDEPS)"
 BASE_DEPS = $(LIBDIR)/*.o
 ESMF_DEPS=$(ESMF_LIB)/libesmf.a
+MCTDEPS=-L/usr/local/mct/lib -lmct -lmpeu
 DEPS=-lmct -lnetcdf -lnetcdff -lmpeu -lpio -lesmf -lpio -lgptl -lpnetcdf
 ESMF_DEPS = -lesmf -lrt -lstdc++ -ldl
 FLAGS=-pthread
+CPPDEFS = -ffree-line-length-none
 EXE= main
 MAIN=main.F90
 
 EXE:
-	$(FC) -c -I$(INCLDIR) -I$(ESMF_MOD) -L$(LIBDIR) baseCpl.F90
+	$(FC) -c -I$(INCLDIR) -I$(ESMF_MOD) -L$(LIBDIR) $(CPPDEFS) baseCpl.F90
 	echo 'finish mod'
-	$(FC) -o $(EXE) $(MAIN) $(OBJS_ALL) $(BASE_DEPS) $(FLAGS) -I$(INCLDIR) -L$(LIBDIR) \
-	$(DEPS) $(ESMF_DEPS)
+	$(FC) -o $(EXE) $(MAIN) $(OBJS_ALL) $(BASE_DEPS) $(FLAGS) $(CPPDEFS) -I$(INCLDIR) -L$(LIBDIR) \
+	-L$(LIBDIR) -latm $(DEPS) $(MCTDEPS) $(ESMF_DEPS)
 	#mv $(EXE) $(BINDIR)
