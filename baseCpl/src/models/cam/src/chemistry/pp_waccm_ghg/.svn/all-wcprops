@@ -1,0 +1,107 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg
+END
+mo_lu_solve.F90
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/mo_lu_solve.F90
+END
+mo_setrxt.F90
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/mo_setrxt.F90
+END
+mo_adjrxt.F90
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/mo_adjrxt.F90
+END
+mo_rxt_rates_conv.F90
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/mo_rxt_rates_conv.F90
+END
+mo_imp_sol.F90
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/mo_imp_sol.F90
+END
+chem_mods.F90
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/chem_mods.F90
+END
+mo_prod_loss.F90
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/mo_prod_loss.F90
+END
+mo_lin_matrix.F90
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/mo_lin_matrix.F90
+END
+mo_phtadj.F90
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/mo_phtadj.F90
+END
+m_rxt_id.F90
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/m_rxt_id.F90
+END
+mo_nln_matrix.F90
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/mo_nln_matrix.F90
+END
+mo_lu_factor.F90
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/mo_lu_factor.F90
+END
+mo_indprd.F90
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/mo_indprd.F90
+END
+mo_sim_dat.F90
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/mo_sim_dat.F90
+END
+m_spc_id.F90
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/m_spc_id.F90
+END
+chem_mech.doc
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/chem_mech.doc
+END
+chem_mech.in
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry/pp_waccm_ghg/chem_mech.in
+END

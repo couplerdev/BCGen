@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/carma/models/test_radiative
+END
+carma_model_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/carma/models/test_radiative/carma_model_mod.F90
+END

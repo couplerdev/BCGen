@@ -1,0 +1,124 @@
+K 13
+svn:exteranls
+V 728
+src/physics/rrtmg/ext     https://svn-ccsm-models.cgd.ucar.edu/rrtmg/release_tags/rrtmg_130827/src
+chem_proc                 https://svn-ccsm-models.cgd.ucar.edu/tools/proc_atm/chem_proc/release_tags/chem_proc4_0_02
+src/physics/cosp          https://svn-ccsm-models.cgd.ucar.edu/cosp/release_tags/cosp_v1_3_131107/cosp
+src/physics/icarus-scops  https://svn-ccsm-models.cgd.ucar.edu/cosp/release_tags/cosp_v1_3_131107/icarus-scops
+src/dynamics/se/share     https://svn-homme-model.cgd.ucar.edu/release_tags/cesm1_2_x_homme1_3_26/src/share
+src/physics/carma/base    https://svn-ccsm-models.cgd.ucar.edu/carma/release_tags/carma3_34
+src/physics/clubb         https://svn-ccsm-models.cgd.ucar.edu/clubb_core/release_tags/clubb01_03
+
+K 13
+svn:externals
+V 729
+src/physics/rrtmg/ext     https://svn-ccsm-models.cgd.ucar.edu/rrtmg/release_tags/rrtmg_130827/src
+chem_proc                 https://svn-ccsm-models.cgd.ucar.edu/tools/proc_atm/chem_proc/release_tags/chem_proc4_0_02
+src/physics/cosp          https://svn-ccsm-models.cgd.ucar.edu/cosp/release_tags/cosp_v1_3_140124/cosp
+src/physics/icarus-scops  https://svn-ccsm-models.cgd.ucar.edu/cosp/release_tags/cosp_v1_3_140124/icarus-scops
+src/dynamics/se/share     https://svn-homme-model.cgd.ucar.edu/release_tags/cesm1_2_x_homme1_3_26a/src/share
+src/physics/carma/base    https://svn-ccsm-models.cgd.ucar.edu/carma/release_tags/carma3_34
+src/physics/clubb         https://svn-ccsm-models.cgd.ucar.edu/clubb_core/release_tags/clubb01_03
+
+K 13
+svn:mergeinfo
+V 6285
+/cam1/branch_tags/MG2_cam5_1_15_tags/MG2_05_cam5_1_15/models/atm/cam:34460-35911
+/cam1/branch_tags/aerosol_tags/aerosol002_cam5_2_10/models/atm/cam:44290-45509
+/cam1/branch_tags/bldnml_tags/bldnml01_cam5_1_25/models/atm/cam:35779-36332
+/cam1/branch_tags/bldnml_tags/bldnml04_cam5_1_31/models/atm/cam:37665-38964
+/cam1/branch_tags/camse_cam5_1_27_tags/01_camse_cam5_1_27/models/atm/cam:36807-37254
+/cam1/branch_tags/cesm1_0_6_rel_tags/cesm1_0_6_n17_cam5_1_04/models/atm/cam:59171-59535
+/cam1/branch_tags/chem_cam5_0_52_tags/chem06_cam5_0_53/models/atm/cam:28115-28121
+/cam1/branch_tags/chem_cam5_0_57_tags/chem01_cam5_0_57/models/atm/cam:28607-28609
+/cam1/branch_tags/cleanup_cam5_1_04_tags/cleanup02_cam5_1_04/models/atm/cam:29920-31525
+/cam1/branch_tags/clubb03_cam5_0_22/models/atm/cam:26956-26983
+/cam1/branch_tags/clubb03_cam5_0_45_tags/clubb08_cam5_0_45/models/atm/cam:28842-28851
+/cam1/branch_tags/clubb_cam5_1_04_tags/clubb19_cam5_1_04/models/atm/cam:31966-31967
+/cam1/branch_tags/clubb_cam5_1_11_tags/clubb20_cam5_1_11/models/atm/cam:31979-31984
+/cam1/branch_tags/clubb_cam5_1_13_tags/clubb30_cam5_1_13/models/atm/cam:32674
+/cam1/branch_tags/clubb_cam5_1_16_tags/clubb33_cam5_1_16/models/atm/cam:33007-33249
+/cam1/branch_tags/clubb_cam5_1_17_tags/clubb36_cam5_1_17/models/atm/cam:33851-34032
+/cam1/branch_tags/dyn_state_cam5_1_31_tags/dyn_state28_cam5_2_07/models/atm/cam:43512-43514
+/cam1/branch_tags/megan_cam5_1_19_tags/megan22_cam5_1_22/models/atm/cam:35379
+/cam1/branch_tags/ne120fix_tags/ne120fix_02_cam5_2_06/models/atm/cam:42935-43181
+/cam1/branch_tags/pbuf_cam5_1_04_tags/pbuf21_cam5_1_04/models/atm/cam:31320-31615
+/cam1/branch_tags/pbuf_cam5_1_12_tags/pbuf28_cam5_1_15/models/atm/cam:32950-32982
+/cam1/branch_tags/r8_cam5_1_03_tags/r8b_cam5_1_03/models/atm/cam:30829-30932
+/cam1/branch_tags/radcnst_cam5_1_11_tags/radcnst10_cam5_1_11/models/atm/cam:31508-31510
+/cam1/branch_tags/waccm4se_cam5_1_08_tags/waccm4se01_cam5_1_08/models/atm/cam:30599-33864
+/cam1/branches/MG2_cam5_1_15/models/atm/cam:33017-34459
+/cam1/branches/MG2_cam5_1_25/models/atm/cam:36033-37126
+/cam1/branches/MG2_cam5_1_xx/models/atm/cam:37127-42447
+/cam1/branches/aerosol/models/atm/cam:44149-44289
+/cam1/branches/bldnml/models/atm/cam:35776-35778,37533-37664
+/cam1/branches/cam5_1_03_r8/models/atm/cam:29574-30828
+/cam1/branches/cam5_2_21_troubleshoot/models/atm/cam:46199-46375
+/cam1/branches/camse_cam5_1_24/models/atm/cam:35620-36539
+/cam1/branches/camse_cam5_1_27/models/atm/cam:36804-36806
+/cam1/branches/carma_cam5_1_xx/models/atm/cam:33303-36895
+/cam1/branches/carma_cam_5_1_xx/models/atm/cam:33300-33302
+/cam1/branches/carma_cesm1_2/models/atm/cam:45327-45682
+/cam1/branches/cesm1_0_6_rel/models/atm/cam:58650-59170
+/cam1/branches/chem_cam5_0_52/models/atm/cam:28054-28114
+/cam1/branches/chem_cam5_0_57/models/atm/cam:28602-28606
+/cam1/branches/chem_cam5_1_00/models/atm/cam:28696-28701
+/cam1/branches/chem_cam5_1_25/models/atm/cam:36333-39270
+/cam1/branches/chempp_cam5_2_04/models/atm/cam:42423-43473
+/cam1/branches/cintel_cam5_1_18/models/atm/cam:33911-33928
+/cam1/branches/cleanup_cam5_1_04/models/atm/cam:29729-29919
+/cam1/branches/cleanup_cam5_1_27/models/atm/cam:36647-36959
+/cam1/branches/clubb03_cam5_0_45/models/atm/cam:26983-28841
+/cam1/branches/clubb0_cam5_0_12/models/atm/cam:25311-26955
+/cam1/branches/clubb_cam5_1_01/models/atm/cam:28851-29936
+/cam1/branches/clubb_cam5_1_04/models/atm/cam:29936-31965
+/cam1/branches/clubb_cam5_1_11/models/atm/cam:31967-31978
+/cam1/branches/clubb_cam5_1_13/models/atm/cam:31958-32673
+/cam1/branches/clubb_cam5_1_16/models/atm/cam:32671-33006
+/cam1/branches/clubb_cam5_1_17/models/atm/cam:33249-33850
+/cam1/branches/clubb_cam5_1_19/models/atm/cam:34032-36438
+/cam1/branches/clubb_cam5_1_26/models/atm/cam:36439-40523
+/cam1/branches/clubb_cam5_2_12/models/atm/cam:44851-45463
+/cam1/branches/clubb_qcvar_cam5_2_12/models/atm/cam:44454-44850
+/cam1/branches/dyn_state_cam5_1_31/models/atm/cam:38531-43511
+/cam1/branches/history_cam5_0_42/models/atm/cam:26847-27149
+/cam1/branches/homme_cam5_1_02/models/atm/cam:29090-30005
+/cam1/branches/homme_cam5_1_04/models/atm/cam:29767-30005
+/cam1/branches/homme_cam5_2_03/models/atm/cam:42291-43466
+/cam1/branches/homme_interp_cam5_0_31/models/atm/cam:25990-26251
+/cam1/branches/megan_cam5_1_19/models/atm/cam:33951-35378
+/cam1/branches/move_level_inits/models/atm/cam:38364-38911
+/cam1/branches/multinst/models/atm/cam:29562-29744
+/cam1/branches/nag_port/models/atm/cam:43255-45740
+/cam1/branches/ne120fix/models/atm/cam:42564-42934
+/cam1/branches/pbuf_cam5_0_51/models/atm/cam:27904-28589
+/cam1/branches/pbuf_cam5_0_57/models/atm/cam:28591-28969
+/cam1/branches/pbuf_cam5_1_02/models/atm/cam:28972-29993
+/cam1/branches/pbuf_cam5_1_04/models/atm/cam:29993-31319
+/cam1/branches/pbuf_cam5_1_12/models/atm/cam:31613-32949
+/cam1/branches/radcnst_cam5_1_11/models/atm/cam:31048-31507
+/cam1/branches/refp_cam5_0_50/models/atm/cam:27630-28901
+/cam1/branches/santos_misc_changes/models/atm/cam:43676-46110
+/cam1/branches/sc_waccm_b_cesm1_2/models/atm/cam:57672-59706
+/cam1/branches/sc_waccm_b_compsets/models/atm/cam:57995,57999,58010,58026,58282,58286,58385,58388,58391,58463,58662
+/cam1/branches/waccm5_MAM_changes/models/atm/cam:44000-44177
+/cam1/branches/waccm5_cam5_1_xx/models/atm/cam:39319-40102
+/cam1/branches/waccm5_cam5_2_xx/models/atm/cam:41731-42753
+/cam1/branches/waccm5_exp_2/models/atm/cam:42754-43861
+/cam1/branches/waccm_cam5_1_25/models/atm/cam:39271-39318
+/cam1/branches/waccm_se_cam5_1_xx/models/atm/cam:33865-42392
+/cam1/branches/waccmx_solar_min/models/atm/cam:40137-40656
+/cam1/branches/wv_changes_exp/models/atm/cam:36510-42129
+/cam1/trunk_tags/cam5_0_52/models/atm/cam:28049-28053
+/cam1/trunk_tags/cam5_1_02/models/atm/cam:28932-29089
+/cam1/trunk_tags/cam5_1_08/models/atm/cam:30597-30598
+/cam1/trunk_tags/cam5_1_12/models/atm/cam:31524-33299
+/cam1/trunk_tags/cam5_1_13/models/atm/cam:31857-31957,31961-32504
+/cam1/trunk_tags/cam5_1_19/models/atm/cam:33936-34031
+/cam1/trunk_tags/cam5_1_25/models/atm/cam:35740-36032
+/cam1/trunk_tags/cam5_1_31/models/atm/cam:37433-38530
+/cam1/trunk_tags/cam5_1_38/models/atm/cam:40104-40136
+/cam1/trunk_tags/cam5_2_01/models/atm/cam:41335-41730
+/cam1/trunk_tags/cam5_2_03/models/atm/cam:42190-43254
+/cam1/trunk_tags/cam5_2_12/models/atm/cam:44300-44453
+END

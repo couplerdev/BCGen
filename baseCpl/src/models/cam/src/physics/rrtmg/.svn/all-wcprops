@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/rrtmg
+END
+radconstants.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/rrtmg/radconstants.F90
+END
+ebert_curry.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/rrtmg/ebert_curry.F90
+END
+oldcloud.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/rrtmg/oldcloud.F90
+END
+radlw.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/rrtmg/radlw.F90
+END
+radiation.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/rrtmg/radiation.F90
+END
+rrtmg_state.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/rrtmg/rrtmg_state.F90
+END
+slingo.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/rrtmg/slingo.F90
+END
+rad_solar_var.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/rrtmg/rad_solar_var.F90
+END
+cloud_rad_props.F90
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/rrtmg/cloud_rad_props.F90
+END
+radsw.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/rrtmg/radsw.F90
+END

@@ -1,0 +1,299 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system
+END
+CAM_compare.sh
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/CAM_compare.sh
+END
+TCB.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TCB.sh
+END
+tests_pretag_bluefire
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_pretag_bluefire
+END
+tests_pretag_jaguarpf_pgi
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_pretag_jaguarpf_pgi
+END
+TDD.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TDD.sh
+END
+TR8.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TR8.sh
+END
+TCB_ccsm.sh
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TCB_ccsm.sh
+END
+TBL.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TBL.sh
+END
+archive_baseline.sh
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/archive_baseline.sh
+END
+tests_chem_hybrid
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_chem_hybrid
+END
+CAM_decomp.sh
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/CAM_decomp.sh
+END
+TBR.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TBR.sh
+END
+tests_posttag_jaguar_cb
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_posttag_jaguar_cb
+END
+TPF.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TPF.sh
+END
+tests_pretag_titan_pgi
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_pretag_titan_pgi
+END
+TER.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TER.sh
+END
+test_driver.sh
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/test_driver.sh
+END
+tests_carma
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_carma
+END
+tests_posttag_titan_cb
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_posttag_titan_cb
+END
+tests_posttag_yellowstone
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_posttag_yellowstone
+END
+TEQ_ccsm.sh
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TEQ_ccsm.sh
+END
+posttag_cron_bangkok.sh
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/posttag_cron_bangkok.sh
+END
+tests_pretag_yellowstone
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_pretag_yellowstone
+END
+TER_ccsm.sh
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TER_ccsm.sh
+END
+tests_pretag_goldbach_nag
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_pretag_goldbach_nag
+END
+tests_pretag_hopper_pgi
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_pretag_hopper_pgi
+END
+tests_posttag_bluefire
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_posttag_bluefire
+END
+TSM_ccsm.sh
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TSM_ccsm.sh
+END
+tests_posttag_frankfurt
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_posttag_frankfurt
+END
+tests_pretag_goldbach_pgi
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_pretag_goldbach_pgi
+END
+tests_pretag_jaguarpf_pgi_cb
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_pretag_jaguarpf_pgi_cb
+END
+gen_test_table.sh
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/gen_test_table.sh
+END
+posttag_cron_bluevista.sh
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/posttag_cron_bluevista.sh
+END
+tag_email.sh
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tag_email.sh
+END
+tests_posttag_jaguar
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_posttag_jaguar
+END
+TMC.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TMC.sh
+END
+input_tests_master
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/input_tests_master
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/README
+END
+TBL_ccsm.sh
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TBL_ccsm.sh
+END
+CAM_runcmnd.sh
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/CAM_runcmnd.sh
+END
+tests_pretag_edison_intel
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_pretag_edison_intel
+END
+tests_posttag_titan
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_posttag_titan
+END
+TEQ.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TEQ.sh
+END
+TSC.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TSC.sh
+END
+tests_chem_mpi
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_chem_mpi
+END
+TNE_ccsm.sh
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TNE_ccsm.sh
+END
+tests_pretag_titan_pgi_cb
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_pretag_titan_pgi_cb
+END
+tests_pretag_frankfurt_lahey
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/tests_pretag_frankfurt_lahey
+END
+TSM.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/TSM.sh
+END

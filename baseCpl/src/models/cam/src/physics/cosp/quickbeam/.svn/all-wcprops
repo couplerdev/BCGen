@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam
+END
+gases.f90
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/gases.f90
+END
+array_lib.f90
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/array_lib.f90
+END
+format_input.f90
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/format_input.f90
+END
+optics_lib.f90
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/optics_lib.f90
+END
+radar_simulator.f90
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/radar_simulator.f90
+END
+atmos_lib.f90
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/atmos_lib.f90
+END
+dsd.f90
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/dsd.f90
+END
+zeff.f90
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/zeff.f90
+END
+radar_simulator_types.f90
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/radar_simulator_types.f90
+END
+load_hydrometeor_classes.f90
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/load_hydrometeor_classes.f90
+END
+math_lib.f90
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/math_lib.f90
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/README
+END
+mrgrnk.f90
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/cosp/quickbeam/mrgrnk.f90
+END

@@ -1,0 +1,341 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share
+END
+params_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/params_mod.F90
+END
+filter_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/filter_mod.F90
+END
+diffusion_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/diffusion_mod.F90
+END
+spelt_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/spelt_mod.F90
+END
+mass_matrix_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/mass_matrix_mod.F90
+END
+prim_advance_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/prim_advance_mod.F90
+END
+cg_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/cg_mod.F90
+END
+fvm_reconstruction_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/fvm_reconstruction_mod.F90
+END
+reduction_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/reduction_mod.F90
+END
+mesh_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/mesh_mod.F90
+END
+parallel_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/parallel_mod.F90
+END
+schedule_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/schedule_mod.F90
+END
+fvm_filter_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/fvm_filter_mod.F90
+END
+spacecurve_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/spacecurve_mod.F90
+END
+derivative_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/derivative_mod.F90
+END
+prim_si_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/prim_si_mod.F90
+END
+prim_state_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/prim_state_mod.F90
+END
+domain_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/domain_mod.F90
+END
+gridgraph_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/gridgraph_mod.F90
+END
+dimensions_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/dimensions_mod.F90
+END
+metagraph_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/metagraph_mod.F90
+END
+Manager.F90
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/Manager.F90
+END
+cuda_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/cuda_mod.F90
+END
+quadrature_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/quadrature_mod.F90
+END
+cube_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/cube_mod.F90
+END
+coordinate_systems_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/coordinate_systems_mod.F90
+END
+global_norms_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/global_norms_mod.F90
+END
+fvm_control_volume_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/fvm_control_volume_mod.F90
+END
+control_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/control_mod.F90
+END
+physics_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/physics_mod.F90
+END
+prim_driver_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/prim_driver_mod.F90
+END
+interpolate_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/interpolate_mod.F90
+END
+linear_algebra_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/linear_algebra_mod.F90
+END
+fvm_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/fvm_mod.F90
+END
+element_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/element_mod.F90
+END
+viscosity_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/viscosity_mod.F90
+END
+time_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/time_mod.F90
+END
+prim_si_ref_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/prim_si_ref_mod.F90
+END
+hybvcoord_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/hybvcoord_mod.F90
+END
+prim_advection_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/prim_advection_mod.F90
+END
+edge_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/edge_mod.F90
+END
+directions.F90
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/directions.F90
+END
+fvm_line_integrals_flux_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/fvm_line_integrals_flux_mod.F90
+END
+thread_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/thread_mod.F90
+END
+fvm_line_integrals_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/fvm_line_integrals_mod.F90
+END
+ll_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/ll_mod.F90
+END
+dof_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/dof_mod.F90
+END
+physical_constants.F90
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/physical_constants.F90
+END
+kinds.F90
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/kinds.F90
+END
+solver_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/solver_mod.F90
+END
+namelist_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/namelist_mod.F90
+END
+fvm_analytic_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/fvm_analytic_mod.F90
+END
+perfmodel_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/perfmodel_mod.F90
+END
+bndry_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/bndry_mod.F90
+END
+metis_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/metis_mod.F90
+END
+hybrid_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/!svn/ver/4064/release_tags/cesm1_2_x_homme1_3_26a/src/share/hybrid_mod.F90
+END

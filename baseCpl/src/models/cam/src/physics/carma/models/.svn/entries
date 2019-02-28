@@ -1,0 +1,67 @@
+10
+
+dir
+86919
+https://svn-ccsm-models.cgd.ucar.edu/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/physics/carma/models
+https://svn-ccsm-models.cgd.ucar.edu
+
+
+
+2013-04-25T17:45:08.531372Z
+46376
+santos@ucar.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+fe37f545-8307-0410-aea5-b40df96820b5
+
+dust
+dir
+
+pmc
+dir
+
+bc_strat
+dir
+
+test_tracers
+dir
+
+sulfate
+dir
+
+test_swelling
+dir
+
+test_detrain
+dir
+
+cirrus
+dir
+
+test_radiative
+dir
+
+meteor_smoke
+dir
+
+test_growth
+dir
+
+test_passive
+dir
+
+sea_salt
+dir
+

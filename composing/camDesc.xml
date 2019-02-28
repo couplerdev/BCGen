@@ -1,0 +1,20 @@
+<camDescXml>
+	<packageDir>/share/BCGen/develDir/BCGenV1.0/BCGen/baseCpl/src/models/cam</packageDir>
+	<configure>
+		<script>./bld/configure</script>
+		<args>
+			<arg>-dyn fv</arg>
+			<arg>-hgrid 10x15</arg>
+			<arg>-nospmd</arg>
+			<arg>-nosmp</arg>
+			<arg>-test</arg>
+		</args>
+	</configure>
+	<build-namelist>
+		<script></script>
+		<args>
+			<arg></arg>
+			<arg></arg>
+		</args>
+	</build-namelist>
+</camDescXml>

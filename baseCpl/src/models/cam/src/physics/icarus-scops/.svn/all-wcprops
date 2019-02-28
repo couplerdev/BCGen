@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops
+END
+stdout.expected
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/stdout.expected
+END
+license
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/license
+END
+icarus.f90
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/icarus.f90
+END
+scops.f90
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/scops.f90
+END
+congvec.expected
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/congvec.expected
+END
+test_congvec.f77
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/test_congvec.f77
+END
+congvec.inc
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/congvec.inc
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/README
+END
+test_isccp_cloud_types.ksh
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/test_isccp_cloud_types.ksh
+END
+rcsid
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/rcsid
+END
+test_congvec.ksh
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/test_congvec.ksh
+END
+input.data
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/input.data
+END
+input.data.halved
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/input.data.halved
+END
+test_isccp_cloud_types.f77
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/test_isccp_cloud_types.f77
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/Makefile
+END
+isccp_cloud_types.f77
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/!svn/ver/61010/cosp/release_tags/cosp_v1_3_140124/icarus-scops/isccp_cloud_types.f77
+END
