@@ -252,7 +252,7 @@ class Model(CoupleEntity):
     __slots__ = ['__name','__model_init','__model_run','__model_final',\
                  '__manager', '__type', '__attrVects','__gsMaps', '__mappers',\
                  '__gSize', '__ID', '__time','__domain', '__nmlFile', 'fields', \
-                 'myFields','metaFile']
+                 'myFields','metaFile','version','src']
     def __init__(self,name="", gSize=8):
 	super(Model, self).__init__(name=name,_type="Model")
 	self.__model_init = ModelSubroutine() #optional?
@@ -271,6 +271,7 @@ class Model(CoupleEntity):
      	self.__time = None
         self.__nmlFile = ""
         self.metaFile = "None"
+        self.src = ""
 
 ### debug region
     @property

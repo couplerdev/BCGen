@@ -46,14 +46,17 @@ class ConfModel:
         conf = tree.find('configure')
         confScripts = conf.find("script").text
         confScripts = packageDir+"/"+confScripts
-        print confScripts
+        workDir = packageDir+"/"+conf.find("workDir").text
         args = ""
         argsIn = conf.find('args')
         for argIn in argsIn:
             arg = argIn.text
             args+=arg+" "
         cmdConf = confScripts+"   "+args
+        currDir = os.getcwd()
+        os.chdir(workDir)
         os.system(cmdConf)
+        os.chdir(currDir)
         # build namelist
         '''
         bldNml = tree.find("build-namelist")
@@ -89,6 +92,5 @@ class ModelManager:
 if __name__ == "__main__":
     modelName = "cam"
     fileName = modelSetsDict[modelName]
-    print fileName
     model = ConfModel(modelName, fileName)
     model.createModelInst()

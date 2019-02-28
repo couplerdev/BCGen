@@ -14,8 +14,9 @@ import argparse
 from configType import TimeConfig
 from MetaManager import MetaManager
 from instParser import InstParser
-import ModelManager
-
+from ModelManager import ConfModel
+sys.path.append('../ErrorHandle')
+from ErrorHandle import WrongPathError
 
 '''
 codeMapper work as a batch code generator:
@@ -329,6 +330,20 @@ class InstCreator:
 	# and Makefile
         for model in self.proc_cfgs:
             name = model.name
+            srcLocation = model.src
+            # check model dir
+            # first find the location in default path
+            # then check whether srcLocation is a user
+            # defined location
+            codePath = InstCreator.couplerCodePath
+            defaultPath = codePath+"/src/models/"
+            modelDir = ""
+            if os.path.exsits(defaultPath+srcLocation):
+                modelDir=defaultPath+srcLocation
+            elif os.path.exsits(srcLocation):
+                modelDir=srcLocation
+            else:
+                raise WrongPathError("in createMakefile:")
             metaFile = model.metaFile
             if metaFile == "None":
                 modelDir = InstCreator.couplerCodePath+"/src/models/"+name
@@ -339,9 +354,9 @@ class InstCreator:
                 # if find metaFile or find it in the default search path
                 # we need add a default search path
                 modelCreator = ConfModel(name, metaFile)
-                model.createModelInst()
-                modelDir = InstCreator.couplerCodePath+"src/models"+name
-                cmdCpComp = 'cp -r'+modelDir+"/*" + self.metaManager.instPath+"/models/"+name
+                modelCreator.createModelInst()
+                modelDir = InstCreator.couplerCodePath+"/src/models/"+name
+                cmdCpComp = 'cp -r '+modelDir+"/* " + self.metaManager.instPath+"/models/"+name
                 os.system(cmdCpComp)
                 
                  
@@ -431,7 +446,7 @@ class InstCreator:
 
         #copy Makefile to relavent dir
         self.createMakefile()
-        exit(1)
+        #exit(1)
 
 
         #copy src include mod and lib .a .o to instDir
