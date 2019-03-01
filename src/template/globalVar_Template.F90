@@ -98,7 +98,7 @@ use field_def
 
        #for $fld in $fieldVar_cfgs
             #set $val = $fieldVar_cfgs[$fld]
-       character(SHR_KIND_CL) :: $fld 
+       character(SHR_KIND_CXX) :: $fld 
        #end for
 
    end type Meta

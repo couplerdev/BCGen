@@ -25,7 +25,6 @@ foreach $dir (@paths) {  # (could check that directories exist here)
     $dir =~ s!/?\s*$!!;  # remove / and any whitespace at end of directory name
     ($dir) = glob $dir;  # Expand tildes in path names.
 }
-
 # Loop through the directories and add each filename as a hash key.  This
 # automatically eliminates redunancies.
 %src = ();

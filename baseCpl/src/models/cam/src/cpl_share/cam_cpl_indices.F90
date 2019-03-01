@@ -1,7 +1,9 @@
 module cam_cpl_indices
   
-  use seq_flds_mod
+  !use seq_flds_mod
+  use global_var
   use mct_mod
+  use mpi
   use seq_drydep_mod, only: drydep_fields_token, lnd_drydep
   use shr_megan_mod,  only: shr_megan_fields_token, shr_megan_mechcomps_n
 
@@ -88,12 +90,16 @@ contains
 
     type(mct_aVect) :: a2x      ! temporary
     type(mct_aVect) :: x2a      ! temporary
-
+    integer         :: ierr
     ! Determine attribute vector indices
 
     ! create temporary attribute vectors
-    call mct_aVect_init(x2a, rList=seq_flds_x2a_fields, lsize=1)
-    call mct_aVect_init(a2x, rList=seq_flds_a2x_fields, lsize=1)
+    call mct_aVect_init(x2a, rList=trim(metaData%flds_x2atm), lsize=1)
+    call mct_aVect_init(a2x, rList=trim(metaData%flds_atm2x), lsize=1)
+
+    call MPI_Barrier(MPI_COMM_WORLD, ierr)
+    print *,'fields:', len(metaData%flds_x2atm)
+
 
     ! Initialize av indices
     index_x2a_Sx_avsdr      = mct_avect_indexra(x2a,'Sx_avsdr')

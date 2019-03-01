@@ -1,4 +1,4 @@
-module atm_comp_mct
+module comp_atm
 
   use pio              , only: file_desc_t, io_desc_t, var_desc_t, pio_double, pio_def_dim, &
                                pio_put_att, pio_enddef, pio_initdecomp, pio_read_darray, pio_freedecomp, &
@@ -6,10 +6,12 @@ module atm_comp_mct
 	                       pio_noerr, pio_bcast_error, pio_internal_error, pio_seterrorhandling 
   use mct_mod
   use esmf
-  use seq_flds_mod
-  use seq_cdata_mod
-  use seq_infodata_mod
-  use seq_timemgr_mod
+  use global_var       , only: metaData
+  use time_mod
+  !use seq_flds_mod
+  !use seq_cdata_mod
+  !use seq_infodata_mod
+  !use seq_timemgr_mod
 
   use shr_kind_mod     , only: r8 => shr_kind_r8, cl=>shr_kind_cl
   use shr_file_mod     , only: shr_file_getunit, shr_file_freeunit, &
@@ -111,23 +113,24 @@ module atm_comp_mct
 CONTAINS
 !================================================================================
 
-  subroutine atm_init_mct( EClock, cdata_a, x2a_a, a2x_a, NLFilename )
+  subroutine atm_init_mct(compInfo, EClock, x2a_a, a2x_a, ierr )
 
     !-----------------------------------------------------------------------
     !
     ! Arguments
     !
+    type(compMeta), target, intent(inout)       :: compInfo
     type(ESMF_Clock),intent(in)                 :: EClock
-    type(seq_cdata), intent(inout)              :: cdata_a
     type(mct_aVect), intent(inout)              :: x2a_a
-    type(mct_aVect), intent(inout)              :: a2x_a   
-    character(len=*), optional,   intent(IN)    :: NLFilename ! Namelist filename
+    type(mct_aVect), intent(inout)              :: a2x_a  
+    integer,         optional,   intent(inout)  :: ierr
+    !character(len=*)    :: NLFilename ! Namelist filename
     !
     ! Locals
     !
     type(mct_gsMap), pointer   :: gsMap_atm
     type(mct_gGrid), pointer   :: dom_a
-    type(seq_infodata_type),pointer :: infodata
+    !type(seq_infodata_type),pointer :: infodata
     integer :: ATMID
     integer :: mpicom_atm
     integer :: lsize
@@ -174,8 +177,14 @@ CONTAINS
       call memmon_dump_fort('memmon.out','atm_init_mct:start::',lbnum)
     endif                      
 #endif                         
-    call seq_cdata_setptrs(cdata_a, ID=ATMID, mpicom=mpicom_atm, &
-         gsMap=gsMap_atm, dom=dom_a, infodata=infodata)
+    !call seq_cdata_setptrs(cdata_a, ID=ATMID, mpicom=mpicom_atm, &
+    !     gsMap=gsMap_atm, dom=dom_a, infodata=infodata)
+
+    call compMeta_getInfo(compInfo, ID=ATMID, domain=dom_a, comm=mpicom_atm)
+
+    gsmap_atm => compInfo%comp_gsmap
+  
+    print *,'before', first_time
 
     if (first_time) then
        
@@ -214,35 +223,35 @@ CONTAINS
        end if
        ! 
        ! Get data from infodata object
-       !
-       call seq_infodata_GetData( infodata,                                           &
-            case_name=caseid, case_desc=ctitle,                                       &
-            start_type=starttype,                                                     &
-            atm_adiabatic=adiabatic,                                                  &
-            atm_ideal_phys=ideal_phys,                                                &
-            aqua_planet=aqua_planet,                                                  &
-            brnch_retain_casename=brnch_retain_casename,                              &
-            single_column=single_column, scmlat=scmlat, scmlon=scmlon,                &
-            orb_eccen=eccen, orb_mvelpp=mvelpp, orb_lambm0=lambm0, orb_obliqr=obliqr, &
-            lnd_present=lnd_present, ocn_present=ocn_present,                         & 
-            perpetual=perpetual_run, perpetual_ymd=perpetual_ymd)
+       ! MODI???
+       !call seq_infodata_GetData( infodata,                                           &
+       !     case_name=caseid, case_desc=ctitle,                                       &
+       !     start_type=starttype,                                                     &
+       !     atm_adiabatic=adiabatic,                                                  &
+       !     atm_ideal_phys=ideal_phys,                                                &
+       !     aqua_planet=aqua_planet,                                                  &
+       !     brnch_retain_casename=brnch_retain_casename,                              &
+       !     single_column=single_column, scmlat=scmlat, scmlon=scmlon,                &
+       !     orb_eccen=eccen, orb_mvelpp=mvelpp, orb_lambm0=lambm0, orb_obliqr=obliqr, &
+       !     lnd_present=lnd_present, ocn_present=ocn_present,                         & 
+       !     perpetual=perpetual_run, perpetual_ymd=perpetual_ymd)
        !
        ! Get nsrest from startup type methods
-       !
-       if (     trim(starttype) == trim(seq_infodata_start_type_start)) then
+       !MODI
+       !if (     trim(starttype) == trim(seq_infodata_start_type_start)) then
           nsrest = 0
-       else if (trim(starttype) == trim(seq_infodata_start_type_cont) ) then
-          nsrest = 1
-       else if (trim(starttype) == trim(seq_infodata_start_type_brnch)) then
-          nsrest = 3
-       else
-          write(iulog,*) 'atm_comp_mct: ERROR: unknown starttype'
-          call shr_sys_abort()
-       end if
+       !else if (trim(starttype) == trim(seq_infodata_start_type_cont) ) then
+       !   nsrest = 1
+       !else if (trim(starttype) == trim(seq_infodata_start_type_brnch)) then
+       !   nsrest = 3
+       !else
+       !   write(iulog,*) 'atm_comp_mct: ERROR: unknown starttype'
+       !   call shr_sys_abort()
+       !end if
        !
        ! Initialize time manager.
-       !
-       call seq_timemgr_EClockGetData(EClock, &
+       ! MODI
+       call time_clockGetInfo(EClock, &
                                       start_ymd=start_ymd, start_tod=start_tod, &
                                       ref_ymd=ref_ymd, ref_tod=ref_tod,         &
                                       stop_ymd=stop_ymd, stop_tod=stop_tod,     &
@@ -296,17 +305,17 @@ CONTAINS
        !
        ! Initialize MCT attribute vectors
        !
-       call mct_aVect_init(a2x_a, rList=seq_flds_a2x_fields, lsize=lsize)
+       call mct_aVect_init(a2x_a, rList=metaData%flds_atm2x, lsize=lsize)
        call mct_aVect_zero(a2x_a)
        
-       call mct_aVect_init(x2a_a, rList=seq_flds_x2a_fields, lsize=lsize) 
+       call mct_aVect_init(x2a_a, rList=metaData%flds_x2atm, lsize=lsize) 
        call mct_aVect_zero(x2a_a)
        
-       call mct_aVect_init(a2x_a_SNAP, rList=a2x_avg_flds, lsize=lsize)
-       call mct_aVect_zero(a2x_a_SNAP)
+       !call mct_aVect_init(a2x_a_SNAP, rList=a2x_avg_flds, lsize=lsize)
+       !call mct_aVect_zero(a2x_a_SNAP)MODI
        
-       call mct_aVect_init(a2x_a_SUM , rList=a2x_avg_flds, lsize=lsize)
-       call mct_aVect_zero(a2x_a_SUM )
+       !call mct_aVect_init(a2x_a_SUM , rList=a2x_avg_flds, lsize=lsize)
+       !call mct_aVect_zero(a2x_a_SUM )
        !
        ! Initialize averaging counter
        !
@@ -318,22 +327,22 @@ CONTAINS
        !
        ! Set flag to specify that an extra albedo calculation is to be done (i.e. specify active)
        !
-       call seq_infodata_PutData(infodata, atm_prognostic=.true.)
+       !call seq_infodata_PutData(infodata, atm_prognostic=.true.)  ! MODI
        call get_horiz_grid_dim_d(hdim1_d, hdim2_d)
-       call seq_infodata_PutData(infodata, atm_nx=hdim1_d, atm_ny=hdim2_d)
+       !call seq_infodata_PutData(infodata, atm_nx=hdim1_d, atm_ny=hdim2_d)  ! MODI
 
        ! Set flag to indicate that CAM will provide carbon and dust deposition fluxes.
        ! This is now hardcoded to .true. since the ability of CICE to read these
        ! fluxes from a file has been removed.
-       call seq_infodata_PutData(infodata, atm_aero=.true.)
+       !call seq_infodata_PutData(infodata, atm_aero=.true.)   ! MODI
 
        !
        ! Set time step of radiation computation as the current calday
        ! This will only be used on the first timestep of an initial run
-       !
+       !  MODI
        if (nsrest == 0) then
           nextsw_cday = get_curr_calday()
-          call seq_infodata_PutData( infodata, nextsw_cday=nextsw_cday )
+          !call seq_infodata_PutData( infodata, nextsw_cday=nextsw_cday )
        end if
        
        ! End redirection of share output to cam log
@@ -358,13 +367,15 @@ CONTAINS
        call shr_file_getLogLevel(shrloglev)
        call shr_file_setLogUnit (iulog)
 
-       call seq_timemgr_EClockGetData(EClock,curr_ymd=CurrentYMD, StepNo=StepNo, dtime=DTime_Sync )
+       ! MODI
+       call time_clockGetInfo(EClock, curr_ymd=CurrentYMD, StepNo=StepNo, dtime=DTime_Sync)
+       !call seq_timemgr_EClockGetData(EClock,curr_ymd=CurrentYMD, StepNo=StepNo, dtime=DTime_Sync )
        if (StepNo == 0) then
           call atm_import_mct( x2a_a, cam_in )
           call cam_run1 ( cam_in, cam_out ) 
           call atm_export_mct( cam_out, a2x_a )
        else
-          call atm_read_srfrest_mct( EClock, cdata_a, x2a_a, a2x_a )
+          call atm_read_srfrest_mct( EClock,compInfo, x2a_a, a2x_a )
           call atm_import_mct( x2a_a, cam_in )
           call cam_run1 ( cam_in, cam_out ) 
        end if
@@ -374,7 +385,9 @@ CONTAINS
 ! tcx was
 !       nextsw_cday = radiation_nextsw_cday() 
 
-       call seq_timemgr_EClockGetData(Eclock,dtime=atm_cpl_dt)
+       ! MODI
+       call time_clockGetInfo(EClock, dtime=atm_cpl_dt)
+       !call seq_timemgr_EClockGetData(Eclock,dtime=atm_cpl_dt)
        dtime = get_step_size()          
        nstep = get_nstep()
        if (nstep < 1 .or. dtime < atm_cpl_dt) then
@@ -386,7 +399,8 @@ CONTAINS
        else
           call shr_sys_abort('dtime must be less than or equal to atm_cpl_dt')
        end if
-       call seq_infodata_PutData( infodata, nextsw_cday=nextsw_cday ) 
+       ! MODI
+       !call seq_infodata_PutData( infodata, nextsw_cday=nextsw_cday ) 
 
        ! End redirection of share output to cam log
        
@@ -409,7 +423,7 @@ CONTAINS
 
 !================================================================================
 
-  subroutine atm_run_mct( EClock, cdata_a, x2a_a, a2x_a)
+  subroutine atm_run_mct(compInfo, EClock, x2a_a, a2x_a, ierr)
 
     !-----------------------------------------------------------------------
     !
@@ -427,14 +441,16 @@ CONTAINS
     ! 
     ! Arguments
     !
+    type(compMeta),              intent(inout) :: compInfo
     type(ESMF_Clock)            ,intent(in)    :: EClock
-    type(seq_cdata)             ,intent(inout) :: cdata_a
+    !type(seq_cdata)             ,intent(inout) :: cdata_a
     type(mct_aVect)             ,intent(inout) :: x2a_a
     type(mct_aVect)             ,intent(inout) :: a2x_a
+    integer,   optional,         intent(inout) :: ierr
     !
     ! Local variables
     !
-    type(seq_infodata_type),pointer :: infodata
+    !type(seq_infodata_type),pointer :: infodata
     integer :: lsize           ! size of attribute vector
     integer :: StepNo          ! time step			 
     integer :: DTime_Sync      ! integer timestep size
@@ -481,16 +497,20 @@ CONTAINS
     
     ! Note that sync clock time should match cam time at end of time step/loop not beginning
     
-    call seq_cdata_setptrs(cdata_a, infodata=infodata)
-    call seq_timemgr_EClockGetData(EClock,curr_ymd=ymd_sync,curr_tod=tod_sync, &
-       curr_yr=yr_sync,curr_mon=mon_sync,curr_day=day_sync)
+    !call seq_cdata_setptrs(cdata_a, infodata=infodata)
+    call time_clockGetInfo(EClock, curr_ymd=ymd_sync, curr_tod=tod_sync, &
+        curr_yr=yr_sync, curr_mon=mon_sync, curr_day=day_sync)
+    !call seq_timemgr_EClockGetData(EClock,curr_ymd=ymd_sync,curr_tod=tod_sync, &
+    !   curr_yr=yr_sync,curr_mon=mon_sync,curr_day=day_sync)
 
     !load orbital parameters
-    call seq_infodata_GetData( infodata,                                           &
-       orb_eccen=eccen, orb_mvelpp=mvelpp, orb_lambm0=lambm0, orb_obliqr=obliqr)
+    !call seq_infodata_GetData( infodata,                                           &
+    !   orb_eccen=eccen, orb_mvelpp=mvelpp, orb_lambm0=lambm0, orb_obliqr=obliqr)
 
-    nlend_sync = seq_timemgr_StopAlarmIsOn(EClock)
-    rstwr_sync = seq_timemgr_RestartAlarmIsOn(EClock)
+    nlend_sync = time_alarmIsOn(EClock, "alarm_stop_name")
+    !nlend_sync = seq_timemgr_StopAlarmIsOn(EClock)
+    rstwr_sync = time_alarmIsOn(EClock, "alarm_restart_name")
+    !rstwr_sync = seq_timemgr_RestartAlarmIsOn(EClock)
 
     ! Map input from mct to cam data structure
 
@@ -517,7 +537,8 @@ CONTAINS
        if( offline_driver_dorun ) then
           dosend = offline_driver_end_of_data()
        else
-          dosend = (seq_timemgr_EClockDateInSync( EClock, ymd, tod))
+          dosend  = time_clockDateInSync(EClock, ymd, tod)
+          !dosend = (seq_timemgr_EClockDateInSync( EClock, ymd, tod))
        endif
        
        ! Determine if time to write cam restart and stop
@@ -594,7 +615,8 @@ CONTAINS
     ! Get time of next radiation calculation - albedos will need to be 
     ! calculated by each surface model at this time
     
-    call seq_timemgr_EClockGetData(Eclock,dtime=atm_cpl_dt)
+    call time_clockGetInfo(EClock, dtime=atm_cpl_dt)
+    !call seq_timemgr_EClockGetData(Eclock,dtime=atm_cpl_dt)
     dtime = get_step_size()          
     if (dtime < atm_cpl_dt) then
        nextsw_cday = radiation_nextsw_cday() 
@@ -605,12 +627,12 @@ CONTAINS
     else
        call shr_sys_abort('dtime must be less than or equal to atm_cpl_dt')
     end if
-    call seq_infodata_PutData( infodata, nextsw_cday=nextsw_cday ) 
+    !call seq_infodata_PutData( infodata, nextsw_cday=nextsw_cday ) 
     
     ! Write merged surface data restart file if appropriate
     
     if (rstwr_sync) then
-       call atm_write_srfrest_mct( cdata_a, x2a_a, a2x_a, &
+       call atm_write_srfrest_mct(compInfo,  x2a_a, a2x_a, &
             yr_spec=yr_sync, mon_spec=mon_sync, day_spec=day_sync, sec_spec=tod_sync)
     end if
     
@@ -620,8 +642,10 @@ CONTAINS
     call get_curr_date( yr, mon, day, tod, offset=-dtime )
     ymd = yr*10000 + mon*100 + day
     tod = tod
-    if ((.not.seq_timemgr_EClockDateInSync( EClock, ymd, tod )) .and. (.not.offline_driver_dorun))then
-       call seq_timemgr_EClockGetData(EClock, curr_ymd=ymd_sync, curr_tod=tod_sync )
+    if((.not. time_clockDateInSync(EClock, ymd, tod)) .and. (.not. offline_driver_dorun))then
+    !if ((.not.seq_timemgr_EClockDateInSync( EClock, ymd, tod )) .and. (.not.offline_driver_dorun))then
+       call time_clockGetInfo(EClock, curr_ymd=ymd_sync, curr_tod=tod_sync)
+       !call seq_timemgr_EClockGetData(EClock, curr_ymd=ymd_sync, curr_tod=tod_sync )
        write(iulog,*)' cam ymd=',ymd     ,'  cam tod= ',tod
        write(iulog,*)'sync ymd=',ymd_sync,' sync tod= ',tod_sync
        call shr_sys_abort( subname//': CAM clock is not in sync with master Sync Clock' )
@@ -644,15 +668,22 @@ CONTAINS
 
 !================================================================================
 
-  subroutine atm_final_mct( EClock, cdata_a, x2a_a, a2x_a)
-    type(ESMF_Clock)            ,intent(in)    :: EClock
-    type(seq_cdata)             ,intent(inout) :: cdata_a
-    type(mct_aVect)             ,intent(inout) :: x2a_a
-    type(mct_aVect)             ,intent(inout) :: a2x_a
+subroutine atm_final_mct()
+    
+    call cam_final(cam_out, cam_in)
 
-    call cam_final( cam_out, cam_in )
+end subroutine atm_final_mct
 
-  end subroutine atm_final_mct
+  !subroutine atm_final_mct(compInfo, EClock, x2a_a, a2x_a)
+  !  type(compMeta),              intent(in)    :: compInfo
+  !  type(ESMF_Clock)            ,intent(in)    :: EClock
+  !  !type(seq_cdata)             ,intent(inout) :: cdata_a
+  !  type(mct_aVect)             ,intent(inout) :: x2a_a
+  !  type(mct_aVect)             ,intent(inout) :: a2x_a
+
+  !  call cam_final( cam_out, cam_in )
+
+  !end subroutine atm_final_mct
 
 !================================================================================
 
@@ -1022,7 +1053,7 @@ CONTAINS
     !
     ! Initialize mct atm domain
     !
-    call mct_gGrid_init( GGrid=dom_a, CoordChars=trim(seq_flds_dom_coord), OtherChars=trim(seq_flds_dom_other), lsize=lsize )
+    call mct_gGrid_init( GGrid=dom_a, CoordChars=trim(metaData%flds_dom_coord), OtherChars=trim(metaData%flds_dom), lsize=lsize )
     !
     ! Allocate memory
     !
@@ -1096,14 +1127,15 @@ CONTAINS
 
 !===========================================================================================
 !
-  subroutine atm_read_srfrest_mct( EClock, cdata_a, x2a_a, a2x_a)
+  subroutine atm_read_srfrest_mct( EClock,compInfo, x2a_a, a2x_a)
     use cam_pio_utils
     !-----------------------------------------------------------------------
     !
     ! Arguments
     !
     type(ESMF_Clock),intent(in)    :: EClock
-    type(seq_cdata), intent(inout) :: cdata_a
+    type(compMeta),  intent(in)    :: compInfo
+    !type(seq_cdata), intent(inout) :: cdata_a
     type(mct_aVect), intent(inout) :: x2a_a
     type(mct_aVect), intent(inout) :: a2x_a
     ! 
@@ -1130,17 +1162,18 @@ CONTAINS
     type(mct_string) :: mstring     ! mct char type
 
 
-
-    call seq_timemgr_EClockGetData( EClock, curr_yr=yr_spec,curr_mon=mon_spec, &
-         curr_day=day_spec, curr_tod=sec_spec ) 
+    call time_clockGetInfo(EClock, curr_yr=yr_spec, curr_mon=mon_spec, &
+         curr_day=day_spec, curr_tod=sec_spec)
+    !call seq_timemgr_EClockGetData( EClock, curr_yr=yr_spec,curr_mon=mon_spec, &
+    !     curr_day=day_spec, curr_tod=sec_spec ) 
     fname_srf_cam = interpret_filename_spec( rsfilename_spec_cam, case=get_restcase(), &
          yr_spec=yr_spec, mon_spec=mon_spec, day_spec=day_spec, sec_spec= sec_spec )
     pname_srf_cam = trim(get_restartdir() )//fname_srf_cam
     call getfil(pname_srf_cam, fname_srf_cam)
     
     call cam_pio_openfile(File, fname_srf_cam, 0)
-    call mct_gsmap_OrderedPoints(cdata_a%gsmap, iam, Dof)
-    lnx = mct_gsmap_gsize(cdata_a%gsmap)
+    call mct_gsmap_OrderedPoints(compInfo%comp_gsmap, iam, Dof)
+    lnx = mct_gsmap_gsize(compInfo%comp_gsmap)
     call pio_initdecomp(pio_subsystem, pio_double, (/lnx/), dof, iodesc)
     allocate(tmp(size(dof)))
     deallocate(dof)
@@ -1187,14 +1220,15 @@ CONTAINS
 !
 !===========================================================================================
 !
-  subroutine atm_write_srfrest_mct( cdata_a, x2a_a, a2x_a, & 
+  subroutine atm_write_srfrest_mct(compInfo,  x2a_a, a2x_a, & 
        yr_spec, mon_spec, day_spec, sec_spec)
     use cam_pio_utils
     !-----------------------------------------------------------------------
     !
     ! Arguments
     !
-    type(seq_cdata), intent(in) :: cdata_a
+    !type(seq_cdata), intent(in) :: cdata_a
+    type(compMeta),  intent(in) :: compInfo
     type(mct_aVect), intent(in) :: x2a_a
     type(mct_aVect), intent(in) :: a2x_a
     integer        , intent(in) :: yr_spec         ! Simulation year
@@ -1224,8 +1258,8 @@ CONTAINS
          yr_spec=yr_spec, mon_spec=mon_spec, day_spec=day_spec, sec_spec= sec_spec )
     call cam_pio_createfile(File, fname_srf_cam, 0)
 
-    call mct_gsmap_OrderedPoints(cdata_a%gsmap, iam, Dof)
-    lnx = mct_gsmap_gsize(cdata_a%gsmap)
+    call mct_gsmap_OrderedPoints(compInfo%comp_gsmap, iam, Dof)
+    lnx = mct_gsmap_gsize(compInfo%comp_gsmap)
     call pio_initdecomp(pio_subsystem, pio_double, (/lnx/), dof, iodesc)
 
     deallocate(dof)
@@ -1275,4 +1309,4 @@ CONTAINS
 
 !================================================================================
 
-end module atm_comp_mct
+end module comp_atm

@@ -1,6 +1,6 @@
 module cam_instance
 
-use seq_comm_mct, only: seq_comm_suffix, seq_comm_inst, seq_comm_name
+!use seq_comm_mct, only: seq_comm_suffix, seq_comm_inst, seq_comm_name
 
 implicit none
 private
@@ -22,9 +22,9 @@ subroutine cam_instance_init(in_atm_id)
    integer, intent(in) :: in_atm_id
 
    atm_id      = in_atm_id
-   inst_name   = seq_comm_name(atm_id)
-   inst_index  = seq_comm_inst(atm_id)
-   inst_suffix = seq_comm_suffix(atm_id)
+   inst_name   = 'unkown'!seq_comm_name(atm_id) MODI
+   inst_index  = 0   !seq_comm_inst(atm_id) MODI
+   inst_suffix = ' ' !seq_comm_suffix(atm_id) MODI
 
 end subroutine cam_instance_init
 

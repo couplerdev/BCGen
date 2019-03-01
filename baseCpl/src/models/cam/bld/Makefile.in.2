@@ -1,7 +1,9 @@
 
+IGNORE_LINE_TRUNCAT := -ffree-line-length-none
+
 include ../../Makefile.conf
 
-INCLFLAG :=
+INCLFLAG := -I${INCLDIR} -I${ESMF_MOD}
 
 null  :=
 space := $(null) $(null)
@@ -23,8 +25,10 @@ LIB_COMP := libatm.a
 OBJS := $(addsuffix .o, $(basename $(SRC)))
 
 
-OBJS: $(SRC)
-	$(FC) -c $<
+LIB_COMP: $(OBJS)
+	$(AR) csr $(LIB_COMP) $(OBJS)
+	mv $(LIB_COMP) ../../../lib
+	mv comp_atm.mod ../../../include
 
 $(CURDIR)/Depends: $(CURDIR)/Srcfiles  $(CURDIR)/Filepath
 	$(ROOTDIR)/models/cam/bld/mkDepends Filepath Srcfiles > $@
@@ -39,16 +43,16 @@ $(CURDIR)/Srcfiles: $(CURDIR)/Filepath
 .SUFFIXES: .F .F90 .f90 .c .s .o
 
 .F.o:
-	$(FC) -c $(INCLFLAG) $<
+	$(FC) -c $(INCLFLAG) $(CCSM_CFLAGS) $(CPPDEFS) $(IGNORE_LINE_TRUNCAT) $<
 
 .F90.o:
-	$(FC) -c $(INCLFLAG) $<
+	$(FC) -c $(INCLFLAG) $(CCSM_CFLAGS) $(CPPDEFS) $(IGNORE_LINE_TRUNCAT) $<
 
 .f90.o: 
-	$(FC) -c $(INCLFLAG) $<
+	$(FC) -c $(INCLFLAG) $(CCSM_CFLAGS) $(CPPDEFS) $(IGNORE_LINE_TRUNCAT) $<
 
 .c.o:
-	$(FC) -c $(INCLFLAG) $<
+	$(FC) -c $(INCLFLAG) $(CCSM_CFLAGS) $(CPPDEFS) $(IGNORE_LINE_TRUNCAT) $<
 
 .s.o:
 	$(AS) -m $<

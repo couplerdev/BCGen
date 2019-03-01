@@ -1372,7 +1372,7 @@ if (($chem_pkg ne 'none') || ($prog_species)) {
     } 
 
 }
-print "error not found yet";
+print "error not found yet  $chem_pkg";
 my $carma_nadv = 0;
 my $carma_cppdefs = '';
 
@@ -2458,7 +2458,7 @@ if (($ccsm_seq)) {
 
 }elsif(($noc_bld)){
     print "write noc_makefile\n";
-    #write_cppdefs();
+    #write_cppdefs("$cam_bld/$cpp_filename", $make_cppdefs);
     #if ($print) { print "creating $cfgdir/$cppdefs";}
     write_noc_makefile("$cfgdir/Makefile.in.2","$cfgdir/Makefile", $cfg_ref, $make_cppdefs);
     if  ($print) { print "create $cfgdir/Makefile";}  
@@ -2847,7 +2847,7 @@ sub write_noc_filepath
         print $fh "$chem_src_dir\n";
     }
     if($chem =~ /_mam/){
-        print $fh "$srcdir/cam/src/chemistry/model_aero\n";
+        print $fh "$srcdir/cam/src/chemistry/modal_aero\n";
     }
     print $fh "$srcdir/cam/src/chemistry/mozart\n";
     if($waccm_phys){
@@ -2899,7 +2899,7 @@ sub write_noc_filepath
     
         print $fh "$srcdir/utils/timing\n";
         print $fh "$srcdir/utils/pio\n";
-
+        print $fh "$srcdir/cam/src/cpl7_deps\n";
         #unless($esmf_libdir){
         #    print $fh "$srcdir/utils/esmf_wrf_timemgr\n";
         #}
@@ -2922,7 +2922,6 @@ sub write_cppdefs
     my  $fh = new IO::File;
 
     $fh->open(">$file") or die "** can't open cpp defs file: $file\n";
-
     print $fh "$make_cppdefs\n";
 
     $fh->close;
@@ -3046,10 +3045,14 @@ sub write_noc_makefile
         my $target_os    = $cfg_ref->get('target_os');
         my $cam_root     = $cfg_ref->get('cam_root');
         my $nc_inc       = $cfg_ref->get('nc_inc');
+        my $pnc_inc      = $cfg_ref->get('pnc_inc');
         my $mpi_inc      = $cfg_ref->get('mpi_inc');
         my $fc_type      = $cfg_ref->get('fc_type');
         my $fc           = $cfg_ref->get('fc');
         my $cc           = $cfg_ref->get('cc');
+        my $cflags       = $cfg_ref->get('cflags');
+        my $fflags       = $cfg_ref->get('fflags');
+	my $spmd         = $cfg_ref->get('spmd')? 'TRUE' : 'FALSE';
 
 
         # need more 
@@ -3077,9 +3080,13 @@ UNAMES        :=  $uname_map{$target_os}
 ROOTDIR       :=  $cam_root
 INC_NETCDF    :=  $nc_inc
 MOD_NETCDF    :=  $nc_mod
+USER_CFLAGS   :=  $cflags
+USER_FFLAGS   :=  $fflags
 INC_PNETCDF   :=  $pnc_inc
 INC_MPI       :=  $mpi_inc
-
+SPMD          :=  $spmd
+CCSM_CFLAGS   :=  $make_cppdefs
+CPPDEFS       := -DSPMD -fcray-pointer
 EOF
 	$fh_in->open("<$file_in") or die "** can't open file: $file_in\n";
         while(<$fh_in>){
@@ -3090,7 +3097,20 @@ EOF
         $fh_in->close;
 }
 
+sub write_noc_libdeps
+{
+    my ($file_out) = @_;
+    my $fh_out = new IO::File;
 
+    $fh_out->open(">$file_out") or die "** can't open file: $file_out\n";
+
+    print $fh_out <<"EOF";
+
+EOF
+
+    $fh_out->close;
+
+}
 #-------------------------------------------------------------------------------
 
 sub write_cosp_makefile
