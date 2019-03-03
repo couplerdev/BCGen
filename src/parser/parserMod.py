@@ -37,14 +37,14 @@ class Parser():
            
         self.__sMapper = {}
         self.__deployDistribution = {} # format {id: [first, last, stride]}
-        self.__setupModels = []
+        self.__setupModels = {}
         self.__enable_setup = setup
         if setup:
             setup = Setup(fileName=setupFile)
             setup.setupParse()
             setup.genXml()
             couplerFile = setup.couplerFile
-            self.__setupModels = setup.model
+            self.__setupModels = setup.model 
         self.__couplerFile = couplerFile
         self.__fieldFile = fieldFile
         self.__modelFile = modelFile
@@ -114,21 +114,30 @@ class Parser():
         return root
 
     def modelsParse(self):
+    # bug may happend when modelFile not include relative setup file
         root = self.load(self.__modelFile)
         modelParser = ModelParser(self.__NameManager, self.__seqRun)
         index = 1
+        modelCount = 0
         for child in root:
             if self.__enable_setup:
                 modelName = child.find('name').text
+                modelVersion = child.find('version').text
                 if modelName not in self.__setupModels:
+                    continue
+                elif self.__setupModels[modelName] != modelVersion:
                     continue
             modelParser.setRoot(child)
             model = modelParser.model
             model.ID = index
             index = index + 1
+            modelCount = modelCount + 1
             self.__models[model.name] = model
             self.__NameManager.register.modelDict[model.name] = model
-       
+        if self.__enable_setup and modelCount != len(self.__setupModels):
+            print modelCount
+            raise ComposingError("invalid "+self.__modelFile+\
+                    " for some model(s) not supported in this file when setup.xml set them")
       
     def deployParse(self):
         root = self.load(self.__deployFile)
@@ -504,6 +513,16 @@ class ModelParser:
         self.__name = name
         self.__model = Model(name=name)
         self.__model.BindToManager(self.__NameManager)
+   
+        # set metaFile
+        metaFile = self.__root.find("metaFile").text
+        self.__model.metaFile = metaFile
+
+        version = self.__root.find("version").text
+        self.__model.version = version
+  
+        src = self.__root.find("src").text
+        self.__model.src = src
 
         #self.__model.interval = root.find('interval').text
         root = root.find('attrVect')

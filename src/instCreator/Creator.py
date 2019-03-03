@@ -14,6 +14,9 @@ import argparse
 from configType import TimeConfig
 from MetaManager import MetaManager
 from instParser import InstParser
+from ModelManager import ConfModel
+sys.path.append('../ErrorHandle')
+from ErrorHandle import WrongPathError
 
 '''
 codeMapper work as a batch code generator:
@@ -321,12 +324,42 @@ class InstCreator:
         cmdMv = 'cp '+InstCreator.couplerCodePath+'/lib/libbcpl.a '+self.metaManager.instPath+'/lib'
         os.system(cmdMv)
         os.system(cmdMvObj)
+
         # mv required comp togather with its Makefile (may be modified) to models
+        # model create but for component like CAM we should build its' namelist
+	# and Makefile
         for model in self.proc_cfgs:
             name = model.name
-            modelDir = InstCreator.couplerCodePath+"/src/models/"+name
-            cmdCpComp = 'cp '+modelDir+"/* "+self.metaManager.instPath+"/models/"+name  
-            os.system(cmdCpComp)
+            srcLocation = model.src
+            # check model dir
+            # first find the location in default path
+            # then check whether srcLocation is a user
+            # defined location
+            codePath = InstCreator.couplerCodePath
+            defaultPath = codePath+"/src/models/"
+            modelDir = ""
+            if os.path.exsits(defaultPath+srcLocation):
+                modelDir=defaultPath+srcLocation
+            elif os.path.exsits(srcLocation):
+                modelDir=srcLocation
+            else:
+                raise WrongPathError("in createMakefile:")
+            metaFile = model.metaFile
+            if metaFile == "None":
+                modelDir = InstCreator.couplerCodePath+"/src/models/"+name
+                cmdCpComp = 'cp '+modelDir+"/* "+self.metaManager.instPath+"/models/"+name  
+                os.system(cmdCpComp)
+            else:
+                # perhaps we need some code to check metaFile position
+                # if find metaFile or find it in the default search path
+                # we need add a default search path
+                modelCreator = ConfModel(name, metaFile)
+                modelCreator.createModelInst()
+                modelDir = InstCreator.couplerCodePath+"/src/models/"+name
+                cmdCpComp = 'cp -r '+modelDir+"/* " + self.metaManager.instPath+"/models/"+name
+                os.system(cmdCpComp)
+                
+                 
         # mv Cpl comp to models 
         cplDir = InstCreator.couplerCodePath+"/src/models/cpl"
         cmdCpCpl = 'cp '+cplDir+"/* "+self.metaManager.instPath+"/models/cpl"
@@ -413,6 +446,8 @@ class InstCreator:
 
         #copy Makefile to relavent dir
         self.createMakefile()
+        #exit(1)
+
 
         #copy src include mod and lib .a .o to instDir
         BCGenPath = "../../baseCpl/"

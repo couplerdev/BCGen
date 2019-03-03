@@ -14,7 +14,6 @@ import sys
 sys.path.append('../ir')
 from Datatype import *
 
-
 class Setup:
     __slots__=["__root","__isParsed","__couple"]
     def __init__(self, fileName='../../composing/setup.xml'):
@@ -23,12 +22,12 @@ class Setup:
         self.__isParsed = False
         self.__couple = []
         self.__coupleFile = './coupler.xml'
-        self.__model = []
+        self.__model = {}
 
     def setupParse(self):
         for child in self.__root:
             modelName = child.find('name').text
-            self.__model.append(modelName)
+            self.__model[modelName] = child.find('version').text
             if child.find('input')!=None and child.find('input').text !=None:
                 attrVect = {}
                 attrVect['model'] = modelName

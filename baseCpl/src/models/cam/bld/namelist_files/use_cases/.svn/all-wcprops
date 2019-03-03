@@ -1,0 +1,437 @@
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases
+END
+sd_waccm_geos5.xml
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/sd_waccm_geos5.xml
+END
+waccm_sc_2005-2100_cam4_rcp45.xml
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_sc_2005-2100_cam4_rcp45.xml
+END
+sd_waccm_tslt_geos5.xml
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/sd_waccm_tslt_geos5.xml
+END
+2005_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2005_cam4.xml
+END
+waccm_sc_1955-2005_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_sc_1955-2005_cam4.xml
+END
+waccm_sc_2005-2100_cam4_rcp85.xml
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_sc_2005-2100_cam4_rcp85.xml
+END
+aquaplanet_cam3.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/aquaplanet_cam3.xml
+END
+aquaplanet_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/aquaplanet_cam4.xml
+END
+aquaplanet_cam5.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/aquaplanet_cam5.xml
+END
+scam_arm95.xml
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/scam_arm95.xml
+END
+scam_arm97.xml
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/scam_arm97.xml
+END
+2005-2100_cam4_rcp85v2.xml
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2005-2100_cam4_rcp85v2.xml
+END
+1850-PD_cam5.xml
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/1850-PD_cam5.xml
+END
+2000_cam4_trop_strat_soa.xml
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2000_cam4_trop_strat_soa.xml
+END
+scam_gateIII.xml
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/scam_gateIII.xml
+END
+scam_twp06.xml
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/scam_twp06.xml
+END
+2000_cam5_trop_strat_mam3.xml
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2000_cam5_trop_strat_mam3.xml
+END
+waccm_sc_2000_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_sc_2000_cam4.xml
+END
+1850-2005_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/1850-2005_cam4.xml
+END
+2000_cam4_trop_chem.xml
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2000_cam4_trop_chem.xml
+END
+2006-2100_cam5_rcp60.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2006-2100_cam5_rcp60.xml
+END
+1850-2005_cam5.xml
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/1850-2005_cam5.xml
+END
+2005-2100_cam4_rcp45.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2005-2100_cam4_rcp45.xml
+END
+2006-2100_cam5_rcp26.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2006-2100_cam5_rcp26.xml
+END
+2000_cam5_trop_strat_mam7.xml
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2000_cam5_trop_strat_mam7.xml
+END
+2005-2100_cam4_rcp85.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2005-2100_cam4_rcp85.xml
+END
+1850-2005_cam4_bgc.xml
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/1850-2005_cam4_bgc.xml
+END
+waccm_2005-2100_cam4_rcp26.xml
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_2005-2100_cam4_rcp26.xml
+END
+1850_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/1850_cam4.xml
+END
+2000_cam4_super_fast_llnl.xml
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2000_cam4_super_fast_llnl.xml
+END
+cam4_trop_strat_chem.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/cam4_trop_strat_chem.xml
+END
+2005-2100_cam4_rcp45_bgc.xml
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2005-2100_cam4_rcp45_bgc.xml
+END
+soa_chem_megan_emis.xml
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/soa_chem_megan_emis.xml
+END
+cam5_trop_strat_chem.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/cam5_trop_strat_chem.xml
+END
+1850_cam5.xml
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/1850_cam5.xml
+END
+waccm_1955-2005_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_1955-2005_cam4.xml
+END
+2005-2100_cam4_rcp85_bgc.xml
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2005-2100_cam4_rcp85_bgc.xml
+END
+waccm_1974-2005_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_1974-2005_cam4.xml
+END
+waccm_carma_bc_2013_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_carma_bc_2013_cam4.xml
+END
+waccm_1850_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_1850_cam4.xml
+END
+waccm_1850_cam5.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_1850_cam5.xml
+END
+waccmx_1996_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccmx_1996_cam4.xml
+END
+1850_cam4_2xco2.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/1850_cam4_2xco2.xml
+END
+sd_waccm_sulfur.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/sd_waccm_sulfur.xml
+END
+cam3.xml
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/cam3.xml
+END
+1850_cam4_trop_bam.xml
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/1850_cam4_trop_bam.xml
+END
+cam4_bam_radpsv_geos5.xml
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/cam4_bam_radpsv_geos5.xml
+END
+waccm_sc_2005-2100_cam4_rcp26.xml
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_sc_2005-2100_cam4_rcp26.xml
+END
+waccmx_2000_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccmx_2000_cam4.xml
+END
+2000_cam5_trop_moz_mam3.xml
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2000_cam5_trop_moz_mam3.xml
+END
+sd_cam4_trop_strat_soa.xml
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/sd_cam4_trop_strat_soa.xml
+END
+1850_cam5_pm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/1850_cam5_pm.xml
+END
+waccm_refb1.xml
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_refb1.xml
+END
+scam_togaII.xml
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/scam_togaII.xml
+END
+scam_sparticus.xml
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/scam_sparticus.xml
+END
+2005-2100_cam4_rcp60.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2005-2100_cam4_rcp60.xml
+END
+2005-2100_cam4_rcp26.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2005-2100_cam4_rcp26.xml
+END
+scam_mpace.xml
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/scam_mpace.xml
+END
+2006-2100_cam5_rcp45.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2006-2100_cam5_rcp45.xml
+END
+2006-2100_cam5_rcp85.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/2006-2100_cam5_rcp85.xml
+END
+waccm_2000_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_2000_cam4.xml
+END
+waccm_1850-2005_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_1850-2005_cam4.xml
+END
+waccm_2000_cam5.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_2000_cam5.xml
+END
+mozart_megan_emis.xml
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/mozart_megan_emis.xml
+END
+waccm_sc_1850_cam4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_sc_1850_cam4.xml
+END
+1850-2005_cam4_super_fast_llnl.xml
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/1850-2005_cam4_super_fast_llnl.xml
+END
+cam4_chem_radpsv_geos5.xml
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/cam4_chem_radpsv_geos5.xml
+END
+waccm_2005-2100_cam4_rcp45.xml
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_2005-2100_cam4_rcp45.xml
+END
+waccm_2005-2100_cam4_rcp85.xml
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/waccm_2005-2100_cam4_rcp85.xml
+END
+sd_cam5_trop_strat_mam3.xml
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/sd_cam5_trop_strat_mam3.xml
+END
+1850_cam4_super_fast_llnl.xml
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/1850_cam4_super_fast_llnl.xml
+END
+1850_cam5_super_fast_llnl.xml
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/namelist_files/use_cases/1850_cam5_super_fast_llnl.xml
+END

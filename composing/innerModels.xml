@@ -1,0 +1,13 @@
+<innerModels>
+<models>
+	<model>
+		<name>cam</name>
+		<location>/share/BCGen/develDir/BCGenV1.0/BCGen/composing/camDesc.xml</location>
+	</model>
+	<model>
+		<name>atn</name>
+		<location>None</location>
+	</model>
+</models>
+
+</innerModels>

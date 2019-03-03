@@ -1,0 +1,91 @@
+10
+
+dir
+86919
+https://svn-ccsm-models.cgd.ucar.edu/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/chemistry
+https://svn-ccsm-models.cgd.ucar.edu
+
+
+
+2014-06-03T22:27:12.459300Z
+60833
+cacraig@ucar.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+fe37f545-8307-0410-aea5-b40df96820b5
+
+pp_trop_mozart
+dir
+
+pp_trop_mozart_soa
+dir
+
+pp_trop_strat_mam7
+dir
+
+pp_waccm_mozart_sulfur
+dir
+
+pp_waccm_mozart
+dir
+
+pp_super_fast_llnl
+dir
+
+pp_trop_mozart_mam3
+dir
+
+pp_none
+dir
+
+pp_trop_mam3
+dir
+
+utils
+dir
+
+pp_waccm_mozart_mam3
+dir
+
+modal_aero
+dir
+
+pp_trop_bam
+dir
+
+pp_trop_strat_soa
+dir
+
+bulk_aero
+dir
+
+pp_trop_mam7
+dir
+
+pp_trop_ghg
+dir
+
+pp_super_fast_llnl_mam3
+dir
+
+mozart
+dir
+
+pp_trop_strat_mam3
+dir
+
+pp_waccm_ghg
+dir
+

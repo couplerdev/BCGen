@@ -1,0 +1,25 @@
+<camDescXml>
+	<packageDir>/share/BCGen/develDir/BCGenV1.0/BCGen/baseCpl/src/models/cam</packageDir>
+	<configure>
+		<script>./bld/configure</script>
+		<workDir>./bld</workDir>
+		<args>
+			<arg>-dyn fv</arg>
+			<arg>-hgrid 10x15</arg>
+			<arg>-spmd</arg>
+			<arg>-nosmp</arg>
+			<arg>-test</arg>
+			<arg>-noc_bld</arg>
+			<arg>-ntasks 4</arg>
+			<arg>-fc mpif90</arg>
+			<arg>-fc_type gnu</arg>
+		</args>
+	</configure>
+	<build-namelist>
+		<script></script>
+		<args>
+			<arg></arg>
+			<arg></arg>
+		</args>
+	</build-namelist>
+</camDescXml>

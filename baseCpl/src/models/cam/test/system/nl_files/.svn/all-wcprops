@@ -1,0 +1,221 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files
+END
+off1.9x2.5
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/off1.9x2.5
+END
+fvvp_lb2
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/fvvp_lb2
+END
+fcase
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/fcase
+END
+scmarm
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/scmarm
+END
+outfrq3s
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/outfrq3s
+END
+rad_diag
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/rad_diag
+END
+outfrq3s_clubb
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/outfrq3s_clubb
+END
+adia
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/adia
+END
+fv1d_lb2
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/fv1d_lb2
+END
+idphys
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/idphys
+END
+co2rmp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/co2rmp
+END
+outfrq3s_bam
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/outfrq3s_bam
+END
+no_ttrac
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/no_ttrac
+END
+sat_hist
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/sat_hist
+END
+ghgrmp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/ghgrmp
+END
+outfrq3s_mozEOOH
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/outfrq3s_mozEOOH
+END
+user_nl_cam
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/user_nl_cam
+END
+aqua
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/aqua
+END
+aqpgro
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/aqpgro
+END
+outfrq24h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/outfrq24h
+END
+outfrq24h_carma
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/outfrq24h_carma
+END
+volc
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/volc
+END
+fv1d_4tsk
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/fv1d_4tsk
+END
+fv2d_4tsk
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/fv2d_4tsk
+END
+scm_prep
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/scm_prep
+END
+scm_b4b_o1
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/scm_b4b_o1
+END
+fv1d_8tsk
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/fv1d_8tsk
+END
+fv2d_8tsk
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/fv2d_8tsk
+END
+outfrq3s_cosp
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/outfrq3s_cosp
+END
+ttrac_lb1
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/ttrac_lb1
+END
+ttrac_lb2
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/ttrac_lb2
+END
+ttrac_lb3
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/ttrac_lb3
+END
+ttrac
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/ttrac
+END
+fvvp_lb0
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/fvvp_lb0
+END
+outfrq1m
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/outfrq1m
+END
+atrain
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/test/system/nl_files/atrain
+END

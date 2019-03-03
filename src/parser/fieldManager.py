@@ -60,10 +60,10 @@ class FieldManager:
         fldMeta = root.find('fldMeta')
         for name in self.fldsQuery:
             val = self.fldsQuery[name]
-            idx = 50
-            while idx<len(val):
-                val = val[:idx-1]+"&\n"+val[idx-1:]
-                idx+=50
+            #idx = 50
+            #while idx<len(val):
+            #    val = val[:idx-1]+"&\n"+val[idx-1:]
+            #    idx+=50
             self.fldsQuery[name] = val
         for child in fldMeta:
             sname = child.find('shortname').text
@@ -81,4 +81,6 @@ if __name__ == "__main__":
     fm = FieldManager()
     fm.addModel('atm')
     fm.queryBuild('field.xml')
-    fm.printf()
+    lname = fm.queryShortname("flds_x2atm_fields")
+    print len(lname)
+    #fm.printf()

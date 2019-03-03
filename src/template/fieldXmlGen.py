@@ -32,7 +32,7 @@ if __name__ == "__main__":
                     fldName = "flds_"+avName+"_"+nameStr[3]
                 fieldVar = doc.createElement('fieldVar')
                 field = doc.createElement('field')
-                fieldVal = doc.createTextNode(fldsStr.replace('_','').strip())
+                fieldVal = doc.createTextNode(fldsStr.strip())
                 field.appendChild(fieldVal)
                 fieldVar.appendChild(field)
                 fieldVar.setAttribute('name',fldName)

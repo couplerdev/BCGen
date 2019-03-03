@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/unit_drivers/rad
+END
+unit_driver.F90
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/unit_drivers/rad/unit_driver.F90
+END
+rad_data_input.F90
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/unit_drivers/rad/rad_data_input.F90
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/src/unit_drivers/rad/README
+END

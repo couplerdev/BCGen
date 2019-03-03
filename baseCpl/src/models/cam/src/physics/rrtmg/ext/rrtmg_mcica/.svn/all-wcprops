@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/!svn/ver/55659/rrtmg/release_tags/rrtmg_130827/src/rrtmg_mcica
+END
+rrtmg_lw_rtrnmc.f90
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/!svn/ver/55659/rrtmg/release_tags/rrtmg_130827/src/rrtmg_mcica/rrtmg_lw_rtrnmc.f90
+END
+rrtmg_lw_rad.f90
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/55659/rrtmg/release_tags/rrtmg_130827/src/rrtmg_mcica/rrtmg_lw_rad.f90
+END
+mcica_subcol_gen_sw.f90
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/!svn/ver/55659/rrtmg/release_tags/rrtmg_130827/src/rrtmg_mcica/mcica_subcol_gen_sw.f90
+END
+mcica_random_numbers.f90
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/!svn/ver/55659/rrtmg/release_tags/rrtmg_130827/src/rrtmg_mcica/mcica_random_numbers.f90
+END
+rrtmg_sw_cldprmc.f90
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/!svn/ver/55659/rrtmg/release_tags/rrtmg_130827/src/rrtmg_mcica/rrtmg_sw_cldprmc.f90
+END
+rrtmg_sw_rad.f90
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/55659/rrtmg/release_tags/rrtmg_130827/src/rrtmg_mcica/rrtmg_sw_rad.f90
+END
+mcica_subcol_gen_lw.f90
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/!svn/ver/55659/rrtmg/release_tags/rrtmg_130827/src/rrtmg_mcica/mcica_subcol_gen_lw.f90
+END
+rrtmg_sw_spcvmc.f90
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/!svn/ver/55659/rrtmg/release_tags/rrtmg_130827/src/rrtmg_mcica/rrtmg_sw_spcvmc.f90
+END
+rrtmg_lw_cldprmc.f90
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/!svn/ver/55659/rrtmg/release_tags/rrtmg_130827/src/rrtmg_mcica/rrtmg_lw_cldprmc.f90
+END

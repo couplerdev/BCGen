@@ -1,6 +1,9 @@
 <models>
 	<model>
 		<name>atm</name>
+		<version>xatm</version>
+		<src>atm</src>
+		<metaFile>None</metaFile>
 		<attrVect>
 			<name></name>
 			<gsize>3312</gsize>
@@ -44,6 +47,9 @@
 	</model>
 	<model>
 		<name>ocn</name>
+		<version>xocn</version>
+		<src>ocn</src>
+		<metaFile>None</metaFile>
 		<attrVect>
 			<name></name>
 			<gsize>11600</gsize>
@@ -84,5 +90,51 @@
 				</out_args>
 			</final>
 		</method>
+	</model>
+	<model>
+		<name>atm</name>
+		<version>cam</version>
+		<src>cam</src>
+   		<metaFile>/share/BCGen/develDir/BCGenV1.0/BCGen/composing/camDesc.xml</metaFile>
+		<attrVect>
+			<name></name>
+			<gsize>3312</gsize>
+			<nx>3</nx>
+			<ny>4</ny>
+			<field>flds_atm2x_states,flds_atm2x_fluxes,flds_x2atm_states,flds_x2atm_fluxes</field>
+		</attrVect>
+		<domain>
+			<field>flds_dom_coord</field>
+			<path></path>
+		</domain>
+		<method>
+			<init>
+				<name>atm_init_mct</name>
+				<in_args>
+					<arg>atm2x_atmatm</arg>
+				</in_args>
+				<out_args>
+					<arg>x2atm_atmatm</arg>
+				</out_args>
+ 			</init>
+			<run>
+				<name>atm_run_mct</name>
+				<in_args>
+					<arg>atm2x_atmatm</arg>
+				</in_args>
+				<out_args>
+					<arg>x2atm_atmatm</arg>
+				</out_args>
+			</run>
+			<final>
+				<name>atm_final_mct</name>
+				<in_args>
+					<arg>atm2x_atmatm</arg>
+				</in_args>
+				<out_args>
+					<arg>x2atm_atmatm</arg>
+				</out_args>
+			</final>
+   		</method>
 	</model> 
 </models>

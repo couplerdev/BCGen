@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/perl5lib/Build
+END
+NamelistDefaults.pm
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/perl5lib/Build/NamelistDefaults.pm
+END
+Config.pm
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/perl5lib/Build/Config.pm
+END
+NamelistDefinition.pm
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/perl5lib/Build/NamelistDefinition.pm
+END
+ChemNamelist.pm
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/perl5lib/Build/ChemNamelist.pm
+END
+Namelist.pm
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/perl5lib/Build/Namelist.pm
+END
+ChemPreprocess.pm
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61011/cam1/release_tags/cesm1_2_2_n31_cam5_3_01/models/atm/cam/bld/perl5lib/Build/ChemPreprocess.pm
+END
