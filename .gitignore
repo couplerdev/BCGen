@@ -8,3 +8,4 @@ deploy_mod.F90
 *.gch
 *.mod
 *.o
+*.a
