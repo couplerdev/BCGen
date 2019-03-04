@@ -20,3 +20,11 @@ class BindError(Exception):
 class ComposingError(Exception):
     def __init__(self, errMsg):
         super(ComposingError, self).__init__(errMsg)
+
+class NoneProperValueError(Exception):
+    def __init__(self, errMsg):
+        super(NoneProperValueError, self).__init__(errMsg)
+
+class WrongPathError(Exception):
+    def __init__(self, errMsg):
+        super(WrongPathError, self).__init__(errMsg)

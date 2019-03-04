@@ -19,6 +19,7 @@ module time_mod
     public :: time_clockInit
     public :: time_clockAdvance
     public :: time_clockGetInfo
+    public :: time_clockDateInSync
     !public :: time_clockPrint
 
     !public :: time_EclockGetData
@@ -543,6 +544,40 @@ subroutine time_clockAdvance(SyncClock)
     end if
 
 end subroutine time_clockAdvance
+
+logical function time_clockDateInSync(EClock, ymd, tod, prev)
+
+    type(ESMF_Clock),      intent(in)  :: EClock
+    integer,               intent(in)  :: ymd
+    integer,               intent(in)  :: tod
+    logical,  optional,    intent(in)  :: prev
+
+    character(len=*), parameter :: subname = "(time_clockDateInSync)"
+    type(ESMF_Time) :: ETime
+    integer         :: ymd1
+    integer         :: tod1
+    logical         :: previous
+    integer         :: rc
+
+    previous = .false.
+    if(present(prev))then
+        previous = prev
+    end if
+
+    if(previous)then
+        call ESMF_ClockGet(EClock, prevTime=ETime, rc=rc)
+    else 
+        call ESMF_ClockGet(EClock, currTime=ETime, rc=rc)
+    end if
+    call time_TimeYmdGet(ETime, ymd=ymd1, tod=tod1)
+
+    if((ymd == ymd1) .and. (tod == tod1))then
+        time_clockDateInSync = .true.
+    else 
+        time_clockDateInSync = .false.
+    end if
+
+end function time_clockDateInSync
 
 subroutine time_EClockInit(TimeStep, startTime, refTime, currTime, EClock)
 

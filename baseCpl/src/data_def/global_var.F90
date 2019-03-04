@@ -88,20 +88,20 @@ use field_def
        type(map_mod)   :: mapper_Smatatm2ocn
        type(map_mod)   :: mapper_Smatocn2atm
 
-       character(SHR_KIND_CL) :: flds_dom 
-       character(SHR_KIND_CL) :: flds_x2ocn_fluxes 
-       character(SHR_KIND_CL) :: flds_ocn2x_states 
-       character(SHR_KIND_CL) :: flds_atm2x_fluxes 
-       character(SHR_KIND_CL) :: flds_x2ocn 
-       character(SHR_KIND_CL) :: flds_x2atm 
-       character(SHR_KIND_CL) :: flds_dom_coord 
-       character(SHR_KIND_CL) :: flds_x2atm_states 
-       character(SHR_KIND_CL) :: flds_x2ocn_states 
-       character(SHR_KIND_CL) :: flds_x2atm_fluxes 
-       character(SHR_KIND_CL) :: flds_atm2x 
-       character(SHR_KIND_CL) :: flds_ocn2x 
-       character(SHR_KIND_CL) :: flds_atm2x_states 
-       character(SHR_KIND_CL) :: flds_ocn2x_fluxes 
+       character(SHR_KIND_CXX) :: flds_dom 
+       character(SHR_KIND_CXX) :: flds_x2ocn_fluxes 
+       character(SHR_KIND_CXX) :: flds_ocn2x_states 
+       character(SHR_KIND_CXX) :: flds_atm2x_fluxes 
+       character(SHR_KIND_CXX) :: flds_x2ocn 
+       character(SHR_KIND_CXX) :: flds_x2atm 
+       character(SHR_KIND_CXX) :: flds_dom_coord 
+       character(SHR_KIND_CXX) :: flds_x2atm_states 
+       character(SHR_KIND_CXX) :: flds_x2ocn_states 
+       character(SHR_KIND_CXX) :: flds_x2atm_fluxes 
+       character(SHR_KIND_CXX) :: flds_atm2x 
+       character(SHR_KIND_CXX) :: flds_ocn2x 
+       character(SHR_KIND_CXX) :: flds_atm2x_states 
+       character(SHR_KIND_CXX) :: flds_ocn2x_fluxes 
 
    end type Meta
     
