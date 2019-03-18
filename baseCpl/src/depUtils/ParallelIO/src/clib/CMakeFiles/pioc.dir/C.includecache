@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/bget.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/bget.c
 config.h
 -
 pio.h
@@ -24,13 +24,13 @@ memory.h
 ctype.h
 -
 bget.h
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/bget.h
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/bget.h
 math.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/bget.h
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/bget.h
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_darray.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_darray.c
 config.h
 -
 pio.h
@@ -38,7 +38,7 @@ pio.h
 pio_internal.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_darray_int.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_darray_int.c
 config.h
 -
 pio.h
@@ -46,7 +46,7 @@ pio.h
 pio_internal.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_file.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_file.c
 config.h
 -
 pio.h
@@ -54,7 +54,7 @@ pio.h
 pio_internal.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_get_nc.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_get_nc.c
 config.h
 -
 pio.h
@@ -62,7 +62,7 @@ pio.h
 pio_internal.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_getput_int.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_getput_int.c
 config.h
 -
 pio.h
@@ -70,7 +70,7 @@ pio.h
 pio_internal.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_lists.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_lists.c
 config.h
 -
 pio.h
@@ -82,7 +82,7 @@ string.h
 stdio.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_msg.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_msg.c
 config.h
 -
 pio.h
@@ -90,7 +90,7 @@ pio.h
 pio_internal.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_nc.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_nc.c
 config.h
 -
 pio.h
@@ -98,7 +98,7 @@ pio.h
 pio_internal.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_nc4.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_nc4.c
 config.h
 -
 pio.h
@@ -106,7 +106,7 @@ pio.h
 pio_internal.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_put_nc.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_put_nc.c
 config.h
 -
 pio.h
@@ -114,7 +114,7 @@ pio.h
 pio_internal.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_rearrange.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_rearrange.c
 config.h
 -
 pio_internal.h
@@ -122,7 +122,7 @@ pio_internal.h
 pio.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_spmd.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pio_spmd.c
 config.h
 -
 pio.h
@@ -130,7 +130,7 @@ pio.h
 pio_internal.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pioc.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pioc.c
 config.h
 -
 pio.h
@@ -138,7 +138,7 @@ pio.h
 pio_internal.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pioc_sc.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pioc_sc.c
 config.h
 -
 pio.h
@@ -146,7 +146,7 @@ pio.h
 pio_internal.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pioc_support.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/pioc_support.c
 config.h
 -
 stdarg.h
@@ -160,7 +160,7 @@ pio_internal.h
 execinfo.h
 -
 
-/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/topology.c
+/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/topology.c
 pio.h
 -
 pio_internal.h
@@ -176,7 +176,13 @@ firmware/include/personality.h
 mpix.h
 -
 
-/usr/local/Pnetcdf/include/pnetcdf.h
+/home/hq/include/pnetcdf.h
+mpi.h
+-
+
+/usr/local/include/gptl.h
+cmake_fortran_c_interface.h
+/usr/local/include/cmake_fortran_c_interface.h
 mpi.h
 -
 
@@ -248,13 +254,5 @@ math.h
 gptl.h
 -
 assert.h
--
-
-src/gptl/cmake_fortran_c_interface.h
-
-src/gptl/gptl.h
-cmake_fortran_c_interface.h
-src/gptl/cmake_fortran_c_interface.h
-mpi.h
 -
 

@@ -4,18 +4,16 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_common.c" "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/CMakeFiles/test_pioc_putget.dir/test_common.c.o"
-  "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_pioc_putget.c" "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/CMakeFiles/test_pioc_putget.dir/test_pioc_putget.c.o"
-  "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_shared.c" "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/CMakeFiles/test_pioc_putget.dir/test_shared.c.o"
+  "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_common.c" "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/CMakeFiles/test_pioc_putget.dir/test_common.c.o"
+  "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_pioc_putget.c" "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/CMakeFiles/test_pioc_putget.dir/test_pioc_putget.c.o"
+  "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_shared.c" "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/CMakeFiles/test_pioc_putget.dir/test_shared.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_C
+  "CATAMOUNT"
   "CPRGNU"
-  "HAVE_MPI"
-  "INCLUDE_CMAKE_FCI"
-  "LINUX"
   "TIMING"
   "USE_PNETCDF_VARN"
   "USE_PNETCDF_VARN_ON_READ"
@@ -29,14 +27,12 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "."
   "src/clib"
   "/usr/local/include"
-  "/usr/local/Pnetcdf/include"
-  "src/gptl"
+  "/home/hq/include"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/CMakeFiles/pioc.dir/DependInfo.cmake"
-  "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/gptl/CMakeFiles/gptl.dir/DependInfo.cmake"
+  "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/clib/CMakeFiles/pioc.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

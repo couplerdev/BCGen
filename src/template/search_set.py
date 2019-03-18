@@ -182,7 +182,7 @@ sub_run_phase_3 = []
 
 model_atm_cfg = { # Model M's cfg
 'model_unique_name': 'atm',
-'model_unique_id': '2',
+'model_unique_id': '1',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'atm2x_atmatm',
@@ -240,7 +240,7 @@ model_atm_cfg = { # Model M's cfg
 
 model_ocn_cfg = { # Model M's cfg
 'model_unique_name': 'ocn',
-'model_unique_id': '1',
+'model_unique_id': '2',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'ocn2x_ocnocn',

@@ -43,10 +43,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO
+CMAKE_SOURCE_DIR = /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO
+CMAKE_BINARY_DIR = /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO
 
 # Include any dependencies generated for this target.
 include examples/c/CMakeFiles/darray_async.dir/depend.make
@@ -59,16 +59,16 @@ include examples/c/CMakeFiles/darray_async.dir/flags.make
 
 examples/c/CMakeFiles/darray_async.dir/darray_async.c.o: examples/c/CMakeFiles/darray_async.dir/flags.make
 examples/c/CMakeFiles/darray_async.dir/darray_async.c.o: examples/c/darray_async.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object examples/c/CMakeFiles/darray_async.dir/darray_async.c.o"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c && /usr/local/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/darray_async.dir/darray_async.c.o   -c /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c/darray_async.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object examples/c/CMakeFiles/darray_async.dir/darray_async.c.o"
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c && /home/hq/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/darray_async.dir/darray_async.c.o   -c /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c/darray_async.c
 
 examples/c/CMakeFiles/darray_async.dir/darray_async.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/darray_async.dir/darray_async.c.i"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c && /usr/local/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c/darray_async.c > CMakeFiles/darray_async.dir/darray_async.c.i
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c && /home/hq/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c/darray_async.c > CMakeFiles/darray_async.dir/darray_async.c.i
 
 examples/c/CMakeFiles/darray_async.dir/darray_async.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/darray_async.dir/darray_async.c.s"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c && /usr/local/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c/darray_async.c -o CMakeFiles/darray_async.dir/darray_async.c.s
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c && /home/hq/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c/darray_async.c -o CMakeFiles/darray_async.dir/darray_async.c.s
 
 examples/c/CMakeFiles/darray_async.dir/darray_async.c.o.requires:
 
@@ -91,12 +91,12 @@ darray_async_EXTERNAL_OBJECTS =
 examples/c/darray_async: examples/c/CMakeFiles/darray_async.dir/darray_async.c.o
 examples/c/darray_async: examples/c/CMakeFiles/darray_async.dir/build.make
 examples/c/darray_async: src/clib/libpioc.a
-examples/c/darray_async: src/gptl/libgptl.a
-examples/c/darray_async: /usr/local/lib/libnetcdf.so
-examples/c/darray_async: /usr/local/Pnetcdf/lib/libpnetcdf.a
+examples/c/darray_async: /usr/local/lib/libgptl.a
+examples/c/darray_async: /home/hq/lib/libnetcdf.a
+examples/c/darray_async: /home/hq/lib/libpnetcdf.a
 examples/c/darray_async: examples/c/CMakeFiles/darray_async.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable darray_async"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/darray_async.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable darray_async"
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/darray_async.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 examples/c/CMakeFiles/darray_async.dir/build: examples/c/darray_async
@@ -108,10 +108,10 @@ examples/c/CMakeFiles/darray_async.dir/requires: examples/c/CMakeFiles/darray_as
 .PHONY : examples/c/CMakeFiles/darray_async.dir/requires
 
 examples/c/CMakeFiles/darray_async.dir/clean:
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c && $(CMAKE_COMMAND) -P CMakeFiles/darray_async.dir/cmake_clean.cmake
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c && $(CMAKE_COMMAND) -P CMakeFiles/darray_async.dir/cmake_clean.cmake
 .PHONY : examples/c/CMakeFiles/darray_async.dir/clean
 
 examples/c/CMakeFiles/darray_async.dir/depend:
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c/CMakeFiles/darray_async.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/c/CMakeFiles/darray_async.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : examples/c/CMakeFiles/darray_async.dir/depend
 

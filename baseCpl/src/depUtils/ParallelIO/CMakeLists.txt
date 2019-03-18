@@ -11,6 +11,11 @@ mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 # The size of the data buffer for write/read_darray().
 set(PIO_BUFFER_SIZE 134217728)
 
+set(PnetCDF_C_INCLUDE_DIR /home/hq/include)
+set(PnetCDF_C_LIBRARY /home/hq/lib/libpnetcdf.a)
+set(MPE_C_INCLUDE_DIR /home/hq/include)
+set(MPE_C_LIBRARY /home/hq/lib/libmpi.a)
+
 #==============================================================================
 #  USER-DEFINED OPTIONS (set with "-DOPT=VAL" from command line)
 #==============================================================================
@@ -19,7 +24,7 @@ set(PIO_BUFFER_SIZE 134217728)
 option (PIO_ENABLE_FORTRAN   "Enable the Fortran library builds"            ON)
 option (PIO_ENABLE_TIMING    "Enable the use of the GPTL timing library"    ON)
 option (PIO_ENABLE_LOGGING   "Enable debug logging (large output possible)" OFF)
-option (PIO_ENABLE_DOC       "Enable building PIO documentation"            ON)
+option (PIO_ENABLE_DOC       "Enable building PIO documentation"            OFF)
 option (PIO_ENABLE_COVERAGE  "Enable code coverage"                         OFF)
 option (PIO_ENABLE_EXAMPLES  "Enable PIO examples"                          ON)
 option (PIO_INTERNAL_DOC     "Enable PIO developer documentation"           OFF)
@@ -203,7 +208,3 @@ if (PIO_ENABLE_TESTS)
   endif ()
 endif ()
 
-# Documentation
-if (PIO_ENABLE_DOC)
-  add_subdirectory (doc)
-endif ()

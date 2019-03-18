@@ -338,9 +338,9 @@ class InstCreator:
             codePath = InstCreator.couplerCodePath
             defaultPath = codePath+"/src/models/"
             modelDir = ""
-            if os.path.exsits(defaultPath+srcLocation):
+            if os.path.exists(defaultPath+srcLocation):
                 modelDir=defaultPath+srcLocation
-            elif os.path.exsits(srcLocation):
+            elif os.path.exists(srcLocation):
                 modelDir=srcLocation
             else:
                 raise WrongPathError("in createMakefile:")

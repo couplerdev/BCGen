@@ -1,1 +1,1 @@
-/usr/local/bin/mpicc  -std=c99 -g -O0  -rdynamic CMakeFiles/test_async_mpi.dir/test_async_mpi.c.o  -o test_async_mpi 
+/home/hq/bin/mpicc -O2 -DHAVE_NANOTIME -DBIT64 -DHAVE_VPRINTF -DHAVE_BACKTRACE -DHAVE_SLASHPROC -DHAVE_COMM_F2C -DHAVE_TIMES -DHAVE_GETTIMEOFDAY -std=c99 -g -O0   CMakeFiles/test_async_mpi.dir/test_async_mpi.c.o  -o test_async_mpi 

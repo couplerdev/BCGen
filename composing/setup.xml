@@ -1,7 +1,7 @@
 <setup>
 	<model>
 		<name>atm</name>
-		<version>cam</version>
+		<version>xatm</version>
 		<input>
 			<src name='ocn'>
 				<field>So_t:So_s:So_u</field>
