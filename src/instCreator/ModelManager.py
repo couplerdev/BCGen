@@ -35,9 +35,10 @@ class NormalModel:
         pass     
 
 class ConfModel:
-    def __init__(self, modelName, fileDesc):
+    def __init__(self, modelName, fileDesc, metaManager):
        self.modelName = modelName
        self.fileDesc = fileDesc
+       self.metaManager = metaManager
 
     def createModelInst(self):
         tree = ET.parse(self.fileDesc)
@@ -58,17 +59,25 @@ class ConfModel:
         os.system(cmdConf)
         os.chdir(currDir)
         # build namelist
-        '''
+        
         bldNml = tree.find("build-namelist")
         bldNmlScripts = bldNml.find("script").text
         args = ""
         argsIn = conf.find('args')
         for argIn in argsIn:
             arg = argIn.find('arg').text
-            args += arg+" "
+            argOpts = " "
+            if "type" in argIn.attrib:
+                if argIn.attrib["type"]=="dataloc":
+	            argOpts = self.metaManager.inputPath
+                elif argIn.attrib["type"]=="outloc":
+                    argOpts = self.metaManager.instPath+"./conf"
+                else:
+                    raise NoneProperValueError("in ConfModel.createModelInst:")
+            args += arg + argOpts +" "
         cmdBld = bldNml + "   "+ args
         os.system(cmdBld)
-        '''
+        
         #copy to target dict
         
        
