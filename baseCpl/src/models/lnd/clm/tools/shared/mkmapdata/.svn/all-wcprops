@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/mkmapdata
+END
+mvNimport.sh
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/mkmapdata/mvNimport.sh
+END
+rmdups.ncl
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/mkmapdata/rmdups.ncl
+END
+regridbatch.sh
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/mkmapdata/regridbatch.sh
+END
+createXMLEntries.pl
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/mkmapdata/createXMLEntries.pl
+END
+mkmapdata.sh
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/mkmapdata/mkmapdata.sh
+END
+mkunitymap.ncl
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/mkmapdata/mkunitymap.ncl
+END
+mknoocnmap.pl
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/mkmapdata/mknoocnmap.pl
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/mkmapdata/README
+END

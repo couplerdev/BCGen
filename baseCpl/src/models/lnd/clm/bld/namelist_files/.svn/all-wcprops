@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files
+END
+namelist_defaults_clm4_0.xml
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/namelist_defaults_clm4_0.xml
+END
+namelist_defaults_clm4_0_tools.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/namelist_defaults_clm4_0_tools.xml
+END
+namelist_definition_clm4_0.xml
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/namelist_definition_clm4_0.xml
+END
+namelist_defaults_clm4_5.xml
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/namelist_defaults_clm4_5.xml
+END
+namelist_defaults_clm4_5_tools.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/namelist_defaults_clm4_5_tools.xml
+END
+namelist_defaults_overall.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/namelist_defaults_overall.xml
+END
+namelist_definition_clm4_5.xml
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/namelist_definition_clm4_5.xml
+END
+namelist_defaults.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/namelist_defaults.xsl
+END
+checkmapfiles.ncl
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/checkmapfiles.ncl
+END
+namelist_defaults_drydep.xml
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/namelist_defaults_drydep.xml
+END
+namelist_definition.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/namelist_definition.xsl
+END
+history_fields.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/history_fields.xsl
+END
+createMapEntry.pl
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/createMapEntry.pl
+END
+namelist_defaults_usr_files.xml
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/namelist_files/namelist_defaults_usr_files.xml
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_0/mksurfdata_map
+END
+mksurfdata_map.namelist
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_0/mksurfdata_map/mksurfdata_map.namelist
+END
+mksurfdata.pl
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_0/mksurfdata_map/mksurfdata.pl
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_0/mksurfdata_map/README
+END
+pftdyn_hist_simyr1850-2005.txt
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_0/mksurfdata_map/pftdyn_hist_simyr1850-2005.txt
+END

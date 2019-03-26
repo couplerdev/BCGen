@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/config_files
+END
+gen_domain
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/config_files/gen_domain
+END
+tools__do
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/config_files/tools__do
+END
+tools__s
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/config_files/tools__s
+END
+CFGtools__ds
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/config_files/CFGtools__ds
+END
+tools__ds
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/config_files/tools__ds
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/config_files/README
+END
+tools__o
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/config_files/tools__o
+END

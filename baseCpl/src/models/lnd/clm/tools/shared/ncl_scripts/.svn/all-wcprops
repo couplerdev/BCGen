@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/ncl_scripts
+END
+cprnc.pl
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/ncl_scripts/cprnc.pl
+END
+getco2_historical.ncl
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/ncl_scripts/getco2_historical.ncl
+END
+cprnc.ncl
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/ncl_scripts/cprnc.ncl
+END
+stitch.sh
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/ncl_scripts/stitch.sh
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/shared/ncl_scripts/README
+END
