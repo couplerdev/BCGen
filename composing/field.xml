@@ -76,9 +76,6 @@
 			<fieldVar name="flds_x2glc_fluxes">
 				<field>Fgss_qice</field>
 			</fieldVar>
-			<fieldVar name="flds_x2ocn_states">
-				<field>So_tref:So_qref:So_ssq:So_re:So_u10:So_duu10n:So_ustar</field>
-			</fieldVar>
 			<fieldVar name="flds_x2ocn_albedo">
 				<field>So_avsdr:So_anidr:So_avsdf:So_anidf</field>
 			</fieldVar>

@@ -293,7 +293,7 @@ class InstCreator:
             f.write(' pio_root = 1\n')
             f.write(' pio_stride = -1\n')
             f.write(' pio_typename = \'netcdf\'\n')
-            f.write('/')
+            f.write('/\n')
 
 
     def createRcConf(self):

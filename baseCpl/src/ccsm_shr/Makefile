@@ -28,6 +28,8 @@ SRCS_F90 = shr/shr_kind_mod.F90 \
            shr/shr_orb_mod.F90 \
            shr/shr_nl_mod.F90 \
     	   shr/shr_flux_mod.F90	\
+	   shr/shr_scam_mod.F90 \
+	   shr/shr_ncread_mod.F90 \
 	   shr/shr_pio_mod.F90 \
 	   shr/shr_reprosum_mod.F90 \
            shr/shr_tInterp_mod.F90 \

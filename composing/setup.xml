@@ -19,4 +19,10 @@
 			</src>
 		</input>
 	</model>
+	<model>
+		<name>lnd</name>
+		<version>clm</version>
+		<input>
+		</input>
+	</model>
 </setup>

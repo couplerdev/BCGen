@@ -608,7 +608,7 @@ class CouplerParser: ###!!!!
                 print srcAttrVectName
                 srcAttrVect = parser.visitByName(srcAttrVectName)
                 if srcAttrVect == None:
-                    raise AttributeError("no such attrVect")
+                    raise AttributeError("no such attrVect {}".format(srcAttrVectName))
                 field = src.find("field").text  # shall be optional
                 ## mapper parse with method now
                 mapperRoot = src.find("mapper")

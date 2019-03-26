@@ -137,4 +137,50 @@
 			</final>
    		</method>
 	</model> 
+	<model>
+		<name>lnd</name>
+		<version>clm</version>
+		<src>clm</src>
+   		<metaFile>/home/heqi/git/BCGen/composing/clmDesc.xml</metaFile>
+		<attrVect>
+			<name></name>
+			<gsize>3312</gsize>
+			<nx>3</nx>
+			<ny>4</ny>
+			<field>flds_lnd2x_states,flds_lnd2x_fluxes,flds_x2lnd_states,flds_x2lnd_fluxes</field>
+		</attrVect>
+		<domain>
+			<field>flds_dom_coord</field>
+			<path></path>
+		</domain>
+		<method>
+			<init>
+				<name>lnd_init_mct</name>
+				<in_args>
+					<arg>lnd2x_lndlnd</arg>
+				</in_args>
+				<out_args>
+					<arg>x2lnd_lndlnd</arg>
+				</out_args>
+ 			</init>
+			<run>
+				<name>lnd_run_mct</name>
+				<in_args>
+					<arg>lnd2x_lndlnd</arg>
+				</in_args>
+				<out_args>
+					<arg>x2lnd_lndlnd</arg>
+				</out_args>
+			</run>
+			<final>
+				<name>lnd_final_mct</name>
+				<in_args>
+					<arg>lnd2x_lndlnd</arg>
+				</in_args>
+				<out_args>
+					<arg>x2lnd_lndlnd</arg>
+				</out_args>
+			</final>
+   		</method>
+	</model> 
 </models>
