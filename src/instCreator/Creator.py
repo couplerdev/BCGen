@@ -343,7 +343,7 @@ class InstCreator:
             elif os.path.exists(srcLocation):
                 modelDir=srcLocation
             else:
-                raise WrongPathError("in createMakefile:")
+                raise WrongPathError("in createMakefile: {}".format(srcLocation))
             metaFile = model.metaFile
             if metaFile == "None":
                 modelDir = InstCreator.couplerCodePath+"/src/models/"+name

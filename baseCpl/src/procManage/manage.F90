@@ -41,8 +41,8 @@ subroutine init(metaData)
     integer :: local_rank ! if test
 
     ! 初始化comp数目，以及comms数
-    metaData%num_models = 2
-    metaData%num_comms =  2*2+2
+    metaData%num_models = 3
+    metaData%num_comms =  2*3+2
     metaData%case_name = "my_case"
     
     
@@ -69,6 +69,8 @@ subroutine init(metaData)
 
     metaData%comp_name(metaData%gloid) = shr_string_toUpper(trim("global"))
     metaData%comp_name(metaData%cplid) = shr_string_toUpper(trim("coupler"))
+    metaData%comp_name(metaData%modellnd_id) = shr_string_toUpper(trim("lnd"))
+    metaData%comp_name(metaData%modellnd2cpl_id) = shr_string_toUpper(trim("lnd2cpl"))
     metaData%comp_name(metaData%modelatm_id) = shr_string_toUpper(trim("atm"))
     metaData%comp_name(metaData%modelatm2cpl_id) = shr_string_toUpper(trim("atm2cpl"))
     metaData%comp_name(metaData%modelocn_id) = shr_string_toUpper(trim("ocn"))
@@ -92,6 +94,10 @@ subroutine init(metaData)
     print *, 'bcast end'
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
+    call deploy(metaData%mpi_glocomm, metaData%mpi_modellnd,&
+                metaData%mpi_modellnd2cpl, &
+                metaData%modellnd_id, metaData%cplid, &
+                metaData%modellnd2cpl_id, metaData%iamin_model, 0, ierr)
     call deploy(metaData%mpi_glocomm, metaData%mpi_modelatm,&
                 metaData%mpi_modelatm2cpl, &
                 metaData%modelatm_id, metaData%cplid, &
@@ -107,6 +113,10 @@ subroutine init(metaData)
     !write(*,*), "my_world_rank:", num_rank, " my_in_model", metaData%iamin_model
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
 
+    if(metaData%iamin_model(metaData%modellnd_id))then
+        call MPI_Comm_rank(metaData%mpi_modellnd, local_rank, ierr)
+        print *,'Im lnd: in comp:',local_rank, ' in glo:',num_rank
+    end if
     if(metaData%iamin_model(metaData%modelatm_id))then
         call MPI_Comm_rank(metaData%mpi_modelatm, local_rank, ierr)
         print *,'Im atm: in comp:',local_rank, ' in glo:',num_rank
@@ -123,6 +133,8 @@ subroutine init(metaData)
     metaData%comp_comm(metaData%gloid)       = metaData%mpi_glocomm
     metaData%comp_comm(metaData%cplid)       = metaData%mpi_cpl
 
+    metaData%comp_comm(metaData%modellnd_id)     = metaData%mpi_modellnd
+    metaData%comp_comm(metaData%modellnd2cpl_id) =metaData%mpi_modellnd2cpl 
     metaData%comp_comm(metaData%modelatm_id)     = metaData%mpi_modelatm
     metaData%comp_comm(metaData%modelatm2cpl_id) =metaData%mpi_modelatm2cpl 
     metaData%comp_comm(metaData%modelocn_id)     = metaData%mpi_modelocn
@@ -135,6 +147,13 @@ subroutine init(metaData)
     call procMeta_addToModel(metaData%my_proc, metaData%gloid, metaData%mpi_glocomm, 'global', ierr)
     if(metaData%iamin_model(metaData%cplid))then
         call procMeta_addToModel(metaData%my_proc, metaData%cplid, metaData%mpi_cpl, 'coupler', ierr)
+    end if
+    if(metaData%iamin_model(metaData%modellnd_id))then
+        call procMeta_addToModel(metaData%my_proc, metaData%modellnd_id, metaData%mpi_modellnd, 'lnd', ierr)
+    end if
+    if(metaData%iamin_model(metaData%modellnd2cpl_id))then
+        call procMeta_addToModel(metaData%my_proc, metaData%modellnd2cpl_id, &
+                             metaData%mpi_modellnd2cpl,'lnd2cpl', ierr)
     end if
     if(metaData%iamin_model(metaData%modelatm_id))then
         call procMeta_addToModel(metaData%my_proc, metaData%modelatm_id, metaData%mpi_modelatm, 'atm', ierr)
@@ -185,6 +204,20 @@ subroutine init(metaData)
         metaData%iamin_cpl = .true.
     end if
 
+    metaData%iamin_modellnd = .false. 
+    
+    if(metaData%iamin_model(metaData%modellnd_id))then
+        call iam_comm_root(metaData%mpi_modellnd, metaData%iamroot_modellnd, ierr)
+        metaData%iamin_modellnd = .true.
+        call MPI_Comm_rank(metaData%mpi_modellnd,local_rank, ierr)
+    end if
+
+    metaData%iamin_modellnd2cpl = .false.
+    if(metaData%iamin_model(metaData%modellnd2cpl_id))then
+        call iam_comm_root(metaData%mpi_modellnd2cpl, &
+            metaData%iamroot_modellnd2cpl, ierr)
+        metaData%iamin_modellnd2cpl = .true.
+    end if
     metaData%iamin_modelatm = .false. 
     
     if(metaData%iamin_model(metaData%modelatm_id))then
@@ -224,6 +257,9 @@ subroutine init(metaData)
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     !write(*,*)'before mapper_init'
 
+    call mapper_init(metaData%mapper_Clnd2x, ierr)
+    call mapper_init(metaData%mapper_Cx2lnd, ierr)
+
     call mapper_init(metaData%mapper_Catm2x, ierr)
     call mapper_init(metaData%mapper_Cx2atm, ierr)
 
@@ -234,6 +270,9 @@ subroutine init(metaData)
     !-------------------------------------------
     !   init model desc info only used for MCT
     !-------------------------------------------
+    metaData%lnd%ID = metaData%modellnd_id
+    metaData%lnd%comm = metaData%comp_comm(metaData%modellnd_id)
+    metaData%lnd%gsize = 3312
     metaData%atm%ID = metaData%modelatm_id
     metaData%atm%comm = metaData%comp_comm(metaData%modelatm_id)
     metaData%atm%gsize = 3312
@@ -270,6 +309,7 @@ subroutine clean(metaData)
     integer :: ierr
 
     call procMeta_Final(metaData%my_proc, ierr)
+    call compMeta_Final(metaData%lnd, ierr)
     call compMeta_Final(metaData%atm, ierr)
     call compMeta_Final(metaData%ocn, ierr)
 

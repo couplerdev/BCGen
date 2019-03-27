@@ -140,8 +140,8 @@
 	<model>
 		<name>lnd</name>
 		<version>clm</version>
-		<src>clm</src>
-   		<metaFile>/home/heqi/git/BCGen/composing/clmDesc.xml</metaFile>
+		<src>lnd</src>
+		<metaFile>None</metaFile>
 		<attrVect>
 			<name></name>
 			<gsize>3312</gsize>

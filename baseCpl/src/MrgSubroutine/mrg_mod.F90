@@ -56,5 +56,19 @@ x2ocn_ocnx)
 
 end subroutine mrg_x2ocn
 
+subroutine mrg_x2lnd(metaData, lnd2x_lndx,&
+x2lnd_lndx)
+
+    implicit none
+    type(Meta),        intent(in)    :: metaData
+!    type(mct_aVect),   intent(in)    :: atm2x_lndx
+!    type(attrVect),   intent(in)    :: wav2x_ocnx
+    type(mct_aVect),   intent(in)    :: lnd2x_lndx
+    type(mct_aVect),   intent(inout) :: x2lnd_lndx
+
+    write(*,*)'========== lnd mrged =========='
+
+end subroutine mrg_x2lnd
+
 
 end module mrg_mod

@@ -85,37 +85,10 @@
 		<attrVect>
 			<name>lnd2x_lndx</name>
 			<model>lnd</model>
-			<srcs>
-				<src>
-					<attrVect>lnd2x_lndx</attrVect>
-					<field>Sl_avsdr:Sl_anidr:Sl_avsdf:Sl_anidf:Sl_tref:Sl_qref:Sl_t:Sl_fv:Sl_ram1:Sl_snowh:Sl_u10</field>
-					<mapper>
-						<name>mapper_Smatlnd2lnd</name>
-						<type>offline</type>
-						<w_file>map_0.5x0.5_nomask_to_4x5_nomask_aave_da_c110822.nc</w_file>
-						<method>
-							<phase>
-								<name>smat_init</name>
-								<in_args></in_args>
-								<out_args></out_args>
-							</phase>
-							<phase>
-								<name>mapper_comp_map</name>
-								<in_args>
-									<arg>lnd2x_lndx</arg>
-								</in_args>
-								<out_args>
-									<arg>lnd2x_lndx</arg>
-								</out_args>
-							</phase>
-						</method>
-					</mapper>
-				</src>
-			</srcs>
+			<srcs/>
 			<mrg>
 				<name>mrg_x2lnd</name>
 				<in_args>
-					<arg>lnd2x_lndx</arg>
 					<arg>lnd2x_lndx</arg>
 				</in_args>
 				<out_args>
