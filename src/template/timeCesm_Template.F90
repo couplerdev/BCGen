@@ -1,6 +1,7 @@
 module time_mod
     use shr_kind_mod
     use ESMF
+    use mpi
     use shr_sys_mod
     !use base_sys
     use global_var,  only: metaData
@@ -193,6 +194,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
        ref_tod        = 0 
        curr_ymd       = 0
        curr_tod       = 0
+    
        #for $model in $proc_cfgs
             #set $name = $model.name
        ${name}_cpl_dt     = 0
@@ -211,6 +213,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
            end if
        end do
     end if
+    print *,'nmlfile read curr_time:',curr_ymd
     call MPI_Barrier(mpicom, ierr)
     if(restart)then
         if(metaData%iamin_cpl)then
@@ -260,7 +263,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
         ref_ymd = start_ymd
         ref_tod = start_tod
     endif
-
+    print *, 'check your curr_time',curr_ymd
     if(curr_ymd == 0)then
         curr_ymd = start_ymd
         curr_tod = start_tod
@@ -313,8 +316,8 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     dtime(clock_drv) = minval(dtime)
 
     call time_TimeYmdInit(startTime, time_cal, start_ymd, start_tod, rc, "Start date")
-    call time_TimeYmdInit(refTime, time_cal, ref_ymd, ref_ymd, rc, "Reference date")
-    call time_TimeYmdInit(currTime, time_cal, curr_ymd, curr_ymd, rc, "Current date")
+    call time_TimeYmdInit(refTime, time_cal, ref_ymd, ref_tod, rc, "Reference date")
+    call time_TimeYmdInit(currTime, time_cal, curr_ymd, curr_tod, rc, "Current date")
 
     do n = 1, max_clocks
         if(mod(dtime(n), dtime(clock_drv))/= 0)then
@@ -394,7 +397,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
                   opt=time_optNSeconds, opt_n=dtime(clock_${name}), RefTime=OffsetTime,&
                   alarmname=trim(alarm_${name}run_name))
     #end for
-
+    print *,'time init end', start_ymd, stop_ymd
     
 end subroutine time_clockInit
 
@@ -430,7 +433,7 @@ subroutine time_clockGetInfo(EClock, curr_yr, curr_mon, curr_day, &
     character(len=*), optional, intent(inout)  :: calendar
 
     !---local
-    character(len=*), parameter ::subname='(time_EClockGetInfo)'
+    character(len=*), parameter ::subname='(time_EClockClockGetInfo)'
     type(ESMF_Time) :: currTime
     type(ESMF_Time) :: prevTime
     type(ESMF_Time) :: startTime
@@ -505,25 +508,25 @@ subroutine time_clockGetInfo(EClock, curr_yr, curr_mon, curr_day, &
     end if
 
     if(present(prev_ymd) .or. present(prev_tod))then
-        call time_TimeYmdGet(prevTime, ymd=prev_ymd, tod=prev_tod)
+        call time_TimeYmdGet(prevTime, ymd=ymd, tod=tod)
         if(present(prev_ymd)) prev_ymd = ymd
         if(present(prev_tod)) prev_tod = tod
     end if
       
     if(present(start_ymd) .or. present(start_tod))then
-        call time_TimeYmdGet(startTime, ymd=start_ymd, tod=start_tod)
+        call time_TimeYmdGet(startTime, ymd=ymd, tod=tod)
         if(present(start_ymd)) start_ymd = ymd
         if(present(start_tod)) start_tod = tod
     end if
 
     if(present(stop_ymd) .or. present(stop_tod))then
-        call time_TimeYmdGet(stopTime, ymd=stop_ymd, tod=stop_tod)
+        call time_TimeYmdGet(stopTime, ymd=ymd, tod=tod)
         if(present(stop_ymd)) stop_ymd = ymd
         if(present(stop_tod)) stop_tod = tod
     end if
   
     if(present(ref_ymd) .or. present(ref_tod))then
-        call time_TimeYmdGet(refTime, ymd=ref_ymd, tod=ref_tod)
+        call time_TimeYmdGet(refTime, ymd=ymd, tod=tod)
         if(present(ref_ymd)) ref_ymd = ymd
         if(present(ref_tod)) ref_tod = tod
     end if
@@ -542,6 +545,7 @@ subroutine time_clockAdvance(SyncClock)
     integer :: rc
 
     do n = 1, max_clocks
+        print *,'clock_:',n
         call time_alarmSetOff(SyncClock%ECP(n)%EClock)
     end do
 
@@ -588,7 +592,7 @@ logical function time_clockDateInSync(EClock, ymd, tod, prev)
         call ESMF_ClockGet(EClock, currTime=ETime, rc=rc)
     end if
     call time_TimeYmdGet(ETime, ymd=ymd1, tod=tod1)
-
+    print *, 'DateInSync: curr_time:', ymd1, tod1, " in comp:", ymd, tod
     if((ymd == ymd1) .and. (tod == tod1))then
         time_clockDateInSync = .true.
     else 
@@ -809,7 +813,7 @@ subroutine time_alarmSetOn(EClock, alarmname)
     integer    :: rc
 
     set = .false.
-    
+    call time_ClockGetInfo(EClock, AlarmCount=AlarmCount)
     allocate(EAlarm_list(AlarmCount))
     call ESMF_ClockGetAlarmList(EClock, alarmListFlag=ESMF_ALARMLIST_ALL,&
                    alarmList=EAlarm_list, alarmCount=AlarmCount, rc=rc)
@@ -854,11 +858,12 @@ subroutine time_alarmSetOff(EClock, alarmname)
     integer :: AlarmCount
 
     set = .false.
-    alarmCount = NUMALARMS
-    allocate(EAlarm_list(NUMALARMS))  
+    call time_clockGetInfo(EClock, AlarmCount=alarmCount)
+    
+    allocate(EAlarm_list(alarmCount))  
     call ESMF_ClockGetAlarmList(EClock, alarmListFlag=ESMF_ALARMLIST_ALL, &
            alarmList=EAlarm_list, alarmCount=AlarmCount, rc=rc)
-    do n = 1, NUMALARMS
+    do n = 1, alarmCount
         found = .false.
         if(present(alarmname))then
             call ESMF_AlarmGet(EAlarm_list(n), name=tempName)
@@ -875,7 +880,7 @@ subroutine time_alarmSetOff(EClock, alarmname)
         write(logUnit, *) subname, ' ERROR in alarmname ', trim(alarmname)
         call shr_sys_abort('ERROR: in  alarmname')
     end if
-
+    deallocate(EAlarm_list)
 end subroutine time_alarmSetOff
 
 logical function time_alarmIsOn(EClock, alarmname)
@@ -897,8 +902,8 @@ logical function time_alarmIsOn(EClock, alarmname)
     integer   :: AlarmCount 
 
     time_alarmIsOn = .false.
-    AlarmCount = 2
-    allocate(EAlarm_list(NUMALARMS))
+    call time_ClockGetInfo(EClock, AlarmCount=AlarmCount)
+    allocate(EAlarm_list(AlarmCount))
     call ESMF_ClockGetAlarmList(EClock, alarmListFlag=ESMF_ALARMLIST_ALL, &
            alarmList=EAlarm_list, alarmCount=AlarmCount, rc=rc)
     do n = 1, AlarmCount
@@ -975,6 +980,7 @@ subroutine time_TimeYmdGet(ETime, offset, ymd, tod)
     integer                  :: day
     integer                  :: sec
     integer                  :: rc
+
 
     ETimeAdd = ETime
     if(present(offset))then

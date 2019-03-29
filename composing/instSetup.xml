@@ -1,6 +1,6 @@
 <instSetup>
 	<macro>
-		<instPath>/share/BCGen_case/BCGen_inst</instPath>
+		<instPath>/share/BCGen_case/BCGen_inst1</instPath>
 		<confPath>conf</confPath>
 	</macro>
 	<file_location>
@@ -13,6 +13,6 @@
 		<data_rc>mapper.rc</data_rc>
 	</data_location>
         <input>
-		<input_path>/share/BCGen_case/input</input_path>
+		<input_path>/mnt/CESM-data/inputdata</input_path>
         </input>
 </instSetup>

@@ -338,7 +338,7 @@ class InstCreator:
             codePath = InstCreator.couplerCodePath
             defaultPath = codePath+"/src/models/"
             modelDir = ""
-            if os.path.exsits(defaultPath+srcLocation):
+            if os.path.exists(defaultPath+srcLocation):
                 modelDir=defaultPath+srcLocation
             elif os.path.exsits(srcLocation):
                 modelDir=srcLocation
@@ -346,16 +346,16 @@ class InstCreator:
                 raise WrongPathError("in createMakefile:")
             metaFile = model.metaFile
             if metaFile == "None":
-                modelDir = InstCreator.couplerCodePath+"/src/models/"+name
+                #modelDir = InstCreator.couplerCodePath+"/src/models/"+name
                 cmdCpComp = 'cp '+modelDir+"/* "+self.metaManager.instPath+"/models/"+name  
                 os.system(cmdCpComp)
             else:
                 # perhaps we need some code to check metaFile position
                 # if find metaFile or find it in the default search path
                 # we need add a default search path
-                modelCreator = ConfModel(name, metaFile)
+                modelCreator = ConfModel(name, metaFile, self.metaManager)
                 modelCreator.createModelInst()
-                modelDir = InstCreator.couplerCodePath+"/src/models/"+name
+                #modelDir = InstCreator.couplerCodePath+"/src/models/"+name
                 cmdCpComp = 'cp -r '+modelDir+"/* " + self.metaManager.instPath+"/models/"+name
                 os.system(cmdCpComp)
                 
@@ -382,11 +382,29 @@ class InstCreator:
         os.system(mvExeCmd)
 	os.system(cpMkConfCmd)
         os.system(mvMkConfCmd)
-
-	#cp scripts
-	cpBuildShCmd = 'cp ../instManager/instBuild.sh '+self.metaManager.instPath
-        os.system(cpBuildShCmd)
+	#!cp scripts
+	#cpBuildShCmd = 'cp ../instManager/instBuild.sh '+self.metaManager.instPath
+        #os.system(cpBuildShCmd)
        
+    def createDoc(self):
+        docKV = {
+           "case_name": "default name",
+           "case_dir": "",
+           "namelist":"",
+           "case_desc":"no desc",
+           "baseCplDir":""
+           }
+        currDir = os.getcwd()
+        baseCplDir = currDir+"/../../baseCpl"
+        os.chdir(baseCplDir)
+        baseCplDir = os.getcwd()
+        os.chdir(currDir)
+        docKV["baseCplDir"] = baseCplDir
+
+        with open("descCase", "w") as f:
+            for k in docKV:
+                s = k+":"+docKV[k]+"\n"
+                f.write(s)
 
     def instCreate(self):
         if self.args["regen"]:
@@ -411,12 +429,16 @@ class InstCreator:
         includePath = instPath+"/include"
         binPath = instPath+"/bin"
         archPath = instPath+"/archive"
+        scriptsPath = instPath+"/scripts"
+        docPath = instPath+"/doc"
         os.mkdir(confPath)
         os.mkdir(srcPath)
         os.mkdir(libPath)
         os.mkdir(includePath)
         os.mkdir(binPath)
         os.mkdir(archPath)
+        os.mkdir(scriptsPath)
+        os.mkdir(docPath)
         
         # create models dir & copy relavent code and Makefile
         modelsPath = instPath+"/models/"
@@ -447,8 +469,16 @@ class InstCreator:
         #copy Makefile to relavent dir
         self.createMakefile()
         #exit(1)
+  
+        # create doc, mv it and cp scripts
+        self.createDoc()
+        cpDoc =  "cp descCase "+docPath
+        os.system(cpDoc)
 
-
+        # copy scripts
+        cpScripts = "cp ./scripts/* "+scriptsPath
+        os.system(cpScripts)
+ 
         #copy src include mod and lib .a .o to instDir
         BCGenPath = "../../baseCpl/"
         copyIncludeCmd = "cp -r " + BCGenPath+"include/* "+includePath

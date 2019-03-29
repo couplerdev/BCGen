@@ -188,6 +188,7 @@ subroutine cpl_init()
                          metaData%model${name}2cpl_id, ierr)
         call MPI_Barrier(metaData%mpi_model${name}2cpl, ierr)
         call mapper_comp_map(metaData%mapper_C${name}2x, $av_mx_mm, $av_mx_mx, 100+10+1, ierr)
+        call mapper_comp_map(metaData%mapper_C${name}2x, $av_xm_mm, $av_xm_mx, 100+10+1, ierr)
     end if
     
     if(metaData%iamroot_model${name})then

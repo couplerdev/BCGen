@@ -5,7 +5,7 @@
 		<location>/share/BCGen/develDir/BCGenV1.0/BCGen/composing/camDesc.xml</location>
 	</model>
 	<model>
-		<name>atn</name>
+		<name>atm</name>
 		<location>None</location>
 	</model>
 </models>

@@ -1,0 +1,38 @@
+<globalCompute>
+<!--this module compute the variables not in component-->
+<attrVect>
+	<name>xao_ax</name>
+	<gsize><gsize>
+	<fields>flds_xao_fields</fields>
+	<deps>
+		<model>atm</model>
+		<model>ocn</model>
+	</deps>
+	<methods>
+		<init></init>
+		<run>
+			<phase></phase>
+			<phase></phase>
+		</run>
+		<final></final>
+	</methods>
+</attrVect>
+<attrVect>
+	<name>xao_ox</name>
+	<gsize></gsize>
+	<fields>flds_xao_fields</fields>
+	<deps>
+		<model>atm</model>
+		<model>ocn</model>
+	</deps>
+	<methods>
+		<init></init>
+		<run>
+			<phase></phase>
+			<phase></phase>
+		</run>
+		<final><final>	
+	</methods>
+</attrVect>
+<!---->
+</globalCompute>

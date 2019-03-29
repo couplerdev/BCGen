@@ -5,7 +5,7 @@
 		<workDir>./bld</workDir>
 		<args>
 			<arg>-dyn fv</arg>
-			<arg>-hgrid 10x15</arg>
+			<arg>-hgrid 4x5</arg>
 			<arg>-spmd</arg>
 			<arg>-nosmp</arg>
 			<arg>-test</arg>
@@ -16,10 +16,13 @@
 		</args>
 	</configure>
 	<build-namelist>
-		<script></script>
+		<script>build-namelist</script>
+		<workDir>./bld</workDir>
 		<args>
-			<arg></arg>
-			<arg></arg>
+			<arg>-test</arg>
+			<arg>-config ./config_cache.xml</arg>
+			<arg type='dataloc'>-csmdata</arg>
+			<arg type='outloc'>-dir</arg>
 		</args>
 	</build-namelist>
 </camDescXml>
