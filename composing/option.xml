@@ -19,6 +19,7 @@
 		<comps>
 			<atm_cpl_dt>3600</atm_cpl_dt>
 			<ocn_cpl_dt>86400</ocn_cpl_dt>
+			<lnd_cpl_dt>36000</lnd_cpl_dt>
 		</comps>
 		<end_restart type='bool'>.false.</end_restart>
 	</time>
