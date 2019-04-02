@@ -8,6 +8,10 @@
 		<name>clm</name>
 		<location>/home/heqi/git/BCGen/composing/clmDesc.xml</location>
 	</model>
+	<model>
+		<name>cice</name>
+		<location>/home/heqi/git/BCGen/composing/ciceDesc.xml</location>
+	</model>
 </models>
 
 </innerModels>

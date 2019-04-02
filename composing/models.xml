@@ -183,4 +183,50 @@
 			</final>
    		</method>
 	</model> 
+	<model>
+		<name>ice</name>
+		<version>cice</version>
+		<src>ice</src>
+		<metaFile>None</metaFile>
+		<attrVect>
+			<name></name>
+			<gsize>11600</gsize>
+			<nx>3</nx>
+			<ny>4</ny>
+			<field>flds_ice2x_states,flds_ice2x_fluxes,flds_x2ice_states,flds_x2ice_fluxes</field>
+		</attrVect>
+		<domain>
+			<field>flds_dom_coord</field>
+			<path></path>
+		</domain>
+		<method>
+			<init>
+				<name>ice_init_mct</name>
+				<in_args>
+					<arg>ice2x_iceice</arg>
+				</in_args>
+				<out_args>
+					<arg>x2ice_iceice</arg>
+				</out_args>
+ 			</init>
+			<run>
+				<name>ice_run_mct</name>
+				<in_args>
+					<arg>ice2x_iceice</arg>
+				</in_args>
+				<out_args>
+					<arg>x2ice_iceice</arg>
+				</out_args>
+			</run>
+			<final>
+				<name>ice_final_mct</name>
+				<in_args>
+					<arg>ice2x_iceice</arg>
+				</in_args>
+				<out_args>
+					<arg>x2ice_iceice</arg>
+				</out_args>
+			</final>
+   		</method>
+	</model> 
 </models>

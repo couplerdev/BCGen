@@ -6,10 +6,10 @@ use global_var
     implicit none
 !include "mpif.h"
     public :: mrg_x2atm
-!    public :: mrg_x2lnd
+    public :: mrg_x2lnd
     public :: mrg_x2ocn
 !    public :: mrg_x2rof
-!    public :: mrg_x2ice
+    public :: mrg_x2ice
 !    public :: mrg_x2wav
 
 contains
@@ -70,5 +70,18 @@ x2lnd_lndx)
 
 end subroutine mrg_x2lnd
 
+subroutine mrg_x2ice(metaData, ice2x_icex,&
+x2ice_icex)
+
+    implicit none
+    type(Meta),        intent(in)    :: metaData
+!    type(mct_aVect),   intent(in)    :: atm2x_icex
+!    type(attrVect),   intent(in)    :: wav2x_ocnx
+    type(mct_aVect),   intent(in)    :: ice2x_icex
+    type(mct_aVect),   intent(inout) :: x2ice_icex
+
+    write(*,*)'========== ice mrged =========='
+
+end subroutine mrg_x2ice
 
 end module mrg_mod

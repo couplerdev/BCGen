@@ -49,6 +49,7 @@ module base_rest_mod
 
    logical     :: lnd_prognostic       
    logical     :: atm_prognostic       
+   logical     :: ice_prognostic       
    logical     :: ocn_prognostic       
 
    integer(IN) :: info_debug = 0         ! local info_debug level
@@ -75,6 +76,8 @@ subroutine base_rest_read(metaData, rest_file)
    type(mct_aVect)   :: fractions_lndx
    type(mct_aVect),  pointer  :: atm2x_atmx
    type(mct_aVect)   :: fractions_atmx
+   type(mct_aVect),  pointer  :: ice2x_icex
+   type(mct_aVect)   :: fractions_icex
    type(mct_aVect),  pointer  :: ocn2x_ocnx
    type(mct_aVect)   :: fractions_ocnx
 
@@ -91,10 +94,12 @@ subroutine base_rest_read(metaData, rest_file)
   
    lnd2x_lndx => metaData%lnd2x_lndx
    atm2x_atmx => metaData%atm2x_atmx
+   ice2x_icex => metaData%ice2x_icex
    ocn2x_ocnx => metaData%ocn2x_ocnx
 
    call compMeta_getInfo(metaData%lnd, prognostic=lnd_prognostic)
    call compMeta_getInfo(metaData%atm, prognostic=atm_prognostic)
+   call compMeta_getInfo(metaData%ice, prognostic=ice_prognostic)
    call compMeta_getInfo(metaData%ocn, prognostic=ocn_prognostic)
  
    if (iamin_CPLID) then
@@ -110,6 +115,11 @@ subroutine base_rest_read(metaData, rest_file)
          call base_io_read(rest_file,gsmap,atm2x_atmx,'atm2x_atmx')
       !end if
       !if(atm_present)then
+         call compMeta_getInfo(metaData%ice, comp_gsmap=gsmap)
+         call base_io_read(rest_file,gsmap,fractions_icex,'fractions_icex')
+         call base_io_read(rest_file,gsmap,ice2x_icex,'ice2x_icex')
+      !end if
+      !if(ice_present)then
          call compMeta_getInfo(metaData%ocn, comp_gsmap=gsmap)
          call base_io_read(rest_file,gsmap,fractions_ocnx,'fractions_ocnx')
          call base_io_read(rest_file,gsmap,ocn2x_ocnx,'ocn2x_ocnx')
@@ -174,6 +184,8 @@ subroutine base_rest_write(metaData, EClock_d)
    type(mct_aVect)           :: fractions_lndx
    type(mct_aVect)           :: atm2x_atmx
    type(mct_aVect)           :: fractions_atmx
+   type(mct_aVect)           :: ice2x_icex
+   type(mct_aVect)           :: fractions_icex
    type(mct_aVect)           :: ocn2x_ocnx
    type(mct_aVect)           :: fractions_ocnx
    character(len=*), parameter :: prefix="./archive/"
@@ -194,10 +206,12 @@ subroutine base_rest_write(metaData, EClock_d)
 
    !lnd2x_lndx => metaData%lnd2x_lndx
    !atm2x_atmx => metaData%atm2x_atmx
+   !ice2x_icex => metaData%ice2x_icex
    !ocn2x_ocnx => metaData%ocn2x_ocnx
 
    call compMeta_getInfo(metaData%lnd, prognostic=lnd_prognostic)
    call compMeta_getInfo(metaData%atm, prognostic=atm_prognostic)
+   call compMeta_getInfo(metaData%ice, prognostic=ice_prognostic)
    call compMeta_getInfo(metaData%ocn, prognostic=ocn_prognostic)
    ! Write out infodata and time manager data to restart file
 
@@ -290,6 +304,10 @@ subroutine base_rest_write(metaData, EClock_d)
          call compMeta_getInfo(metaData%atm, comp_gsmap=gsmap)
          !call base_io_write(rest_file,gsmap,fractions_atmx,'fractions_atmx',whead=whead,wdata=wdata)
          call base_io_write(rest_file,gsmap,metaData%atm2x_atmx,'atm2x_atmx',whead=whead,wdata=wdata)
+         
+         call compMeta_getInfo(metaData%ice, comp_gsmap=gsmap)
+         !call base_io_write(rest_file,gsmap,fractions_icex,'fractions_icex',whead=whead,wdata=wdata)
+         call base_io_write(rest_file,gsmap,metaData%ice2x_icex,'ice2x_icex',whead=whead,wdata=wdata)
          
          call compMeta_getInfo(metaData%ocn, comp_gsmap=gsmap)
          !call base_io_write(rest_file,gsmap,fractions_ocnx,'fractions_ocnx',whead=whead,wdata=wdata)

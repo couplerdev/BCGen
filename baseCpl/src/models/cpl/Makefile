@@ -16,5 +16,5 @@ EXE:
 	$(FC) -c -I$(INCLDIR) -I$(ESMF_MOD) -L$(LIBDIR) $(CPPDEFS) baseCpl.F90
 	echo 'finish mod'
 	$(FC) -o $(EXE) $(MAIN) $(OBJS_ALL) $(BASE_DEPS) $(FLAGS) $(CPPDEFS) -I$(INCLDIR) -L$(LIBDIR) \
-	-L$(LIBDIR) -latm -lclm $(EXTERNAL_LDFLAGS) $(DEPS) $(MCTDEPS) $(ESMF_DEPS)
+	-L$(LIBDIR) -latm -lclm -lcice $(EXTERNAL_LDFLAGS) $(DEPS) $(MCTDEPS) $(ESMF_DEPS)
 	#mv $(EXE) $(BINDIR)

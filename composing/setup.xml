@@ -25,4 +25,10 @@
 		<input>
 		</input>
 	</model>
+	<model>
+		<name>ice</name>
+		<version>cice</version>
+		<input>
+		</input>
+	</model>
 </setup>

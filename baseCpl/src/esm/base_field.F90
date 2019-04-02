@@ -20,29 +20,35 @@ subroutine flds_init(metaData, ierr)
     character(SHR_KIND_CL)   :: units
     integer :: idx, totalFld
 
-    totalFld = 107
+    totalFld = 124
     call fldsMeta_init(metaData%fldsMetaData, totalFld)
     
-    metaData%flds_dom = "lat:lon:area:aream:mask:frac"
-    metaData%flds_x2ocn_fluxes = "Faxa_rain:Faxa_snow:Faxa_prec:Faxa_lwdn:Foxx_swnet:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4:Foxx_taux:Foxx_tauy:Foxx_lat:Foxx_sen:Foxx_lwup:Foxx_evap:Fioi_melth:Fioi_meltw:Fioi_salt:Forr_roff:Forr_ioff"
-    metaData%flds_ocn2x_states = "So_t:So_s:So_u:So_v:So_dhdx:So_dhdy:So_bldepth"
-    metaData%flds_x2lnd_states = "Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot:Slrr_volr"
-    metaData%flds_lnd2x_states = "Sl_avsdr:Sl_anidr:Sl_avsdf:Sl_anidf:Sl_tref:Sl_qref:Sl_t:Sl_fv:Sl_ram1:Sl_snowh:Sl_u10"
     metaData%flds_x2ocn = "Faxa_rain:Faxa_snow:Faxa_prec:Faxa_lwdn:Foxx_swnet:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4:Foxx_taux:Foxx_tauy:Foxx_lat:Foxx_sen:Foxx_lwup:Foxx_evap:Fioi_melth:Fioi_meltw:Fioi_salt:Forr_roff:Forr_ioff:Sa_pslv:So_duu10n:Si_ifrac:Sw_lamult:Sw_ustokes:Sw_vstokes:Sw_hstokes"
-    metaData%flds_lnd2x_fluxes = "Fall_swnet:Fall_taux:Fall_tauy:Fall_lat:Fall_sen:Fall_lwup:Fall_evap:Fall_flxdst1:Fall_flxdst2:Fall_flxdst3:Fall_flxdst4:Flrl_rofliq:Flrl_rofice"
-    metaData%flds_ocn2x = "So_t:So_s:So_u:So_v:So_dhdx:So_dhdy:So_bldepth:Fioo_q"
-    metaData%flds_x2atm = "Sf_lfrac:Sf_ifrac:Sf_ofrac:Sx_avsdr:Sx_anidr:Sx_avsdf:Sx_anidf:Sx_tref:Sx_qref:So_t:Sx_t:Sl_fv:Sl_ram1:Sl_snowh:Si_snowh:So_ssq:So_re:Sx_u10:So_ustar:Faxx_taux:Faxx_tauy:Faxx_lat:Faxx_sen:Faxx_lwup:Faxx_evap:Fall_flxdst1:Fall_flxdst2:Fall_flxdst3:Fall_flxdst4"
-    metaData%flds_dom_coord = "lat:lon:area:aream:mask:frac"
-    metaData%flds_atm2x_states = "Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot:Sa_dens:Sa_pslv"
-    metaData%flds_x2ocn_states = "Sa_pslv:So_duu10n:Si_ifrac:Sw_lamult:Sw_ustokes:Sw_vstokes:Sw_hstokes"
-    metaData%flds_atm2x_fluxes = "Faxa_rainc:Faxa_rainl:Faxa_snowc:Faxa_snowl:Faxa_lwdn:Faxa_swndr:Faxa_swvdr:Faxa_swndf:Faxa_swvdf:Faxa_swnet:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4"
-    metaData%flds_atm2x = "Faxa_rainc:Faxa_rainl:Faxa_snowc:Faxa_snowl:Faxa_lwdn:Faxa_swndr:Faxa_swvdr:Faxa_swndf:Faxa_swvdf:Faxa_swnet:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4:Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot:Sa_dens:Sa_pslv"
-    metaData%flds_x2atm_fluxes = "Faxx_taux:Faxx_tauy:Faxx_lat:Faxx_sen:Faxx_lwup:Faxx_evap:Fall_flxdst1:Fall_flxdst2:Fall_flxdst3:Fall_flxdst4"
-    metaData%flds_x2lnd = "Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot:Slrr_volr:Faxa_rainc:Faxa_rainl:Faxa_snowc:Faxa_snowl:Faxa_lwdn:Faxa_swndr:Faxa_swvdr:Faxa_swndf:Faxa_swvdf:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4:Flrr_flood"
-    metaData%flds_x2lnd_fluxes = "Faxa_rainc:Faxa_rainl:Faxa_snowc:Faxa_snowl:Faxa_lwdn:Faxa_swndr:Faxa_swvdr:Faxa_swndf:Faxa_swvdf:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4:Flrr_flood"
+    metaData%flds_x2ice_fluxes = "Faxa_rain:Faxa_snow:Faxa_lwdn:Faxa_swndr:Faxa_swvdr:Faxa_swndf:Faxa_swvdf:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4:Fioo_q"
     metaData%flds_lnd2x = "Sl_avsdr:Sl_anidr:Sl_avsdf:Sl_anidf:Sl_tref:Sl_qref:Sl_t:Sl_fv:Sl_ram1:Sl_snowh:Sl_u10:Fall_swnet:Fall_taux:Fall_tauy:Fall_lat:Fall_sen:Fall_lwup:Fall_evap:Fall_flxdst1:Fall_flxdst2:Fall_flxdst3:Fall_flxdst4:Flrl_rofliq:Flrl_rofice"
+    metaData%flds_dom = "lat:lon:area:aream:mask:frac"
+    metaData%flds_ice2x = "Faii_swnet:Fioi_swpen:Faii_taux:Fioi_taux:Faii_tauy:Fioi_tauy:Faii_lat:Faii_sen:Faii_lwup:Faii_evap:Fioi_melth:Fioi_meltw:Fioi_salt:Si_avsdr:Si_anidr:Si_avsdf:Si_anidf:Si_tref:Si_qref:Si_t:Si_snowh:Si_u10:Si_ifrac"
+    metaData%flds_atm2x_fluxes = "Faxa_rainc:Faxa_rainl:Faxa_snowc:Faxa_snowl:Faxa_lwdn:Faxa_swndr:Faxa_swvdr:Faxa_swndf:Faxa_swvdf:Faxa_swnet:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4"
+    metaData%flds_x2ice = "Faxa_rain:Faxa_snow:Faxa_lwdn:Faxa_swndr:Faxa_swvdr:Faxa_swndf:Faxa_swvdf:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4:Fioo_q:Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot:Sa_dens:So_t:So_s:So_u:So_v:So_dhdx:So_dhdy"
+    metaData%flds_dom_coord = "lat:lon:area:aream:mask:frac"
     metaData%flds_x2atm_states = "Sf_lfrac:Sf_ifrac:Sf_ofrac:Sx_avsdr:Sx_anidr:Sx_avsdf:Sx_anidf:Sx_tref:Sx_qref:So_t:Sx_t:Sl_fv:Sl_ram1:Sl_snowh:Si_snowh:So_ssq:So_re:Sx_u10:So_ustar"
+    metaData%flds_x2ocn_states = "Sa_pslv:So_duu10n:Si_ifrac:Sw_lamult:Sw_ustokes:Sw_vstokes:Sw_hstokes"
+    metaData%flds_x2atm = "Sf_lfrac:Sf_ifrac:Sf_ofrac:Sx_avsdr:Sx_anidr:Sx_avsdf:Sx_anidf:Sx_tref:Sx_qref:So_t:Sx_t:Sl_fv:Sl_ram1:Sl_snowh:Si_snowh:So_ssq:So_re:Sx_u10:So_ustar:Faxx_taux:Faxx_tauy:Faxx_lat:Faxx_sen:Faxx_lwup:Faxx_evap:Fall_flxdst1:Fall_flxdst2:Fall_flxdst3:Fall_flxdst4"
+    metaData%flds_x2lnd = "Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot:Slrr_volr:Faxa_rainc:Faxa_rainl:Faxa_snowc:Faxa_snowl:Faxa_lwdn:Faxa_swndr:Faxa_swvdr:Faxa_swndf:Faxa_swvdf:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4:Flrr_flood"
+    metaData%flds_ice2x_fluxes = "Faii_swnet:Fioi_swpen:Faii_taux:Fioi_taux:Faii_tauy:Fioi_tauy:Faii_lat:Faii_sen:Faii_lwup:Faii_evap:Fioi_melth:Fioi_meltw:Fioi_salt"
+    metaData%flds_ocn2x_states = "So_t:So_s:So_u:So_v:So_dhdx:So_dhdy:So_bldepth"
+    metaData%flds_x2ocn_fluxes = "Faxa_rain:Faxa_snow:Faxa_prec:Faxa_lwdn:Foxx_swnet:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4:Foxx_taux:Foxx_tauy:Foxx_lat:Foxx_sen:Foxx_lwup:Foxx_evap:Fioi_melth:Fioi_meltw:Fioi_salt:Forr_roff:Forr_ioff"
+    metaData%flds_lnd2x_states = "Sl_avsdr:Sl_anidr:Sl_avsdf:Sl_anidf:Sl_tref:Sl_qref:Sl_t:Sl_fv:Sl_ram1:Sl_snowh:Sl_u10"
+    metaData%flds_x2lnd_states = "Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot:Slrr_volr"
+    metaData%flds_x2ice_states = "Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot:Sa_dens:So_t:So_s:So_u:So_v:So_dhdx:So_dhdy"
+    metaData%flds_lnd2x_fluxes = "Fall_swnet:Fall_taux:Fall_tauy:Fall_lat:Fall_sen:Fall_lwup:Fall_evap:Fall_flxdst1:Fall_flxdst2:Fall_flxdst3:Fall_flxdst4:Flrl_rofliq:Flrl_rofice"
+    metaData%flds_atm2x = "Faxa_rainc:Faxa_rainl:Faxa_snowc:Faxa_snowl:Faxa_lwdn:Faxa_swndr:Faxa_swvdr:Faxa_swndf:Faxa_swvdf:Faxa_swnet:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4:Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot:Sa_dens:Sa_pslv"
+    metaData%flds_ocn2x = "So_t:So_s:So_u:So_v:So_dhdx:So_dhdy:So_bldepth:Fioo_q"
+    metaData%flds_x2lnd_fluxes = "Faxa_rainc:Faxa_rainl:Faxa_snowc:Faxa_snowl:Faxa_lwdn:Faxa_swndr:Faxa_swvdr:Faxa_swndf:Faxa_swvdf:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4:Flrr_flood"
+    metaData%flds_ice2x_states = "Si_avsdr:Si_anidr:Si_avsdf:Si_anidf:Si_tref:Si_qref:Si_t:Si_snowh:Si_u10:Si_ifrac"
+    metaData%flds_atm2x_states = "Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot:Sa_dens:Sa_pslv"
     metaData%flds_ocn2x_fluxes = "Fioo_q"
+    metaData%flds_x2atm_fluxes = "Faxx_taux:Faxx_tauy:Faxx_lat:Faxx_sen:Faxx_lwup:Faxx_evap:Fall_flxdst1:Fall_flxdst2:Fall_flxdst3:Fall_flxdst4"
 
     fldDesc%shortname = "Faxa_rainl"
     fldDesc%longname = " Large-scale (stable) precipitation rate"
@@ -74,6 +80,11 @@ subroutine flds_init(metaData, ierr)
     fldDesc%stdname = " fraction_velocity"
     fldDesc%units = " m s-1"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Si_tref"
+    fldDesc%longname = " Reference temperature at 2 meters"
+    fldDesc%stdname = " air_temperature"
+    fldDesc%units = " K"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Foxx_sen"
     fldDesc%longname = " Sensible heat flux"
     fldDesc%stdname = " surface_upward_sensible_heat_flux"
@@ -88,6 +99,11 @@ subroutine flds_init(metaData, ierr)
     fldDesc%longname = " Hydrophylic black carbon wet deposition flux"
     fldDesc%stdname = " wet_deposition_flux_of_hydrophylic_black_carbon"
     fldDesc%units = " kg m-2 s-1"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Faii_tauy"
+    fldDesc%longname = " Meridional surface stress"
+    fldDesc%stdname = " surface_downward_northward_stress"
+    fldDesc%units = " N m-2"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "aream"
     fldDesc%longname = "unknow"
@@ -138,6 +154,11 @@ subroutine flds_init(metaData, ierr)
     fldDesc%longname = " Surface temperature"
     fldDesc%stdname = " surface_temperature"
     fldDesc%units = " K"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Faii_lat"
+    fldDesc%longname = " Surface latent heat flux"
+    fldDesc%stdname = " surface_upward_latent_heat_flux"
+    fldDesc%units = " W m-2"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Sx_anidf"
     fldDesc%longname = " Diffuse albedo (near-infrared radiation)"
@@ -269,6 +290,11 @@ subroutine flds_init(metaData, ierr)
     fldDesc%stdname = " height"
     fldDesc%units = " m"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Si_t"
+    fldDesc%longname = " Surface temperature"
+    fldDesc%stdname = " surface_temperature"
+    fldDesc%units = " K"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Sa_pslv"
     fldDesc%longname = " Sea level pressure"
     fldDesc%stdname = " air_pressure_at_sea_level"
@@ -279,14 +305,39 @@ subroutine flds_init(metaData, ierr)
     fldDesc%stdname = " air_temperature"
     fldDesc%units = " K"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Si_anidf"
+    fldDesc%longname = " Diffuse albedo (near-infrared radiation)"
+    fldDesc%stdname = " surface_diffuse_albedo_due_to_near_infrared_radiation"
+    fldDesc%units = " unitless"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Si_avsdf"
+    fldDesc%longname = " Diffuse albedo (visible radiation)"
+    fldDesc%stdname = " surface_diffuse_albedo_due_to_visible_radiation"
+    fldDesc%units = " unitless"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Sl_qref"
     fldDesc%longname = " Reference specific humidity at 2 meters"
     fldDesc%stdname = " specific_humidity"
     fldDesc%units = " kg kg-1"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Faii_lwup"
+    fldDesc%longname = " Surface upward longwave heat flux"
+    fldDesc%stdname = " surface_net_upward_longwave_flux"
+    fldDesc%units = " W m-2"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Flrl_rofliq"
     fldDesc%longname = " Water flux from land (liquid)"
     fldDesc%stdname = " water_flux_into_runoff"
+    fldDesc%units = " kg m-2 s-1"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Si_avsdr"
+    fldDesc%longname = " Direct albedo (visible radiation)"
+    fldDesc%stdname = " surface_direct_albedo_due_to_visible_radiation"
+    fldDesc%units = " unitless"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Forr_ioff"
+    fldDesc%longname = " Water flux due to runoff (frozen)"
+    fldDesc%stdname = " frozen_water_flux_into_sea_water"
     fldDesc%units = " kg m-2 s-1"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Sw_lamult"
@@ -344,6 +395,11 @@ subroutine flds_init(metaData, ierr)
     fldDesc%stdname = " surface_downward_diffuse_shortwave_flux_due_to_visible_radiation"
     fldDesc%units = " W m-2"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Si_qref"
+    fldDesc%longname = " Reference specific humidity at 2 meters"
+    fldDesc%stdname = " specific_humidity"
+    fldDesc%units = " kg kg-1"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Sa_ptem"
     fldDesc%longname = " Potential temperature at the lowest model level"
     fldDesc%stdname = " air_potential_temperature"
@@ -353,6 +409,11 @@ subroutine flds_init(metaData, ierr)
     fldDesc%longname = " Net shortwave radiation"
     fldDesc%stdname = " surface_net_shortwave_flux"
     fldDesc%units = " W m-2"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Faii_taux"
+    fldDesc%longname = " Zonal surface stress"
+    fldDesc%stdname = " surface_downward_eastward_stress"
+    fldDesc%units = " N m-2"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Faxa_swvdr"
     fldDesc%longname = " Direct visible incident solar radiation"
@@ -367,6 +428,11 @@ subroutine flds_init(metaData, ierr)
     fldDesc%shortname = "Foxx_lwup"
     fldDesc%longname = " Surface upward longwave heat flux"
     fldDesc%stdname = " surface_net_upward_longwave_flux"
+    fldDesc%units = " W m-2"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Faii_sen"
+    fldDesc%longname = " Sensible heat flux"
+    fldDesc%stdname = " surface_upward_sensible_heat_flux"
     fldDesc%units = " W m-2"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "area"
@@ -409,6 +475,11 @@ subroutine flds_init(metaData, ierr)
     fldDesc%stdname = "unknow"
     fldDesc%units = "unknow"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Faii_swnet"
+    fldDesc%longname = " Net shortwave radiation"
+    fldDesc%stdname = " surface_net_shortwave_flux"
+    fldDesc%units = " W m-2"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Sl_anidf"
     fldDesc%longname = " Diffuse albedo (near-infrared radiation)"
     fldDesc%stdname = " surface_diffuse_albedo_due_to_near_infrared_radiation"
@@ -434,10 +505,10 @@ subroutine flds_init(metaData, ierr)
     fldDesc%stdname = " surface_upward_latent_heat_flux"
     fldDesc%units = " W m-2"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
-    fldDesc%shortname = "Forr_ioff"
-    fldDesc%longname = " Water flux due to runoff (frozen)"
-    fldDesc%stdname = " frozen_water_flux_into_sea_water"
-    fldDesc%units = " kg m-2 s-1"
+    fldDesc%shortname = "Fioi_tauy"
+    fldDesc%longname = " Meridional surface stress"
+    fldDesc%stdname = " surface_downward_northward_stress"
+    fldDesc%units = " N m-2"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Fall_flxdst4"
     fldDesc%longname = " Dust flux (particle bin number 4)"
@@ -458,6 +529,11 @@ subroutine flds_init(metaData, ierr)
     fldDesc%longname = " Dust flux (particle bin number 1)"
     fldDesc%stdname = " dust_flux"
     fldDesc%units = " kg m-2 s-1"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Fioi_taux"
+    fldDesc%longname = " Zonal surface stress"
+    fldDesc%stdname = " surface_downward_eastward_stress"
+    fldDesc%units = " N m-2"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Fall_swnet"
     fldDesc%longname = " Net shortwave radiation"
@@ -499,6 +575,11 @@ subroutine flds_init(metaData, ierr)
     fldDesc%stdname = " surface_direct_albedo_due_to_visible_radiation"
     fldDesc%units = " unitless"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Faii_evap"
+    fldDesc%longname = " Evaporation water flux"
+    fldDesc%stdname = " water_evaporation_flux"
+    fldDesc%units = " kg m-2 s-1"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Faxx_lat"
     fldDesc%longname = " Surface latent heat flux"
     fldDesc%stdname = " surface_upward_latent_heat_flux"
@@ -539,6 +620,11 @@ subroutine flds_init(metaData, ierr)
     fldDesc%stdname = " area fraction"
     fldDesc%units = " unitless"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Si_anidr"
+    fldDesc%longname = " Direct albedo (near-infrared radiation)"
+    fldDesc%stdname = " surface_direct_albedo_due_to_near_infrared_radiation"
+    fldDesc%units = " unitless"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "Faxa_swndr"
     fldDesc%longname = " Direct near-infrared incident solar radiation"
     fldDesc%stdname = " surface_downward_direct_shortwave_flux_due_to_near_infrared_radiation"
@@ -563,6 +649,11 @@ subroutine flds_init(metaData, ierr)
     fldDesc%longname = " Surface saturation specific humidity in ocean"
     fldDesc%stdname = " specific_humidity_at_saturation"
     fldDesc%units = " kg kg-1"
+    call fldsMeta_add(metaData%fldsMetaData, fldDesc)
+    fldDesc%shortname = "Fioi_swpen"
+    fldDesc%longname = " Net shortwave radiation penetrating into ice and ocean"
+    fldDesc%stdname = " net_downward_shortwave_flux_in_sea_ice_due_to_penetration"
+    fldDesc%units = " W m-2"
     call fldsMeta_add(metaData%fldsMetaData, fldDesc)
     fldDesc%shortname = "mask"
     fldDesc%longname = "unknow"

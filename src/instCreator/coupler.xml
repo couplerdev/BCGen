@@ -96,4 +96,18 @@
 				</out_args>
 			</mrg>
 		</attrVect>
+		<attrVect>
+			<name>ice2x_icex</name>
+			<model>ice</model>
+			<srcs/>
+			<mrg>
+				<name>mrg_x2ice</name>
+				<in_args>
+					<arg>ice2x_icex</arg>
+				</in_args>
+				<out_args>
+					<arg>x2ice_icex</arg>
+				</out_args>
+			</mrg>
+		</attrVect>
 	</coupler>
