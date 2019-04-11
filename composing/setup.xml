@@ -19,12 +19,12 @@
 			</src>
 		</input>
 	</model>
-	<model>
+	<!--model>
 		<name>lnd</name>
 		<version>clm</version>
 		<input>
 		</input>
-	</model>
+	</model-->
 	<model>
 		<name>ice</name>
 		<version>cice</version>

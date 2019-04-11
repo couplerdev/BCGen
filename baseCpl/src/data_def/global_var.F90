@@ -9,7 +9,6 @@ use field_def
        type(fldsMeta)    :: fldsMetaData
        type(procMeta)    :: my_proc
        type(confMeta)    :: conf
-       type(compMeta)    :: lnd
        type(compMeta)    :: atm
        type(compMeta)    :: ice
        type(compMeta)    :: ocn
@@ -22,21 +21,19 @@ use field_def
        integer  :: num_comms
        integer  :: num_models
        integer  :: my_rank
-       integer  :: ncomps = 10
+       integer  :: ncomps = 8
 
        !-----------------------------------------
        !  comp id
        !-----------------------------------------
        integer    ::  gloid = 1
        integer    ::  cplid = 2
-       integer   :: modellnd_id = 3
-       integer   :: modellnd2cpl_id = 7
-       integer   :: modelatm_id = 4
-       integer   :: modelatm2cpl_id = 8
-       integer   :: modelice_id = 5
-       integer   :: modelice2cpl_id = 9
-       integer   :: modelocn_id = 6
-       integer   :: modelocn2cpl_id = 10
+       integer   :: modelatm_id = 3
+       integer   :: modelatm2cpl_id = 6
+       integer   :: modelice_id = 4
+       integer   :: modelice2cpl_id = 7
+       integer   :: modelocn_id = 5
+       integer   :: modelocn2cpl_id = 8
 
        !-------------------------------------------
        ! used for mct_init
@@ -50,13 +47,6 @@ use field_def
        !------------------------------------------
        !   intermediate vars
        !------------------------------------------
-       type(mct_aVect)   :: lnd2x_lndlnd
-       type(mct_aVect)   :: lnd2x_lndx
-       type(mct_aVect)   :: x2lnd_lndlnd
-       type(mct_aVect)   :: x2lnd_lndx
-       type(mct_gGrid)      :: domain_lnd
-       type(map_mod)    :: Mapper_Clnd2x
-       type(map_mod)    :: Mapper_Cx2lnd
        type(mct_aVect)   :: atm2x_atmatm
        type(mct_aVect)   :: atm2x_atmx
        type(mct_aVect)   :: x2atm_atmatm
@@ -84,8 +74,6 @@ use field_def
        !---------------------------------------------
        integer    :: mpi_glocomm
        integer    :: mpi_cpl
-       integer    :: mpi_modellnd
-       integer    :: mpi_modellnd2cpl
        integer    :: mpi_modelatm
        integer    :: mpi_modelatm2cpl
        integer    :: mpi_modelice
@@ -97,11 +85,6 @@ use field_def
        logical    :: iamin_cpl
        logical    :: iamroot_cpl
 
-       logical    :: iamin_modellnd
-       logical    :: iamin_modellnd2cpl
-       logical    :: iamroot_modellnd
-       logical    :: iamroot_modellnd2cpl
-       logical    :: lnd_run
        logical    :: iamin_modelatm
        logical    :: iamin_modelatm2cpl
        logical    :: iamroot_modelatm
@@ -122,45 +105,37 @@ use field_def
        type(map_mod)   :: mapper_Smatatm2ocn
        type(map_mod)   :: mapper_Smatocn2atm
 
-       character(SHR_KIND_CXX) :: flds_x2ocn 
-       character(SHR_KIND_CXX) :: flds_x2ice_fluxes 
-       character(SHR_KIND_CXX) :: flds_lnd2x 
        character(SHR_KIND_CXX) :: flds_dom 
        character(SHR_KIND_CXX) :: flds_ice2x 
-       character(SHR_KIND_CXX) :: flds_atm2x_fluxes 
+       character(SHR_KIND_CXX) :: flds_ocn2x_states 
+       character(SHR_KIND_CXX) :: flds_x2ocn_fluxes 
        character(SHR_KIND_CXX) :: flds_x2ice 
+       character(SHR_KIND_CXX) :: flds_atm2x_fluxes 
+       character(SHR_KIND_CXX) :: flds_x2ice_fluxes 
+       character(SHR_KIND_CXX) :: flds_x2ice_states 
+       character(SHR_KIND_CXX) :: flds_x2ocn 
+       character(SHR_KIND_CXX) :: flds_x2atm 
        character(SHR_KIND_CXX) :: flds_dom_coord 
        character(SHR_KIND_CXX) :: flds_x2atm_states 
        character(SHR_KIND_CXX) :: flds_x2ocn_states 
-       character(SHR_KIND_CXX) :: flds_x2atm 
-       character(SHR_KIND_CXX) :: flds_x2lnd 
-       character(SHR_KIND_CXX) :: flds_ice2x_fluxes 
-       character(SHR_KIND_CXX) :: flds_ocn2x_states 
-       character(SHR_KIND_CXX) :: flds_x2ocn_fluxes 
-       character(SHR_KIND_CXX) :: flds_lnd2x_states 
-       character(SHR_KIND_CXX) :: flds_x2lnd_states 
-       character(SHR_KIND_CXX) :: flds_x2ice_states 
-       character(SHR_KIND_CXX) :: flds_lnd2x_fluxes 
+       character(SHR_KIND_CXX) :: flds_x2atm_fluxes 
        character(SHR_KIND_CXX) :: flds_atm2x 
        character(SHR_KIND_CXX) :: flds_ocn2x 
-       character(SHR_KIND_CXX) :: flds_x2lnd_fluxes 
+       character(SHR_KIND_CXX) :: flds_ice2x_fluxes 
        character(SHR_KIND_CXX) :: flds_ice2x_states 
        character(SHR_KIND_CXX) :: flds_atm2x_states 
        character(SHR_KIND_CXX) :: flds_ocn2x_fluxes 
-       character(SHR_KIND_CXX) :: flds_x2atm_fluxes 
 
    end type Meta
     
    type(Meta), target  :: metaData
    integer, parameter  :: gloid = 1
    integer, parameter  :: cplid = 2
-   integer, parameter  :: lndid = 2
-   integer, parameter  :: lnd2xid = 2+1
-   integer, parameter  :: atmid = 4
-   integer, parameter  :: atm2xid = 4+1
-   integer, parameter  :: iceid = 6
-   integer, parameter  :: ice2xid = 6+1
-   integer, parameter  :: ocnid = 8
-   integer, parameter  :: ocn2xid = 8+1
+   integer, parameter  :: atmid = 2
+   integer, parameter  :: atm2xid = 2+1
+   integer, parameter  :: iceid = 4
+   integer, parameter  :: ice2xid = 4+1
+   integer, parameter  :: ocnid = 6
+   integer, parameter  :: ocn2xid = 6+1
 
 end module global_var

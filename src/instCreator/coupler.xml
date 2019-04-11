@@ -83,20 +83,6 @@
 			</mrg>
 		</attrVect>
 		<attrVect>
-			<name>lnd2x_lndx</name>
-			<model>lnd</model>
-			<srcs/>
-			<mrg>
-				<name>mrg_x2lnd</name>
-				<in_args>
-					<arg>lnd2x_lndx</arg>
-				</in_args>
-				<out_args>
-					<arg>x2lnd_lndx</arg>
-				</out_args>
-			</mrg>
-		</attrVect>
-		<attrVect>
 			<name>ice2x_icex</name>
 			<model>ice</model>
 			<srcs/>

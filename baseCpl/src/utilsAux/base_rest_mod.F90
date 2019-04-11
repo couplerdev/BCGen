@@ -47,7 +47,6 @@ module base_rest_mod
    integer(IN) :: mpicom_GLOID           ! MPI global communicator
    integer(IN) :: mpicom_CPLID           ! MPI cpl communicator
 
-   logical     :: lnd_prognostic       
    logical     :: atm_prognostic       
    logical     :: ice_prognostic       
    logical     :: ocn_prognostic       
@@ -72,8 +71,6 @@ subroutine base_rest_read(metaData, rest_file)
    integer(IN)          :: ierr          ! MPI error return
    type(mct_gsMap),pointer :: gsmap
    character(len=*),parameter :: subname = "(seq_rest_read) "
-   type(mct_aVect),  pointer  :: lnd2x_lndx
-   type(mct_aVect)   :: fractions_lndx
    type(mct_aVect),  pointer  :: atm2x_atmx
    type(mct_aVect)   :: fractions_atmx
    type(mct_aVect),  pointer  :: ice2x_icex
@@ -92,12 +89,10 @@ subroutine base_rest_read(metaData, rest_file)
    mpicom_gloid = metaData%mpi_glocomm
    mpicom_cplid = metaData%mpi_cpl
   
-   lnd2x_lndx => metaData%lnd2x_lndx
    atm2x_atmx => metaData%atm2x_atmx
    ice2x_icex => metaData%ice2x_icex
    ocn2x_ocnx => metaData%ocn2x_ocnx
 
-   call compMeta_getInfo(metaData%lnd, prognostic=lnd_prognostic)
    call compMeta_getInfo(metaData%atm, prognostic=atm_prognostic)
    call compMeta_getInfo(metaData%ice, prognostic=ice_prognostic)
    call compMeta_getInfo(metaData%ocn, prognostic=ocn_prognostic)
@@ -105,11 +100,6 @@ subroutine base_rest_read(metaData, rest_file)
    if (iamin_CPLID) then
       !if (drv_threading) call seq_comm_setnthreads(nthreads_CPLID)
       !if(ocn_present)then
-         call compMeta_getInfo(metaData%lnd, comp_gsmap=gsmap)
-         call base_io_read(rest_file,gsmap,fractions_lndx,'fractions_lndx')
-         call base_io_read(rest_file,gsmap,lnd2x_lndx,'lnd2x_lndx')
-      !end if
-      !if(lnd_present)then
          call compMeta_getInfo(metaData%atm, comp_gsmap=gsmap)
          call base_io_read(rest_file,gsmap,fractions_atmx,'fractions_atmx')
          call base_io_read(rest_file,gsmap,atm2x_atmx,'atm2x_atmx')
@@ -180,8 +170,6 @@ subroutine base_rest_write(metaData, EClock_d)
    real(r8),allocatable :: ds(:)     ! for reshaping diag data for restart file
    real(r8),allocatable :: ns(:)     ! for reshaping diag data for restart file
    character(len=*),parameter :: subname = "(base_rest_write) "
-   type(mct_aVect)           :: lnd2x_lndx
-   type(mct_aVect)           :: fractions_lndx
    type(mct_aVect)           :: atm2x_atmx
    type(mct_aVect)           :: fractions_atmx
    type(mct_aVect)           :: ice2x_icex
@@ -204,12 +192,10 @@ subroutine base_rest_write(metaData, EClock_d)
    cplroot = metaData%iamroot_cpl
    my_proc => metaData%my_proc
 
-   !lnd2x_lndx => metaData%lnd2x_lndx
    !atm2x_atmx => metaData%atm2x_atmx
    !ice2x_icex => metaData%ice2x_icex
    !ocn2x_ocnx => metaData%ocn2x_ocnx
 
-   call compMeta_getInfo(metaData%lnd, prognostic=lnd_prognostic)
    call compMeta_getInfo(metaData%atm, prognostic=atm_prognostic)
    call compMeta_getInfo(metaData%ice, prognostic=ice_prognostic)
    call compMeta_getInfo(metaData%ocn, prognostic=ocn_prognostic)
@@ -296,10 +282,6 @@ subroutine base_rest_write(metaData, EClock_d)
          !call base_io_write(rest_file,ds,'budg_dataG',whead=whead,wdata=wdata)
          !call base_io_write(rest_file,ns,'budg_ns',whead=whead,wdata=wdata)
 
-         
-         call compMeta_getInfo(metaData%lnd, comp_gsmap=gsmap)
-         !call base_io_write(rest_file,gsmap,fractions_lndx,'fractions_lndx',whead=whead,wdata=wdata)
-         call base_io_write(rest_file,gsmap,metaData%lnd2x_lndx,'lnd2x_lndx',whead=whead,wdata=wdata)
          
          call compMeta_getInfo(metaData%atm, comp_gsmap=gsmap)
          !call base_io_write(rest_file,gsmap,fractions_atmx,'fractions_atmx',whead=whead,wdata=wdata)
