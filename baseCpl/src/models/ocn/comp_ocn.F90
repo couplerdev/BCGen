@@ -32,7 +32,6 @@ use global_var
   integer(IN)   :: my_task               ! my task in mpi communicator mpicom
   integer(IN)   :: npes                  ! total number of tasks
   integer(IN),parameter :: master_task=0 ! task number of master task
-  integer(IN)   :: logunit               ! logging unit number
   integer       :: inst_index            ! number of current instance (ie. 1)
   character(len=16) :: inst_name         ! fullname of current instance (ie. "lnd_0001")
   character(len=16) :: inst_suffix       ! char string associated with instance 
@@ -96,13 +95,12 @@ subroutine ocn_init_mct(compInfo, EClock, x2o, o2x, ierr)
     implicit none
     type(compMeta), target, intent(inout)  :: compInfo
     type(ESMF_Clock), intent(in)          :: EClock
-    type(mct_aVect), intent(inout)    :: ocn2x_ocnocn
-    type(mct_aVect), intent(inout)    :: x2ocn_ocnocn
+    type(mct_aVect), intent(inout)    :: o2x
+    type(mct_aVect), intent(inout)    :: x2o
     integer,  intent(inout)          :: ierr
 
 
     integer(IN)   :: n,k         ! generic counters
-    integer(IN)   :: ierr        ! error code
     integer(IN)   :: COMPID      ! comp id
     integer(IN)   :: gsize       ! global size
     integer(IN)   :: lsize     ! local size
@@ -171,10 +169,7 @@ subroutine ocn_init_mct(compInfo, EClock, x2o, o2x, ierr)
     call mpi_comm_size(mpicom, npes, ierr)
 
     if (my_task == master_task) then
-       logUnit = shr_file_getUnit()
        call shr_file_setIO('ocn_modelio.nml'//trim(inst_suffix),logUnit)
-    else
-       logUnit = 6
     endif
 
     !----------------------------------------------------------------------------
@@ -191,7 +186,7 @@ subroutine ocn_init_mct(compInfo, EClock, x2o, o2x, ierr)
 
     call t_startf('docn_readnml')
 
-    filename = "docn_in"//trim(inst_suffix)
+    filename = "/home/hq/share/BCGen_case/BCGen_inst/conf/docn_in"
     ocn_in = "unset"
     decomp = "1d"
     restfilm = trim(nullstr)
@@ -403,7 +398,7 @@ subroutine ocn_init_mct(compInfo, EClock, x2o, o2x, ierr)
     !----------------------------------------------------------------------------
 
     call t_adj_detailf(+2)
-    call docn_comp_run( EClock, cdata,  x2o, o2x)
+    call ocn_run_mct( compInfo,EClock,  x2o, o2x, ierr)
     call t_adj_detailf(-2)
 
     !----------------------------------------------------------------------------
@@ -451,7 +446,7 @@ subroutine ocn_run_mct(compInfo, EClock, x2o, o2x, ierr)
    real(R8)      :: dt                ! timestep
    real(R8)      :: hn                ! h field
    logical       :: write_restart     ! restart now
-   character(CL) :: case_name         ! case name
+   character(CL) :: case_name = 'DOCN'! case name
    character(CL) :: rest_file         ! restart_file
    character(CL) :: rest_file_strm    ! restart_file for stream
    integer(IN)   :: nu                ! unit number
@@ -584,6 +579,7 @@ subroutine ocn_run_mct(compInfo, EClock, x2o, o2x, ierr)
 
    call t_stopf('docn_mode')
 
+
    if (write_restart) then
       call t_startf('docn_restart')
       write(rest_file,"(2a,i4.4,a,i2.2,a,i2.2,a,i5.5,a)") &
@@ -600,6 +596,7 @@ subroutine ocn_run_mct(compInfo, EClock, x2o, o2x, ierr)
          close(nu)
          call shr_file_freeUnit(nu)
       endif
+      
       if (trim(ocn_mode) == 'SOM') then
          if (my_task == master_task) write(logunit,F04) ' writing ',trim(rest_file),currentYMD,currentTOD
          call shr_pcdf_readwrite('write',iosystem,SDOCN%io_type,trim(rest_file),mpicom,gsmap,clobber=.true., &
@@ -610,6 +607,7 @@ subroutine ocn_run_mct(compInfo, EClock, x2o, o2x, ierr)
       call shr_sys_flush(logunit)
       call t_stopf('docn_restart')
    endif
+
 
    call t_stopf('docn')
 
