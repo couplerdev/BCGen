@@ -55,6 +55,20 @@ class CodeBlockUtil(CodeBlock):
 	string+=self.intent+"end if\n\n"
 	return string
 
+class CodeBlockCpl(CodeBlock):
+    def __init__(self, intent=4, flag="cpl"):
+        super(CodeBlockCpl, self).__init__("cpl","cpl",intent)
+        self.flag = flag
+
+    def getStr(self):
+        string = ""
+        string+=self.intent+"if(metaData%iamin_cpl)then\n"
+        string+=2*self.intent+"call mpi_barrier(metaData%mpi_cpl, ierr)\n"
+        for sub in self.subroutine:
+            string+=2*self.intent+"call "+sub+"\n"
+        string+=self.intent+"end if\n"
+        return string
+
 
 class CodeWrapper:
       def __init__(self):
@@ -85,11 +99,15 @@ class CodeWrapper:
               else:
                   block.subroutineSet(self.subroutineList)
               return block.getStr()
+          elif flag=="cpl":
+              block = CodeBlockCpl(intent=intent, flag=flag)
+              if len(subroutines)!=0:
+                  block.subroutineSet(subroutines)
+              else: 
+                  block.subroutineSet(self.subroutineList)
+              return block.getStr()
           else:
               return "\n"
-
-
-
 
 if __name__=="__main__":
    cw = CodeWrapper()

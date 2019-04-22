@@ -13,38 +13,89 @@ from xml.dom.minidom import Document
 import sys
 sys.path.append('../ir')
 from Datatype import *
+from regriddingManager import *
+from fractionManager import FractionManager
 
 class Setup:
     __slots__=["__root","__isParsed","__couple"]
-    def __init__(self, fileName='../../composing/setup.xml'):
+    def __init__(self, fileName='../../composing/setup.xml',\
+      regridFile='../../composing/regriddingFile.xml', fractionFile='../../composing/fractionSet.xml'):
         tree = ET.parse(fileName)
         self.__root = tree.getroot()
         self.__isParsed = False
         self.__couple = []
         self.__coupleFile = './coupler.xml'
         self.__model = {}
+        self.__regridDataLoc = RegriddingDataMrg()
+        self.__fractionDataLoc = FractionManager()
+        self.__regridDataLoc.initByFile(regridFile)
+        self.__fractionDataLoc.initByFile(fractionFile)
+        self.__fakeModel = {}
 
     def setupParse(self):
-        for child in self.__root:
+        modelRoot = self.__root.find('models')
+        resDict = {}
+        for child in modelRoot:
+            if 'type' not in child.attrib:
+                res =child.find('res').text
+                modelName = child.find('name').text
+                resDict[modelName] = res
+        for child in modelRoot:
+            if 'type' in child.attrib and child.attrib['type'] == 'fake':
+                name = child.find('name').text
+                #version = child.find('version').text
+                fakeModel = {'name':name}
+                self.__fakeModel[name]=fakeModel
+                continue
             modelName = child.find('name').text
             self.__model[modelName] = child.find('version').text
+            res = child.find('res').text
+            resDict[modelName] = res
+            ### compute frac relationship frac init , update
+            fracType  = child.find('frac').text
+            fracTypeList = fracType.split(':')
+            if 'update' in child.find('frac').attrib and \
+              child.find('frac').attrib['update']=="true":
+                updateFlag = True
+            frac = ""
+            for fracType in fracTypeList:
+                frac = self.__fractionDataLoc.query(modelName, types=fracType)+":"
+            frac=frac[:-1]
+            fracInit = self.__fractionDataLoc.query(modelName, frac=frac,stat=1)
+            fraclist = frac
+            fracUpdate = ""
+            if updateFlag:
+                fracUpdate = self.__fractionDataLoc.query(modelName, frac=frac, stat=2)
+
+            # parse the srcs
             if child.find('input')!=None and child.find('input').text !=None:
                 attrVect = {}
                 attrVect['model'] = modelName
                 attrVect['name'] = modelName+'2x_'+modelName+'x'
                 attrVect['src'] = []
+                attrVect['fraction'] = {}
+                attrVect['fraction']['init']=fracInit
+                attrVect['fraction']['update']=fracUpdate
                 dstAvList = []
                 srcAv = []
+                otherMrgArgs = [] # for fakeModel merge
                 #设置src的字典
                 for src in child.find('input'):
+                    if 'type' in src.attrib and src.attrib['type']=='var':
+                        mrgArg = src.find('var').text
+                        otherMrgArgs.append(mrgArg)
+                        continue
                     srcModel = src.attrib['name']
                     srcField = src.find('field').text
                     w_file = ""
                     map_type = "offline"
-                    try:
-                    	w_file = src.find('file').text
-                    except:
+                    smatType = src.find('field').attrib['type']
+                    srcRes = resDict[srcModel]
+                    if smatType == "none":
                         map_type = "online"
+                    else:
+                        w_file = self.__regridDataLoc.query(srcModel, srcRes, modelName, res, smatType )
+
                     srcAttrVect = srcModel+'2'+'x_'+srcModel+'x'
                     srcDict={}
                     srcDict['attrVect'] = srcAttrVect
@@ -79,9 +130,23 @@ class Setup:
                     srcSmat["type"] = map_type
                     srcDict['mapper'] = srcSmat
                     
+                    # src frac cacultate
+                    fracTypes = src.find('field').attrib['frac']
+                    fracTypeList = fracTypes.split(":")
+                    srcFracList = ""
+                    for fracType in fracTypeList:
+                        srcFrac = self.__fractionDataLoc.query(srcModel, types=fracType)
+                        fraclist +=":"+srcFrac
+                        srcFracList +=srcFrac+":"
+                    if "fracs" not in attrVect['fraction']:
+                        attrVect['fraction']['fracs'] = []
+                    srcFrac = {"name":srcFracList[:-1],"mapper":srcSmatName,"model":srcModel}
+                    attrVect["fraction"]['fracs'].append(srcFrac)
+                     
                     #print srcDict
                     srcAv.append(srcDict)
                 attrVect['src']=srcAv
+                attrVect['fraction']['fraclist'] = fraclist
                 mrg = {}
                 mrg['name']='mrg_x2'+modelName
                 mrg['out_args'] = []
@@ -91,8 +156,12 @@ class Setup:
                 for av in dstAvList:
                     #mrg['args'].append(src['attrVect'])
                     mrg['in_args'].append(av)
+                for av in otherMrgArgs:
+                    mrg['in_args'].append(av)
                 mrg['in_args'].append(attrVect['name'])
+                mrg['in_args'].append("fraction_"+modelName)
                 attrVect['mrg'] = mrg
+                
                 self.__couple.append(attrVect)
                 #mrg['args'].append('fraction')
     def dictDom(self,doc, k, v):
@@ -114,6 +183,28 @@ class Setup:
             model = self.dictDom(doc, 'model', avDict['model'])
             attrVect.appendChild(name)
             attrVect.appendChild(model)
+              
+            # create fraction dom
+            fraction = doc.createElement('fraction')
+            fracList = self.dictDom(doc, 'fraclist', avDict['fraction']['fraclist'])
+            init = self.dictDom(doc, 'init', avDict['fraction']['init'])
+            update = self.dictDom(doc, 'update', avDict['fraction']['update'])
+            fracs = doc.createElement('fracs')
+            for frac in avDict['fraction']['fracs']:
+                fracNode = doc.createElement('frac')
+                nameNode = self.dictDom(doc,'name', frac['name'])
+                mapperNode = self.dictDom(doc,'mapper', frac['mapper'])
+                modelNode = self.dictDom(doc, 'model', frac['model'])
+                fracNode.appendChild(nameNode)
+                fracNode.appendChild(mapperNode)
+                fracNode.appendChild(modelNode)
+                fracs.appendChild(fracNode)
+            fraction.appendChild(fracList)
+	    fraction.appendChild(init)
+            fraction.appendChild(update)
+            fraction.appendChild(fracs)
+            attrVect.appendChild(fraction)
+            
             srcs = doc.createElement('srcs')
             for src in avDict['src']:
                 srcNode = doc.createElement('src')
@@ -194,3 +285,7 @@ class Setup:
     @property
     def model(self):
         return self.__model
+
+    @property
+    def fakeModel(self):
+        return self.__fakeModel

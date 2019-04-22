@@ -6,7 +6,7 @@ class PullerArgsParser:
     def __init__(self):
         self.argParser = argparse.ArgumentParser()
         self.args = None
-        self.argsParser.add_argument("-make","--remake",help="whether to remake",\
+        self.argParser.add_argument("-make","--remake",help="whether to remake",\
                                       action="store_true")
 
     def argSet(self):

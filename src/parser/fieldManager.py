@@ -41,7 +41,7 @@ class FieldManager:
             name = child.attrib['name']
             key = name.split('_')[1]
             val = []
-            if key=='dom':
+            if key=='dom': 
                 self.fldsQuery[name] = child.find('field').text
                 val = self.fldsQuery[name].split(':')
             elif key[0:2]=='x2':
@@ -54,6 +54,9 @@ class FieldManager:
                 if model in self.model:
                     self.fldsQuery[name] = child.find('field').text
                     val = self.fldsQuery[name].split(':')
+            elif key=="xao":
+                self.fldsQuery[name] = child.find('field').text
+                var = self.fldsQuery[name].split(':')
             if val != []:
                 for v in val:
                     fldDict[v] = 1

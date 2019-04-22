@@ -28,6 +28,10 @@ class Subroutine(object):
     def name(self):
         return self.__subroutineName
 
+    @name.setter
+    def name(self, subroutineName):
+        self.__subroutineName = subroutineName
+
     @property
     def argList(self):
         return self.__argList
@@ -36,7 +40,6 @@ class Subroutine(object):
         self.__argList = argListValue
 
     def append(self, arg):
-        print 'call this'
         if not isinstance(arg, str):
             raise  TypeError("arg not a string")
         self.__argList.append(arg)
@@ -262,7 +265,7 @@ class Model(CoupleEntity):
         self.__attrVects = {}   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
         self.__gsMaps = {}
         self.__mappers = {}       
-        self.__domain = '' 
+        self.__domain = {} #"m" or "x" 
         self.fields = {}   # fld name:i.e. fld_comp2x_states
         self.myFields = {}  # fld_comp2x, fld_x2comp :经过计算可以得到
         self.__name = name
@@ -369,6 +372,36 @@ class Model(CoupleEntity):
         else:
             print obj.type
             raise TypeError("no such type!!!")
+
+'''
+class FakeModel(CoupleEntity):
+
+    def __init__(self, name):
+        super(FakeModel, self).__init__(name=name, _type='FakeModel')
+        self.__deps = []
+        self.__methods = {}   # init, run, final
+        self.__phases = ['init', 'run', 'final']
+        self.__variables = {}
+        self.__variablesType = ['attrVect']
+
+    def addMethod(self, phase, subrt): 
+        if phase not in self.__phases:
+            raise NoneProperValueError("FakeModel add Method the phase")
+        self.__methods[phase].append(subrt)
+
+    def addVariables(self, var):
+        if var.type != 'AttrVect':
+            raise NoneProperValueError('FakeModel add Variables var')
+        self.__methods[var.name] = var
+
+    @property
+    def deps(self):
+        return self.__deps
+
+    @deps.setter
+    def deps(self, deps):
+        self.__deps = deps
+'''
 
 class MapperMethod():
     __slots__ = ["__initStr", "__runStr", "__stype"]
@@ -492,7 +525,7 @@ class AttrVectCpl(AttrVect):
     __slots__=["__mapperType", "__field","__grid","__srcAttrVect",\
                "__name", "__type", "__nameSet", "__manager", "__bind", \
                "__srcModelName", "__dstModelName","__srcModel", "__dstModel",\
-               "__mapperName", "__mapperFile"]
+               "__mapperName", "__mapperFile", "__srcGsmap","__dstGsmap"]
     def __init__(self, srcAttrVect, mapper, grid, field="", mapperFile="", mapperType="online"):
         name = ""
         self.__name = ""
@@ -510,6 +543,8 @@ class AttrVectCpl(AttrVect):
         self.__srcModel = Model()    # 尽量使用引用，看看有没有常量引用
         self.__dstModel = Model()
         self.__mapperName=mapper
+        self.__srcGsmap = "gsMap_"+self.__srcModelName+"x"
+        self.__dstGsmap = "gsMap_"+self.__dstModelName+"x"
 
     def BindToManager(self, manager):
         self.__manager = manager
@@ -557,6 +592,14 @@ class AttrVectCpl(AttrVect):
         return self.__srcAttrVect.name
 
     @property
+    def dstGrid(self):
+        return self.__grid
+
+    @property
+    def srcGrid(self):
+        return self.__srcAttrVect.grid
+
+    @property
     def srcModel(self):
         return self.__srcModel
    
@@ -564,23 +607,11 @@ class AttrVectCpl(AttrVect):
     def dstModel(self):
         return self.__dstModel
 
-class Fraction(AttrVect):
-    __slots__=["__name","__field","__initSubroutine"] 
-    def __init__(self,fractionName):
-        self.__name=""
-        super(AttrVect,self).__init__(name=fractionName)
-        self.__name=fractionName
-        subroutineName = self.__name+"_init"
-        self.__initSubroutine =  Subroutine(subroutineName=subroutineName) 
+    @property
+    def srcGsmap(self):
+        return self.__srcGsmap
 
     @property
-    def init(self):
-        return self.__initSubroutine
-    
-    @property
-    def name(self):
-        return self.__name
-
-    def append(self, args):
-        self.__initSubroutine.append(args)
+    def dstGsmap(self):
+        return self.__dstGsmap
 
