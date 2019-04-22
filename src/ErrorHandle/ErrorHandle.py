@@ -20,3 +20,18 @@ class BindError(Exception):
 class ComposingError(Exception):
     def __init__(self, errMsg):
         super(ComposingError, self).__init__(errMsg)
+
+class NoneProperValueError(Exception):
+    def __init__(self, errMsg):
+        self.errMsg = errMsg+"not a proper value provided"
+        super(NoneProperValueError, self).__init__(errMsg)
+
+class NotProperConfigError(Exception):
+    def __init__(self, errMsg):
+        self.errMsg = errMsg+"not a proper configuration set"
+        super(NotProperConfigError, self).__init__(errMsg)
+
+class WrongPathError(Exception):
+    def __init__(self, errMsg):
+        self.errMsg = errMsg + "Wrong path"
+        super(WrongPathError, self).__init__(errMsg)

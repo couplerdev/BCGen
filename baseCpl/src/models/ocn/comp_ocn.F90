@@ -212,8 +212,8 @@ subroutine ocn_domain_init(mpicomm, gsMap_ocnocn, domain)
   integer ::ierr,lsize
 
   call mct_gGrid_init(GGrid=domain, &
-      CoordChars=trim('x:y:z'), &
-      otherchars=trim('lat:lon:area:frac:mask:aream'),&
+      CoordChars=trim('lat:lon'), &
+      otherchars=trim('area:frac:mask:aream'),&
       lsize=mct_gsMap_lsize(gsMap_ocnocn, mpicomm))
   call mct_avect_zero(domain%data)
 

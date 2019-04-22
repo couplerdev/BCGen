@@ -1,6 +1,6 @@
 module comms
 !use base_file
-use shr_kind_mod
+use shr_kind_mod, only: r8 => shr_kind_r8, IN => shr_kind_in
 use shr_file_mod
 use mct_mod
 use comms_def
@@ -18,12 +18,18 @@ use comms_nc, only : sMatPInitnc_mapfile
     public :: mapper_comp_map
     public :: mapper_comp_interpolation  
     public :: mapper_comp_avMerge
+    public :: mapper_readdata
     private :: gsmap_check    
 
 interface mapper_init ; module procedure &
     mapper_init_nil, &
     mapper_init_func
 end interface mapper_init
+
+interface mapper_comp_avNorm ; module procedure &
+    mapper_comp_avNormArr, &
+    mapper_comp_avNormAvF
+end interface mapper_comp_avNorm
 
 !interface mapper_spmat_init ; module procedure &
 !    mapper_spmat_init_file, &
@@ -270,22 +276,44 @@ end subroutine mapper_spmat_init
 
 !end subroutine mapper_spmat_init
 
-subroutine mapper_comp_map(mapper, src, dst, msgtag,  ierr, field)
+subroutine mapper_comp_map(mapper, src, dst, field,norm, avwts, avwtsfld, msgtag, ierr)
     
     implicit none
-    type(map_mod),   intent(inout)              :: mapper
-    type(mct_aVect), intent(inout)           :: src
-    type(mct_aVect), intent(inout)           :: dst
-    integer,         optional,   intent(in)  :: msgtag
+    type(map_mod),   intent(inout)             :: mapper
+    type(mct_aVect), intent(inout)             :: src
+    type(mct_aVect), intent(inout)             :: dst
+    integer,         optional,   intent(in)    :: msgtag
     integer,         optional,   intent(inout) :: ierr
-    character(len=*),optional,   intent(in)  :: field
+    logical,         optional,   intent(in)    :: norm
+    character(len=*),optional,   intent(in)    :: field
+    type(mct_aVect), optional,   intent(in)    :: avwts 
+    character(len=*),optional,   intent(in)    :: avwtsfld
 
+    logical :: lnorm
+
+    lnorm  = .true.
+    if(present(norm))then
+        lnorm = norm
+    end if
     if(mapper%map_type=="copy")then
         call mct_avect_copy(src, dst)
     else if(mapper%map_type=="rearr")then
         call mct_rearr_rearrange(src, dst, mapper%rearr, msgtag)
     else if(mapper%map_type=="spmat")then
-        call mapper_comp_avNorm(mapper, src, dst,  field)
+        if(present(avwts))then
+            if(present(field))then
+                call mapper_comp_avNorm(mapper, src, dst, avwts, trim(avwtsfld),rList=field,&
+                           norm=lnorm)
+            else
+                call mapper_comp_avNorm(mapper, src, dst, avwts, trim(avwtsfld), norm=lnorm)
+            end if
+        else
+            if(present(field))then
+                call mapper_comp_avNorm(mapper, src, dst, rList=field, norm=lnorm)
+            else
+                call mapper_comp_avNorm(mapper, src, dst, norm=lnorm)
+            end if
+        end if
     end if
 
 end subroutine mapper_comp_map
@@ -328,19 +356,149 @@ subroutine mapper_comp_interpolation(mapper,&
 end subroutine mapper_comp_interpolation
 
 
-subroutine mapper_comp_avNorm(mapper,&
-                AV_s, AV_d, rList)
-    type(map_mod),   intent(inout) :: mapper
-    type(mct_aVect), intent(inout) :: AV_s, AV_d
-    character(len=*),optional, intent(in)    :: rList 
-    integer comm_rank, ierr
-    if (present(rList)) then 
-        call mct_sMat_avMult(AV_s, mapper%sMatPlus, AV_d, rList=rList)
+!subroutine mapper_comp_avNorm(mapper,&
+!                AV_s, AV_d, rList)
+!    type(map_mod),   intent(inout) :: mapper
+!    type(mct_aVect), intent(inout) :: AV_s, AV_d
+!    character(len=*), optional, intent(in)    :: rList 
+!
+!    integer comm_rank, ierr
+!    if (present(rList)) then 
+!        call mct_sMat_avMult(AV_s, mapper%sMatPlus, AV_d, rList=rList)
+!    else
+!        call mct_sMat_avMult(AV_s, mapper%sMatPlus, AV_d)
+!    endif
+
+!end subroutine mapper_comp_avNorm
+
+
+subroutine mapper_comp_avNormAvF(mapper, av_i, av_o, avf_i, avfifld, rList, norm)
+
+    implicit none
+    type(map_mod),       intent(in)    :: mapper
+    type(mct_aVect),     intent(in)    :: av_i
+    type(mct_aVect),     intent(inout) :: av_o
+    type(mct_aVect),     intent(in)    :: avf_i
+    character(len=*),    intent(in)    :: avfifld
+    character(len=*),    intent(in), optional :: rList
+    logical,             intent(in), optional :: norm
+
+    integer :: lsize_i, lsize_f, lsize_o, kf, j
+    real(r8), allocatable :: frac_i(:), frac_o(:)
+    logical :: lnorm
+    character(*), parameter :: subName = "map_avNormAvF"
+
+    lnorm = .true.
+    if (present(norm))then
+        lnorm  = norm
+    end if
+    
+    lsize_i = mct_aVect_lsize(av_i)
+    lsize_f = mct_aVect_lsize(avf_i)
+ 
+    if(lsize_i /= lsize_f)then
+        write(*,*)subname, 'ERROR: lsize_i ne lsize_f', lsize_i, lsize_f
+        call shr_sys_abort(subname//'ERROR size_i ne lsize_f')
+    end if
+
+    allocate(frac_i(lsize_i))
+    do j=1, lsize_i
+       kf =  mct_aVect_indexRA(avf_i, trim(avfifld))
+       frac_i(j) = avf_i%rAttr(kf, j)
+    enddo
+
+    if(present(rList))then
+        call mapper_comp_avNormArr(mapper, av_i, av_o, frac_i, rList=rList, norm=lnorm)
     else
-        call mct_sMat_avMult(AV_s, mapper%sMatPlus, AV_d)
+        call mapper_comp_avNormArr(mapper, av_i, av_o, frac_i, norm=lnorm)
+    end if
+
+    deallocate(frac_i)
+
+end subroutine mapper_comp_avNormAvF
+
+subroutine mapper_comp_avNormArr(mapper, av_i, av_o, norm_i, rList, norm)
+
+    implicit none
+    type(map_mod),     intent(in)     :: mapper
+    type(mct_aVect),   intent(in)     :: av_i
+    type(mct_aVect),   intent(inout)  :: av_o
+    real(r8),          intent(in), optional :: norm_i(:)
+    character(len=*),  intent(in), optional :: rList
+    logical,           intent(in), optional :: norm
+
+    type(mct_sMatp)   :: sMatp
+    type(mct_aVect)   :: avp_i, avp_o
+    integer           :: i,j,ier, kf
+    integer           :: lsize_i, lsize_o
+    real(r8)          :: normval
+    character(SHR_KIND_CX) :: lrList
+    logical           :: lnorm
+    character(*), parameter :: subName = "(mapper_comp_avNormArr)"
+    character(*), parameter :: ffld =  'norm8wt'
+
+    sMatp   = mapper%sMatPlus
+    lsize_i = mct_aVect_lsize(av_i)
+    lsize_o = mct_aVect_lsize(av_o)
+
+    lnorm = .true.
+    if(present(norm))then
+        lnorm = norm
     endif
 
-end subroutine mapper_comp_avNorm
+    if(present(norm_i) .and. .not. lnorm)then
+        write(*,*) subname, 'ERROR: norm_i and norm = false'
+        call shr_sys_abort(subname//'ERROR norm_i and norm = false')
+    end if
+
+    if(present(norm_i))then
+        if(size(norm_i)/=lsize_i)then
+            write(*, *)subname, 'ERROR: size(norm_i) ne lsize_i', size(norm_i), lsize_i
+            call shr_sys_abort(subname//' ERROR size(norm_i) ne lsize_i')
+        end if
+    end if
+
+    if(present(rList))then
+        call mct_aVect_init(avp_i, rList=trim(rList)//':'//ffld, lsize=lsize_i)
+        call mct_aVect_init(avp_o, rList=trim(rList)//':'//ffld, lsize=lsize_o)
+    else
+        lrList = trim(mct_aVect_exportRList2c(av_i))
+        call mct_aVect_init(avp_i, rList=trim(lrList)//':'//ffld, lsize=lsize_i)
+        lrList = trim(mct_aVect_exportRList2c(av_o))
+        call mct_aVect_init(avp_o, rList=trim(lrList)//':'//ffld, lsize=lsize_o)
+    end if
+
+    call mct_aVect_copy(aVin=av_i, aVout=avp_i, VECTOR=mct_usevector)
+    kf = mct_aVect_indexRA(avp_i, ffld)
+    do j = 1, lsize_i
+        avp_i%rAttr(kf, j) = 1.0_r8
+    end do
+
+    if(present(norm_i))then
+        do j = 1, lsize_i
+            avp_i%rAttr(:,j) = avp_i%rAttr(:,j)*norm_i(j)  
+        end do
+    end if
+
+    call mct_sMat_avMult(avp_i, sMatp, avp_o, VECTOR=mct_usevector)
+
+    if(lnorm)then
+        do j = 1, lsize_o
+            kf = mct_aVect_indexRA(avp_o, ffld)
+            normval = avp_o%rAttr(kf, j)
+            if(normval /= 0.0_r8)then
+                normval = 1.0_r8/normval
+            end if
+            avp_o%rAttr(:,j) = avp_o%rAttr(:,j)*normval
+        end do
+    end if
+
+    call mct_aVect_copy(aVin=avp_o, aVout=av_o, VECTOR=mct_usevector)
+
+    call mct_aVect_clean(avp_i)
+    call mct_aVect_clean(avp_o)
+ 
+end subroutine mapper_comp_avNormArr
 
 
 subroutine mapper_comp_avMerge( &
@@ -360,5 +518,165 @@ subroutine mapper_comp_avMerge( &
     enddo
 
 end subroutine mapper_comp_avMerge
+
+subroutine mapper_readdata(maprcfile, maprcname, mpicom, ID, &
+         ni_s, nj_s, av_s, gsmap_s, avfld_s, filefld_s, &
+         ni_d, nj_d, av_d, gsmap_d, avfld_d, filefld_d, string)
+
+    !--- lifted from work by J Edwards, April 2011
+
+    use shr_pio_mod, only : shr_pio_getiosys, shr_pio_getiotype
+    use pio, only : pio_openfile, pio_closefile, pio_read_darray, pio_inq_dimid, &
+       pio_inq_dimlen, pio_inq_varid, file_desc_t, io_desc_t, iosystem_desc_t, &
+       var_desc_t, pio_int, pio_get_var, pio_double, pio_initdecomp, pio_freedecomp
+    implicit none
+    !-----------------------------------------------------
+    ! 
+    ! Arguments
+    !
+    character(len=*),intent(in)    :: maprcfile
+    character(len=*),intent(in)    :: maprcname
+    integer(IN)     ,intent(in)    :: mpicom
+    integer(IN)     ,intent(in)    :: ID
+    integer(IN)     ,intent(out)  ,optional :: ni_s
+    integer(IN)     ,intent(out)  ,optional :: nj_s
+    type(mct_avect) ,intent(inout),optional :: av_s
+    type(mct_gsmap) ,intent(in)   ,optional :: gsmap_s
+    character(len=*),intent(in)   ,optional :: avfld_s
+    character(len=*),intent(in)   ,optional :: filefld_s
+    integer(IN)     ,intent(out)  ,optional :: ni_d
+    integer(IN)     ,intent(out)  ,optional :: nj_d
+    type(mct_avect) ,intent(inout),optional :: av_d
+    type(mct_gsmap) ,intent(in)   ,optional :: gsmap_d
+    character(len=*),intent(in)   ,optional :: avfld_d
+    character(len=*),intent(in)   ,optional :: filefld_d
+    character(len=*),intent(in)   ,optional :: string
+    !
+    ! Local Variables
+    !
+    type(iosystem_desc_t), pointer :: pio_subsystem
+    integer(IN)       :: pio_iotype
+    type(file_desc_t) :: File    ! PIO file pointer
+    type(io_desc_t)   :: iodesc  ! PIO parallel io descriptor
+    integer(IN)       :: rcode   ! pio routine return code
+    type(var_desc_t)  :: vid     ! pio variable  ID
+    integer(IN)       :: did     ! pio dimension ID
+    integer(IN)       :: na      ! size of source domain
+    integer(IN)       :: nb      ! size of destination domain
+    integer(IN)       :: i       ! index
+    integer(IN)       :: mytask  ! my task
+    integer(IN), pointer :: dof(:)    ! DOF pointers for parallel read
+    character(len=256):: fileName
+    character(len=64) :: lfld_s, lfld_d, lfile_s, lfile_d
+    character(*),parameter :: areaAV_field = 'aream'
+    character(*),parameter :: areafile_s   = 'area_a'
+    character(*),parameter :: areafile_d   = 'area_b'
+    character(len=*),parameter :: subname  = "(seq_map_readdata) "
+    !-----------------------------------------------------
+
+    !if (seq_comm_iamroot(CPLID) .and. present(string)) then
+    !   write(logunit,'(A)') subname//' called for '//trim(string)
+    !   call shr_sys_flush(logunit)
+    !endif
+
+    call MPI_COMM_RANK(mpicom,mytask,rcode)
+
+    lfld_s = trim(areaAV_field)
+    if (present(avfld_s)) then
+       lfld_s = trim(avfld_s)
+    endif
+
+    lfld_d = trim(areaAV_field)
+    if (present(avfld_d)) then
+       lfld_s = trim(avfld_d)
+    endif
+
+    lfile_s = trim(areafile_s)
+    if (present(filefld_s)) then
+       lfile_s = trim(filefld_s)
+    endif
+
+    lfile_d = trim(areafile_d)
+    if (present(filefld_d)) then
+       lfile_d = trim(filefld_d)
+    endif
+
+    call I90_allLoadF(trim(maprcfile),0,mpicom,rcode)
+    if(rcode /= 0) then
+       write(logunit,*)"Cant find maprcfile file ",trim(maprcfile)
+       call shr_sys_abort(trim(subname)//"i90_allLoadF File Not Found")
+    endif
+
+    call i90_label(trim(maprcname),rcode)
+    if(rcode /= 0) then
+       write(logunit,*)"Cant find label ",maprcname
+       call shr_sys_abort(trim(subname)//"i90_label Not Found")
+    endif
+
+    call i90_gtoken(filename,rcode)
+    if(rcode /= 0) then
+       write(logunit,*)"Error reading token ",filename
+       call shr_sys_abort(trim(subname)//"i90_gtoken Error on filename read")
+    endif
+
+    pio_subsystem => shr_pio_getiosys(ID)
+    pio_iotype = shr_pio_getiotype(ID)
+
+    rcode = pio_openfile(pio_subsystem, File, pio_iotype, filename)
+
+    if (present(ni_s)) then 
+       rcode = pio_inq_dimid (File, 'ni_a', did)  ! number of lons in input grid
+       rcode = pio_inq_dimlen(File, did  , ni_s)
+    end if
+    if(present(nj_s)) then
+       rcode = pio_inq_dimid (File, 'nj_a', did)  ! number of lats in input grid
+       rcode = pio_inq_dimlen(File, did  , nj_s)
+    end if
+    if(present(ni_d)) then
+       rcode = pio_inq_dimid (File, 'ni_b', did)  ! number of lons in output grid
+       rcode = pio_inq_dimlen(File, did  , ni_d)
+    end if
+    if(present(nj_d)) then
+       rcode = pio_inq_dimid (File, 'nj_b', did)  ! number of lats in output grid
+       rcode = pio_inq_dimlen(File, did  , nj_d)
+    endif
+
+    !--- read and load area_a ---
+    if (present(av_s)) then
+       if (.not.present(gsmap_s)) then
+          call shr_sys_abort(trim(subname)//' ERROR av_s must have gsmap_s')
+       endif
+       rcode = pio_inq_dimid (File, 'n_a', did)  ! size of  input vector
+       rcode = pio_inq_dimlen(File, did  , na)
+       i = mct_avect_indexra(av_s, trim(lfld_s))
+       call mct_gsmap_OrderedPoints(gsMap_s, mytask, dof)
+       call pio_initdecomp(pio_subsystem, pio_double, (/na/), dof, iodesc)
+       deallocate(dof)
+       rcode = pio_inq_varid(File,trim(lfile_s),vid)
+       call pio_read_darray(File, vid, iodesc, av_s%rattr(i,:), rcode)
+       call pio_freedecomp(File,iodesc)
+    end if
+
+    !--- read and load area_b ---
+    if (present(av_d)) then
+       if (.not.present(gsmap_d)) then
+          call shr_sys_abort(trim(subname)//' ERROR av_d must have gsmap_d')
+       endif
+       rcode = pio_inq_dimid (File, 'n_b', did)  ! size of output vector
+       rcode = pio_inq_dimlen(File, did  , nb)
+       i = mct_avect_indexra(av_d, trim(lfld_d))
+       call mct_gsmap_OrderedPoints(gsMap_d, mytask, dof)
+       call pio_initdecomp(pio_subsystem, pio_double, (/nb/), dof, iodesc)
+       deallocate(dof)
+       rcode = pio_inq_varid(File,trim(lfile_d),vid)
+       call pio_read_darray(File, vid, iodesc, av_d%rattr(i,:), rcode)
+       call pio_freedecomp(File,iodesc)
+    endif
+
+
+    call pio_closefile(File)
+
+  end subroutine mapper_readdata
+
 
 end module comms

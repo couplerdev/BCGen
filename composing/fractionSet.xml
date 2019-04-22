@@ -1,0 +1,68 @@
+<fractions>
+<field>
+	<frac model="atm" type="normal">afrac</frac>
+	<frac model="atm" type="ad">afrad</frac>
+	<frac model="ocn" type="normal">ofrac</frac>
+	<frac model="ocn" type="ad">ofrad</frac>
+	<frac model="ice" type="normal">ifrac</frac>
+	<frac model="ice" type="ad">ifrad</frac>
+	<frac model="lnd" type="noraml">lfrac</frac>
+	<frac model="lnd" type="ldef">lfrin</frac>
+	<frac model="glc" type="normal">gfrac</frac>
+	<frac model="rof" type="normal">rfrac</frac>
+</field>
+<method>
+	<init><!--presently only one model one sub is supported-->
+		<sub model="atm">
+			<name>fraction_atm_init</name>
+                 	<frac>afrac</frac>
+                </sub>
+		<sub model="atm">
+			<name>fraction_atmad_init</name>
+			<frac>afrad</frac>
+		</sub>
+		<sub model="ocn">
+			<name>fraction_ocn_init</name>
+			<frac>ofrac</frac>
+		</sub>
+		<sub model="ocn">
+			<name>fraction_ocnad_init</name>
+			<frac>ofrad</frac>
+		</sub>
+		<sub model="ice">
+			<name>fraction_ice_init</name>
+			<frac>ifrac</frac>
+		</sub>
+		<sub model="ice">
+			<name>fraction_icead_init</name>
+			<frac>ifrad</frac>
+		</sub>
+		<sub model="lnd">
+			<name>fraction_lnd_init</name>
+			<frac>lfrac:lfrin</frac>
+		</sub>
+		<sub model="rof">
+			<name>fraction_rof_init</name>
+			<frac>rfrac</frac>
+		</sub>
+		<sub model="glc">
+			<name>fraction_glc_init</name>
+			<frac>gfrac</frac>
+		</sub>
+	</init>
+	<update>
+		<sub model="ice">
+			<name>fraction_ice_update</name>
+			<frac>ofrac:ifrac</frac>
+		</sub>
+		<sub model="ocn">
+			<name>fraction_ocn_update</name>
+			<frac>ofrac</frac>
+		</sub>
+		<sub model="atm">
+			<name>fraction_atm_update</name>
+			<frac>afrac</frac>
+		</sub>
+	</update>
+</method>
+</fractions>
