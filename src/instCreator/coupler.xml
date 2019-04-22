@@ -96,4 +96,18 @@
 				</out_args>
 			</mrg>
 		</attrVect>
+		<attrVect>
+			<name>rof2x_rofx</name>
+			<model>rof</model>
+			<srcs/>
+			<mrg>
+				<name>mrg_x2rof</name>
+				<in_args>
+					<arg>rof2x_rofx</arg>
+				</in_args>
+				<out_args>
+					<arg>x2rof_rofx</arg>
+				</out_args>
+			</mrg>
+		</attrVect>
 	</coupler>

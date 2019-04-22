@@ -186,7 +186,7 @@ subroutine ocn_init_mct(compInfo, EClock, x2o, o2x, ierr)
 
     call t_startf('docn_readnml')
 
-    filename = "/home/hq/share/BCGen_case/BCGen_inst/conf/docn_in"
+    filename = "/home/hq/git/BCGen/inputdata/docn_in"
     ocn_in = "unset"
     decomp = "1d"
     restfilm = trim(nullstr)

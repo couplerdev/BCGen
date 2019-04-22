@@ -1,0 +1,10 @@
+&shr_strdata_nml
+ datamode = 'SSTDATA'
+ domainfile = '/mnt/CESM-data/inputdata/share/domains/domain.ocn.gx3v7.120323.nc'
+ fillalgo = 'nn'
+ fillmask = 'nomask'
+ mapalgo = 'bilinear'
+ mapmask = 'dstmask'
+ taxmode = 'cycle'
+ tintalgo = 'linear'
+/

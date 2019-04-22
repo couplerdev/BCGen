@@ -31,4 +31,10 @@
 		<input>
 		</input>
 	</model>
+	<model>
+		<name>rof</name>
+		<version>rtm</version>
+		<input>
+		</input>
+	</model>
 </setup>

@@ -42,18 +42,18 @@ class FieldManager:
             key = name.split('_')[1]
             val = []
             if key=='dom':
-                self.fldsQuery[name] = child.find('field').text
-                val = self.fldsQuery[name].split(':')
+                self.fldsQuery[name] = child.find('field').text or ''
+                val = self.fldsQuery[name].split(':') if self.fldsQuery[name] else []
             elif key[0:2]=='x2':
                 model = key[2:]
                 if model in self.model:
-                    self.fldsQuery[name]  = child.find('field').text
-                    val = self.fldsQuery[name].split(':')
+                    self.fldsQuery[name]  = child.find('field').text or ''
+                    val = self.fldsQuery[name].split(':') if self.fldsQuery[name] else []
             elif key[-2:]=='2x':
                 model = key[:-2]
                 if model in self.model:
-                    self.fldsQuery[name] = child.find('field').text
-                    val = self.fldsQuery[name].split(':')
+                    self.fldsQuery[name] = child.find('field').text or ''
+                    val = self.fldsQuery[name].split(':') if self.fldsQuery[name] else []
             if val != []:
                 for v in val:
                     fldDict[v] = 1

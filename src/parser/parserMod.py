@@ -178,7 +178,7 @@ class Parser():
                      raise NotFoundError('fld not found')
                 fldStr = self.fldManager.fldsQuery[fld]
                 self.fldDict[fld] = fldStr
-                fldList = fldStr.split(':')
+                fldList = fldStr.split(':') if fldStr else []
                 for f in fldList:
                     if f in self.fldManager.fieldQuery:
                         self.fldMetaDict[f] = self.fldManager.fieldQuery[f]

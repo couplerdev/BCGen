@@ -49,6 +49,7 @@ module base_hist_mod
    !logical     :: drv_threading          ! driver threading control
 
    logical     :: atm_prognostic         ! .true.  => atm comp expects input
+   logical     :: rof_prognostic         ! .true.  => rof comp expects input
    logical     :: ice_prognostic         ! .true.  => ice comp expects input
    logical     :: ocn_prognostic         ! .true.  => ocn comp expects input
 
@@ -57,6 +58,8 @@ module base_hist_mod
    !--- domain equivalent 2d grid size ---
    integer(IN) :: atm_nx, atm_ny         ! nx,ny of 2d grid, if known
    integer, parameter :: num_inst_atm = 1
+   integer(IN) :: rof_nx, rof_ny         ! nx,ny of 2d grid, if known
+   integer, parameter :: num_inst_rof = 1
    integer(IN) :: ice_nx, ice_ny         ! nx,ny of 2d grid, if known
    integer, parameter :: num_inst_ice = 1
    integer(IN) :: ocn_nx, ocn_ny         ! nx,ny of 2d grid, if known
@@ -96,6 +99,10 @@ subroutine base_hist_write(metaData, EClock_d)
    type(mct_aVect), pointer :: x2atm_atmx
    type(mct_aVect)          :: fractions_atmx   ! need to support latter
    type(mct_gGrid)          :: dom_atmx
+   type(mct_aVect), pointer :: rof2x_rofx
+   type(mct_aVect), pointer :: x2rof_rofx
+   type(mct_aVect)          :: fractions_rofx   ! need to support latter
+   type(mct_gGrid)          :: dom_rofx
    type(mct_aVect), pointer :: ice2x_icex
    type(mct_aVect), pointer :: x2ice_icex
    type(mct_aVect)          :: fractions_icex   ! need to support latter
@@ -122,6 +129,8 @@ subroutine base_hist_write(metaData, EClock_d)
 
    atm2x_atmx => metaData%atm2x_atmx
    x2atm_atmx => metaData%x2atm_atmx
+   rof2x_rofx => metaData%rof2x_rofx
+   x2rof_rofx => metaData%x2rof_rofx
    ice2x_icex => metaData%ice2x_icex
    x2ice_icex => metaData%x2ice_icex
    ocn2x_ocnx => metaData%ocn2x_ocnx
@@ -129,6 +138,7 @@ subroutine base_hist_write(metaData, EClock_d)
    my_proc => metaData%my_proc
 
    call compMeta_getInfo(metaData%atm, prognostic=atm_prognostic, case_name = case_name, domain=dom_atmx)
+   call compMeta_getInfo(metaData%rof, prognostic=rof_prognostic, case_name = case_name, domain=dom_rofx)
    call compMeta_getInfo(metaData%ice, prognostic=ice_prognostic, case_name = case_name, domain=dom_icex)
    call compMeta_getInfo(metaData%ocn, prognostic=ocn_prognostic, case_name = case_name, domain=dom_ocnx)
 
@@ -193,6 +203,19 @@ subroutine base_hist_write(metaData, EClock_d)
                               nx=atm_nx,ny=atm_ny,nt=1,whead=whead,wdata=wdata,pre='x2atm')
             call base_io_write(hist_file,gsmap,atm2x_atmx,'atm2x_atmx', &
                               nx=atm_nx,ny=atm_ny,nt=1,whead=whead,wdata=wdata,pre='atm2x')
+         !endif
+         !if (rof_present) then
+            call compMeta_GetInfo(metaData%rof, comp_gsmap=gsmap)
+            !print *, 'base io'
+            call base_io_write(hist_file,gsmap,dom_rofx%data,'dom_rofx', &
+                              nx=rof_nx,ny=rof_ny,nt=1,whead=whead,wdata=wdata,pre='domrof')
+            !print *, 'data write'
+            !call base_io_write(hist_file,gsmap,fractions_rofx,'fractions_rofx', &
+            !                  nx=rof_nx,ny=rof_ny,nt=1,whead=whead,wdata=wdata,pre='fracrof')
+            call base_io_write(hist_file,gsmap,x2rof_rofx,'x2rof_rofx', &
+                              nx=rof_nx,ny=rof_ny,nt=1,whead=whead,wdata=wdata,pre='x2rof')
+            call base_io_write(hist_file,gsmap,rof2x_rofx,'rof2x_rofx', &
+                              nx=rof_nx,ny=rof_ny,nt=1,whead=whead,wdata=wdata,pre='rof2x')
          !endif
          !if (ice_present) then
             call compMeta_GetInfo(metaData%ice, comp_gsmap=gsmap)
@@ -262,6 +285,8 @@ subroutine base_hist_writeavg(metaData, EClock_d,write_now)
 
    type(mct_aVect),save  :: atm2x_atmx_avg(num_inst_atm)   ! tavg aVect/bundle
    type(mct_aVect),save  :: x2atm_atmx_avg(num_inst_atm)
+   type(mct_aVect),save  :: rof2x_rofx_avg(num_inst_rof)   ! tavg aVect/bundle
+   type(mct_aVect),save  :: x2rof_rofx_avg(num_inst_rof)
    type(mct_aVect),save  :: ice2x_icex_avg(num_inst_ice)   ! tavg aVect/bundle
    type(mct_aVect),save  :: x2ice_icex_avg(num_inst_ice)
    type(mct_aVect),save  :: ocn2x_ocnx_avg(num_inst_ocn)   ! tavg aVect/bundle
@@ -270,6 +295,9 @@ subroutine base_hist_writeavg(metaData, EClock_d,write_now)
    type(mct_aVect), pointer :: atm2x_atmx
    type(mct_aVect), pointer :: x2atm_atmx
    type(mct_gGrid), pointer :: dom_atmx
+   type(mct_aVect), pointer :: rof2x_rofx
+   type(mct_aVect), pointer :: x2rof_rofx
+   type(mct_gGrid), pointer :: dom_rofx
    type(mct_aVect), pointer :: ice2x_icex
    type(mct_aVect), pointer :: x2ice_icex
    type(mct_gGrid), pointer :: dom_icex
@@ -296,6 +324,8 @@ subroutine base_hist_writeavg(metaData, EClock_d,write_now)
 
    atm2x_atmx => metaData%atm2x_atmx
    x2atm_atmx => metaData%x2atm_atmx
+   rof2x_rofx => metaData%rof2x_rofx
+   x2rof_rofx => metaData%x2rof_rofx
    ice2x_icex => metaData%ice2x_icex
    x2ice_icex => metaData%x2ice_icex
    ocn2x_ocnx => metaData%ocn2x_ocnx
@@ -304,6 +334,8 @@ subroutine base_hist_writeavg(metaData, EClock_d,write_now)
    my_proc => metaData%my_proc
    call compMeta_getInfo(metaData%atm, prognostic=atm_prognostic,nx=atm_nx,&
                       ny=atm_ny, domain=dom_atmx)
+   call compMeta_getInfo(metaData%rof, prognostic=rof_prognostic,nx=rof_nx,&
+                      ny=rof_ny, domain=dom_rofx)
    call compMeta_getInfo(metaData%ice, prognostic=ice_prognostic,nx=ice_nx,&
                       ny=ice_ny, domain=dom_icex)
    call compMeta_getInfo(metaData%ocn, prognostic=ocn_prognostic,nx=ocn_nx,&
@@ -325,6 +357,16 @@ subroutine base_hist_writeavg(metaData, EClock_d,write_now)
             lsize = mct_aVect_lsize(x2atm_atmx)
             call mct_aVect_init(x2atm_atmx_avg(iidx),x2atm_atmx,lsize)
             call mct_aVect_zero(x2atm_atmx_avg(iidx))
+         enddo
+      !endif
+      !if (rof_present) then
+         do iidx = 1, num_inst_rof
+            lsize = mct_aVect_lsize(rof2x_rofx)
+            call mct_aVect_init(rof2x_rofx_avg(iidx),rof2x_rofx,lsize)
+            call mct_aVect_zero(rof2x_rofx_avg(iidx))
+            lsize = mct_aVect_lsize(x2rof_rofx)
+            call mct_aVect_init(x2rof_rofx_avg(iidx),x2rof_rofx,lsize)
+            call mct_aVect_zero(x2rof_rofx_avg(iidx))
          enddo
       !endif
       !if (ice_present) then
@@ -362,6 +404,14 @@ subroutine base_hist_writeavg(metaData, EClock_d,write_now)
                                                        x2atm_atmx%rAttr
          enddo
       !endif
+      !if (rof_present) then
+         do iidx = 1, num_inst_atm
+            rof2x_rofx_avg(iidx)%rAttr = rof2x_rofx_avg(iidx)%rAttr + &
+                                                       rof2x_rofx%rAttr
+            x2rof_rofx_avg(iidx)%rAttr = x2rof_rofx_avg(iidx)%rAttr + &
+                                                       x2rof_rofx%rAttr
+         enddo
+      !endif
       !if (ice_present) then
          do iidx = 1, num_inst_atm
             ice2x_icex_avg(iidx)%rAttr = ice2x_icex_avg(iidx)%rAttr + &
@@ -388,6 +438,14 @@ subroutine base_hist_writeavg(metaData, EClock_d,write_now)
                                                        atm2x_atmx%rAttr) / (cnt * 1.0_r8)
             x2atm_atmx_avg(iidx)%rAttr = (x2atm_atmx_avg(iidx)%rAttr + &
                                                        x2atm_atmx%rAttr) / (cnt * 1.0_r8)
+         enddo
+      !endif
+      !if (rof_present) then
+         do iidx = 1, num_inst_atm
+            rof2x_rofx_avg(iidx)%rAttr = (rof2x_rofx_avg(iidx)%rAttr + &
+                                                       rof2x_rofx%rAttr) / (cnt * 1.0_r8)
+            x2rof_rofx_avg(iidx)%rAttr = (x2rof_rofx_avg(iidx)%rAttr + &
+                                                       x2rof_rofx%rAttr) / (cnt * 1.0_r8)
          enddo
       !endif
       !if (ice_present) then
@@ -471,6 +529,15 @@ subroutine base_hist_writeavg(metaData, EClock_d,write_now)
             call base_io_write(hist_file,gsmap,atm2x_atmx_avg,'atm2x_atmx', &
                                nx=atm_nx,ny=atm_ny,nt=1,whead=whead,wdata=wdata, &
                                pre='atm2xavg',tavg=.true.)
+            call compMeta_getInfo(metaData%rof, comp_gsmap=gsmap)
+            call base_io_write(hist_file,gsmap,dom_rofx%data,'dom_rofx', &
+                               nx=rof_nx,ny=rof_ny,nt=1,whead=whead,wdata=wdata,pre='domrof')
+            call base_io_write(hist_file,gsmap,x2rof_rofx_avg,'x2rof_rofx', &
+                               nx=rof_nx,ny=rof_ny,nt=1,whead=whead,wdata=wdata, &
+                               pre='x2rofavg',tavg=.true.)
+            call base_io_write(hist_file,gsmap,rof2x_rofx_avg,'rof2x_rofx', &
+                               nx=rof_nx,ny=rof_ny,nt=1,whead=whead,wdata=wdata, &
+                               pre='rof2xavg',tavg=.true.)
             call compMeta_getInfo(metaData%ice, comp_gsmap=gsmap)
             call base_io_write(hist_file,gsmap,dom_icex%data,'dom_icex', &
                                nx=ice_nx,ny=ice_ny,nt=1,whead=whead,wdata=wdata,pre='domice')
@@ -498,6 +565,12 @@ subroutine base_hist_writeavg(metaData, EClock_d,write_now)
             do iidx = 1, num_inst_atm
                call mct_aVect_zero(atm2x_atmx_avg(iidx))
                call mct_aVect_zero(x2atm_atmx_avg(iidx))
+            enddo
+         !endif
+         !if (atm_present) then
+            do iidx = 1, num_inst_atm
+               call mct_aVect_zero(rof2x_rofx_avg(iidx))
+               call mct_aVect_zero(x2rof_rofx_avg(iidx))
             enddo
          !endif
          !if (atm_present) then

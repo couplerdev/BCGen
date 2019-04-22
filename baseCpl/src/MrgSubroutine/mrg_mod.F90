@@ -84,4 +84,18 @@ x2ice_icex)
 
 end subroutine mrg_x2ice
 
+subroutine mrg_x2rof(metaData, rof2x_rofx,&
+x2rof_rofx)
+
+    implicit none
+    type(Meta),        intent(in)    :: metaData
+!    type(mct_aVect),   intent(in)    :: atm2x_icex
+!    type(attrVect),   intent(in)    :: wav2x_ocnx
+    type(mct_aVect),   intent(in)    :: rof2x_rofx
+    type(mct_aVect),   intent(inout) :: x2rof_rofx
+
+    write(*,*)'========== rof mrged =========='
+
+end subroutine mrg_x2rof
+
 end module mrg_mod

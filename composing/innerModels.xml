@@ -12,6 +12,10 @@
 		<name>cice</name>
 		<location>/home/heqi/git/BCGen/composing/ciceDesc.xml</location>
 	</model>
+	<model>
+		<name>rtm</name>
+		<location>/home/heqi/git/BCGen/composing/rtmDesc.xml</location>
+	</model>
 </models>
 
 </innerModels>

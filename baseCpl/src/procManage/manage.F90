@@ -41,8 +41,8 @@ subroutine init(metaData)
     integer :: local_rank ! if test
 
     ! 初始化comp数目，以及comms数
-    metaData%num_models = 3
-    metaData%num_comms =  2*3+2
+    metaData%num_models = 4
+    metaData%num_comms =  2*4+2
     metaData%case_name = "my_case"
     
     
@@ -71,6 +71,8 @@ subroutine init(metaData)
     metaData%comp_name(metaData%cplid) = shr_string_toUpper(trim("coupler"))
     metaData%comp_name(metaData%modelatm_id) = shr_string_toUpper(trim("atm"))
     metaData%comp_name(metaData%modelatm2cpl_id) = shr_string_toUpper(trim("atm2cpl"))
+    metaData%comp_name(metaData%modelrof_id) = shr_string_toUpper(trim("rof"))
+    metaData%comp_name(metaData%modelrof2cpl_id) = shr_string_toUpper(trim("rof2cpl"))
     metaData%comp_name(metaData%modelice_id) = shr_string_toUpper(trim("ice"))
     metaData%comp_name(metaData%modelice2cpl_id) = shr_string_toUpper(trim("ice2cpl"))
     metaData%comp_name(metaData%modelocn_id) = shr_string_toUpper(trim("ocn"))
@@ -98,6 +100,10 @@ subroutine init(metaData)
                 metaData%mpi_modelatm2cpl, &
                 metaData%modelatm_id, metaData%cplid, &
                 metaData%modelatm2cpl_id, metaData%iamin_model, 0, ierr)
+    call deploy(metaData%mpi_glocomm, metaData%mpi_modelrof,&
+                metaData%mpi_modelrof2cpl, &
+                metaData%modelrof_id, metaData%cplid, &
+                metaData%modelrof2cpl_id, metaData%iamin_model, 0, ierr)
     call deploy(metaData%mpi_glocomm, metaData%mpi_modelice,&
                 metaData%mpi_modelice2cpl, &
                 metaData%modelice_id, metaData%cplid, &
@@ -117,6 +123,10 @@ subroutine init(metaData)
         call MPI_Comm_rank(metaData%mpi_modelatm, local_rank, ierr)
         print *,'Im atm: in comp:',local_rank, ' in glo:',num_rank
     end if
+    if(metaData%iamin_model(metaData%modelrof_id))then
+        call MPI_Comm_rank(metaData%mpi_modelrof, local_rank, ierr)
+        print *,'Im rof: in comp:',local_rank, ' in glo:',num_rank
+    end if
     if(metaData%iamin_model(metaData%modelice_id))then
         call MPI_Comm_rank(metaData%mpi_modelice, local_rank, ierr)
         print *,'Im ice: in comp:',local_rank, ' in glo:',num_rank
@@ -135,6 +145,8 @@ subroutine init(metaData)
 
     metaData%comp_comm(metaData%modelatm_id)     = metaData%mpi_modelatm
     metaData%comp_comm(metaData%modelatm2cpl_id) =metaData%mpi_modelatm2cpl 
+    metaData%comp_comm(metaData%modelrof_id)     = metaData%mpi_modelrof
+    metaData%comp_comm(metaData%modelrof2cpl_id) =metaData%mpi_modelrof2cpl 
     metaData%comp_comm(metaData%modelice_id)     = metaData%mpi_modelice
     metaData%comp_comm(metaData%modelice2cpl_id) =metaData%mpi_modelice2cpl 
     metaData%comp_comm(metaData%modelocn_id)     = metaData%mpi_modelocn
@@ -154,6 +166,13 @@ subroutine init(metaData)
     if(metaData%iamin_model(metaData%modelatm2cpl_id))then
         call procMeta_addToModel(metaData%my_proc, metaData%modelatm2cpl_id, &
                              metaData%mpi_modelatm2cpl,'atm2cpl', ierr)
+    end if
+    if(metaData%iamin_model(metaData%modelrof_id))then
+        call procMeta_addToModel(metaData%my_proc, metaData%modelrof_id, metaData%mpi_modelrof, 'rof', ierr)
+    end if
+    if(metaData%iamin_model(metaData%modelrof2cpl_id))then
+        call procMeta_addToModel(metaData%my_proc, metaData%modelrof2cpl_id, &
+                             metaData%mpi_modelrof2cpl,'rof2cpl', ierr)
     end if
     if(metaData%iamin_model(metaData%modelice_id))then
         call procMeta_addToModel(metaData%my_proc, metaData%modelice_id, metaData%mpi_modelice, 'ice', ierr)
@@ -218,6 +237,20 @@ subroutine init(metaData)
             metaData%iamroot_modelatm2cpl, ierr)
         metaData%iamin_modelatm2cpl = .true.
     end if
+    metaData%iamin_modelrof = .false. 
+    
+    if(metaData%iamin_model(metaData%modelrof_id))then
+        call iam_comm_root(metaData%mpi_modelrof, metaData%iamroot_modelrof, ierr)
+        metaData%iamin_modelrof = .true.
+        call MPI_Comm_rank(metaData%mpi_modelrof,local_rank, ierr)
+    end if
+
+    metaData%iamin_modelrof2cpl = .false.
+    if(metaData%iamin_model(metaData%modelrof2cpl_id))then
+        call iam_comm_root(metaData%mpi_modelrof2cpl, &
+            metaData%iamroot_modelrof2cpl, ierr)
+        metaData%iamin_modelrof2cpl = .true.
+    end if
     metaData%iamin_modelice = .false. 
     
     if(metaData%iamin_model(metaData%modelice_id))then
@@ -260,6 +293,9 @@ subroutine init(metaData)
     call mapper_init(metaData%mapper_Catm2x, ierr)
     call mapper_init(metaData%mapper_Cx2atm, ierr)
 
+    call mapper_init(metaData%mapper_Crof2x, ierr)
+    call mapper_init(metaData%mapper_Cx2rof, ierr)
+
     call mapper_init(metaData%mapper_Cice2x, ierr)
     call mapper_init(metaData%mapper_Cx2ice, ierr)
 
@@ -273,6 +309,9 @@ subroutine init(metaData)
     metaData%atm%ID = metaData%modelatm_id
     metaData%atm%comm = metaData%comp_comm(metaData%modelatm_id)
     metaData%atm%gsize = 3312
+    metaData%rof%ID = metaData%modelrof_id
+    metaData%rof%comm = metaData%comp_comm(metaData%modelrof_id)
+    metaData%rof%gsize = 259200
     metaData%ice%ID = metaData%modelice_id
     metaData%ice%comm = metaData%comp_comm(metaData%modelice_id)
     metaData%ice%gsize = 11600
@@ -310,6 +349,7 @@ subroutine clean(metaData)
 
     call procMeta_Final(metaData%my_proc, ierr)
     call compMeta_Final(metaData%atm, ierr)
+    call compMeta_Final(metaData%rof, ierr)
     call compMeta_Final(metaData%ice, ierr)
     call compMeta_Final(metaData%ocn, ierr)
 

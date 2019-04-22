@@ -12,8 +12,8 @@ module time_mod
     !use base_file
     use shr_file_mod
     implicit none
-    integer, parameter :: NUMALARMS = 3+6
-    integer, parameter :: NUMCOMPS = 3
+    integer, parameter :: NUMALARMS = 4+6
+    integer, parameter :: NUMCOMPS = 4
     type(ESMF_Alarm) :: alarm(NUMALARMS)
     integer :: dtime(NUMCOMPS)
     public :: time_clockRegist
@@ -67,6 +67,7 @@ end subroutine time_clockRegist
 
 subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
                           EClock_atm, &
+                          EClock_rof, &
                           EClock_ice, &
                           EClock_ocn, &
                           restart, restart_file, cal)
@@ -79,6 +80,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     character(len=*),  intent(in)            :: restart_file
     type(ESMF_Clock), intent(inout), pointer :: EClock_drv
     type(ESMF_Clock), intent(inout), pointer :: EClock_atm
+    type(ESMF_Clock), intent(inout), pointer :: EClock_rof
     type(ESMF_Clock), intent(inout), pointer :: EClock_ice
     type(ESMF_Clock), intent(inout), pointer :: EClock_ocn
     type(ESMF_CalKind_Flag), intent(in), optional  :: cal
@@ -121,6 +123,8 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     integer                 :: ref_tod
     integer            :: atm_cpl_dt
     integer            :: atm_cpl_offset
+    integer            :: rof_cpl_dt
+    integer            :: rof_cpl_offset
     integer            :: ice_cpl_dt
     integer            :: ice_cpl_offset
     integer            :: ocn_cpl_dt
@@ -147,17 +151,20 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
           histavg_option, histavg_n, histavg_ymd,      &
           start_ymd, start_tod, ref_ymd, ref_tod,      &
           atm_cpl_dt, atm_cpl_offset,      &
+          rof_cpl_dt, rof_cpl_offset,      &
           ice_cpl_dt, ice_cpl_offset,      &
           ocn_cpl_dt, ocn_cpl_offset,      &
           end_restart
 
     allocate(SyncClock%ECP(clock_drv)%EClock)
     allocate(SyncClock%ECP(clock_atm)%EClock)
+    allocate(SyncClock%ECP(clock_rof)%EClock)
     allocate(SyncClock%ECP(clock_ice)%EClock)
     allocate(SyncClock%ECP(clock_ocn)%EClock)
 
     EClock_drv => SyncClock%ECP(clock_drv)%EClock
     EClock_atm => SyncClock%ECP(clock_atm)%EClock 
+    EClock_rof => SyncClock%ECP(clock_rof)%EClock 
     EClock_ice => SyncClock%ECP(clock_ice)%EClock 
     EClock_ocn => SyncClock%ECP(clock_ocn)%EClock 
 
@@ -192,6 +199,8 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     
        atm_cpl_dt     = 0
        atm_cpl_offset = 0
+       rof_cpl_dt     = 0
+       rof_cpl_offset = 0
        ice_cpl_dt     = 0
        ice_cpl_offset = 0
        ocn_cpl_dt     = 0
@@ -247,6 +256,8 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     call shr_mpi_bcast(curr_tod,       mpicom)
     call shr_mpi_bcast(atm_cpl_dt,     mpicom)
     call shr_mpi_bcast(atm_cpl_offset,     mpicom)
+    call shr_mpi_bcast(rof_cpl_dt,     mpicom)
+    call shr_mpi_bcast(rof_cpl_offset,     mpicom)
     call shr_mpi_bcast(ice_cpl_dt,     mpicom)
     call shr_mpi_bcast(ice_cpl_offset,     mpicom)
     call shr_mpi_bcast(ocn_cpl_dt,     mpicom)
@@ -273,6 +284,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
 
     flag =  &
          abs(atm_cpl_offset)>atm_cpl_dt .or. &
+         abs(rof_cpl_offset)>rof_cpl_dt .or. &
          abs(ice_cpl_offset)>ice_cpl_dt .or. &
          abs(ocn_cpl_offset)>ocn_cpl_dt .or. &
          (.false.)
@@ -305,6 +317,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     time_cal = ESMF_CalendarCreate(esmf_caltype, rc=rc)
     dtime = 0 
     dtime(clock_atm) = atm_cpl_dt
+    dtime(clock_rof) = rof_cpl_dt
     dtime(clock_ice) = ice_cpl_dt
     dtime(clock_ocn) = ocn_cpl_dt
     dtime(clock_drv) = maxval(dtime)
@@ -366,6 +379,7 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     !call base_sys_abort('end clock init')
     offset(clock_drv) = 0
     offset(clock_atm) = atm_cpl_offset
+    offset(clock_rof) = rof_cpl_offset
     offset(clock_ice) = ice_cpl_offset
     offset(clock_ocn) = ocn_cpl_offset
 
@@ -388,6 +402,11 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_atmrun),&
                   opt=time_optNSeconds, opt_n=dtime(clock_atm), RefTime=OffsetTime,&
                   alarmname=trim(alarm_atmrun_name))
+    call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_rof), rc=rc)
+    OffsetTime=  currTime + TimeStep
+    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_rofrun),&
+                  opt=time_optNSeconds, opt_n=dtime(clock_rof), RefTime=OffsetTime,&
+                  alarmname=trim(alarm_rofrun_name))
     call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_ice), rc=rc)
     OffsetTime=  currTime + TimeStep
     call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_icerun),&
@@ -553,6 +572,9 @@ subroutine time_clockAdvance(SyncClock)
     call ESMF_ClockAdvance(SyncClock%ECP(clock_drv)%EClock, rc=rc)
     if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_atmrun)))then
         call ESMF_ClockAdvance(SyncClock%ECP(clock_atm)%EClock, rc=rc)
+    end if
+    if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_rofrun)))then
+        call ESMF_ClockAdvance(SyncClock%ECP(clock_rof)%EClock, rc=rc)
     end if
     if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_icerun)))then
         call ESMF_ClockAdvance(SyncClock%ECP(clock_ice)%EClock, rc=rc)

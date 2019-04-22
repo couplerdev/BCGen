@@ -229,4 +229,50 @@
 			</final>
    		</method>
 	</model> 
+	<model>
+		<name>rof</name>
+		<version>rtm</version>
+		<src>rof</src>
+		<metaFile>None</metaFile>
+		<attrVect>
+			<name></name>
+			<gsize>259200</gsize>
+			<nx>3</nx>
+			<ny>4</ny>
+			<field>flds_rof2x_states,flds_rof2x_fluxes,flds_x2rof_states,flds_x2rof_fluxes</field>
+		</attrVect>
+		<domain>
+			<field>flds_dom_coord</field>
+			<path></path>
+		</domain>
+		<method>
+			<init>
+				<name>rof_init_mct</name>
+				<in_args>
+					<arg>rof2x_rofrof</arg>
+				</in_args>
+				<out_args>
+					<arg>x2rof_rofrof</arg>
+				</out_args>
+ 			</init>
+			<run>
+				<name>rof_run_mct</name>
+				<in_args>
+					<arg>rof2x_rofrof</arg>
+				</in_args>
+				<out_args>
+					<arg>x2rof_rofrof</arg>
+				</out_args>
+			</run>
+			<final>
+				<name>rof_final_mct</name>
+				<in_args>
+					<arg>rof2x_rofrof</arg>
+				</in_args>
+				<out_args>
+					<arg>x2rof_rofrof</arg>
+				</out_args>
+			</final>
+   		</method>
+	</model> 
 </models>
