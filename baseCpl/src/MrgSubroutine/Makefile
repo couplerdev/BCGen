@@ -1,4 +1,4 @@
-SRC = mrg_mod.F90
+SRC = mrg_mod.F90  fraction_mod.F90
 include ../Makefile.conf
 OBJ_ALL = $(SRC: .F90=.o)
 

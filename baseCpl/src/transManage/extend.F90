@@ -3,6 +3,7 @@ module extend
 ! extendMod: when src gsmap, avect etc. have a different 
 ! comm set, they should extend themselves.
 !--------------------------------------------------------- 
+use shr_kind_mod,  only: r8=> shr_kind_r8, IN=> shr_kind_in
 use mct_mod
 use mpi
 use proc_def
@@ -17,6 +18,7 @@ use global_var
     public :: avect_init_ext
     public :: avect_extend
     public :: avect_create
+    public :: gGrid_init_ext
 
 contains
 
@@ -176,6 +178,33 @@ subroutine avect_extend(metaData, AV_s, &
         endif
     endif
 end subroutine avect_extend
+
+subroutine gGrid_init_ext(metaData, grid_o, id_o, grid_n, id_n, gsmap_n, id_join)
+
+    implicit none
+    type(meta),      intent(in)    :: metaData
+    type(mct_gGrid), intent(inout) :: grid_o 
+    type(mct_gGrid), intent(inout) :: grid_n
+    integer,         intent(in)    :: id_o
+    integer,         intent(in)    :: id_n
+    type(mct_gsMap), intent(in)    :: gsmap_n
+    integer,         intent(in)    :: id_join
+
+    integer :: lsize
+    integer :: mpicom
+    integer :: ierr
+    mpicom = metaData%comp_comm(id_n)
+
+    lsize = 0
+    if(metaData%iamin_model(id_n))then
+        lsize = mct_gsMap_lsize(gsmap_n,mpicom)
+    end if
+    call avect_extend(metaData, grid_o%data, id_o, id_n)
+    call mct_gGrid_init(GGrid=grid_n, CoordChars=metaData%flds_dom_coord, OtherChars=metaData%flds_dom_other, lsize=lsize)
+    call mct_avect_zero(grid_n%data)
+
+
+end subroutine gGrid_init_ext
 
 
 subroutine gsmap_create(gsmapi, mpicomi, gsmapo, mpicomo, compido)

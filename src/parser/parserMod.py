@@ -6,14 +6,17 @@
 #      2018.3.1    alex: add the module
 #      2018.3.26   alex: modify 
 #      2018.4.3    alex: fixed some bugs
+#      2019.4.1    alex: add fraction
 #import ir
 # parser: parse xml to generate intermediate representation
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import Document
 import sys
 sys.path.append('../ir')
-from ir import Model, AttrVect, Mapper, GsMap, AttrVectCpl, Fraction
+from ir import Model, AttrVect, Mapper, GsMap, AttrVectCpl
 from ir import ModelSubroutine, MergeSubroutine, Subroutine
+from FractionIr import Fraction, FractionMapper
+
 from Datatype import *
 sys.path.append('../ErrorHandle')
 from ErrorHandle import *
@@ -22,14 +25,33 @@ from runCodeParser import SubroutineNode, SeqRun, Node
 from codeWrapper import CodeWrapper, toString
 from setupParser import Setup
 from fieldManager import FieldMeta, FieldManager
+from fakeModelParser import FakeModelParser
+
 
 DEBUG = 1
 
 class Parser():
-    def __init__(self, couplerFile="../../composing/coupler.xml",  modelFile="../../composing/models.xml", \
-                 scheduleFile="../../composing/schedule.xml", deployFile="../../composing/deploy.xml", \
-                 fieldFile="../../composing/field.xml",setupFile="../../composing/setup.xml",setup=True,
-                 rest=False, hist=False):
+    def __init__(self, setup=True, rest=False, hist=False,fileSpec={}):
+        self.__couplerFile="../../composing/coupler.xml"
+        self.__modelFile="../../composing/models.xml"
+        self.__scheduleFile="../../composing/schedule.xml"
+        self.__deployFile="../../composing/deploy.xml"
+        self.__fieldFile="../../composing/field.xml"
+        self.__setupFile="../../composing/setup.xml"
+        self.__regriddingFile="../../composing/regriddingFile.xml"
+        self.__fractionFile="../../composing/fractionSet.xml"
+        self.__fakeModelFile = "../../composing/fakeModel.xml"   
+
+        if len(fileSpec) != 0 :
+            self.__couplerFile = fileSpec['coupler.xml']
+            self.__modelFile = fileSpec['models.xml']
+            self.__deployFile = fileSpec['deploy.xml']
+            self.__fieldFile = fileSpec['field.xml']
+            self.__setupFile = fileSpec['setup.xml']
+            self.__regriddingFile = fileSpec['regriddingFile.xml']
+            self.__fractionFile = fileSpec['fractionSet.xml']
+            self.__fakeModelFile = fileSpec['fakeModel.xml']
+
         self.__NameManager = NameManager()
         self.__models = {}
         self.__attrVectCouple = {}
@@ -38,18 +60,21 @@ class Parser():
         self.__sMapper = {}
         self.__deployDistribution = {} # format {id: [first, last, stride]}
         self.__setupModels = {}
+        self.__setupFakeModels = {}
         self.__enable_setup = setup
         if setup:
-            setup = Setup(fileName=setupFile)
+            # setup generate couple with fraction
+            setup = Setup(fileName=self.__setupFile)
             setup.setupParse()
             setup.genXml()
             couplerFile = setup.couplerFile
             self.__setupModels = setup.model 
-        self.__couplerFile = couplerFile
-        self.__fieldFile = fieldFile
-        self.__modelFile = modelFile
-        self.__scheduleFile = scheduleFile
-        self.__deployFile = deployFile
+            self.__setupFakeModels = setup.fakeModel
+        #self.__couplerFile = couplerFile
+        #self.__fieldFile = fieldFile
+        #self.__modelFile = modelFile
+        #self.__scheduleFile = scheduleFile
+        #self.__deployFile = deployFile
         self.__fractions = {}
         self.__seqRun = SeqRun()
         self.fldManager = FieldManager()
@@ -59,6 +84,10 @@ class Parser():
         # util optional
         self.__hist = hist
         self.__rest = rest
+        # for second phase init
+        self.__secondPhaseInitSubrt = {}
+        # for fake model
+        self.__fakeModels = {}
 
     @property
     def models(self):
@@ -92,6 +121,10 @@ class Parser():
     def fldMetaDict(self):
         return self.__fldMetaDict
 
+    @property
+    def fakeModels(self):
+        return self.__fakeModels
+
     def addDistribution(self, deployList, ID):
         self.__deployDistribution[ID]=deployList
         
@@ -117,6 +150,7 @@ class Parser():
     # bug may happend when modelFile not include relative setup file
         root = self.load(self.__modelFile)
         modelParser = ModelParser(self.__NameManager, self.__seqRun)
+        #fakeModelParser = FakeModelParser(self.__seqRun)
         index = 1
         modelCount = 0
         for child in root:
@@ -134,11 +168,33 @@ class Parser():
             modelCount = modelCount + 1
             self.__models[model.name] = model
             self.__NameManager.register.modelDict[model.name] = model
+                    
         if self.__enable_setup and modelCount != len(self.__setupModels):
             print modelCount
             raise ComposingError("invalid "+self.__modelFile+\
                     " for some model(s) not supported in this file when setup.xml set them")
-      
+    
+        #for child in root:    
+        #    if 'type' in child.attrib and child.attrib['type'] == 'fake' \
+        #       and child.find('name').text in self.__setupFakeModels:
+        #        fakeModelParser.setRoot(child)
+        #        fakeModel = fakeModelParser.model
+        #        for dep in fakeModel.deps:
+        #            if dep not in self.models:
+        #                raise NotProperConfigError('in fakeModel deps')
+        #        self.__fakeModels[fakeModel.name]  = fakeModel
+                
+    def fakeModelParse(self):
+        root = self.load(self.__fakeModelFile)
+        for child in root:
+            fakeModelParser = FakeModelParser(self.__NameManager, self.__seqRun)
+            fakeModelParser.setRoot(child)
+            fakeModel = fakeModelParser.model
+            for dep in fakeModel.deps:
+                if dep not in self.models:
+                    raise NotProperConfigError('in fakeModelParse') 
+            self.__fakeModels[fakeModel.name] = fakeModel
+
     def deployParse(self):
         root = self.load(self.__deployFile)
         deployParser = DeployParser(self.__NameManager)
@@ -189,8 +245,11 @@ class Parser():
                 fldStr = fldStr[:-1]
                 self.fldDict[fld] = fldStr
                 self.__models[model].myFields[fld]=fldStr
+        for model in self.__fakeModels:
+            for fld in self.__fakeModels[model].flds:
+                fldStr = self.fldManager.fldsQuery[fld] 
+                self.fldDict[fld] = fldStr
         # 特殊处理的dom，之后再加入不特殊处理的吧
-        
 
     def parse(self):
         self.modelsParse()
@@ -199,6 +258,9 @@ class Parser():
         self.coupleAttrVectParse()
         if DEBUG == 1:
             print '..............couple AttrVect parsed..............'
+        self.fakeModelParse()
+        if DEBUG == 1:
+            print '..............fake Model parsed...................'
         self.deployParse()
         if DEBUG == 1:
             print '..................deploy parsed...................'
@@ -428,7 +490,8 @@ class ModelParser:
         path  = domain_root.find('path').text
         self.__domain = Domain(field, path)
 	'''
-        self.__model.domain =  "domain_"+self.__name
+        self.__model.domain['m'] = "domain_"+self.__name+self.__name
+        self.__model.domain['x'] = "domain_"+self.__name+'x'
 
     def __setSubroutine(self):    # must be the last to be set
         root =self.__root.find("method")
@@ -502,8 +565,10 @@ class ModelParser:
         fldList = fldStr.split(',')
         for fld in fldList:
             self.__model.fields[fld] = ''
-        fldStr = self.__root.find('domain').find('field').text
-        self.__model.fields[fldStr] = ''
+        fldStrs = self.__root.find('domain').find('field').text
+        fldList = fldStrs.split(',')
+        for fld in fldList:
+            self.__model.fields[fld] = ''
 
     def modelParse(self):
         if self.__root == "":
@@ -598,6 +663,28 @@ class CouplerParser: ###!!!!
             av.BindToManager(self.__NameManager)
             if not self.__NameManager.FindName(av):
                 raise ConfigError("try to mrg to a unexist attrVect")
+        
+        # fraction parse
+        if root.find('fraction')!=None:
+            fractionNode = root.find('fraction')
+            name = "fraction_"+modelGrid
+            fraclist = fractionNode.find('fraclist').text
+            initName = fractionNode.find('init').text
+            updateName = fractionNode.find('update').text
+            mapperMethod = "mapper_comp_map"
+            fracs = fractionNode.find('fracs')
+            fraction = Fraction(name, modelGrid, fraclist, initName, updateName)
+            for frac in fracs:
+                smapper = frac.find('mapper').text
+                smapper = "metaData%"+smapper
+                fracLocal = frac.find('name').text
+                srcGrid = frac.find('model').text
+                fracMapper = FractionMapper(smapper, mapperMethod, srcGrid,\
+                                            modelGrid, fracLocal)
+                fraction.append(fracMapper)
+            self.__fraction = fraction
+            
+
         if root.find("srcs") != None:
             srcs = root.find("srcs")
             if root.find('model') == None:
@@ -620,7 +707,7 @@ class CouplerParser: ###!!!!
                 attrVect.BindToManager(self.__NameManager)
                 attrVect.nameGenerate()
                 if self.__NameManager.FindName(attrVect):
-                    parser.addDict(attrVect, name)
+                    parser.addDict(attrVect, attrVect.name)
                 mapper = Mapper(srcAttrVect,attrVect, mapType="sMat",name=mapperName)
                 mapper.BindToManager(self.__NameManager)
                 mapper.nameGenerate()
@@ -668,7 +755,7 @@ class CouplerParser: ###!!!!
                     mapper.method = MapperMethod()
                 parser.append(mapper)
 
-        '''
+        ''' 
         if root.find("fraction") != None:
             fraction = root.find("fraction")
             fraction_name = fraction.find('name').text

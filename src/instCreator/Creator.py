@@ -80,12 +80,29 @@ class CodeMapper:
     def genCode(self):
         for spec in self.mappers:
             code = codeGenerator(spec.template, spec.codeFile)
+            print spec.template
             for cfg in spec.cfgs:
                 code.addList(cfg, spec.cfgs[cfg])
             code.generate()
 
+def get_merge_cfg(attrVects):
+    merge_cfg = {}
+    for av in attrVects:
+        merge_cfg[av] = {}
+        aVect = attrVects[av][0]
+        avDict = {}
+        avDict['gm'] = aVect.srcGsmap
+        avDict['gn'] = aVect.dstGsmap 
+        avDict['dst'] = aVect.dstGrid
+        avDict['src'] = aVect.srcGrid
+        avDict['mapperName'] = aVect.mapperName
+        avDict['w_file'] = aVect.mapperFile
+        avDict['mapperType'] = aVect.mapperType
+        merge_cfg[av] = avDict
+    return merge_cfg
 
 def get_SMat_relation(attrVects):
+    print attrVects
     model_names = []
     model_SMats = {}
     gsmap_dict = {}
@@ -100,8 +117,8 @@ def get_SMat_relation(attrVects):
         gsmap_dict[src_model_name] = model_gsmap_name
         #model_SMats[model_name]['gm'] = model_gsmap_name
         model_names.append(model_name)
-
     print model_SMats
+    exit()
     for av in attrVects:
         for src_x_dst_x_av in attrVects[av]:
             src_model = src_x_dst_x_av.srcModel
@@ -167,6 +184,10 @@ class InstCreator:
         self.confXmlPath['field.xml'] = prefix+"field.xml"
         self.confXmlPath['option.xml'] = prefix+"option.xml"
         self.confXmlPath['instSetup.xml'] = prefix+"instSetup.xml"
+        # newly update
+        self.confXmlPath['regriddingFile.xml'] = prefix+"regriddingFile.xml"
+        self.confXmlPath['fractionSet.xml'] = prefix+"fractionSet.xml"
+        self.confXmlPath['fakeModel.xml'] = prefix+"fakeModel.xml"
 
     def setXmlPath(self, name, val):
         if name not in self.confXmlPath:
@@ -181,10 +202,11 @@ class InstCreator:
         fieldPath =  self.confXmlPath['field.xml']
         optionPath = self.confXmlPath['option.xml']
         instSetupPath = self.confXmlPath['instSetup.xml']
-        self.parser = Parser(couplerFile=couplerPath, modelFile=modelsPath, \
-                             deployFile=deployPath, fieldFile=fieldPath, \
-                             setupFile=setupPath,setup=True, rest=self.args['rest'],\
-                             hist=self.args['hist'])
+        # newly add
+        fracSetPath = self.confXmlPath['fractionSet.xml']
+        self.confXmlPath['coupler.xml'] = "./coupler.xml"
+        self.parser = Parser(setup=True, rest=self.args['rest'],\
+                             hist=self.args['hist'], fileSpec=self.confXmlPath)
         self.parser.parse()
         self.metaManager.setConfigMeta(optionPath)
         self.metaManager.setMacroMeta(instSetupPath)
@@ -196,8 +218,10 @@ class InstCreator:
         self.subrt_cfgs = [node.data.strFormat for list_ in self.parser.runSubroutine \
                            for node in list_]
         self.fraction_cfgs = self.parser.fractions
+        self.fakeModel_cfgs = self.parser.fakeModels
         self.deploy_cfgs = self.parser.deploy
-        self.merge_cfgs = get_SMat_relation(self.parser.attrVectCouple)
+        #self.merge_cfgs = get_SMat_relation(self.parser.attrVectCouple)
+        self.merge_cfgs = get_merge_cfg(self.parser.attrVectCouple)
         self.conf_cfgs = {}
         self.conf_cfgs['instPath'] = self.metaManager.instPath
         nmlfilePath = self.metaManager.instPath+"/conf/"+self.metaManager.nmlfile
@@ -239,7 +263,8 @@ class InstCreator:
         field_cfgs = self.field_cfgs
         subrt_cfgs = self.subrt_cfgs
         merge_subroutines = self.merge_subroutines
-        fraction_cfgs = self.fraction_cfgs 
+        fraction_cfgs = self.fraction_cfgs
+        fake_cfgs = self.fakeModel_cfgs 
         conf_cfgs = self.conf_cfgs
         manageTmp = TempConfig(templateDirPrefix+"procM_Template.F90", "manage.F90",{"proc_cfgs":proc_cfgs, "conf_cfgs":conf_cfgs})
         deployTmp = TempConfig(templateDirPrefix+"deploymod_Template.F90", "deploy_mod.F90",\
@@ -256,7 +281,7 @@ class InstCreator:
                               {"proc_cfgs":proc_cfgs, "merge_subroutines":merge_subroutines,\
                                "merge_cfgs":merge_cfgs,"model_cfgs":model_cfgs, \
                                "subrt_cfgs":subrt_cfgs,'fraction_cfgs':fraction_cfgs,\
-                               "conf_cfgs":conf_cfgs})
+                               "conf_cfgs":conf_cfgs,"fake_cfgs":fake_cfgs})
         if self.args['regen']:
             confList = [searchTmp, manageTmp, deployTmp, baseCplTmp, globalTmp, timeDefTmp, timeCesmTmp, fieldTmp,\
                         baseHistTmp, baseRestTmp]
@@ -301,15 +326,14 @@ class InstCreator:
         datarc = self.metaManager.datarc
         with open(datarc, 'w') as f:
             for cfg in self.merge_cfgs:
-                dst_info = self.merge_cfgs[cfg]['dst']
-                for av in dst_info:
-                    sname = av['dst_mapper']
-                    path = av['w_file']
-                    path = path[1:-1]
-                    path = self.metaManager.inputPath+"/map/"+path
-                    stype = sname+"_type"
-                    f.write(sname+'   '+path+'\n')
-                    f.write(stype+'    \'X\'\n')
+                av = self.merge_cfgs[cfg]
+                sname = av['mapperName']
+                path = av['w_file']
+                path = path[1:-1]
+                path = self.metaManager.inputPath+"/map/"+path
+                stype = sname+"_type"
+                f.write(sname+'   '+path+'\n')
+                f.write(stype+'    \'X\'\n')
 
     def createMakefile(self):
         # build prerequists libbcpl.a

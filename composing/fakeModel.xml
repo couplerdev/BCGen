@@ -1,0 +1,101 @@
+<models>
+	<model type='fake'>
+		<name>xao</name>
+		<package></package>
+		<fields>flds_xao_states,flds_xao_fluxes</fields>
+		<deps>atm:ocn</deps>
+                <variables>
+			<variable type='attrVect'>
+				<name>xao_ox</name>
+				<grid>ocn</grid>
+				<method>
+					<init>
+						<phase>
+							<name>flux_init_mct</name>
+							<args>
+								<arg model='ocn' pes='cpl'>gsmap</arg>
+								<arg model='ocn' pes='cpl'>domain</arg>
+								<arg model='ocn' pes='cpl'>mpicom</arg>
+								<arg model='ocn'>fraction</arg>
+							</args>
+						</phase>
+						<phase>
+							<name>flux_ocnalb_mct</name>
+							<args>
+								<arg model='ocn'>comp</arg>
+								<arg>xao_ox</arg>
+								<arg model='ocn'>fraction</arg>
+							</args>
+						</phase>
+					</init>
+					<run>
+						<phase>
+							<name>flux_atmocn_mct</name>
+							<args>
+								<arg model='ocn'>comp</arg>
+								<arg model='atm' src='atm' dst='cpl'>attrVect</arg>
+								<arg model='ocn' src='atm' dst='cpl'>attrVect</arg>
+								<arg>xao_ox</arg>
+							</args>
+							<in_args>
+								<arg model='atm' src='atm' dst='cpl'>attrVect</arg>
+								<arg model='ocn' src='atm' dst='cpl'>attrVect</arg>
+							</in_args>
+							<out_args>
+								<arg>xao_ox</arg>
+							</out_args>
+						</phase>
+						<phase>
+							<name>flux_ocnalb_mct</name>
+							<args>
+								<arg model='ocn'>comp</arg>
+								<arg>xao_ox</arg>
+								<arg model='ocn'>fraction</arg>
+							</args>
+							<in_args>
+								<arg model='ocn'>fraction</arg>
+							</in_args>
+							<out_args>
+								<arg>xao_ox</arg>
+							</out_args>
+						</phase>
+					</run>
+				</method>
+			</variable>
+			<variable type='attrVect'>
+				<name>xao_ax</name>
+				<grid>atm</grid>
+				<method>
+					<init>
+						<phase>
+							<name>mapper_comp_map</name>
+							<args>
+								<arg src='ocn'  dst='atm'>mapper</arg>
+								<arg>xao_ox</arg>
+								<arg>xao_ax</arg>
+								<arg field='flds_xao_states'>field</arg>
+							</args>
+						</phase>
+					</init>
+					<run>
+						<phase>
+							<name>mapper_comp_map</name>
+							<args>
+								<arg src='ocn' dst='atm'>mapper</arg>
+								<arg>xao_ox</arg>
+								<arg>xao_ax</arg>
+								<arg field='flds_xao_states'>field</arg>
+							</args>
+							<in_args>
+								<arg>xao_ox</arg>
+							</in_args>
+							<out_args>
+								<arg>xao_ax</arg>
+							</out_args>
+						</phase>
+					</run>
+				</method>
+			</variable>
+		</variables>
+	</model>
+</models>

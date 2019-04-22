@@ -58,7 +58,8 @@ use field_def
            #for $av in $avs
        type(mct_aVect)   :: $avs[$av].name
            #end for
-       type(mct_gGrid)      :: $model.domain
+       type(mct_gGrid)      :: $model.domain['x']
+       type(mct_gGrid)      :: $model.domain['m']
            #for $mapper in $mappers
        type(map_mod)    :: $mappers[$mapper].name
            #end for
@@ -90,10 +91,8 @@ use field_def
 
        
        #for $model in $merge_cfgs
-            #set $dst_info = $merge_cfgs[$model]['dst']
-            #for $dst in $dst_info
-       type(map_mod)   :: $dst['dst_mapper']
-            #end for
+            #set $dst = $merge_cfgs[$model]['mapperName']
+       type(map_mod)   :: $dst
        #end for
 
        #for $fld in $fieldVar_cfgs

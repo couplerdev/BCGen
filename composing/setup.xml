@@ -1,21 +1,30 @@
 <setup>
+	<models>
 	<model>
 		<name>atm</name>
-		<version>xatm</version>
+		<version>cam</version>
+		<res>fv4x5</res>
+		<frac update='true'>normal</frac>
 		<input>
 			<src name='ocn'>
-				<field>So_t:So_s:So_u</field>
-				<file>map_gx3v7_to_fv4x5_aave_da_091218.nc</file>
+				<field type="state" frac="normal" >So_t:So_s:So_u</field><!--type none imply the online one-->
+			</src>
+			<src name='xao' type='var'>
+				<var>xao_ax</var>
 			</src>	
                </input>
 	</model>
 	<model>
 		<name>ocn</name>
 		<version>xocn</version>
+		<res>gx3v7</res>
+		<frac>normal</frac>
 		<input>
 			<src name='atm'>
-				<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>
-				<file>map_fv4x5_to_gx3v7_bilin_da_091218.nc</file>
+				<field type="state" frac="normal">Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>
+			</src>
+			<src name='xao' type='var'>
+				<var>xao_ox</var>
 			</src>
 		</input>
 	</model>
@@ -37,4 +46,8 @@
 		<input>
 		</input>
 	</model>
+	<model type='fake'>
+		<name>xao</name>
+	</model>
+	</models>
 </setup>

@@ -9,10 +9,13 @@
 			<gsize>3312</gsize>
 			<nx>3</nx>
 			<ny>4</ny>
-			<field>flds_atm2x_states,flds_atm2x_fluxes,flds_x2atm_states,flds_x2atm_fluxes</field>
+			<field>flds_atm2x_states,
+                        flds_atm2x_fluxes,
+                        flds_x2atm_states,
+                        flds_x2atm_fluxes</field>
 		</attrVect>
 		<domain>
-			<field>flds_dom_coord</field>	
+			<field>flds_dom_coord,flds_dom_other</field>	
 			<path></path>
 		</domain>
 		<method>
@@ -58,7 +61,7 @@
 			<field>flds_ocn2x_states,flds_ocn2x_fluxes,flds_x2ocn_states,flds_x2ocn_fluxes</field>
 		</attrVect>
 		<domain>
-			<field>flds_dom_coord</field>
+			<field>flds_dom_coord,flds_dom_other</field>
 			<path></path>
 		</domain>
 		<method>

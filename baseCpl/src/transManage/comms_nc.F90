@@ -241,6 +241,7 @@ implicit none
     call mpi_comm_size(mpicom, commsize, ierr)
    
     rcode = nf_open(filename, NF_NOWRITE,fid)
+    print *, 'try to open file:', filename
     if (rcode /= NF_NOERR)then
         write(logUnit, *) 'fail to open file' 
         call shr_sys_abort(subName//":fail to open file")  
