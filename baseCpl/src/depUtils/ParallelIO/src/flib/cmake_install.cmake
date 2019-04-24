@@ -1,4 +1,4 @@
-# Install script for directory: /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib
+# Install script for directory: /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -27,27 +27,22 @@ if(NOT CMAKE_INSTALL_COMPONENT)
   endif()
 endif()
 
-# Install shared libraries without execute permission?
-if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
-  set(CMAKE_INSTALL_SO_NO_EXE "0")
-endif()
-
 if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/libpiof.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/libpiof.a")
 endif()
 
 if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE FILE FILES
-    "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pio.mod"
-    "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pio_nf.mod"
-    "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pio_types.mod"
-    "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/piolib_mod.mod"
-    "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pionfget_mod.mod"
-    "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pio_kinds.mod"
-    "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pio_support.mod"
-    "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/piodarray.mod"
-    "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pionfatt_mod.mod"
-    "/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pionfput_mod.mod"
+    "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pio.mod"
+    "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pio_nf.mod"
+    "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pio_types.mod"
+    "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/piolib_mod.mod"
+    "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pionfget_mod.mod"
+    "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pio_kinds.mod"
+    "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pio_support.mod"
+    "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/piodarray.mod"
+    "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pionfatt_mod.mod"
+    "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/pionfput_mod.mod"
     )
 endif()
 

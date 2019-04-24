@@ -1,0 +1,4 @@
+&docn_nml
+ decomp = '1d'
+ ocn_in = '/home/hq/git/BCGen/inputdata/docn_ocn_in'
+/

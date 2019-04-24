@@ -43,10 +43,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO
+CMAKE_SOURCE_DIR = /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO
+CMAKE_BINARY_DIR = /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO
 
 # Include any dependencies generated for this target.
 include examples/f03/CMakeFiles/examplePio_f90.dir/depend.make
@@ -59,16 +59,16 @@ include examples/f03/CMakeFiles/examplePio_f90.dir/flags.make
 
 examples/f03/CMakeFiles/examplePio_f90.dir/examplePio.f90.o: examples/f03/CMakeFiles/examplePio_f90.dir/flags.make
 examples/f03/CMakeFiles/examplePio_f90.dir/examplePio.f90.o: examples/f03/examplePio.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building Fortran object examples/f03/CMakeFiles/examplePio_f90.dir/examplePio.f90.o"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 && /usr/local/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03/examplePio.f90 -o CMakeFiles/examplePio_f90.dir/examplePio.f90.o
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building Fortran object examples/f03/CMakeFiles/examplePio_f90.dir/examplePio.f90.o"
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 && /home/hq/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03/examplePio.f90 -o CMakeFiles/examplePio_f90.dir/examplePio.f90.o
 
 examples/f03/CMakeFiles/examplePio_f90.dir/examplePio.f90.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/examplePio_f90.dir/examplePio.f90.i"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 && /usr/local/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03/examplePio.f90 > CMakeFiles/examplePio_f90.dir/examplePio.f90.i
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 && /home/hq/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03/examplePio.f90 > CMakeFiles/examplePio_f90.dir/examplePio.f90.i
 
 examples/f03/CMakeFiles/examplePio_f90.dir/examplePio.f90.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/examplePio_f90.dir/examplePio.f90.s"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 && /usr/local/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03/examplePio.f90 -o CMakeFiles/examplePio_f90.dir/examplePio.f90.s
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 && /home/hq/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03/examplePio.f90 -o CMakeFiles/examplePio_f90.dir/examplePio.f90.s
 
 examples/f03/CMakeFiles/examplePio_f90.dir/examplePio.f90.o.requires:
 
@@ -92,13 +92,13 @@ examples/f03/examplePio_f90: examples/f03/CMakeFiles/examplePio_f90.dir/exampleP
 examples/f03/examplePio_f90: examples/f03/CMakeFiles/examplePio_f90.dir/build.make
 examples/f03/examplePio_f90: src/flib/libpiof.a
 examples/f03/examplePio_f90: src/clib/libpioc.a
-examples/f03/examplePio_f90: /usr/local/lib/libnetcdf.so
-examples/f03/examplePio_f90: src/gptl/libgptl.a
-examples/f03/examplePio_f90: /usr/local/lib/libnetcdff.so
-examples/f03/examplePio_f90: /usr/local/Pnetcdf/lib/libpnetcdf.a
+examples/f03/examplePio_f90: /usr/local/lib/libgptl.a
+examples/f03/examplePio_f90: /home/hq/lib/libnetcdf.a
+examples/f03/examplePio_f90: /home/hq/lib/libnetcdff.a
+examples/f03/examplePio_f90: /home/hq/lib/libpnetcdf.a
 examples/f03/examplePio_f90: examples/f03/CMakeFiles/examplePio_f90.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking Fortran executable examplePio_f90"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/examplePio_f90.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking Fortran executable examplePio_f90"
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/examplePio_f90.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 examples/f03/CMakeFiles/examplePio_f90.dir/build: examples/f03/examplePio_f90
@@ -110,10 +110,10 @@ examples/f03/CMakeFiles/examplePio_f90.dir/requires: examples/f03/CMakeFiles/exa
 .PHONY : examples/f03/CMakeFiles/examplePio_f90.dir/requires
 
 examples/f03/CMakeFiles/examplePio_f90.dir/clean:
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 && $(CMAKE_COMMAND) -P CMakeFiles/examplePio_f90.dir/cmake_clean.cmake
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 && $(CMAKE_COMMAND) -P CMakeFiles/examplePio_f90.dir/cmake_clean.cmake
 .PHONY : examples/f03/CMakeFiles/examplePio_f90.dir/clean
 
 examples/f03/CMakeFiles/examplePio_f90.dir/depend:
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03/CMakeFiles/examplePio_f90.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03 /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/examples/f03/CMakeFiles/examplePio_f90.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : examples/f03/CMakeFiles/examplePio_f90.dir/depend
 

@@ -6,7 +6,7 @@
 	<frac model="ocn" type="ad">ofrad</frac>
 	<frac model="ice" type="normal">ifrac</frac>
 	<frac model="ice" type="ad">ifrad</frac>
-	<frac model="lnd" type="noraml">lfrac</frac>
+	<frac model="lnd" type="normal">lfrac</frac>
 	<frac model="lnd" type="ldef">lfrin</frac>
 	<frac model="glc" type="normal">gfrac</frac>
 	<frac model="rof" type="normal">rfrac</frac>

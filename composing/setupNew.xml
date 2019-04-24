@@ -17,4 +17,13 @@
 			</src>
 		</input>
 	</model>
+	<model>
+		<name>lnd</name>
+		<input>
+			<src name='lnd'>
+				<field>fld_lnd_states</field>
+				<file>map_0.5x0.5_nomask_to_4x5_nomask_aave_da_c110822.nc</file>
+			</src>
+		</input>
+	</model>
 </setup>

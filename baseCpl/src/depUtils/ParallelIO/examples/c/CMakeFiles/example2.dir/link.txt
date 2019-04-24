@@ -1,0 +1,1 @@
+/home/hq/bin/mpicc -O2 -DHAVE_NANOTIME -DBIT64 -DHAVE_VPRINTF -DHAVE_BACKTRACE -DHAVE_SLASHPROC -DHAVE_COMM_F2C -DHAVE_TIMES -DHAVE_GETTIMEOFDAY -std=c99 -g -O0   CMakeFiles/example2.dir/example2.c.o  -o example2 ../../src/clib/libpioc.a ../../src/clib/libpioc.a -llmpe -lmpe -lpthread -lm /usr/local/lib/libgptl.a /home/hq/lib/libnetcdf.a /home/hq/lib/libpnetcdf.a 

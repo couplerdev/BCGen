@@ -318,7 +318,7 @@ class InstCreator:
             f.write(' pio_root = 1\n')
             f.write(' pio_stride = -1\n')
             f.write(' pio_typename = \'netcdf\'\n')
-            f.write('/')
+            f.write('/\n')
 
 
     def createRcConf(self):
@@ -364,10 +364,10 @@ class InstCreator:
             modelDir = ""
             if os.path.exists(defaultPath+srcLocation):
                 modelDir=defaultPath+srcLocation
-            elif os.path.exsits(srcLocation):
+            elif os.path.exists(srcLocation):
                 modelDir=srcLocation
             else:
-                raise WrongPathError("in createMakefile:")
+                raise WrongPathError("in createMakefile: {}".format(srcLocation))
             metaFile = model.metaFile
             if metaFile == "None":
                 #modelDir = InstCreator.couplerCodePath+"/src/models/"+name
