@@ -160,27 +160,33 @@ subroutine mapper_spmat_init_rc(mapper, gsmap_src, gsmap_dst, mpicom, &
     !character(len=64) :: maptype
     integer :: ierr
 
-    mapper%map_type="spmat"
-    call I90_LoadF(rcfile, ierr)
-    if(ierr/=0)then
-        call shr_sys_abort(subname//':abort not find rcfile')
-    end if
-    call I90_Label(trim(mapname), ierr)
-    if(ierr/=0)then
-        call shr_sys_abort(subname//':abort not find label'//trim(mapname))
-    end if
-    call I90_gtoken(mapfilePath, ierr)
+    if(present(samegrid) .and. samegrid)then
+        mapper%map_type = "rearr"
+        call mct_rearr_init(gsmap_src, gsmap_dst, mpicom, mapper%rearr)
+    else
 
-    if(ierr/=0)then
-        call shr_sys_abort(subname//': abort not get mapfilePath')
-    end if
+        mapper%map_type="spmat"
+        call I90_LoadF(rcfile, ierr)
+        if(ierr/=0)then
+            call shr_sys_abort(subname//':abort not find rcfile')
+        end if
+        call I90_Label(trim(mapname), ierr)
+        if(ierr/=0)then
+            call shr_sys_abort(subname//':abort not find label'//trim(mapname))
+        end if
+        call I90_gtoken(mapfilePath, ierr)
+
+        if(ierr/=0)then
+            call shr_sys_abort(subname//': abort not get mapfilePath')
+        end if
     !call I90_Label(trim(maprctype), ierr)
     !if(ierr/=0)then
     !    call shr_sys_abort(subname//': abort not find label'//trim(maprctype))
     !end if
     !call I90_gtoken(maptype, ierr)
-    call sMatPinitnc_mapfile(mapper%sMatPlus, gsmap_src, gsmap_dst, &
+        call sMatPinitnc_mapfile(mapper%sMatPlus, gsmap_src, gsmap_dst, &
                             trim(mapfilePath), trim(maprctype), mpicom)
+    end if
 
 end subroutine mapper_spmat_init_rc
 

@@ -54,6 +54,7 @@ class Setup:
             ### compute frac relationship frac init , update
             fracType  = child.find('frac').text
             fracTypeList = fracType.split(':')
+            updateFlag = False
             if 'update' in child.find('frac').attrib and \
               child.find('frac').attrib['update']=="true":
                 updateFlag = True
@@ -94,7 +95,11 @@ class Setup:
                     if smatType == "none":
                         map_type = "online"
                     else:
-                        w_file = self.__regridDataLoc.query(srcModel, srcRes, modelName, res, smatType )
+                        if srcRes == res:
+                            w_file = "samegrid"
+                        else:
+                            print modelName
+                            w_file = self.__regridDataLoc.query(srcModel, srcRes, modelName, res, smatType )
 
                     srcAttrVect = srcModel+'2'+'x_'+srcModel+'x'
                     srcDict={}
@@ -190,6 +195,7 @@ class Setup:
             init = self.dictDom(doc, 'init', avDict['fraction']['init'])
             update = self.dictDom(doc, 'update', avDict['fraction']['update'])
             fracs = doc.createElement('fracs')
+            print avDict['fraction']
             for frac in avDict['fraction']['fracs']:
                 fracNode = doc.createElement('frac')
                 nameNode = self.dictDom(doc,'name', frac['name'])

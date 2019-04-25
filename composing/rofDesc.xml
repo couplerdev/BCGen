@@ -1,7 +1,7 @@
 <rofDescXml>
-	<packageDir>/home/hq/git/BCGen/baseCpl/src/models/rof</packageDir>
+	<packageDir>/share/BCGen/develDir/BCGen/baseCpl/src/models/rtm</packageDir>
 	<configure>
-		<script>./compile.sh</script>
+		<script></script>
 		<workDir>./</workDir>
 	</configure>
 	<build-namelist>

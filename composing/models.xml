@@ -9,10 +9,7 @@
 			<gsize>3312</gsize>
 			<nx>3</nx>
 			<ny>4</ny>
-			<field>flds_atm2x_states,
-                        flds_atm2x_fluxes,
-                        flds_x2atm_states,
-                        flds_x2atm_fluxes</field>
+			<field>flds_atm2x_states,flds_atm2x_fluxes,flds_x2atm_states,flds_x2atm_fluxes</field>
 		</attrVect>
 		<domain>
 			<field>flds_dom_coord,flds_dom_other</field>	
@@ -107,7 +104,7 @@
 			<field>flds_atm2x_states,flds_atm2x_fluxes,flds_x2atm_states,flds_x2atm_fluxes</field>
 		</attrVect>
 		<domain>
-			<field>flds_dom_coord</field>
+			<field>flds_dom_coord,flds_dom_other</field>
 			<path></path>
 		</domain>
 		<method>
@@ -143,8 +140,8 @@
 	<model>
 		<name>lnd</name>
 		<version>clm</version>
-		<src>lnd</src>
-		<metaFile>None</metaFile>
+		<src>clm</src>
+		<metaFile>/share/BCGen/develDir/BCGen/composing/clmDesc.xml</metaFile>
 		<attrVect>
 			<name></name>
 			<gsize>3312</gsize>
@@ -153,7 +150,7 @@
 			<field>flds_lnd2x_states,flds_lnd2x_fluxes,flds_x2lnd_states,flds_x2lnd_fluxes</field>
 		</attrVect>
 		<domain>
-			<field>flds_dom_coord</field>
+			<field>flds_dom_coord,flds_dom_other</field>
 			<path></path>
 		</domain>
 		<method>
@@ -189,8 +186,8 @@
 	<model>
 		<name>ice</name>
 		<version>cice</version>
-		<src>ice</src>
-		<metaFile>None</metaFile>
+		<src>cice</src>
+		<metaFile>/share/BCGen/develDir/BCGen/composing/ciceDesc.xml</metaFile>
 		<attrVect>
 			<name></name>
 			<gsize>11600</gsize>
@@ -199,7 +196,7 @@
 			<field>flds_ice2x_states,flds_ice2x_fluxes,flds_x2ice_states,flds_x2ice_fluxes</field>
 		</attrVect>
 		<domain>
-			<field>flds_dom_coord</field>
+			<field>flds_dom_coord,flds_dom_other</field>
 			<path></path>
 		</domain>
 		<method>
@@ -235,8 +232,8 @@
 	<model>
 		<name>rof</name>
 		<version>rtm</version>
-		<src>rof</src>
-		<metaFile>None</metaFile>
+		<src>rtm</src>
+		<metaFile>/share/BCGen/develDir/BCGen/composing/rofDesc.xml</metaFile>
 		<attrVect>
 			<name></name>
 			<gsize>259200</gsize>
@@ -245,7 +242,7 @@
 			<field>flds_rof2x_states,flds_rof2x_fluxes,flds_x2rof_states,flds_x2rof_fluxes</field>
 		</attrVect>
 		<domain>
-			<field>flds_dom_coord</field>
+			<field>flds_dom_coord,flds_dom_other</field>
 			<path></path>
 		</domain>
 		<method>

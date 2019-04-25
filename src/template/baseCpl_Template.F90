@@ -62,7 +62,6 @@ use fraction_mod
     #for $cfg in $merge_cfgs
     type(mct_aVect) ::$cfg
     #end for
-
     #for $model in $proc_cfgs
          #set $domainm = $model.domain['m']
          #set $domainx = $model.domain['x']
@@ -113,7 +112,6 @@ use fraction_mod
     #if $conf_cfgs['hist']
     character(SHR_KIND_CL) :: hist_file = $conf_cfgs['hist_file']
     #end if
-
 
 
 contains 
@@ -228,7 +226,6 @@ subroutine cpl_init()
     end if
 #end for
 
-    
     if(metaData%iamin_cpl)then
         #for $cfg in $merge_cfgs
             #set $av = $merge_cfgs[$cfg]
@@ -254,17 +251,19 @@ subroutine cpl_init()
             #set $mapper_name = $av['mapperName']
             #set $gm_mx = $av['gm']
             #set $gm_nx = $av['gn']
+            #set $same_grid = $av['samegrid']
         call mapper_spmat_init_rc(metaData%${mapper_name}, $gm_mx, $gm_nx, metaData%mpi_cpl,metaData%datarc, &
-                           '${mapper_name}', 'X')   
+                           '${mapper_name}', 'X', samegrid=$same_grid)   
         #end for
     end if
-
+    
     #for $fracName in $fraction_cfgs 
          #set $frac = $fraction_cfgs[$fracName]
          #set $namearg = $frac.init.name
          #set $arglist = $frac.init.argList
     call $frac.init.toString($namearg, $arglist)
     #end for   
+
     
     #for $fracName in $fraction_cfgs
         #set $frac = $fraction_cfgs[$fracName]
@@ -273,7 +272,6 @@ subroutine cpl_init()
     call $subrt.toString($subrt.name, $subrt.argList)
         #end for
     #end for
-
 
     #for $fake in $fake_cfgs:
         #set $fakeModel = $fake_cfgs[$fake]

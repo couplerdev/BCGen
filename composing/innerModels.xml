@@ -14,7 +14,7 @@
 	</model>
 	<model>
 		<name>rtm</name>
-		<location>/home/heqi/git/BCGen/composing/rtmDesc.xml</location>
+		<location>/home/heqi/git/BCGen/composing/rofDesc.xml</location>
 	</model>
 </models>
 

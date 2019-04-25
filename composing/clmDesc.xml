@@ -1,7 +1,7 @@
 <clmDescXml>
-	<packageDir>/home/hq/git/BCGen/baseCpl/src/models/clm</packageDir>
+	<packageDir>/share/BCGen/develDir/BCGen/baseCpl/src/models/clm</packageDir>
 	<configure>
-		<script>./compile.sh</script>
+		<script></script>
 		<workDir>./</workDir>
 	</configure>
 	<build-namelist>
