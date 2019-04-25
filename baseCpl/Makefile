@@ -11,13 +11,14 @@ TIMEDIR= timeManage
 COMMDIR = transManage
 PROCDIR = procManage
 MRGDIR = MrgSubroutine
+FLUXDIR = FluxSubroutine
 UTILSDIR = utils
 UTILAUXDIR = utilsAux
 ESMDIR = esm
 LOGUTILDIR =  logUtils 
 models=$(shell ls -l ./src/model|grep ^d|grep -v 'cpl'|awk '{print $$9}')
 MAIN = ./model/cpl
-DEPS=$(CCSM_SHR)  $(LOGUTILDIR) $(DEFDIR) $(ESMDIR) $(UTILSDIR) $(TIMEDIR) $(COMMDIR) $(PROCDIR) $(MRGDIR) $(UTILAUXDIR)
+DEPS=$(CCSM_SHR)  $(LOGUTILDIR) $(DEFDIR) $(ESMDIR) $(UTILSDIR) $(TIMEDIR) $(COMMDIR) $(PROCDIR) $(MRGDIR) $(UTILAUXDIR) $(FLUXDIR)
 
 .PHONY : all
 all :

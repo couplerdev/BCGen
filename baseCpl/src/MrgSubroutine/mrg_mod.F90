@@ -379,12 +379,12 @@ x2ice_icex)
     !----------------------------------------------------------------------- 
 
     if (first_time) then
-       index_a2x_Faxa_snowc = mct_aVect_indexRA(a2x_i,'Faxa_snowc')
-       index_a2x_Faxa_snowl = mct_aVect_indexRA(a2x_i,'Faxa_snowl')
-       index_a2x_Faxa_rainc = mct_aVect_indexRA(a2x_i,'Faxa_rainc')
-       index_a2x_Faxa_rainl = mct_aVect_indexRA(a2x_i,'Faxa_rainl')
-       index_x2i_Faxa_rain  = mct_aVect_indexRA(x2i_i,'Faxa_rain' )
-       index_x2i_Faxa_snow  = mct_aVect_indexRA(x2i_i,'Faxa_snow' )
+       index_a2x_Faxa_snowc = mct_aVect_indexRA(atm2x_icex,'Faxa_snowc')
+       index_a2x_Faxa_snowl = mct_aVect_indexRA(atm2x_icex,'Faxa_snowl')
+       index_a2x_Faxa_rainc = mct_aVect_indexRA(atm2x_icex,'Faxa_rainc')
+       index_a2x_Faxa_rainl = mct_aVect_indexRA(atm2x_icex,'Faxa_rainl')
+       index_x2i_Faxa_rain  = mct_aVect_indexRA(x2ice_icex,'Faxa_rain' )
+       index_x2i_Faxa_snow  = mct_aVect_indexRA(x2ice_icex,'Faxa_snow' )
        first_time = .false.
     end if
 
@@ -397,10 +397,10 @@ x2ice_icex)
     ! Scale total precip and runoff by flux_epbalfact 
 
     do i = 1,mct_aVect_lsize(x2ice_icex)
-       x2ice_icex%rAttr(index_x2i_Faxa_rain,i) = a2x_i%rAttr(index_a2x_Faxa_rainc,i) + &
-	                                    a2x_i%rAttr(index_a2x_Faxa_rainl,i)
-       x2ice_icex%rAttr(index_x2i_Faxa_snow,i) = a2x_i%rAttr(index_a2x_Faxa_snowc,i) + &
-	                                    a2x_i%rAttr(index_a2x_Faxa_snowl,i) 
+       x2ice_icex%rAttr(index_x2i_Faxa_rain,i) = atm2x_icex%rAttr(index_a2x_Faxa_rainc,i) + &
+	                                    atm2x_icex%rAttr(index_a2x_Faxa_rainl,i)
+       x2ice_icex%rAttr(index_x2i_Faxa_snow,i) = atm2x_icex%rAttr(index_a2x_Faxa_snowc,i) + &
+	                                    atm2x_icex%rAttr(index_a2x_Faxa_snowl,i) 
 
        x2ice_icex%rAttr(index_x2i_Faxa_rain,i) = x2ice_icex%rAttr(index_x2i_Faxa_rain,i) * flux_epbalfact
        x2ice_icex%rAttr(index_x2i_Faxa_snow,i) = x2ice_icex%rAttr(index_x2i_Faxa_snow,i) * flux_epbalfact
@@ -431,20 +431,20 @@ x2rof_rofx)
     !----------------------------------------------------------------------- 
 
     if (first_time) then
-       index_l2x_Flrl_rofliq = mct_aVect_indexRA(l2x_r,'Flrl_rofliq' )
-       index_l2x_Flrl_rofice = mct_aVect_indexRA(l2x_r,'Flrl_rofice' )
-       index_x2r_Flrl_rofliq = mct_aVect_indexRA(x2r_r,'Flrl_rofliq' )
-       index_x2r_Flrl_rofice = mct_aVect_indexRA(x2r_r,'Flrl_rofice' )
+       index_l2x_Flrl_rofliq = mct_aVect_indexRA(lnd2x_rofx,'Flrl_rofliq' )
+       index_l2x_Flrl_rofice = mct_aVect_indexRA(lnd2x_rofx,'Flrl_rofice' )
+       index_x2r_Flrl_rofliq = mct_aVect_indexRA(x2rof_rofx,'Flrl_rofliq' )
+       index_x2r_Flrl_rofice = mct_aVect_indexRA(x2rof_rofx,'Flrl_rofice' )
        index_lfrac = mct_aVect_indexRA(fractions_r,"lfrac")
        first_time = .false.
     end if
 
     ! Merge land rof and ice forcing for rof input
 
-    do i = 1,mct_aVect_lsize(x2r_r)
+    do i = 1,mct_aVect_lsize(x2rof_rofx)
        lfrac = fractions_r%rAttr(index_lfrac,i)
-       x2r_r%rAttr(index_x2r_Flrl_rofliq,i) = l2x_r%rAttr(index_l2x_Flrl_rofliq,i) * lfrac
-       x2r_r%rAttr(index_x2r_Flrl_rofice,i) = l2x_r%rAttr(index_l2x_Flrl_rofice,i) * lfrac
+       x2rof_rofx%rAttr(index_x2r_Flrl_rofliq,i) = lnd2x_rofx%rAttr(index_l2x_Flrl_rofliq,i) * lfrac
+       x2rof_rofx%rAttr(index_x2r_Flrl_rofice,i) = lnd2x_rofx%rAttr(index_l2x_Flrl_rofice,i) * lfrac
     end do
 
     write(*,*)'========== rof mrged =========='

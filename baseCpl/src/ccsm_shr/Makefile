@@ -44,7 +44,8 @@ SRCS_F90 = shr/shr_kind_mod.F90 \
 	   shr/shr_isnan.h \
 	   shr/shr_test_infnan_mod.F90 \
 	   shr/shr_infnan_mod.F90  \
-           shr/shr_scam_mod.F90
+           shr/shr_scam_mod.F90 \
+           shr/shr_assert_mod.F90
 
 OBJS_ALL = $(SRCS_F90:.F90=.o)
 
