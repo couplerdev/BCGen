@@ -1,0 +1,35 @@
+K 13
+svn:mergeinfo
+V 2610
+/cice/branch_tags/cesm1_0_esmf01_tags/esmf01_02_cice4_0_20100903/src/drivers/cpl_share/ice_scam.F90:25754-26346
+/cice/branch_tags/cesm1_1_esmf02_tags/esmf02_02_cice4_0_20111020/src/drivers/cpl_share/ice_scam.F90:33442-33548
+/cice/branch_tags/cpl7esmf_tags/cesm1_1_beta01_02/src/drivers/cpl_share/ice_scam.F90:31683-31960
+/cice/branch_tags/cpl7esmf_tags/cesm1_1_beta04_02/src/drivers/cpl_share/ice_scam.F90:32155-33767
+/cice/branch_tags/e52r_tags/e52r03_cice4_0_20111226/src/drivers/cpl_share/ice_scam.F90:33986-34011
+/cice/branch_tags/hrbench_tags/hrbench02_20110120/src/drivers/cpl_share/ice_scam.F90:35630-36361
+/cice/branch_tags/newgrid_tags/newgrid04_cice4_0_20111020/src/drivers/cpl_share/ice_scam.F90:31855-31923
+/cice/branch_tags/rasm_tags/rasm03_cice4_0_20110808/src/drivers/cpl_share/ice_scam.F90:34888-35692
+/cice/branch_tags/rasm_tags/rasm05_cice4_0_20120329/src/drivers/cpl_share/ice_scam.F90:36696-36819
+/cice/branch_tags/tcopt1_tags/tcopt101_cice4_0_20100611/src/drivers/cpl_share/ice_scam.F90:36367
+/cice/branches/cesm1_0_esmf01/src/drivers/cpl_share/ice_scam.F90:25009-25753
+/cice/branches/cesm1_1_esmf02/src/drivers/cpl_share/ice_scam.F90:32312-33441
+/cice/branches/cpl7esmf_br/110b1/src/drivers/cpl_share/ice_scam.F90:31680-31682
+/cice/branches/cpl7esmf_br/cesm1_1_beta04/src/drivers/cpl_share/ice_scam.F90:32152-32154
+/cice/branches/cpl7esmf_cesm1_beta16/src/drivers/cpl_share/ice_scam.F90:27479-27481
+/cice/branches/e52r/src/drivers/cpl_share/ice_scam.F90:33649-33985
+/cice/branches/hrbench/src/drivers/cpl_share/ice_scam.F90:27767-35629
+/cice/branches/nag_port/src/drivers/cpl_share/ice_scam.F90:43246-45888
+/cice/branches/newgrid/src/drivers/cpl_share/ice_scam.F90:31477-31854
+/cice/branches/rasm/src/drivers/cpl_share/ice_scam.F90:32623-36695
+/cice/branches/tcopt1/src/drivers/cpl_share/ice_scam.F90:23435-36366
+/cice/branches/tcopt2/src/drivers/cpl_share/ice_scam.F90:36362-38675
+/cice/trunk/src/drivers/cpl_share/ice_scam.F90:43075-45106
+/cice/trunk_tags/cice4_0_20100427/src/drivers/cpl_share/ice_scam.F90:22597-23434
+/cice/trunk_tags/cice4_0_20110808/src/drivers/cpl_share/ice_scam.F90:29712-32622
+/cice/trunk_tags/cice4_0_20111011/src/drivers/cpl_share/ice_scam.F90:31041-31476
+/cice/trunk_tags/cice4_0_20111020/src/drivers/cpl_share/ice_scam.F90:31279-31850
+/cice/trunk_tags/cice4_0_20120329/src/drivers/cpl_share/ice_scam.F90:35906-36361
+/cice/trunk_tags/cice4_0_20120502/src/drivers/cpl_share/ice_scam.F90:36822-37600
+/cice/trunk_tags/cice4_0_20120927/src/drivers/cpl_share/ice_scam.F90:40573-43245
+/cice/trunk_tags/cice4_0_20130320/src/drivers/cpl_share/ice_scam.F90:45107-45890
+END

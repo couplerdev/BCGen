@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld
+END
+configure
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/configure
+END
+queryDefaultNamelist.pl
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/queryDefaultNamelist.pl
+END
+user_nl_clm
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/user_nl_clm
+END
+queryDefaultXML.pm
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/queryDefaultXML.pm
+END
+clm.buildexe.csh
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/clm.buildexe.csh
+END
+listDefaultNamelist.pl
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/listDefaultNamelist.pl
+END
+build-namelist
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/build-namelist
+END
+clm.cpl7.template
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/clm.cpl7.template
+END
+clm.buildnml.csh
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/clm.buildnml.csh
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/README
+END

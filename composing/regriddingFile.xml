@@ -12,6 +12,9 @@
 		<weights model='ice' res='gx3v7'>
 			<file type='state'>map_fv4x5_to_gx3v7_bilin_da_091218.nc</file>
 		</weights>
+		<weights model='ice' res='gx3v7'>
+			<file type='state'>map_fv4x5_to_gx3v7_bilin_da_091218.nc</file>
+		</weights>
    	</res>
 	<res model="ocn" res="gx3v7">
 		<weights model="atm" res="fv4x5">
@@ -39,6 +42,24 @@
 	<res model='ice' res='gx3v7'>
 		<weights model='atm' res='fv4x5'>
 			<file type='state'>map_gx3v7_to_fv4x5_aave_da_091218.nc</file>
+		</weights>
+	</res>
+	<res model='ice' res='gx3v7'>
+		<weights model='atm' res='fv4x5'>
+			<file type='state'>map_gx3v7_to_fv4x5_aave_da_091218.nc</file>
+		</weights>
+	</res>
+	<res model="lnd" res="fv4x5">
+		<weights model='rof' res='r05'>
+			<file type='state'>no1.nc</file>
+		</weights>
+	</res>
+	<res model="rof" res="r05">
+		<weights model='lnd' res='fv4x5'>
+			<file type='state'>no.nc</file>
+		</weights>
+		<weights model='ocn' res='gx3v7'>
+			<file type='state'>zf.nc</file>
 		</weights>
 	</res>
 

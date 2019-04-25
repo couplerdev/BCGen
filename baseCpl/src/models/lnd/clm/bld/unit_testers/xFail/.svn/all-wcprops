@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/unit_testers/xFail
+END
+wrapClmTests.pl
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/unit_testers/xFail/wrapClmTests.pl
+END
+expectedFail.pm
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/unit_testers/xFail/expectedFail.pm
+END
+expectedClmTestFails.xml
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/bld/unit_testers/xFail/expectedClmTestFails.xml
+END

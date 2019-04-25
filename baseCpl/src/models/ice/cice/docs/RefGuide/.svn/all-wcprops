@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide
+END
+ice_dt_loop.tex
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_dt_loop.tex
+END
+protex
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/protex
+END
+ice_refdoc.tex
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_refdoc.tex
+END
+ice_glos.tex
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_glos.tex
+END
+ice_softw_libs.tex
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_softw_libs.tex
+END
+ice_grid_schematic.pdf
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_grid_schematic.pdf
+END
+ice_integrate.tex
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_integrate.tex
+END
+ice_module_desc.tex
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_module_desc.tex
+END
+ice_code_std.tex
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_code_std.tex
+END
+ice_code_cvs.tex
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_code_cvs.tex
+END
+ice_cpl_exch.tex
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_cpl_exch.tex
+END
+ice_grid.tex
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_grid.tex
+END
+cice.config
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/cice.config
+END
+ice_making_mods.tex
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_making_mods.tex
+END
+ice_calltree.tex
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_calltree.tex
+END
+ice_grid_schematic.eps
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/ice_grid_schematic.eps
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/Makefile
+END
+natbib.sty
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/RefGuide/natbib.sty
+END

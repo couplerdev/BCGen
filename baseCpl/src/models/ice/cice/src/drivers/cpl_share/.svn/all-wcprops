@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers/cpl_share
+END
+CICE.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers/cpl_share/CICE.F90
+END
+ice_scam.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers/cpl_share/ice_scam.F90
+END
+ice_communicate.F90
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers/cpl_share/ice_communicate.F90
+END
+ice_restart.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers/cpl_share/ice_restart.F90
+END
+CICE_InitMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers/cpl_share/CICE_InitMod.F90
+END
+CICE_RunMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers/cpl_share/CICE_RunMod.F90
+END
+ice_pio.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers/cpl_share/ice_pio.F90
+END
+ice_history_write.F90
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers/cpl_share/ice_history_write.F90
+END
+ice_constants.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers/cpl_share/ice_constants.F90
+END
+ice_cpl_indices.F90
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers/cpl_share/ice_cpl_indices.F90
+END
+ice_prescribed_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers/cpl_share/ice_prescribed_mod.F90
+END

@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/src/riverroute
+END
+RtmMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/src/riverroute/RtmMod.F90
+END
+RtmFileUtils.F90
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/src/riverroute/RtmFileUtils.F90
+END
+RtmHistFlds.F90
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/src/riverroute/RtmHistFlds.F90
+END
+RtmSpmd.F90
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/src/riverroute/RtmSpmd.F90
+END
+RtmHistFile.F90
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/src/riverroute/RtmHistFile.F90
+END
+RtmIO.F90
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/src/riverroute/RtmIO.F90
+END
+RtmVar.F90
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/src/riverroute/RtmVar.F90
+END
+RtmTimeManager.F90
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/src/riverroute/RtmTimeManager.F90
+END
+RtmDateTime.F90
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/src/riverroute/RtmDateTime.F90
+END
+RunoffMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/src/riverroute/RunoffMod.F90
+END
+RtmRestFile.F90
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/src/riverroute/RtmRestFile.F90
+END

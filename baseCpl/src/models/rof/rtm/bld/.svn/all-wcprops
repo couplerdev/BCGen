@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/bld
+END
+rtm.cpl7.template
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/bld/rtm.cpl7.template
+END
+rtm.buildnml.csh
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/bld/rtm.buildnml.csh
+END
+rof.cpl7.template
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/bld/rof.cpl7.template
+END
+build-namelist
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/bld/build-namelist
+END
+user_nl_rtm
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/bld/user_nl_rtm
+END
+rtm.buildexe.csh
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/bld/rtm.buildexe.csh
+END

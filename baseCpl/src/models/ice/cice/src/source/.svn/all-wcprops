@@ -1,0 +1,233 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source
+END
+ice_init.F90
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_init.F90
+END
+ice_dyn_evp.F90
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_dyn_evp.F90
+END
+ice_domain.F90
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_domain.F90
+END
+ice_transport_driver.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_transport_driver.F90
+END
+ice_calendar.F90
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_calendar.F90
+END
+ice_restoring.F90
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_restoring.F90
+END
+ice_blocks.F90
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_blocks.F90
+END
+ice_itd.F90
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_itd.F90
+END
+ice_transport_remap.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_transport_remap.F90
+END
+ice_shortwave.F90
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_shortwave.F90
+END
+ice_meltpond.F90
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_meltpond.F90
+END
+ice_ocean.F90
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_ocean.F90
+END
+ice_age.F90
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_age.F90
+END
+ice_lvl.F90
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_lvl.F90
+END
+ice_fileunits.F90
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_fileunits.F90
+END
+ice_aerosol.F90
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_aerosol.F90
+END
+ice_diagnostics.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_diagnostics.F90
+END
+ice_kinds_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_kinds_mod.F90
+END
+ice_mechred.F90
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_mechred.F90
+END
+ice_therm_vertical.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_therm_vertical.F90
+END
+ice_step_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_step_mod.F90
+END
+ice_flux.F90
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_flux.F90
+END
+ice_FY.F90
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_FY.F90
+END
+ice_therm_itd.F90
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_therm_itd.F90
+END
+ice_distribution.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_distribution.F90
+END
+ice_probability.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_probability.F90
+END
+ice_state.F90
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_state.F90
+END
+ice_work.F90
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_work.F90
+END
+ice_grid.F90
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_grid.F90
+END
+ice_read_write.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_read_write.F90
+END
+ice_forcing.F90
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_forcing.F90
+END
+ice_history_fields.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_history_fields.F90
+END
+ice_orbital.F90
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_orbital.F90
+END
+ice_spacecurve.F90
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_spacecurve.F90
+END
+ice_probability_tools.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_probability_tools.F90
+END
+ice_atmo.F90
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_atmo.F90
+END
+ice_domain_size.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_domain_size.F90
+END
+ice_history.F90
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/source/ice_history.F90
+END

@@ -1,0 +1,203 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main
+END
+clm_varcon.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/clm_varcon.F90
+END
+clm_varpar.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/clm_varpar.F90
+END
+CNiniTimeVar.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/CNiniTimeVar.F90
+END
+dynlandMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/dynlandMod.F90
+END
+clm_initializeMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/clm_initializeMod.F90
+END
+subgridRestMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/subgridRestMod.F90
+END
+clm_glclnd.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/clm_glclnd.F90
+END
+subgridMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/subgridMod.F90
+END
+accFldsMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/accFldsMod.F90
+END
+clmtypeInitMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/clmtypeInitMod.F90
+END
+pftdynMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/pftdynMod.F90
+END
+iniTimeConst.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/iniTimeConst.F90
+END
+histFileMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/histFileMod.F90
+END
+pft2colMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/pft2colMod.F90
+END
+clm_atmlnd.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/clm_atmlnd.F90
+END
+findHistFields.pl
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/findHistFields.pl
+END
+restFileMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/restFileMod.F90
+END
+controlMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/controlMod.F90
+END
+initSurfAlbMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/initSurfAlbMod.F90
+END
+filterMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/filterMod.F90
+END
+clm_driver.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/clm_driver.F90
+END
+clm_varctl.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/clm_varctl.F90
+END
+subgridAveMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/subgridAveMod.F90
+END
+initGridCellsMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/initGridCellsMod.F90
+END
+initSoilParVICMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/initSoilParVICMod.F90
+END
+CNiniSpecial.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/CNiniSpecial.F90
+END
+pftvarcon.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/pftvarcon.F90
+END
+surfrdMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/surfrdMod.F90
+END
+inicPerpMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/inicPerpMod.F90
+END
+clmtype.F90
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/clmtype.F90
+END
+reweightMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/reweightMod.F90
+END
+histFldsMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/histFldsMod.F90
+END
+mkarbinitMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/clm4_5/main/mkarbinitMod.F90
+END

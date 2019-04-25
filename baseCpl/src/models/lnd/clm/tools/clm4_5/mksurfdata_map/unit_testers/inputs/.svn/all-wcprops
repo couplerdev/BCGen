@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/unit_testers/inputs
+END
+test_domain_read_dims__lsmlon.nc
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/unit_testers/inputs/test_domain_read_dims__lsmlon.nc
+END
+test_lookup_2d_netcdf.nc
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/unit_testers/inputs/test_lookup_2d_netcdf.nc
+END
+test_domain_read_dims__lon.nc
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/unit_testers/inputs/test_domain_read_dims__lon.nc
+END
+test_domain_read_dims__lon_and_num_pixels.nc
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/unit_testers/inputs/test_domain_read_dims__lon_and_num_pixels.nc
+END
+test_domain_read_dims__lon_and_ni.nc
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/unit_testers/inputs/test_domain_read_dims__lon_and_ni.nc
+END
+test_domain_read_dims__num_pixels.nc
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/unit_testers/inputs/test_domain_read_dims__num_pixels.nc
+END

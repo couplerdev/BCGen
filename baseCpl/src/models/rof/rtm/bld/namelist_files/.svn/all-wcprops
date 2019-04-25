@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/bld/namelist_files
+END
+namelist_defaults_rtm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/bld/namelist_files/namelist_defaults_rtm.xml
+END
+namelist_definition_rtm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61028/rivrtm/release_tags/cesm1_2_x_n03_rtm1_0_30/bld/namelist_files/namelist_definition_rtm.xml
+END

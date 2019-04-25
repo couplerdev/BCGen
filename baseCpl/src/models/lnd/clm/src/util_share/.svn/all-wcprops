@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share
+END
+spmdGathScatMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/spmdGathScatMod.F90
+END
+organicFileMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/organicFileMod.F90
+END
+clm_time_manager.F90
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/clm_time_manager.F90
+END
+clm_nlUtilsMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/clm_nlUtilsMod.F90
+END
+clm_varorb.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/clm_varorb.F90
+END
+abortutils.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/abortutils.F90
+END
+accumulMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/accumulMod.F90
+END
+decompInitMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/decompInitMod.F90
+END
+getdatetime.F90
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/getdatetime.F90
+END
+fileutils.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/fileutils.F90
+END
+ndepStreamMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/ndepStreamMod.F90
+END
+spmdMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/spmdMod.F90
+END
+ncdio_pio.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/ncdio_pio.F90
+END
+domainMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/domainMod.F90
+END
+decompMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/decompMod.F90
+END
+clm_varsur.F90
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/src/util_share/clm_varsur.F90
+END

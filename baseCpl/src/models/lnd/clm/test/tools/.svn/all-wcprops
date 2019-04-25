@@ -1,0 +1,143 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools
+END
+TSMscript_tools.sh
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/TSMscript_tools.sh
+END
+TCBCFGtools.sh
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/TCBCFGtools.sh
+END
+tests_posttag_frankfurt_nompi
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/tests_posttag_frankfurt_nompi
+END
+gen_test_table.sh
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/gen_test_table.sh
+END
+get_cprnc_diffs.sh
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/get_cprnc_diffs.sh
+END
+TSMncl_tools.sh
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/TSMncl_tools.sh
+END
+CLM_compare.sh
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/CLM_compare.sh
+END
+TBLCFGtools.sh
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/TBLCFGtools.sh
+END
+TOPtools.sh
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/TOPtools.sh
+END
+input_tests_master
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/input_tests_master
+END
+TSMtools.sh
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/TSMtools.sh
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/README
+END
+tests_posttag_yong
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/tests_posttag_yong
+END
+TBLscript_tools.sh
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/TBLscript_tools.sh
+END
+README.testnames
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/README.testnames
+END
+TCBtools.sh
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/TCBtools.sh
+END
+test_driver.sh
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/test_driver.sh
+END
+tests_posttag_nompi_regression
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/tests_posttag_nompi_regression
+END
+tests_pretag_yellowstone_nompi
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/tests_pretag_yellowstone_nompi
+END
+TBLtools.sh
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/TBLtools.sh
+END
+show_var_diffs.sh
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/show_var_diffs.sh
+END
+TSMCFGtools.sh
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/TSMCFGtools.sh
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/Makefile
+END
