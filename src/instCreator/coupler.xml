@@ -3,10 +3,32 @@
 		<attrVect>
 			<name>atm2x_atmx</name>
 			<model>atm</model>
+			<fraction>
+				<fraclist>afrac:ofrac:lfrac:ifrac</fraclist>
+				<init>fraction_atm_init</init>
+				<update>fraction_atm_update</update>
+				<fracs>
+					<frac>
+						<name>ofrac</name>
+						<mapper>mapper_Smatocn2atm</mapper>
+						<model>ocn</model>
+					</frac>
+					<frac>
+						<name>lfrac</name>
+						<mapper>mapper_Smatlnd2atm</mapper>
+						<model>lnd</model>
+					</frac>
+					<frac>
+						<name>ifrac</name>
+						<mapper>mapper_Smatice2atm</mapper>
+						<model>ice</model>
+					</frac>
+				</fracs>
+			</fraction>
 			<srcs>
 				<src>
 					<attrVect>ocn2x_ocnx</attrVect>
-					<field>So_t:So_s:So_u</field>
+					<field>So_t</field>
 					<mapper>
 						<name>mapper_Smatocn2atm</name>
 						<type>offline</type>
@@ -29,12 +51,66 @@
 						</method>
 					</mapper>
 				</src>
+				<src>
+					<attrVect>lnd2x_lndx</attrVect>
+					<field>Sl_fv:Sl_ram1:Sl_snowh</field>
+					<mapper>
+						<name>mapper_Smatlnd2atm</name>
+						<type>offline</type>
+						<w_file>samegrid</w_file>
+						<method>
+							<phase>
+								<name>smat_init</name>
+								<in_args></in_args>
+								<out_args></out_args>
+							</phase>
+							<phase>
+								<name>mapper_comp_map</name>
+								<in_args>
+									<arg>lnd2x_lndx</arg>
+								</in_args>
+								<out_args>
+									<arg>lnd2x_atmx</arg>
+								</out_args>
+							</phase>
+						</method>
+					</mapper>
+				</src>
+				<src>
+					<attrVect>ice2x_icex</attrVect>
+					<field>Si_avsdr</field>
+					<mapper>
+						<name>mapper_Smatice2atm</name>
+						<type>offline</type>
+						<w_file>map_gx3v7_to_fv4x5_aave_da_091218.nc</w_file>
+						<method>
+							<phase>
+								<name>smat_init</name>
+								<in_args></in_args>
+								<out_args></out_args>
+							</phase>
+							<phase>
+								<name>mapper_comp_map</name>
+								<in_args>
+									<arg>ice2x_icex</arg>
+								</in_args>
+								<out_args>
+									<arg>ice2x_atmx</arg>
+								</out_args>
+							</phase>
+						</method>
+					</mapper>
+				</src>
 			</srcs>
 			<mrg>
 				<name>mrg_x2atm</name>
 				<in_args>
 					<arg>ocn2x_atmx</arg>
+					<arg>lnd2x_atmx</arg>
+					<arg>ice2x_atmx</arg>
+					<arg>xao_ax</arg>
 					<arg>atm2x_atmx</arg>
+					<arg>fraction_atm</arg>
 				</in_args>
 				<out_args>
 					<arg>x2atm_atmx</arg>
@@ -44,10 +120,22 @@
 		<attrVect>
 			<name>ocn2x_ocnx</name>
 			<model>ocn</model>
+			<fraction>
+				<fraclist>ofrac:afrac</fraclist>
+				<init>fraction_ocn_init</init>
+				<update></update>
+				<fracs>
+					<frac>
+						<name>afrac</name>
+						<mapper>mapper_Smatatm2ocn</mapper>
+						<model>atm</model>
+					</frac>
+				</fracs>
+			</fraction>
 			<srcs>
 				<src>
 					<attrVect>atm2x_atmx</attrVect>
-					<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>
+					<field>Sa_pslv</field>
 					<mapper>
 						<name>mapper_Smatatm2ocn</name>
 						<type>offline</type>
@@ -75,7 +163,9 @@
 				<name>mrg_x2ocn</name>
 				<in_args>
 					<arg>atm2x_ocnx</arg>
+					<arg>xao_ox</arg>
 					<arg>ocn2x_ocnx</arg>
+					<arg>fraction_ocn</arg>
 				</in_args>
 				<out_args>
 					<arg>x2ocn_ocnx</arg>
@@ -83,13 +173,138 @@
 			</mrg>
 		</attrVect>
 		<attrVect>
+			<name>lnd2x_lndx</name>
+			<model>lnd</model>
+			<fraction>
+				<fraclist>lfrac:afrac:rfrac</fraclist>
+				<init>fraction_lnd_init</init>
+				<update></update>
+				<fracs>
+					<frac>
+						<name>afrac</name>
+						<mapper>mapper_Smatatm2lnd</mapper>
+						<model>atm</model>
+					</frac>
+					<frac>
+						<name>rfrac</name>
+						<mapper>mapper_Smatrof2lnd</mapper>
+						<model>rof</model>
+					</frac>
+				</fracs>
+			</fraction>
+			<srcs>
+				<src>
+					<attrVect>atm2x_atmx</attrVect>
+					<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot</field>
+					<mapper>
+						<name>mapper_Smatatm2lnd</name>
+						<type>offline</type>
+						<w_file>samegrid</w_file>
+						<method>
+							<phase>
+								<name>smat_init</name>
+								<in_args></in_args>
+								<out_args></out_args>
+							</phase>
+							<phase>
+								<name>mapper_comp_map</name>
+								<in_args>
+									<arg>atm2x_atmx</arg>
+								</in_args>
+								<out_args>
+									<arg>atm2x_lndx</arg>
+								</out_args>
+							</phase>
+						</method>
+					</mapper>
+				</src>
+				<src>
+					<attrVect>rof2x_rofx</attrVect>
+					<field>Slrr_volr</field>
+					<mapper>
+						<name>mapper_Smatrof2lnd</name>
+						<type>offline</type>
+						<w_file>no.nc</w_file>
+						<method>
+							<phase>
+								<name>smat_init</name>
+								<in_args></in_args>
+								<out_args></out_args>
+							</phase>
+							<phase>
+								<name>mapper_comp_map</name>
+								<in_args>
+									<arg>rof2x_rofx</arg>
+								</in_args>
+								<out_args>
+									<arg>rof2x_lndx</arg>
+								</out_args>
+							</phase>
+						</method>
+					</mapper>
+				</src>
+			</srcs>
+			<mrg>
+				<name>mrg_x2lnd</name>
+				<in_args>
+					<arg>atm2x_lndx</arg>
+					<arg>rof2x_lndx</arg>
+					<arg>lnd2x_lndx</arg>
+					<arg>fraction_lnd</arg>
+				</in_args>
+				<out_args>
+					<arg>x2lnd_lndx</arg>
+				</out_args>
+			</mrg>
+		</attrVect>
+		<attrVect>
 			<name>ice2x_icex</name>
 			<model>ice</model>
-			<srcs/>
+			<fraction>
+				<fraclist>ifrac:afrac</fraclist>
+				<init>fraction_ice_init</init>
+				<update></update>
+				<fracs>
+					<frac>
+						<name>afrac</name>
+						<mapper>mapper_Smatatm2ice</mapper>
+						<model>atm</model>
+					</frac>
+				</fracs>
+			</fraction>
+			<srcs>
+				<src>
+					<attrVect>atm2x_atmx</attrVect>
+					<field>Sa_z:Sa_u</field>
+					<mapper>
+						<name>mapper_Smatatm2ice</name>
+						<type>offline</type>
+						<w_file>map_fv4x5_to_gx3v7_bilin_da_091218.nc</w_file>
+						<method>
+							<phase>
+								<name>smat_init</name>
+								<in_args></in_args>
+								<out_args></out_args>
+							</phase>
+							<phase>
+								<name>mapper_comp_map</name>
+								<in_args>
+									<arg>atm2x_atmx</arg>
+								</in_args>
+								<out_args>
+									<arg>atm2x_icex</arg>
+								</out_args>
+							</phase>
+						</method>
+					</mapper>
+				</src>
+			</srcs>
 			<mrg>
 				<name>mrg_x2ice</name>
 				<in_args>
+					<arg>atm2x_icex</arg>
 					<arg>ice2x_icex</arg>
+					<arg>fraction_ice</arg>
 				</in_args>
 				<out_args>
 					<arg>x2ice_icex</arg>
@@ -99,11 +314,51 @@
 		<attrVect>
 			<name>rof2x_rofx</name>
 			<model>rof</model>
-			<srcs/>
+			<fraction>
+				<fraclist>rfrac:lfrac</fraclist>
+				<init>fraction_rof_init</init>
+				<update></update>
+				<fracs>
+					<frac>
+						<name>lfrac</name>
+						<mapper>mapper_Smatlnd2rof</mapper>
+						<model>lnd</model>
+					</frac>
+				</fracs>
+			</fraction>
+			<srcs>
+				<src>
+					<attrVect>lnd2x_lndx</attrVect>
+					<field>Sl_fv</field>
+					<mapper>
+						<name>mapper_Smatlnd2rof</name>
+						<type>offline</type>
+						<w_file>no1.nc</w_file>
+						<method>
+							<phase>
+								<name>smat_init</name>
+								<in_args></in_args>
+								<out_args></out_args>
+							</phase>
+							<phase>
+								<name>mapper_comp_map</name>
+								<in_args>
+									<arg>lnd2x_lndx</arg>
+								</in_args>
+								<out_args>
+									<arg>lnd2x_rofx</arg>
+								</out_args>
+							</phase>
+						</method>
+					</mapper>
+				</src>
+			</srcs>
 			<mrg>
 				<name>mrg_x2rof</name>
 				<in_args>
+					<arg>lnd2x_rofx</arg>
 					<arg>rof2x_rofx</arg>
+					<arg>fraction_rof</arg>
 				</in_args>
 				<out_args>
 					<arg>x2rof_rofx</arg>

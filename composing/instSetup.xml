@@ -1,6 +1,6 @@
 <instSetup>
 	<macro>
-		<instPath>/share/BCGen_case/BCGen_instex2</instPath>
+		<instPath>/home/hq/share/BCGen_case/BCGen_inst</instPath>
 		<confPath>conf</confPath>
 	</macro>
 	<file_location>

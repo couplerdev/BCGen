@@ -50,6 +50,18 @@ class Temp:
             res.append(func_str)
         return "\n".join(res)
 
+method_name = 'lnd_init_mct'
+params = {
+        'my_proc':'my_proc', 
+        'ID':'my_proc%modellnd_id',
+        'EClock':'EClock',
+        'gsMap_lndlnd':'gsMap_lndlnd', 
+        'lnd2x_lndlnd':'lnd2x_lndlnd', 
+        'x2lnd_lndlnd':'x2lnd_lndlnd', 
+        'ierr':'ierr'
+    }
+lnd_init = Temp(funcname=method_name, params=params, strFmt='lnd_init_mct(metaData%lnd, EClock_lnd, x2lnd_lndlnd, lnd2x_lndlnd, ierr=ierr)')
+
 method_name = 'atm_init_mct'
 params = {
         'my_proc':'my_proc', 
@@ -101,10 +113,50 @@ ocn_init = Temp(funcname=method_name, params=params, strFmt='ocn_init_mct(metaDa
 
 method_name='mapper_comp_map'
 params = {
+    'mapper':'my_proc%Mapper_Cx2lnd',
+    'src':'x2lnd_lndx',
+    'dst':'x2lnd_lndlnd', 
+    'msgtag':'100+00+2', 
+    'ierr':'ierr',
+}
+lnd_run_phase1 = Temp(funcname=method_name, params=params)
+
+method_name = 'lnd_run_mct'
+params = {
+    'my_proc':'my_proc',
+    'ID':'my_proc%modellnd_id',
+    'EClock':'EClock', 
+    'lnd2x':'lnd2x_lndlnd', 
+    'x2lnd':'x2lnd_lndlnd',
+    'ierr':'ierr'
+}
+lnd_run_phase2 = Temp(funcname=method_name, params=params)
+
+sub_run_phase_3 = []
+method_name = 'mapper_comp_map'
+params = {
+    'mapper':'my_proc%Mapper_Clnd2x',
+    'src':'lnd2x_lndlnd',
+    'dst':'lnd2x_lndx', 
+    'msgtag':'100+00+3', 
+    'ierr':'ierr',
+}
+lnd_run_phase3_1 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(lnd_run_phase3_1)
+
+
+
+
+
+lnd_run_phase3 = Temp(subroutine=sub_run_phase_3,
+             mix=True)
+sub_run_phase_3 = []
+method_name='mapper_comp_map'
+params = {
     'mapper':'my_proc%Mapper_Cx2atm',
     'src':'x2atm_atmx',
     'dst':'x2atm_atmatm', 
-    'msgtag':'100+00+2', 
+    'msgtag':'100+10+2', 
     'ierr':'ierr',
 }
 atm_run_phase1 = Temp(funcname=method_name, params=params)
@@ -126,7 +178,7 @@ params = {
     'mapper':'my_proc%Mapper_Catm2x',
     'src':'atm2x_atmatm',
     'dst':'atm2x_atmx', 
-    'msgtag':'100+00+3', 
+    'msgtag':'100+10+3', 
     'ierr':'ierr',
 }
 atm_run_phase3_1 = Temp(funcname=method_name, params=params)
@@ -134,17 +186,6 @@ sub_run_phase_3.append(atm_run_phase3_1)
 
 
 
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_Smatatm2ocn',
-    'src':'atm2x_atmx',
-    'dst':'atm2x_ocnx', 
-    'msgtag':'100+00+4', 
-    'ierr':'ierr',
-    'rList':'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
-}
-atm_run_phase3_2 = Temp(funcname=method_name, params=params)
-sub_run_phase_3.append(atm_run_phase3_2)
 
 
 atm_run_phase3 = Temp(subroutine=sub_run_phase_3,
@@ -155,7 +196,7 @@ params = {
     'mapper':'my_proc%Mapper_Cx2rof',
     'src':'x2rof_rofx',
     'dst':'x2rof_rofrof', 
-    'msgtag':'100+10+2', 
+    'msgtag':'100+20+2', 
     'ierr':'ierr',
 }
 rof_run_phase1 = Temp(funcname=method_name, params=params)
@@ -177,7 +218,7 @@ params = {
     'mapper':'my_proc%Mapper_Crof2x',
     'src':'rof2x_rofrof',
     'dst':'rof2x_rofx', 
-    'msgtag':'100+10+3', 
+    'msgtag':'100+20+3', 
     'ierr':'ierr',
 }
 rof_run_phase3_1 = Temp(funcname=method_name, params=params)
@@ -195,7 +236,7 @@ params = {
     'mapper':'my_proc%Mapper_Cx2ice',
     'src':'x2ice_icex',
     'dst':'x2ice_iceice', 
-    'msgtag':'100+20+2', 
+    'msgtag':'100+30+2', 
     'ierr':'ierr',
 }
 ice_run_phase1 = Temp(funcname=method_name, params=params)
@@ -217,7 +258,7 @@ params = {
     'mapper':'my_proc%Mapper_Cice2x',
     'src':'ice2x_iceice',
     'dst':'ice2x_icex', 
-    'msgtag':'100+20+3', 
+    'msgtag':'100+30+3', 
     'ierr':'ierr',
 }
 ice_run_phase3_1 = Temp(funcname=method_name, params=params)
@@ -235,7 +276,7 @@ params = {
     'mapper':'my_proc%Mapper_Cx2ocn',
     'src':'x2ocn_ocnx',
     'dst':'x2ocn_ocnocn', 
-    'msgtag':'100+30+2', 
+    'msgtag':'100+40+2', 
     'ierr':'ierr',
 }
 ocn_run_phase1 = Temp(funcname=method_name, params=params)
@@ -257,7 +298,7 @@ params = {
     'mapper':'my_proc%Mapper_Cocn2x',
     'src':'ocn2x_ocnocn',
     'dst':'ocn2x_ocnx', 
-    'msgtag':'100+30+3', 
+    'msgtag':'100+40+3', 
     'ierr':'ierr',
 }
 ocn_run_phase3_1 = Temp(funcname=method_name, params=params)
@@ -265,17 +306,6 @@ sub_run_phase_3.append(ocn_run_phase3_1)
 
 
 
-method_name = 'mapper_comp_map'
-params = {
-    'mapper':'my_proc%mapper_Smatocn2atm',
-    'src':'ocn2x_ocnx',
-    'dst':'ocn2x_atmx', 
-    'msgtag':'100+30+4', 
-    'ierr':'ierr',
-    'rList':'So_t:So_s:So_u',
-}
-ocn_run_phase3_2 = Temp(funcname=method_name, params=params)
-sub_run_phase_3.append(ocn_run_phase3_2)
 
 
 ocn_run_phase3 = Temp(subroutine=sub_run_phase_3,
@@ -284,9 +314,64 @@ sub_run_phase_3 = []
 
 
 
+model_lnd_cfg = { # Model M's cfg
+'model_unique_name': 'lnd',
+'model_unique_id': '3',
+    'mx_av_set' : { # Av between model M and Cpl
+        'mx_mm':{
+            'name': 'lnd2x_lndlnd',
+        },
+        'mx_mx':{
+            'name': 'lnd2x_lndx',
+        },   
+        'xm_mm':{
+            'name': 'x2lnd_lndlnd',
+        },   
+        'xm_mx':{
+            'name': 'x2lnd_lndx',
+        }   
+    },
+
+    'mn_av_set': [ # Av between Model M and Model N
+
+    ],
+
+
+    'mx_gsmap_set':  { # gsMap of Model M
+        'mx': {
+            'name':'gsMap_lndx'
+        },
+        'mm': {
+            'name':'gsMap_lndlnd'
+        }
+    },
+
+    'domain':{
+        'mm':'domain_lndlnd',
+        'mx':'domain_lndx'
+     },    
+
+    'subroutine': {
+        'init_method': lnd_init,
+        'run_method': {
+            'run_phase1_method': lnd_run_phase1,
+            'run_phase2_method': lnd_run_phase2,
+            'run_phase3_method': lnd_run_phase3,
+        },
+        'final_method':[
+            {
+                'method_name':'lnd_final_mct',
+                'params':{
+                }
+            }
+        ]
+    }
+
+}
+
 model_atm_cfg = { # Model M's cfg
 'model_unique_name': 'atm',
-'model_unique_id': '1',
+'model_unique_id': '2',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'atm2x_atmatm',
@@ -304,14 +389,6 @@ model_atm_cfg = { # Model M's cfg
 
     'mn_av_set': [ # Av between Model M and Model N
 
-        {
-            'n_name': 'ocn',
-            'n_rAv': 'atm2x_ocnx',
-            'n_rField': 'Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem',
-            'n_gm': 'gsMap_ocnx',
-            'transform_method': '',
-        },
-        
     ],
 
 
@@ -323,6 +400,11 @@ model_atm_cfg = { # Model M's cfg
             'name':'gsMap_atmatm'
         }
     },
+
+    'domain':{
+        'mm':'domain_atmatm',
+        'mx':'domain_atmx'
+     },    
 
     'subroutine': {
         'init_method': atm_init,
@@ -344,7 +426,7 @@ model_atm_cfg = { # Model M's cfg
 
 model_rof_cfg = { # Model M's cfg
 'model_unique_name': 'rof',
-'model_unique_id': '4',
+'model_unique_id': '5',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'rof2x_rofrof',
@@ -374,6 +456,11 @@ model_rof_cfg = { # Model M's cfg
         }
     },
 
+    'domain':{
+        'mm':'domain_rofrof',
+        'mx':'domain_rofx'
+     },    
+
     'subroutine': {
         'init_method': rof_init,
         'run_method': {
@@ -394,7 +481,7 @@ model_rof_cfg = { # Model M's cfg
 
 model_ice_cfg = { # Model M's cfg
 'model_unique_name': 'ice',
-'model_unique_id': '3',
+'model_unique_id': '4',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'ice2x_iceice',
@@ -424,6 +511,11 @@ model_ice_cfg = { # Model M's cfg
         }
     },
 
+    'domain':{
+        'mm':'domain_iceice',
+        'mx':'domain_icex'
+     },    
+
     'subroutine': {
         'init_method': ice_init,
         'run_method': {
@@ -444,7 +536,7 @@ model_ice_cfg = { # Model M's cfg
 
 model_ocn_cfg = { # Model M's cfg
 'model_unique_name': 'ocn',
-'model_unique_id': '2',
+'model_unique_id': '1',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'ocn2x_ocnocn',
@@ -462,14 +554,6 @@ model_ocn_cfg = { # Model M's cfg
 
     'mn_av_set': [ # Av between Model M and Model N
 
-        {
-            'n_name': 'atm',
-            'n_rAv': 'ocn2x_atmx',
-            'n_rField': 'So_t:So_s:So_u',
-            'n_gm': 'gsMap_atmx',
-            'transform_method': '',
-        },
-        
     ],
 
 
@@ -481,6 +565,11 @@ model_ocn_cfg = { # Model M's cfg
             'name':'gsMap_ocnocn'
         }
     },
+
+    'domain':{
+        'mm':'domain_ocnocn',
+        'mx':'domain_ocnx'
+     },    
 
     'subroutine': {
         'init_method': ocn_init,
@@ -502,6 +591,7 @@ model_ocn_cfg = { # Model M's cfg
 
 
 model_cfgs = [
+    model_lnd_cfg,
     model_atm_cfg,
     model_rof_cfg,
     model_ice_cfg,
