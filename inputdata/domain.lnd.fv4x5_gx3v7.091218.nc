@@ -1,0 +1,1 @@
+/mnt/CESM-data/inputdata/share/domains/domain.lnd.fv4x5_gx3v7.091218.nc

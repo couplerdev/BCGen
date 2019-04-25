@@ -1,0 +1,1 @@
+/mnt/CESM-data/inputdata/cpl/cpl6/map_gx3v7_to_fv4x5_aave_da_091218.nc

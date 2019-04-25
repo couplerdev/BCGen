@@ -43,10 +43,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO
+CMAKE_SOURCE_DIR = /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO
+CMAKE_BINARY_DIR = /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO
 
 # Include any dependencies generated for this target.
 include tests/cunit/CMakeFiles/test_decomp_frame.dir/depend.make
@@ -59,16 +59,16 @@ include tests/cunit/CMakeFiles/test_decomp_frame.dir/flags.make
 
 tests/cunit/CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.o: tests/cunit/CMakeFiles/test_decomp_frame.dir/flags.make
 tests/cunit/CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.o: tests/cunit/test_decomp_frame.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object tests/cunit/CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.o"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && /usr/local/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.o   -c /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_decomp_frame.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object tests/cunit/CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.o"
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && /home/hq/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.o   -c /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_decomp_frame.c
 
 tests/cunit/CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.i"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && /usr/local/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_decomp_frame.c > CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.i
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && /home/hq/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_decomp_frame.c > CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.i
 
 tests/cunit/CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.s"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && /usr/local/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_decomp_frame.c -o CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.s
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && /home/hq/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_decomp_frame.c -o CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.s
 
 tests/cunit/CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.o.requires:
 
@@ -83,16 +83,16 @@ tests/cunit/CMakeFiles/test_decomp_frame.dir/test_decomp_frame.c.o.provides.buil
 
 tests/cunit/CMakeFiles/test_decomp_frame.dir/test_common.c.o: tests/cunit/CMakeFiles/test_decomp_frame.dir/flags.make
 tests/cunit/CMakeFiles/test_decomp_frame.dir/test_common.c.o: tests/cunit/test_common.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object tests/cunit/CMakeFiles/test_decomp_frame.dir/test_common.c.o"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && /usr/local/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/test_decomp_frame.dir/test_common.c.o   -c /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_common.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object tests/cunit/CMakeFiles/test_decomp_frame.dir/test_common.c.o"
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && /home/hq/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/test_decomp_frame.dir/test_common.c.o   -c /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_common.c
 
 tests/cunit/CMakeFiles/test_decomp_frame.dir/test_common.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/test_decomp_frame.dir/test_common.c.i"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && /usr/local/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_common.c > CMakeFiles/test_decomp_frame.dir/test_common.c.i
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && /home/hq/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_common.c > CMakeFiles/test_decomp_frame.dir/test_common.c.i
 
 tests/cunit/CMakeFiles/test_decomp_frame.dir/test_common.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/test_decomp_frame.dir/test_common.c.s"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && /usr/local/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_common.c -o CMakeFiles/test_decomp_frame.dir/test_common.c.s
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && /home/hq/bin/mpicc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/test_common.c -o CMakeFiles/test_decomp_frame.dir/test_common.c.s
 
 tests/cunit/CMakeFiles/test_decomp_frame.dir/test_common.c.o.requires:
 
@@ -117,12 +117,12 @@ tests/cunit/test_decomp_frame: tests/cunit/CMakeFiles/test_decomp_frame.dir/test
 tests/cunit/test_decomp_frame: tests/cunit/CMakeFiles/test_decomp_frame.dir/test_common.c.o
 tests/cunit/test_decomp_frame: tests/cunit/CMakeFiles/test_decomp_frame.dir/build.make
 tests/cunit/test_decomp_frame: src/clib/libpioc.a
-tests/cunit/test_decomp_frame: src/gptl/libgptl.a
-tests/cunit/test_decomp_frame: /usr/local/lib/libnetcdf.so
-tests/cunit/test_decomp_frame: /usr/local/Pnetcdf/lib/libpnetcdf.a
+tests/cunit/test_decomp_frame: /usr/local/lib/libgptl.a
+tests/cunit/test_decomp_frame: /home/hq/lib/libnetcdf.a
+tests/cunit/test_decomp_frame: /home/hq/lib/libpnetcdf.a
 tests/cunit/test_decomp_frame: tests/cunit/CMakeFiles/test_decomp_frame.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable test_decomp_frame"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_decomp_frame.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable test_decomp_frame"
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_decomp_frame.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 tests/cunit/CMakeFiles/test_decomp_frame.dir/build: tests/cunit/test_decomp_frame
@@ -135,10 +135,10 @@ tests/cunit/CMakeFiles/test_decomp_frame.dir/requires: tests/cunit/CMakeFiles/te
 .PHONY : tests/cunit/CMakeFiles/test_decomp_frame.dir/requires
 
 tests/cunit/CMakeFiles/test_decomp_frame.dir/clean:
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && $(CMAKE_COMMAND) -P CMakeFiles/test_decomp_frame.dir/cmake_clean.cmake
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit && $(CMAKE_COMMAND) -P CMakeFiles/test_decomp_frame.dir/cmake_clean.cmake
 .PHONY : tests/cunit/CMakeFiles/test_decomp_frame.dir/clean
 
 tests/cunit/CMakeFiles/test_decomp_frame.dir/depend:
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/CMakeFiles/test_decomp_frame.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/CMakeFiles/test_decomp_frame.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : tests/cunit/CMakeFiles/test_decomp_frame.dir/depend
 

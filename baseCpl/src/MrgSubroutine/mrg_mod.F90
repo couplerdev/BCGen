@@ -7,11 +7,11 @@ use global_var
     implicit none
 !include "mpif.h"
     public :: mrg_x2atm
-!    public :: mrg_x2lnd
+    public :: mrg_x2lnd
     public :: mrg_x2ocn
     private :: getfld
-!    public :: mrg_x2rof
-!    public :: mrg_x2ice
+    public :: mrg_x2rof
+    public :: mrg_x2ice
 !    public :: mrg_x2wav
 
 contains
@@ -338,6 +338,117 @@ subroutine mrg_x2ocn( metaData, a2x_o, xao_o, o2x_ox, fractions_o, x2o_o )
        
 end subroutine mrg_x2ocn
 
+subroutine mrg_x2lnd(metaData, atm2x_lndx, rof2x_lndx, lnd2x_lndx,&
+x2lnd_lndx)
+
+    implicit none
+    type(Meta),        intent(in)    :: metaData
+    type(mct_aVect),   intent(in)    :: atm2x_lndx
+    type(mct_aVect),   intent(in)    :: rof2x_lndx
+    type(mct_aVect),   intent(in)    :: lnd2x_lndx
+    type(mct_aVect),   intent(inout) :: x2lnd_lndx
+
+    call mct_aVect_copy(aVin=atm2x_lndx, aVout=x2lnd_lndx, vector=mct_usevector)
+    call mct_aVect_copy(aVin=rof2x_lndx, aVout=x2lnd_lndx, vector=mct_usevector)
+
+    write(*,*)'========== lnd mrged =========='
+
+end subroutine mrg_x2lnd
+
+subroutine mrg_x2ice(metaData, atm2x_icex, ocn2x_icex, ice2x_icex,&
+x2ice_icex)
+
+    implicit none
+    type(Meta),        intent(in)    :: metaData
+    type(mct_aVect),   intent(in)    :: atm2x_icex
+    type(mct_aVect),   intent(in)    :: ocn2x_icex
+    type(mct_aVect),   intent(in)    :: ice2x_icex
+    type(mct_aVect),   intent(inout) :: x2ice_icex
+
+    integer :: i
+    real(r8):: flux_epbalfact
+    character(len=cl) :: flux_epbal
+    integer, save :: index_a2x_Faxa_rainc
+    integer, save :: index_a2x_Faxa_rainl
+    integer, save :: index_a2x_Faxa_snowc
+    integer, save :: index_a2x_Faxa_snowl
+    integer, save :: index_x2i_Faxa_rain
+    integer, save :: index_x2i_Faxa_snow
+    logical, save :: first_time = .true.
+    !----------------------------------------------------------------------- 
+
+    if (first_time) then
+       index_a2x_Faxa_snowc = mct_aVect_indexRA(a2x_i,'Faxa_snowc')
+       index_a2x_Faxa_snowl = mct_aVect_indexRA(a2x_i,'Faxa_snowl')
+       index_a2x_Faxa_rainc = mct_aVect_indexRA(a2x_i,'Faxa_rainc')
+       index_a2x_Faxa_rainl = mct_aVect_indexRA(a2x_i,'Faxa_rainl')
+       index_x2i_Faxa_rain  = mct_aVect_indexRA(x2i_i,'Faxa_rain' )
+       index_x2i_Faxa_snow  = mct_aVect_indexRA(x2i_i,'Faxa_snow' )
+       first_time = .false.
+    end if
+
+    ! Apply correction to precipitation of requested driver namelist
+
+    call mct_aVect_copy(aVin=ocn2x_icex, aVout=x2ice_icex, vector=mct_usevector)
+    call mct_aVect_copy(aVin=atm2x_icex, aVout=x2ice_icex, vector=mct_usevector)
+
+    ! Merge total snow and precip for ice input
+    ! Scale total precip and runoff by flux_epbalfact 
+
+    do i = 1,mct_aVect_lsize(x2ice_icex)
+       x2ice_icex%rAttr(index_x2i_Faxa_rain,i) = a2x_i%rAttr(index_a2x_Faxa_rainc,i) + &
+	                                    a2x_i%rAttr(index_a2x_Faxa_rainl,i)
+       x2ice_icex%rAttr(index_x2i_Faxa_snow,i) = a2x_i%rAttr(index_a2x_Faxa_snowc,i) + &
+	                                    a2x_i%rAttr(index_a2x_Faxa_snowl,i) 
+
+       x2ice_icex%rAttr(index_x2i_Faxa_rain,i) = x2ice_icex%rAttr(index_x2i_Faxa_rain,i) * flux_epbalfact
+       x2ice_icex%rAttr(index_x2i_Faxa_snow,i) = x2ice_icex%rAttr(index_x2i_Faxa_snow,i) * flux_epbalfact
+    end do
+
+    write(*,*)'========== ice mrged =========='
+
+end subroutine mrg_x2ice
+
+subroutine mrg_x2rof(metaData, lnd2x_rofx, fractions_r, rof2x_rofx,&
+x2rof_rofx)
+
+    implicit none
+    type(Meta),        intent(in)    :: metaData
+    type(mct_aVect),   intent(in)    :: lnd2x_rofx
+    type(mct_aVect),   intent(in)    :: fractions_r
+    type(mct_aVect),   intent(in)    :: rof2x_rofx
+    type(mct_aVect),   intent(inout) :: x2rof_rofx
+
+    integer :: i
+    integer, save :: index_l2x_Flrl_rofliq
+    integer, save :: index_l2x_Flrl_rofice
+    integer, save :: index_x2r_Flrl_rofliq
+    integer, save :: index_x2r_Flrl_rofice
+    integer, save :: index_lfrac
+    logical, save :: first_time = .true.
+    real(r8) :: lfrac
+    !----------------------------------------------------------------------- 
+
+    if (first_time) then
+       index_l2x_Flrl_rofliq = mct_aVect_indexRA(l2x_r,'Flrl_rofliq' )
+       index_l2x_Flrl_rofice = mct_aVect_indexRA(l2x_r,'Flrl_rofice' )
+       index_x2r_Flrl_rofliq = mct_aVect_indexRA(x2r_r,'Flrl_rofliq' )
+       index_x2r_Flrl_rofice = mct_aVect_indexRA(x2r_r,'Flrl_rofice' )
+       index_lfrac = mct_aVect_indexRA(fractions_r,"lfrac")
+       first_time = .false.
+    end if
+
+    ! Merge land rof and ice forcing for rof input
+
+    do i = 1,mct_aVect_lsize(x2r_r)
+       lfrac = fractions_r%rAttr(index_lfrac,i)
+       x2r_r%rAttr(index_x2r_Flrl_rofliq,i) = l2x_r%rAttr(index_l2x_Flrl_rofliq,i) * lfrac
+       x2r_r%rAttr(index_x2r_Flrl_rofice,i) = l2x_r%rAttr(index_l2x_Flrl_rofice,i) * lfrac
+    end do
+
+    write(*,*)'========== rof mrged =========='
+
+end subroutine mrg_x2rof
 
 subroutine getfld(n, av, field, suffix)
     integer         , intent(in)    :: n

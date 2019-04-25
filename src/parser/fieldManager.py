@@ -44,15 +44,16 @@ class FieldManager:
             if key=='dom': 
                 self.fldsQuery[name] = child.find('field').text
                 val = self.fldsQuery[name].split(':')
+                print name,val
             elif key[0:2]=='x2':
                 model = key[2:]
                 if model in self.model:
-                    self.fldsQuery[name]  = child.find('field').text
+                    self.fldsQuery[name]  = child.find('field').text or ''
                     val = self.fldsQuery[name].split(':')
             elif key[-2:]=='2x':
                 model = key[:-2]
                 if model in self.model:
-                    self.fldsQuery[name] = child.find('field').text
+                    self.fldsQuery[name] = child.find('field').text or ''
                     val = self.fldsQuery[name].split(':')
             elif key=="xao":
                 self.fldsQuery[name] = child.find('field').text

@@ -45,14 +45,15 @@ class ConfModel:
         # confModel
         packageDir = tree.find('packageDir').text
         conf = tree.find('configure')
-        confScripts = conf.find("script").text
+        confScripts = conf.find("script").text or ''
         confScripts = packageDir+"/"+confScripts
         workDir = packageDir+"/"+conf.find("workDir").text
         args = ""
         argsIn = conf.find('args')
-        for argIn in argsIn:
-            arg = argIn.text
-            args+=arg+" "
+        if argsIn != None:
+            for argIn in argsIn:
+                arg = argIn.text
+                args+=arg+" "
         cmdConf = confScripts+"   "+args
         currDir = os.getcwd()
         os.chdir(workDir)
@@ -61,21 +62,24 @@ class ConfModel:
         # build namelist
         
         bldNml = tree.find("build-namelist")
-        bldNmlScripts = bldNml.find("script").text
+        bldNmlScripts = bldNml.find("script").text or ' '
         args = ""
         argsIn = conf.find('args')
-        for argIn in argsIn:
-            arg = argIn.find('arg').text
-            argOpts = " "
-            if "type" in argIn.attrib:
-                if argIn.attrib["type"]=="dataloc":
-	            argOpts = self.metaManager.inputPath
-                elif argIn.attrib["type"]=="outloc":
-                    argOpts = self.metaManager.instPath+"./conf"
-                else:
-                    raise NoneProperValueError("in ConfModel.createModelInst:")
-            args += arg + argOpts +" "
-        cmdBld = bldNml + "   "+ args
+        if argsIn != None:
+            for argIn in argsIn:
+                arg = " "
+                if argIn.find('arg') != None:
+                    arg = argIn.find('arg').text or ''
+                argOpts = " "
+                if "type" in argIn.attrib:
+                    if argIn.attrib["type"]=="dataloc":
+	                argOpts = self.metaManager.inputPath
+                    elif argIn.attrib["type"]=="outloc":
+                        argOpts = self.metaManager.instPath+"./conf"
+                    else:
+                        raise NoneProperValueError("in ConfModel.createModelInst:")
+                args += arg + argOpts +" "
+        cmdBld = bldNmlScripts + "   "+ args
         os.system(cmdBld)
         
         #copy to target dict

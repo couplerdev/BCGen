@@ -43,10 +43,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO
+CMAKE_SOURCE_DIR = /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO
+CMAKE_BINARY_DIR = /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO
 
 # Include any dependencies generated for this target.
 include tests/general/CMakeFiles/ncdf_inq.dir/depend.make
@@ -58,21 +58,21 @@ include tests/general/CMakeFiles/ncdf_inq.dir/progress.make
 include tests/general/CMakeFiles/ncdf_inq.dir/flags.make
 
 tests/general/ncdf_inq.F90: tests/general/ncdf_inq.F90.in
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating ncdf_inq.F90"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && util/pio_tf_f90gen.pl --annotate-source --out=/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/ncdf_inq.F90 /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/ncdf_inq.F90.in
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating ncdf_inq.F90"
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && util/pio_tf_f90gen.pl --annotate-source --out=/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/ncdf_inq.F90 /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/ncdf_inq.F90.in
 
 tests/general/CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.o: tests/general/CMakeFiles/ncdf_inq.dir/flags.make
 tests/general/CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.o: tests/general/ncdf_inq.F90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building Fortran object tests/general/CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.o"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && /usr/local/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/ncdf_inq.F90 -o CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.o
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building Fortran object tests/general/CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.o"
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && /home/hq/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/ncdf_inq.F90 -o CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.o
 
 tests/general/CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.i"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && /usr/local/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/ncdf_inq.F90 > CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.i
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && /home/hq/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/ncdf_inq.F90 > CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.i
 
 tests/general/CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.s"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && /usr/local/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/ncdf_inq.F90 -o CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.s
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && /home/hq/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/ncdf_inq.F90 -o CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.s
 
 tests/general/CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.o.requires:
 
@@ -87,16 +87,16 @@ tests/general/CMakeFiles/ncdf_inq.dir/ncdf_inq.F90.o.provides.build: tests/gener
 
 tests/general/CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.o: tests/general/CMakeFiles/ncdf_inq.dir/flags.make
 tests/general/CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.o: tests/general/util/pio_tutil.F90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building Fortran object tests/general/CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.o"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && /usr/local/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/util/pio_tutil.F90 -o CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.o
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building Fortran object tests/general/CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.o"
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && /home/hq/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/util/pio_tutil.F90 -o CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.o
 
 tests/general/CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.i"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && /usr/local/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/util/pio_tutil.F90 > CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.i
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && /home/hq/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/util/pio_tutil.F90 > CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.i
 
 tests/general/CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.s"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && /usr/local/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/util/pio_tutil.F90 -o CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.s
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && /home/hq/bin/mpif90 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/util/pio_tutil.F90 -o CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.s
 
 tests/general/CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90.o.requires:
 
@@ -122,13 +122,13 @@ tests/general/ncdf_inq: tests/general/CMakeFiles/ncdf_inq.dir/util/pio_tutil.F90
 tests/general/ncdf_inq: tests/general/CMakeFiles/ncdf_inq.dir/build.make
 tests/general/ncdf_inq: src/flib/libpiof.a
 tests/general/ncdf_inq: src/clib/libpioc.a
-tests/general/ncdf_inq: /usr/local/lib/libnetcdf.so
-tests/general/ncdf_inq: src/gptl/libgptl.a
-tests/general/ncdf_inq: /usr/local/lib/libnetcdff.so
-tests/general/ncdf_inq: /usr/local/Pnetcdf/lib/libpnetcdf.a
+tests/general/ncdf_inq: /usr/local/lib/libgptl.a
+tests/general/ncdf_inq: /home/hq/lib/libnetcdf.a
+tests/general/ncdf_inq: /home/hq/lib/libnetcdff.a
+tests/general/ncdf_inq: /home/hq/lib/libpnetcdf.a
 tests/general/ncdf_inq: tests/general/CMakeFiles/ncdf_inq.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking Fortran executable ncdf_inq"
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ncdf_inq.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking Fortran executable ncdf_inq"
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ncdf_inq.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 tests/general/CMakeFiles/ncdf_inq.dir/build: tests/general/ncdf_inq
@@ -141,10 +141,10 @@ tests/general/CMakeFiles/ncdf_inq.dir/requires: tests/general/CMakeFiles/ncdf_in
 .PHONY : tests/general/CMakeFiles/ncdf_inq.dir/requires
 
 tests/general/CMakeFiles/ncdf_inq.dir/clean:
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && $(CMAKE_COMMAND) -P CMakeFiles/ncdf_inq.dir/cmake_clean.cmake
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general && $(CMAKE_COMMAND) -P CMakeFiles/ncdf_inq.dir/cmake_clean.cmake
 .PHONY : tests/general/CMakeFiles/ncdf_inq.dir/clean
 
 tests/general/CMakeFiles/ncdf_inq.dir/depend: tests/general/ncdf_inq.F90
-	cd /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/CMakeFiles/ncdf_inq.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/CMakeFiles/ncdf_inq.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : tests/general/CMakeFiles/ncdf_inq.dir/depend
 

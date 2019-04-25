@@ -316,7 +316,7 @@ contains
 
      index = -1  ! flag for not found
      do i=1,size(io_compname)
-        print *, component_ucase, io_compname(i)
+        print *, ' debug.shr_pio_getindex.heqi ', component_ucase, io_compname(i)
         if (trim(component_ucase) == trim(io_compname(i))) then
            index = i
            exit

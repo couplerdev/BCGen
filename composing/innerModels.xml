@@ -5,8 +5,16 @@
 		<location>/share/BCGen/develDir/BCGenV1.0/BCGen/composing/camDesc.xml</location>
 	</model>
 	<model>
-		<name>atm</name>
-		<location>None</location>
+		<name>clm</name>
+		<location>/home/heqi/git/BCGen/composing/clmDesc.xml</location>
+	</model>
+	<model>
+		<name>cice</name>
+		<location>/home/heqi/git/BCGen/composing/ciceDesc.xml</location>
+	</model>
+	<model>
+		<name>rtm</name>
+		<location>/home/heqi/git/BCGen/composing/rofDesc.xml</location>
 	</model>
 </models>
 

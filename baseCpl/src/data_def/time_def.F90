@@ -5,11 +5,13 @@ module time_type
     use shr_kind_mod
     use ESMF
     implicit none
-    integer,   parameter :: max_clocks = 2+1
-    integer,   parameter :: max_alarms = 2+6
+    integer,   parameter :: max_clocks = 4+1
+    integer,   parameter :: max_alarms = 4+6
     integer,   parameter :: clock_drv = 1
     integer,   parameter :: clock_atm = 2
-    integer,   parameter :: clock_ocn = 3
+    integer,   parameter :: clock_rof = 3
+    integer,   parameter :: clock_ice = 4
+    integer,   parameter :: clock_ocn = 5
     integer,   parameter :: alarm_restart = 1
     integer,   parameter :: alarm_run = 2
     integer,   parameter :: alarm_stop = 3
@@ -17,9 +19,13 @@ module time_type
     integer,   parameter :: alarm_history  = 5
     integer,   parameter :: alarm_histavg = 6
     integer,   parameter :: alarm_atmrun = 7
-    integer,   parameter :: alarm_ocnrun = 8
+    integer,   parameter :: alarm_rofrun = 8
+    integer,   parameter :: alarm_icerun = 9
+    integer,   parameter :: alarm_ocnrun = 10
     character(SHR_KIND_CS), parameter :: clock_drv_name = "clock_drv"
     character(SHR_KIND_CS), parameter :: clock_atm_name = "clock_atm"
+    character(SHR_KIND_CS), parameter :: clock_rof_name = "clock_rof"
+    character(SHR_KIND_CS), parameter :: clock_ice_name = "clock_ice"
     character(SHR_KIND_CS), parameter :: clock_ocn_name = "clock_ocn"
     character(SHR_KIND_CS), parameter :: alarm_restart_name = "alarm_restart_name"
     character(SHR_KIND_CS), parameter :: alarm_run_name = "alarm_run_name"
@@ -28,6 +34,8 @@ module time_type
     character(SHR_KIND_CS), parameter :: alarm_history_name = "alarm_history_name"
     character(SHR_KIND_CS), parameter :: alarm_histavg_name = "alarm_histavg_name"
     character(SHR_KIND_CS), parameter :: alarm_atmrun_name = "alarm_atmrun_name"
+    character(SHR_KIND_CS), parameter :: alarm_rofrun_name = "alarm_rofrun_name"
+    character(SHR_KIND_CS), parameter :: alarm_icerun_name = "alarm_icerun_name"
     character(SHR_KIND_CS), parameter :: alarm_ocnrun_name = "alarm_ocnrun_name"
     character(SHR_KIND_CL), parameter :: time_cal_noleap = "NO_LEAP"
     character(SHR_KIND_CL), parameter :: time_cal_gregorian = "GREGORIAN" 

@@ -1,0 +1,14 @@
+<clmDescXml>
+	<packageDir>/share/BCGen/develDir/BCGen/baseCpl/src/models/clm</packageDir>
+	<configure>
+		<script></script>
+		<workDir>./</workDir>
+	</configure>
+	<build-namelist>
+		<script></script>
+		<args>
+			<arg></arg>
+			<arg></arg>
+		</args>
+	</build-namelist>
+</clmDescXml>

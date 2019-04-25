@@ -1,0 +1,1 @@
+/mnt/CESM-data/inputdata/share/domains/domain.ocn.gx3v7.120323.nc

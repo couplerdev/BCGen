@@ -6,7 +6,7 @@ include ../Makefile.conf
 OBJ_ALL = $(SRC: .F90=.o)
 
 OBJ_ALL : 
-	$(FC) -c  -I$(INCLDIR) -I$(ESMF_MOD) -L$(LIBDIR)/libbcpl.a $(SRC) 
+	$(FC) -c  -I$(INCLDIR) -I$(ESMF_MOD) -I$(PIO_INCL) -L$(LIBDIR)/libbcpl.a $(SRC) 
 	$(AR) $(ARFLAG) $(LIB_COMP) ./*.o
 	mv $(LIB_COMP) $(LIBDIR)
 	mv *.o $(LIBDIR)

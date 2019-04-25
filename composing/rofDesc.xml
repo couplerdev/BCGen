@@ -1,0 +1,14 @@
+<rofDescXml>
+	<packageDir>/share/BCGen/develDir/BCGen/baseCpl/src/models/rtm</packageDir>
+	<configure>
+		<script></script>
+		<workDir>./</workDir>
+	</configure>
+	<build-namelist>
+		<script></script>
+		<args>
+			<arg></arg>
+			<arg></arg>
+		</args>
+	</build-namelist>
+</rofDescXml>

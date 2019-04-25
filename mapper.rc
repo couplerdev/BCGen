@@ -1,0 +1,4 @@
+mapper_Smatatm2ocn   /mnt/CESM-data/inputdata/cpl/cpl6/map_fv4x5_to_gx3v7_bilin_da_091218.nc
+mapper_Smatatm2ocn_type    'X'
+mapper_Smatocn2atm   /mnt/CESM-data/inputdata/cpl/cpl6/map_gx3v7_to_fv4x5_aave_da_091218.nc
+mapper_Smatocn2atm_type    'X'

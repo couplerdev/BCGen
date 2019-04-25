@@ -165,6 +165,8 @@ sub_run_phase_3 = []
     #set $comps = ['a', 'b', 'c']
     #set $mapper_c2x = $model.mappers['c2x']
     #set $mapper_x2c = $model.mappers['x2c']
+    #set $dom_cc = $model.domain['m']
+    #set $dom_cx = $model.domain['x']
 
 model_${model_name}_cfg = { # Model M's cfg
 'model_unique_name': '${model_name}',
@@ -216,6 +218,11 @@ model_${model_name}_cfg = { # Model M's cfg
             'name':'${gsMap_cc.name}'
         }
     },
+
+    'domain':{
+        'mm':'$dom_cc',
+        'mx':'$dom_cx'
+     },    
 
     'subroutine': {
         'init_method': ${model_name}_init,

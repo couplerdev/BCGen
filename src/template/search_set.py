@@ -62,6 +62,30 @@ params = {
     }
 atm_init = Temp(funcname=method_name, params=params, strFmt='atm_init_mct(metaData%atm, EClock_atm, x2atm_atmatm, atm2x_atmatm, ierr=ierr)')
 
+method_name = 'rof_init_mct'
+params = {
+        'my_proc':'my_proc', 
+        'ID':'my_proc%modelrof_id',
+        'EClock':'EClock',
+        'gsMap_rofrof':'gsMap_rofrof', 
+        'rof2x_rofrof':'rof2x_rofrof', 
+        'x2rof_rofrof':'x2rof_rofrof', 
+        'ierr':'ierr'
+    }
+rof_init = Temp(funcname=method_name, params=params, strFmt='rof_init_mct(metaData%rof, EClock_rof, x2rof_rofrof, rof2x_rofrof, ierr=ierr)')
+
+method_name = 'ice_init_mct'
+params = {
+        'my_proc':'my_proc', 
+        'ID':'my_proc%modelice_id',
+        'EClock':'EClock',
+        'gsMap_iceice':'gsMap_iceice', 
+        'ice2x_iceice':'ice2x_iceice', 
+        'x2ice_iceice':'x2ice_iceice', 
+        'ierr':'ierr'
+    }
+ice_init = Temp(funcname=method_name, params=params, strFmt='ice_init_mct(metaData%ice, EClock_ice, x2ice_iceice, ice2x_iceice, ierr=ierr)')
+
 method_name = 'ocn_init_mct'
 params = {
         'my_proc':'my_proc', 
@@ -128,10 +152,90 @@ atm_run_phase3 = Temp(subroutine=sub_run_phase_3,
 sub_run_phase_3 = []
 method_name='mapper_comp_map'
 params = {
+    'mapper':'my_proc%Mapper_Cx2rof',
+    'src':'x2rof_rofx',
+    'dst':'x2rof_rofrof', 
+    'msgtag':'100+10+2', 
+    'ierr':'ierr',
+}
+rof_run_phase1 = Temp(funcname=method_name, params=params)
+
+method_name = 'rof_run_mct'
+params = {
+    'my_proc':'my_proc',
+    'ID':'my_proc%modelrof_id',
+    'EClock':'EClock', 
+    'rof2x':'rof2x_rofrof', 
+    'x2rof':'x2rof_rofrof',
+    'ierr':'ierr'
+}
+rof_run_phase2 = Temp(funcname=method_name, params=params)
+
+sub_run_phase_3 = []
+method_name = 'mapper_comp_map'
+params = {
+    'mapper':'my_proc%Mapper_Crof2x',
+    'src':'rof2x_rofrof',
+    'dst':'rof2x_rofx', 
+    'msgtag':'100+10+3', 
+    'ierr':'ierr',
+}
+rof_run_phase3_1 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(rof_run_phase3_1)
+
+
+
+
+
+rof_run_phase3 = Temp(subroutine=sub_run_phase_3,
+             mix=True)
+sub_run_phase_3 = []
+method_name='mapper_comp_map'
+params = {
+    'mapper':'my_proc%Mapper_Cx2ice',
+    'src':'x2ice_icex',
+    'dst':'x2ice_iceice', 
+    'msgtag':'100+20+2', 
+    'ierr':'ierr',
+}
+ice_run_phase1 = Temp(funcname=method_name, params=params)
+
+method_name = 'ice_run_mct'
+params = {
+    'my_proc':'my_proc',
+    'ID':'my_proc%modelice_id',
+    'EClock':'EClock', 
+    'ice2x':'ice2x_iceice', 
+    'x2ice':'x2ice_iceice',
+    'ierr':'ierr'
+}
+ice_run_phase2 = Temp(funcname=method_name, params=params)
+
+sub_run_phase_3 = []
+method_name = 'mapper_comp_map'
+params = {
+    'mapper':'my_proc%Mapper_Cice2x',
+    'src':'ice2x_iceice',
+    'dst':'ice2x_icex', 
+    'msgtag':'100+20+3', 
+    'ierr':'ierr',
+}
+ice_run_phase3_1 = Temp(funcname=method_name, params=params)
+sub_run_phase_3.append(ice_run_phase3_1)
+
+
+
+
+
+ice_run_phase3 = Temp(subroutine=sub_run_phase_3,
+             mix=True)
+sub_run_phase_3 = []
+method_name='mapper_comp_map'
+params = {
     'mapper':'my_proc%Mapper_Cx2ocn',
     'src':'x2ocn_ocnx',
     'dst':'x2ocn_ocnocn', 
-    'msgtag':'100+10+2', 
+    'msgtag':'100+30+2', 
     'ierr':'ierr',
 }
 ocn_run_phase1 = Temp(funcname=method_name, params=params)
@@ -153,7 +257,7 @@ params = {
     'mapper':'my_proc%Mapper_Cocn2x',
     'src':'ocn2x_ocnocn',
     'dst':'ocn2x_ocnx', 
-    'msgtag':'100+10+3', 
+    'msgtag':'100+30+3', 
     'ierr':'ierr',
 }
 ocn_run_phase3_1 = Temp(funcname=method_name, params=params)
@@ -166,7 +270,7 @@ params = {
     'mapper':'my_proc%mapper_Smatocn2atm',
     'src':'ocn2x_ocnx',
     'dst':'ocn2x_atmx', 
-    'msgtag':'100+10+4', 
+    'msgtag':'100+30+4', 
     'ierr':'ierr',
     'rList':'So_t:So_s:So_u',
 }
@@ -182,7 +286,7 @@ sub_run_phase_3 = []
 
 model_atm_cfg = { # Model M's cfg
 'model_unique_name': 'atm',
-'model_unique_id': '2',
+'model_unique_id': '1',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'atm2x_atmatm',
@@ -238,9 +342,109 @@ model_atm_cfg = { # Model M's cfg
 
 }
 
+model_rof_cfg = { # Model M's cfg
+'model_unique_name': 'rof',
+'model_unique_id': '4',
+    'mx_av_set' : { # Av between model M and Cpl
+        'mx_mm':{
+            'name': 'rof2x_rofrof',
+        },
+        'mx_mx':{
+            'name': 'rof2x_rofx',
+        },   
+        'xm_mm':{
+            'name': 'x2rof_rofrof',
+        },   
+        'xm_mx':{
+            'name': 'x2rof_rofx',
+        }   
+    },
+
+    'mn_av_set': [ # Av between Model M and Model N
+
+    ],
+
+
+    'mx_gsmap_set':  { # gsMap of Model M
+        'mx': {
+            'name':'gsMap_rofx'
+        },
+        'mm': {
+            'name':'gsMap_rofrof'
+        }
+    },
+
+    'subroutine': {
+        'init_method': rof_init,
+        'run_method': {
+            'run_phase1_method': rof_run_phase1,
+            'run_phase2_method': rof_run_phase2,
+            'run_phase3_method': rof_run_phase3,
+        },
+        'final_method':[
+            {
+                'method_name':'rof_final_mct',
+                'params':{
+                }
+            }
+        ]
+    }
+
+}
+
+model_ice_cfg = { # Model M's cfg
+'model_unique_name': 'ice',
+'model_unique_id': '3',
+    'mx_av_set' : { # Av between model M and Cpl
+        'mx_mm':{
+            'name': 'ice2x_iceice',
+        },
+        'mx_mx':{
+            'name': 'ice2x_icex',
+        },   
+        'xm_mm':{
+            'name': 'x2ice_iceice',
+        },   
+        'xm_mx':{
+            'name': 'x2ice_icex',
+        }   
+    },
+
+    'mn_av_set': [ # Av between Model M and Model N
+
+    ],
+
+
+    'mx_gsmap_set':  { # gsMap of Model M
+        'mx': {
+            'name':'gsMap_icex'
+        },
+        'mm': {
+            'name':'gsMap_iceice'
+        }
+    },
+
+    'subroutine': {
+        'init_method': ice_init,
+        'run_method': {
+            'run_phase1_method': ice_run_phase1,
+            'run_phase2_method': ice_run_phase2,
+            'run_phase3_method': ice_run_phase3,
+        },
+        'final_method':[
+            {
+                'method_name':'ice_final_mct',
+                'params':{
+                }
+            }
+        ]
+    }
+
+}
+
 model_ocn_cfg = { # Model M's cfg
 'model_unique_name': 'ocn',
-'model_unique_id': '1',
+'model_unique_id': '2',
     'mx_av_set' : { # Av between model M and Cpl
         'mx_mm':{
             'name': 'ocn2x_ocnocn',
@@ -299,6 +503,8 @@ model_ocn_cfg = { # Model M's cfg
 
 model_cfgs = [
     model_atm_cfg,
+    model_rof_cfg,
+    model_ice_cfg,
     model_ocn_cfg,
 ]
 

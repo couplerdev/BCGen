@@ -7,7 +7,13 @@
 		<frac update='true'>normal</frac>
 		<input>
 			<src name='ocn'>
-				<field type="state" frac="normal" >So_t:So_s:So_u</field><!--type none imply the online one-->
+				<field type="state" frac="normal" >So_t</field><!--type none imply the online one-->
+			</src>
+            <src name='lnd'>
+                <field type="state" frac="normal" >Sl_fv:Sl_ram1:Sl_snowh</field>
+            </src>
+			<src name='ice'>
+				<field type='state' frac='normal'>Si_avsdr</field>
 			</src>
 			<src name='xao' type='var'>
 				<var>xao_ax</var>
@@ -21,10 +27,46 @@
 		<frac>normal</frac>
 		<input>
 			<src name='atm'>
-				<field type="state" frac="normal">Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem</field>
+				<field type="state" frac="normal">Sa_pslv</field>
 			</src>
 			<src name='xao' type='var'>
 				<var>xao_ox</var>
+			</src>
+		</input>
+	</model>
+	<model>
+		<name>lnd</name>
+		<version>clm</version>
+		<res>fv4x5</res>
+		<frac>normal</frac>
+		<input>
+            <src name='atm'>
+                <field type="state" frac="normal" >Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot</field>
+            </src>
+            <src name='rof'>
+                <field type="state" frac="normal" >Slrr_volr</field>
+            </src>
+		</input>
+	</model>
+	<model>
+		<name>ice</name>
+		<version>cice</version>
+		<res>gx3v7</res>
+		<frac>normal</frac>
+		<input>
+			<src name='atm'>
+				<field type='state' frac='normal'>Sa_z:Sa_u</field>
+			</src>
+		</input>
+	</model>
+	<model>
+		<name>rof</name>
+		<version>rtm</version>
+		<res>r05</res>
+		<frac>normal</frac>
+		<input>
+			<src name='lnd'>
+				<field type='state' frac='normal'>Sl_fv</field>
 			</src>
 		</input>
 	</model>

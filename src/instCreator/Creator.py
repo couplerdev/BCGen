@@ -97,6 +97,9 @@ def get_merge_cfg(attrVects):
         avDict['src'] = aVect.srcGrid
         avDict['mapperName'] = aVect.mapperName
         avDict['w_file'] = aVect.mapperFile
+        avDict['samegrid'] = False
+        if avDict['w_file'] == "samegrid":
+            avDict['samegrid'] = True
         avDict['mapperType'] = aVect.mapperType
         merge_cfg[av] = avDict
     return merge_cfg
@@ -277,6 +280,8 @@ class InstCreator:
                                                                           "fieldVar_cfgs":fieldVar_cfgs})
         baseHistTmp = TempConfig(templateDirPrefix+"baseHistMod_Template.F90","base_hist_mod.F90",{"proc_cfgs":proc_cfgs})
         baseRestTmp = TempConfig(templateDirPrefix+"baseRestMod_Template.F90","base_rest_mod.F90", {"proc_cfgs":proc_cfgs})
+        for frac in fraction_cfgs:
+            print fraction_cfgs[frac].init.name
         baseCplTmp = TempConfig(templateDirPrefix+"baseCpl_Template.F90","baseCpl.F90",\
                               {"proc_cfgs":proc_cfgs, "merge_subroutines":merge_subroutines,\
                                "merge_cfgs":merge_cfgs,"model_cfgs":model_cfgs, \
@@ -318,7 +323,7 @@ class InstCreator:
             f.write(' pio_root = 1\n')
             f.write(' pio_stride = -1\n')
             f.write(' pio_typename = \'netcdf\'\n')
-            f.write('/')
+            f.write('/\n')
 
 
     def createRcConf(self):
@@ -355,6 +360,7 @@ class InstCreator:
         for model in self.proc_cfgs:
             name = model.name
             srcLocation = model.src
+            
             # check model dir
             # first find the location in default path
             # then check whether srcLocation is a user
@@ -364,10 +370,10 @@ class InstCreator:
             modelDir = ""
             if os.path.exists(defaultPath+srcLocation):
                 modelDir=defaultPath+srcLocation
-            elif os.path.exsits(srcLocation):
+            elif os.path.exists(srcLocation):
                 modelDir=srcLocation
             else:
-                raise WrongPathError("in createMakefile:")
+                raise WrongPathError("in createMakefile: {}".format(srcLocation))
             metaFile = model.metaFile
             if metaFile == "None":
                 #modelDir = InstCreator.couplerCodePath+"/src/models/"+name
@@ -382,7 +388,7 @@ class InstCreator:
                 #modelDir = InstCreator.couplerCodePath+"/src/models/"+name
                 cmdCpComp = 'cp -r '+modelDir+"/* " + self.metaManager.instPath+"/models/"+name
                 os.system(cmdCpComp)
-                
+                print cmdCpComp
                  
         # mv Cpl comp to models 
         cplDir = InstCreator.couplerCodePath+"/src/models/cpl"
@@ -463,7 +469,7 @@ class InstCreator:
         os.mkdir(archPath)
         os.mkdir(scriptsPath)
         os.mkdir(docPath)
-        
+        print 'echo' 
         # create models dir & copy relavent code and Makefile
         modelsPath = instPath+"/models/"
         os.mkdir(modelsPath)

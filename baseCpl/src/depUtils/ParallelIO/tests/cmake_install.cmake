@@ -1,4 +1,4 @@
-# Install script for directory: /share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests
+# Install script for directory: /home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -27,17 +27,12 @@ if(NOT CMAKE_INSTALL_COMPONENT)
   endif()
 endif()
 
-# Install shared libraries without execute permission?
-if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
-  set(CMAKE_INSTALL_SO_NO_EXE "0")
-endif()
-
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/cmake_install.cmake")
-  include("/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/unit/cmake_install.cmake")
-  include("/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/cmake_install.cmake")
-  include("/share/BCGen/develDir/BCGenV2.1/BCGen/baseCpl/src/depUtils/ParallelIO/tests/performance/cmake_install.cmake")
+  include("/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/cunit/cmake_install.cmake")
+  include("/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/unit/cmake_install.cmake")
+  include("/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/general/cmake_install.cmake")
+  include("/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/tests/performance/cmake_install.cmake")
 
 endif()
 

@@ -48,7 +48,7 @@ class NameManager:
         myName = ""
         if objName != "":
             if self.__checkObject[index].has_key(objName):
-                errorInfo = "user define " +objType +"name conflict!"
+                errorInfo = "user define " +objType + " " + objName +" name conflict!"
                 raise ValueError(errorInfo)
             else:
                 self.__checkObject[index][objName]=1
