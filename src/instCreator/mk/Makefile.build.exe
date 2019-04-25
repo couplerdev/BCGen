@@ -17,6 +17,7 @@ OBJS_ALL = ./*.o
 #set $FLAGS= "$(FLAGS)"
 #set $CPPDEFS= "$(CPPDEFS)"
 #set $MCTDEPS= "$(MCTDEPS)"
+#set $LINK_COMP = "$(LINK_COMP)"
 BASE_DEPS = $(LIBDIR)/*.o
 ESMF_DEPS=$(ESMF_LIB)/libesmf.a
 MCTDEPS=-L/usr/local/mct/lib -lmct -lmpeu
@@ -27,9 +28,15 @@ CPPDEFS = -ffree-line-length-none
 EXE= main
 MAIN=main.F90
 
+LINK_COMP = 
+#for $model in $model_cfgs
+     #set $model_name = $model['model_unique_name']
+LINK_COMP += -l$(model_name)
+#end for
+
 EXE:
 	$(FC) -c -I$(INCLDIR) -I$(ESMF_MOD) -L$(LIBDIR) $(CPPDEFS) baseCpl.F90
 	echo 'finish mod'
 	$(FC) -o $(EXE) $(MAIN) $(OBJS_ALL) $(BASE_DEPS) $(FLAGS) $(CPPDEFS) -I$(INCLDIR) -L$(LIBDIR) \
-	-L$(LIBDIR) -latm $(DEPS) $(MCTDEPS) $(ESMF_DEPS)
+	-L$(LIBDIR) $(LINK_COMP) $(DEPS) $(MCTDEPS) $(ESMF_DEPS)
 	#mv $(EXE) $(BINDIR)
