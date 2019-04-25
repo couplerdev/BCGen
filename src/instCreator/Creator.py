@@ -348,7 +348,6 @@ class InstCreator:
         os.system(cmdBuild)
         os.chdir(currDir)
         # mv libbcpl.a to lib
-        
         cmdMvObj = 'cp '+InstCreator.couplerCodePath+'/lib/* '+self.metaManager.instPath+'/lib'
         cmdMv = 'cp '+InstCreator.couplerCodePath+'/lib/libbcpl.a '+self.metaManager.instPath+'/lib'
         os.system(cmdMv)
@@ -513,6 +512,8 @@ class InstCreator:
         BCGenPath = "../../baseCpl/"
         copyIncludeCmd = "cp -r " + BCGenPath+"include/* "+includePath
         copyLibCmd = "cp -r "+ BCGenPath+"lib/* "+libPath
+        print copyIncludeCmd
+        print copyLibCmd
         os.system(copyIncludeCmd)
         os.system(copyLibCmd)
 

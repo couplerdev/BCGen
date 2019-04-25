@@ -1,7 +1,7 @@
 ifneq ($(SPMD), TRUE)
-cpp_dirs += ../MCT/mpi-serial
+cpp_dirs += ../../MCT/mpi-serial
 endif
-cpp_dirs += ../depUtils/ParallelIO
+cpp_dirs += ../../depUtils/ParallelIO
 
 include Makefile.conf
 
@@ -43,9 +43,9 @@ SRCS_F90 = shr/shr_kind_mod.F90 \
  	   shr/shr_vmath_mod.F90 \
 	   shr/shr_isnan.h \
 	   shr/shr_test_infnan_mod.F90 \
-	   shr/shr_infnan_mod.F90  \
+	   shr/shr_infnan_mod.F90 \
            shr/shr_scam_mod.F90 \
-           shr/shr_assert_mod.F90
+           shr/shr_assert_mod.F90 
 
 OBJS_ALL = $(SRCS_F90:.F90=.o)
 
@@ -58,14 +58,14 @@ OBJS_ALL: $(SRCS_F90)
 
 install:
 	$(MV) *.mod $(INCLDIR)
+	$(CP) ./shr/dtypes.h $(INCLDIR)
 	$(MV) *.o $(LIBDIR)
 
 	
 clean:
 	$(RM) *.o *.mod
 
-
-mct_mod.o:  shr_kind_mod.o shr_sys_mod.o shr_mpi_mod.o shr_const_mod.o shr_log_mod.o
+mct_mod .o:  shr_kind_mod.o shr_sys_mod.o shr_mpi_mod.o shr_const_mod.o shr_log_mod.o
 shr_kind_mod.o:
 shr_log_mod.o:
 shr_mpi_mod.o: shr_kind_mod.o shr_log_mod.o
