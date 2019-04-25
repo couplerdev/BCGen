@@ -97,9 +97,9 @@ def get_merge_cfg(attrVects):
         avDict['src'] = aVect.srcGrid
         avDict['mapperName'] = aVect.mapperName
         avDict['w_file'] = aVect.mapperFile
-        avDict['samegrid'] = False
+        avDict['samegrid'] = '.false.'
         if avDict['w_file'] == "samegrid":
-            avDict['samegrid'] = True
+            avDict['samegrid'] = '.true.'
         avDict['mapperType'] = aVect.mapperType
         merge_cfg[av] = avDict
     return merge_cfg

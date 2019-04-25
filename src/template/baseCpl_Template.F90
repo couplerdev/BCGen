@@ -239,7 +239,7 @@ subroutine cpl_init()
         #end for
     end if
 
-    if(metaData%imain_cpl)then
+    if(metaData%iamin_cpl)then
         #for $cfg in $fake_cfgs
         
         #end for

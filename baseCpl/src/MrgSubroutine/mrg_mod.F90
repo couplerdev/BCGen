@@ -17,14 +17,14 @@ use global_var
 
 contains
 
-subroutine mrg_x2atm(metaData, ocn2x_atm, xao_atm,  atm2x_atm, fraction_atm,&
+subroutine mrg_x2atm(metaData, ocn2x_atm, lnd2x_atmx, ice2x_atmx, xao_atm, atm2x_atm, fraction_atm,&
 x2atm_atm)
     implicit none
     type(Meta),        intent(in)    :: metaData
-!    type(attrVect),   intent(in)    :: lnd2x_atmx
+    type(mct_aVect),   intent(in)    :: lnd2x_atmx
     type(mct_aVect),   intent(in)    :: ocn2x_atm
     type(mct_aVect),   intent(in)    :: xao_atm
-!    type(attrVect),   intent(in)    :: ice2x_atmx
+    type(mct_aVect),   intent(in)    :: ice2x_atmx
     type(mct_aVect),   intent(in)    :: atm2x_atm
     type(mct_aVect),   intent(in)    :: fraction_atm
     type(mct_aVect),   intent(inout) :: x2atm_atm
@@ -339,7 +339,7 @@ subroutine mrg_x2ocn( metaData, a2x_o, xao_o, o2x_ox, fractions_o, x2o_o )
        
 end subroutine mrg_x2ocn
 
-subroutine mrg_x2lnd(metaData, atm2x_lndx, rof2x_lndx, lnd2x_lndx,&
+subroutine mrg_x2lnd(metaData, atm2x_lndx, rof2x_lndx, lnd2x_lndx, fraction_lnd,&
 x2lnd_lndx)
 
     implicit none
@@ -347,6 +347,7 @@ x2lnd_lndx)
     type(mct_aVect),   intent(in)    :: atm2x_lndx
     type(mct_aVect),   intent(in)    :: rof2x_lndx
     type(mct_aVect),   intent(in)    :: lnd2x_lndx
+    type(mct_aVect),   intent(in)    :: fraction_lnd
     type(mct_aVect),   intent(inout) :: x2lnd_lndx
 
     call mct_aVect_copy(aVin=atm2x_lndx, aVout=x2lnd_lndx, vector=mct_usevector)
