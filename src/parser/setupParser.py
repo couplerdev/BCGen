@@ -98,7 +98,6 @@ class Setup:
                         if srcRes == res:
                             w_file = "samegrid"
                         else:
-                            print modelName
                             w_file = self.__regridDataLoc.query(srcModel, srcRes, modelName, res, smatType )
 
                     srcAttrVect = srcModel+'2'+'x_'+srcModel+'x'

@@ -97,9 +97,9 @@ def get_merge_cfg(attrVects):
         avDict['src'] = aVect.srcGrid
         avDict['mapperName'] = aVect.mapperName
         avDict['w_file'] = aVect.mapperFile
-        avDict['samegrid'] = '.false.'
-        if avDict['w_file'] == "samegrid":
-            avDict['samegrid'] = '.true.'
+        avDict['samegrid'] = ".false."
+        if avDict['w_file'][1:-1] == "samegrid":
+            avDict['samegrid'] = ".true."
         avDict['mapperType'] = aVect.mapperType
         merge_cfg[av] = avDict
     return merge_cfg
@@ -395,8 +395,9 @@ class InstCreator:
         os.system(cmdCpCpl)
 
         # build Makefile from template
+        from search_set import *
         #mkCompTmp = TempConfig('./mk/Makefile.build.comp', 'MakefileComp', {'proc_cfgs':self.proc_cfgs})      
-        mkExeTmp = TempConfig('./mk/Makefile.build.exe','MakefileExe',{'proc_cfgs':self.proc_cfgs})
+        mkExeTmp = TempConfig('./mk/Makefile.build.exe','MakefileExe',{'proc_cfgs':self.proc_cfgs, "model_cfgs":model_cfgs})
         mkConfTmp = TempConfig('./mk/Makefile.conf','Makefile.conf',{'meta_cfgs':self.metaManager})
         mkList = [mkExeTmp, mkConfTmp] 
         codeGen = CodeMapper(mkList) 
