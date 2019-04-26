@@ -16,8 +16,8 @@
 
 
 
-
-INCLDIR = /home/hq/share/BCGen_case/BCGen_inst/include
+include ../../../Makefile.conf
+#INCLDIR = /home/hq/share/BCGen_case/BCGen_inst/include
 
 F77 = mpif90
 F90 = mpif90
