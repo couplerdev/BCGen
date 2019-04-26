@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build
+END
+ibm.gnu
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build/ibm.gnu
+END
+sgialtix_mpi.gnu
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build/sgialtix_mpi.gnu
+END
+linuxabsoft_serial.gnu
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build/linuxabsoft_serial.gnu
+END
+GNUmakefile
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build/GNUmakefile
+END
+depends.mk
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build/depends.mk
+END
+mac_ppc_absoft.gnu
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build/mac_ppc_absoft.gnu
+END
+fdepends.awk
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build/fdepends.awk
+END
+linuxg95_serial.gnu
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build/linuxg95_serial.gnu
+END
+preprocess.mk
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build/preprocess.mk
+END
+sgialtix_serial.gnu
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build/sgialtix_serial.gnu
+END
+README.mac
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build/README.mac
+END
+compile.mk
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/!svn/ver/61025/pop2/release_tags/cesm1_2_x_rel_25_cesm_pop_2_1_20130521/build/compile.mk
+END

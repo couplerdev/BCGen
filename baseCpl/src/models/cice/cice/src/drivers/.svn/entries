@@ -1,0 +1,40 @@
+10
+
+dir
+86919
+https://svn-ccsm-models.cgd.ucar.edu/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/src/drivers
+https://svn-ccsm-models.cgd.ucar.edu
+
+
+
+2014-05-27T20:09:40.756144Z
+60691
+jedwards
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+fe37f545-8307-0410-aea5-b40df96820b5
+
+cpl_share
+dir
+
+cpl_mct
+dir
+
+cice4
+dir
+
+cpl_esmf
+dir
+

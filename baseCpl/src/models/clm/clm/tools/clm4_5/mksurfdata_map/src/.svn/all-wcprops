@@ -1,0 +1,257 @@
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src
+END
+mkvarctl.F90
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkvarctl.F90
+END
+mkncdio.F90
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkncdio.F90
+END
+clm_varpar.F90
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/clm_varpar.F90
+END
+mktopostatsMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mktopostatsMod.F90
+END
+mkutilsMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkutilsMod.F90
+END
+shr_file_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/shr_file_mod.F90
+END
+shr_timer_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/shr_timer_mod.F90
+END
+shr_log_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/shr_log_mod.F90
+END
+mkindexmapMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkindexmapMod.F90
+END
+mklaiMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mklaiMod.F90
+END
+mksoilMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mksoilMod.F90
+END
+mkdiagnosticsMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkdiagnosticsMod.F90
+END
+fileutils.F90
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/fileutils.F90
+END
+shr_const_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/shr_const_mod.F90
+END
+mkgdpMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkgdpMod.F90
+END
+mkCH4inversionMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkCH4inversionMod.F90
+END
+mkharvestMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkharvestMod.F90
+END
+mkfileMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkfileMod.F90
+END
+mkurbanparCommonMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkurbanparCommonMod.F90
+END
+mkVICparamsMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkVICparamsMod.F90
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/Makefile
+END
+shr_string_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/shr_string_mod.F90
+END
+mkglcmecMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkglcmecMod.F90
+END
+mkvarpar.F90
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkvarpar.F90
+END
+mkagfirepkmonthMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkagfirepkmonthMod.F90
+END
+clm_varctl.F90
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/clm_varctl.F90
+END
+mkchecksMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkchecksMod.F90
+END
+shr_sys_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/shr_sys_mod.F90
+END
+mkvocefMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkvocefMod.F90
+END
+mkdomainMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkdomainMod.F90
+END
+Filepath
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/Filepath
+END
+shr_kind_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/shr_kind_mod.F90
+END
+mksurfdat.F90
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mksurfdat.F90
+END
+mkurbanparMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkurbanparMod.F90
+END
+Makefile.common
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/Makefile.common
+END
+mkgridmapMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkgridmapMod.F90
+END
+nanMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/nanMod.F90
+END
+Srcfiles
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/Srcfiles
+END
+Mkdepends
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/Mkdepends
+END
+mklanwatMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mklanwatMod.F90
+END
+mkpeatMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkpeatMod.F90
+END
+mkpftMod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/tools/clm4_5/mksurfdata_map/src/mkpftMod.F90
+END

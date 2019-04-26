@@ -11,6 +11,7 @@ TIMEDIR= timeManage
 COMMDIR = transManage
 PROCDIR = procManage
 MRGDIR = MrgSubroutine
+FLUXDIR = FluxSubroutine
 UTILSDIR = utils
 UTILAUXDIR = utilsAux
 ESMDIR = esm

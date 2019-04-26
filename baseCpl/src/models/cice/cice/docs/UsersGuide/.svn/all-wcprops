@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide
+END
+ice_setup.tex
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_setup.tex
+END
+ice_history.tex
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_history.tex
+END
+ice_nml_example.tex
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_nml_example.tex
+END
+master_list.bib
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/master_list.bib
+END
+ice_what_is_cice4.tex
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_what_is_cice4.tex
+END
+README_USR
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/README_USR
+END
+supertabular.sty
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/supertabular.sty
+END
+ice_usrdoc.pdf
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_usrdoc.pdf
+END
+cicedoc.pdf
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/cicedoc.pdf
+END
+ice_stdout.tex
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_stdout.tex
+END
+ice_restart.tex
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_restart.tex
+END
+jas.bst
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/jas.bst
+END
+ice_input_data.tex
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_input_data.tex
+END
+ice_runtypes.tex
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_runtypes.tex
+END
+ice_troubleshoot.tex
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_troubleshoot.tex
+END
+ice_change_ncat.tex
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_change_ncat.tex
+END
+index.html
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/index.html
+END
+ice_nml_var.tex
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_nml_var.tex
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/Makefile
+END
+natbib.sty
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/natbib.sty
+END
+ice_build.tex
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_build.tex
+END
+ice_usrdoc.tex
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/docs/UsersGuide/ice_usrdoc.tex
+END

@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files
+END
+mksrfdt_1x1_brazil_1850
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/mksrfdt_1x1_brazil_1850
+END
+gen_domain.ne30.runoptions
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/gen_domain.ne30.runoptions
+END
+mksrfdt_10x15_1850
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/mksrfdt_10x15_1850
+END
+gen_domain.T31.runoptions
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/gen_domain.T31.runoptions
+END
+mksrfdt_T31_crpglc_2000
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/mksrfdt_T31_crpglc_2000
+END
+clm4_0_mksrfdt_1x1_numaIA_mp20irrcr_2000
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/clm4_0_mksrfdt_1x1_numaIA_mp20irrcr_2000
+END
+clm4_0_mksrfdt_10x15_irr_1850
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/clm4_0_mksrfdt_10x15_irr_1850
+END
+mksrfdt_1x1_numaIA_mp24_2000
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/mksrfdt_1x1_numaIA_mp24_2000
+END
+getregional
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/getregional
+END
+mksrfdt_1x1_brazil_1850-2000
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/mksrfdt_1x1_brazil_1850-2000
+END
+mkmapdata_ne30np4_clm4_0
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/mkmapdata_ne30np4_clm4_0
+END
+mkprocdata_ne30_to_f19_I2000
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/mkprocdata_ne30_to_f19_I2000
+END
+mkmapdata_ne30np4
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/mkmapdata_ne30np4
+END
+mksrfdt_1x1_vancouverCAN_2000
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/mksrfdt_1x1_vancouverCAN_2000
+END
+mkmapdata_if10
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/!svn/ver/61020/clm2/release_tags/cesm1_2_x_n15_clm4_5_10/models/lnd/clm/test/tools/nl_files/mkmapdata_if10
+END

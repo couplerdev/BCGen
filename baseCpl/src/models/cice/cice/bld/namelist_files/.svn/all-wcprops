@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/bld/namelist_files
+END
+namelist_definition.xml
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/bld/namelist_files/namelist_definition.xml
+END
+namelist_defaults_cice.xml
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/!svn/ver/61018/cice/release_tags/cesm1_2_x_rel_n01_cice4_0_20130524/bld/namelist_files/namelist_defaults_cice.xml
+END
