@@ -1,0 +1,2 @@
+all:
+	cd bld && $(MAKE)
