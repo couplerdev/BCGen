@@ -28,8 +28,9 @@
 #  The bourne shell is safest for gmake
 SHELL = /bin/sh
 
-CLMDIR=/home/hq/share/BCGen_case/BCGen_inst/models/lnd/clm
-CLMEXEDIR=/home/hq/share/BCGen_case/BCGen_inst/models/lnd/clm/build
+include ../../../Makefile.conf
+CLMDIR=$(ABSDIR)/models/lnd/clm
+CLMEXEDIR=$(ABSDIR)/models/lnd/clm/build
 CLMARCH=mytest
 #
 #

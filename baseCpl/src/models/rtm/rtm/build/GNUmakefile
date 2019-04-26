@@ -27,9 +27,9 @@
 #
 #  The bourne shell is safest for gmake
 SHELL = /bin/sh
-
-RTMDIR=/home/hq/share/BCGen_case/BCGen_inst/models/rof/rtm
-RTMEXEDIR=/home/hq/share/BCGen_case/BCGen_inst/models/rof/rtm/build
+include ../../../Makefile.conf
+RTMDIR=$(ABSDIR)/models/rof/rtm
+RTMEXEDIR=$(ABSDIR)/models/rof/rtm/build
 RTMARCH=mytest
 #
 #

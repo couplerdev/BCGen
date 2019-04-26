@@ -27,9 +27,9 @@
 #
 #  The bourne shell is safest for gmake
 SHELL = /bin/sh
-
-CICEDIR=/home/hq/share/BCGen_case/BCGen_inst/models/ice/cice
-CICEEXEDIR=/home/hq/share/BCGen_case/BCGen_inst/models/ice/cice/build
+include ../../../Makefile.conf
+CICEDIR=$(ABSDIR)/models/ice/cice
+CICEEXEDIR=$(ABSDIR)/models/ice/cice/build
 CICEARCH=mytest
 #
 #
