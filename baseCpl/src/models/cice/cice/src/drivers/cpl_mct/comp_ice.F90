@@ -1390,8 +1390,8 @@ contains
     ! Initialize mct domain type
     ! lat/lon in degrees,  area in radians^2, mask is 1 (ocean), 0 (non-ocean)
     !
-    call mct_gGrid_init( GGrid=dom_i, CoordChars=trim('x:y:z'), &
-       OtherChars=trim('lat:lon:area:frac:mask:aream'), lsize=lsize )
+    call mct_gGrid_init( GGrid=dom_i, CoordChars=trim('lat:lon'), &
+       OtherChars=trim('area:frac:mask:aream'), lsize=lsize )
     call mct_aVect_zero(dom_i%data)
     !  
     allocate(data(lsize))
