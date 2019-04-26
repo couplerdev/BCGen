@@ -17,7 +17,7 @@ OBJS_ALL = ./*.o
 #set $FLAGS= "$(FLAGS)"
 #set $CPPDEFS= "$(CPPDEFS)"
 #set $MCTDEPS= "$(MCTDEPS)"
-#set $LINK_COMP = "$(LINK_COMP)"
+#set $LINK_COMP= "$(LINK_COMP)"
 BASE_DEPS = $(LIBDIR)/*.o
 ESMF_DEPS=$(ESMF_LIB)/libesmf.a
 MCTDEPS=-L/usr/local/mct/lib -lmct -lmpeu
@@ -27,6 +27,11 @@ FLAGS=-pthread
 CPPDEFS = -ffree-line-length-none
 EXE= main
 MAIN=main.F90
+LINK_COMP = 
+#for $model in $proc_cfgs
+	#set $name = $model.name
+LINK_COMP += -l$name
+#end for
 
 LINK_COMP = 
 #for $model in $model_cfgs

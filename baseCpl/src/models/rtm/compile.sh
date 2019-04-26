@@ -5,5 +5,5 @@ pushd build
 make
 popd
 popd
-cp rtm/build/librtm.a ../../lib
+cp rtm/build/librof.a ../../lib
 cp rtm/build/compile/*.mod ../../include
