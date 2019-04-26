@@ -33,6 +33,12 @@ LINK_COMP =
 LINK_COMP += -l$name
 #end for
 
+LINK_COMP = 
+#for $model in $model_cfgs
+     #set $model_name = $model['model_unique_name']
+LINK_COMP += -l$(model_name)
+#end for
+
 EXE:
 	$(FC) -c -I$(INCLDIR) -I$(ESMF_MOD) -L$(LIBDIR) $(CPPDEFS) baseCpl.F90
 	echo 'finish mod'

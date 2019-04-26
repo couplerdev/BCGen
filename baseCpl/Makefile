@@ -16,6 +16,7 @@ UTILSDIR = utils
 UTILAUXDIR = utilsAux
 ESMDIR = esm
 LOGUTILDIR =  logUtils 
+FLUXDIR = FluxSubroutine
 models=$(shell ls -l ./src/model|grep ^d|grep -v 'cpl'|awk '{print $$9}')
 MAIN = ./model/cpl
 DEPS=$(CCSM_SHR)  $(LOGUTILDIR) $(DEFDIR) $(ESMDIR) $(UTILSDIR) $(TIMEDIR) $(COMMDIR) $(PROCDIR) $(MRGDIR) $(UTILAUXDIR) $(FLUXDIR)
