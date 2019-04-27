@@ -161,7 +161,10 @@ contains
 
     ! Set cdata data
 
-    call compMeta_getInfo(compInfo, comm=mpicom_lnd, ID=LNDID, domain=dom_l)
+    mpicom_lnd = compInfo%comm
+    LNDID = compInfo%ID
+    dom_l => compInfo%domain
+
 
     ! Determine attriute vector indices
 
