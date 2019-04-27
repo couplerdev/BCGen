@@ -2,19 +2,19 @@
 <models>
 	<model>
 		<name>cam</name>
-		<location>/share/BCGen/develDir/BCGenV1.0/BCGen/composing/camDesc.xml</location>
+		<location>/share/BCGen/develDir/BCGen/composing/camDesc.xml</location>
 	</model>
 	<model>
 		<name>clm</name>
-		<location>/home/heqi/git/BCGen/composing/clmDesc.xml</location>
+		<location>/share/BCGen/develDir/BCGen/composing/clmDesc.xml</location>
 	</model>
 	<model>
 		<name>cice</name>
-		<location>/home/heqi/git/BCGen/composing/ciceDesc.xml</location>
+		<location>/share/BCGen/develDir/BCGen/composing/ciceDesc.xml</location>
 	</model>
 	<model>
 		<name>rtm</name>
-		<location>/home/heqi/git/BCGen/composing/rofDesc.xml</location>
+		<location>/share/BCGen/develDir/BCGen/composing/rofDesc.xml</location>
 	</model>
 </models>
 

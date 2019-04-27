@@ -12,7 +12,7 @@ from xml.dom.minidom import Document
 innerModelSets = "../../composing/innerModels.xml"
 
 # pair {model name, model loc}
-modelSetsDict = {}
+modelSetsDict = {'cam':'../../composing/camDesc.xml'}
 
 def getModelSetDict():
     tree = ET.parse(innerModelSets)
@@ -39,6 +39,7 @@ class ConfModel:
        self.modelName = modelName
        self.fileDesc = fileDesc
        self.metaManager = metaManager
+       print 'in conf____',self.fileDesc
 
     def createModelInst(self):
         tree = ET.parse(self.fileDesc)
@@ -64,24 +65,25 @@ class ConfModel:
         bldNml = tree.find("build-namelist")
         bldNmlScripts = bldNml.find("script").text or ' '
         args = ""
-        argsIn = conf.find('args')
+        argsIn = bldNml.find('args')
         if argsIn != None:
             for argIn in argsIn:
                 arg = " "
-                if argIn.find('arg') != None:
-                    arg = argIn.find('arg').text or ''
+                arg = argIn.text or 'none'
                 argOpts = " "
                 if "type" in argIn.attrib:
                     if argIn.attrib["type"]=="dataloc":
 	                argOpts = self.metaManager.inputPath
                     elif argIn.attrib["type"]=="outloc":
-                        argOpts = self.metaManager.instPath+"./conf"
+                        argOpts = self.metaManager.instPath+"/conf"
                     else:
                         raise NoneProperValueError("in ConfModel.createModelInst:")
-                args += arg + argOpts +" "
+                args += arg + " "+argOpts +" "
+        os.chdir(workDir)
         cmdBld = bldNmlScripts + "   "+ args
+        print cmdBld
         os.system(cmdBld)
-        
+        os.chdir(currDir) 
         #copy to target dict
         
        
@@ -103,7 +105,9 @@ class ModelManager:
             raise NoneProperValueError("in ModelManager.createModel when modelType not find:")
 
 if __name__ == "__main__":
+    from MetaManager import MetaManager
     modelName = "cam"
     fileName = modelSetsDict[modelName]
-    model = ConfModel(modelName, fileName)
+    metaManager = MetaManager('../../')
+    model = ConfModel(modelName, fileName, metaManager)
     model.createModelInst()
