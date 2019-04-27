@@ -204,7 +204,7 @@ contains
 
     ! Consistency check on namelist filename	
 
-    call control_setNL("/home/hq/share/BCGen_case/BCGen_inst/conf/lnd_in"//trim(inst_suffix))
+    call control_setNL("/home/hq/git/BCGen/inputdata/lnd_in")
 
     ! Initialize clm
     ! initialize1 reads namelist, grid and surface data (need this to initialize gsmap) 
@@ -261,6 +261,7 @@ contains
     ! Determine if aerosol and dust deposition come from atmosphere component
 
     !call seq_infodata_GetData(infodata, atm_aero=atm_aero )
+    atm_aero = .true.
     if ( .not. atm_aero )then
        call endrun( sub//' ERROR: atmosphere model MUST send aerosols to CLM' )
     end if
@@ -1029,8 +1030,8 @@ contains
     ! lat/lon in degrees,  area in radians^2, mask is 1 (land), 0 (non-land)
     ! Note that in addition land carries around landfrac for the purposes of domain checking
     ! 
-    call mct_gGrid_init( GGrid=dom_l, CoordChars=trim('x:y:z'), &
-       OtherChars=trim('lat:lon:area:frac:mask:aream'), lsize=lsize )
+    call mct_gGrid_init( GGrid=dom_l, CoordChars=trim('lat:lon'), &
+       OtherChars=trim('area:frac:mask:aream'), lsize=lsize )
     !
     ! Allocate memory
     !
