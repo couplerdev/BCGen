@@ -327,7 +327,7 @@ contains
 ! pt-advection using pre-computed mass fluxes
 ! use tm2 below as the storage for pt increment
 ! WS 99.09.20 : pt, crx need on N*ng S*ng, yfx on N
-
+     
     call tp2c(tm2 ,va(1,jfirst), pt(1,jfirst-ng_c),       &
               crx(1,jfirst-ng_c), cry(1,jfirst),          &
               im, jm,  iord, jord, ng_c, fx,              &
@@ -553,6 +553,7 @@ contains
 
   use tp_core
   use pft_module, only : pft2d
+  use mpi
 
   implicit none
 
@@ -706,7 +707,8 @@ contains
   integer jn2g2 !for extra halo for div4 
   integer js2gs, jn2gs, jn1gs
   integer im2
-  
+  integer ierr  
+
 !
 ! For convenience
 !
@@ -889,13 +891,15 @@ contains
      enddo
   enddo
 
+print *,'zet'
+call MPI_Barrier(MPI_COMM_WORLD,ierr)
 ! transport polar filtered delp
       call tp2c(ub(1,jfirst), va(1,jfirst), delpf(1,jfirst-ng_d),   &
                 crx(1,jfirst-ng_d),cry(1,jfirst),im,jm,iord,jord,   &
                 ng_d, xfx, yfx, ffsl,                               &
                 rcap, acosp,crx(1,jfirst), ymass,                   &
                 cosp, 0, jfirst, jlast)
-
+print *,'jod'
 #if defined(FILTER_MASS_FLUXES)
    call pft2d( xfx(1,js2g0), sc, dc, im, jn2g0-js2g0+1, &
                     v2, u2 )
@@ -986,9 +990,9 @@ contains
             ub(i,j) = dtdy5*(vc(i,j) + vc(i-1,j))
          enddo
       enddo
-
       call ytp(im, jm, fy(1,jfirst), v(1,jfirst-ng_d), ub(1,jfirst),  &
                ub(1,jfirst), ng_d, jord, 1, jfirst, jlast)
+    
 ! End using ub as v (CFL) on B-grid
 
 #if defined(INNER_OMP)

@@ -262,9 +262,11 @@ function TimeSetymd( ymd, tod, desc )
    end if
    yr  = ymd / 10000
    mon = (ymd - yr*10000) / 100
-   day =  ymd - yr*10000 - mon*100
+   day =  ymd - yr*10000 - mon*100 
+   
    call ESMF_TimeSet( TimeSetymd, yy=yr, mm=mon, dd=day, s=tod, &
                       calendar=tm_cal, rc=rc)
+   print *,'debug info:', desc, yr, mon, day, tod, rc, 'relative ymd'
    call chkrc(rc, sub//': error return from ESMF_TimeSet: setting '//trim(desc))
 end function TimeSetymd
 

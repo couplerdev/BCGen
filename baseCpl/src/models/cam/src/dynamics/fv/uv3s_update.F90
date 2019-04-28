@@ -106,6 +106,7 @@
 #endif
 
 !$omp parallel do private (i, j, k)
+      print *, 'check Wind:', dt5, u3s(32,23,1), u3s(32,24,1), dua(32, 1,24),dua(32,1,23)
 
       do k = 1, km
 
@@ -153,6 +154,7 @@
 
       enddo
 
+      print *, 'after wind:', u3s(32,23,1), u3s(32,24,1)
       idim = ilastxy - ifirstxy + 1
 
 !$omp parallel do private (i, j, k, u3s_tmp, v3s_tmp, fu3s_tmp, fv3s_tmp)

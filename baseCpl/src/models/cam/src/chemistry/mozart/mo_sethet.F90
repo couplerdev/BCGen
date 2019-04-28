@@ -9,6 +9,7 @@ module mo_sethet
 
   use cam_logfile, only: iulog
   use gas_wetdep_opts, only: gas_wetdep_cnt, gas_wetdep_method, gas_wetdep_list
+  use mpi  ! MODI
 
   private
   public :: sethet_inti, sethet
@@ -264,7 +265,7 @@ contains
     character(len=3) :: hetratestrg
     real(r8), parameter :: MISSING = -999999._r8
     integer ::  mm
-
+    integer :: rank, ier
 !
     !-----------------------------------------------------------------
     !        note: the press array is in pascals and must be
@@ -286,6 +287,7 @@ contains
     !          25. ch3cho      26. isopno3
     !-----------------------------------------------------------------
 
+    call MPI_Comm_rank(MPI_COMM_WORLD, rank, ier) ! MODI
     het_rates(:,:,:) = 0._r8
 
     if ( .not. do_wetdep) return
@@ -321,6 +323,7 @@ contains
        end do k_loop
     end do
     ktop_all = minval( ktop(:) )
+    call MPI_Barrier(MPI_COMM_WORLD,ier)
 !
 ! jfl
 !
@@ -345,7 +348,7 @@ contains
           end do
        end if
     end do
-
+    
     do k = 1,pver
        !jfl       precip(:ncol,k) = cmfdqr(:ncol,k) + nrain(:ncol,k) - nevapr(:ncol,k)
        rain(:ncol,k)   = mass_air*precip(:ncol,k)*xhnm(:ncol,k) / mass_h2o
@@ -391,13 +394,15 @@ contains
           xso2(:ncol,k)  = 0._r8
        end if
     end do
-
+    call MPI_Barrier(MPI_COMM_WORLD, ier)
     zsurf(:ncol) = m2km * phis(:ncol) * rga
+    call MPI_Barrier(MPI_COMM_WORLD, ier)
     do k = ktop_all,pver-1
        delz(:ncol,k) = abs( (zmid(:ncol,k) - zmid(:ncol,k+1))*km2cm ) 
     end do
+    call MPI_Barrier(MPI_COMM_WORLD, ier)
     delz(:ncol,pver) = abs( (zmid(:ncol,pver) - zsurf(:ncol) )*km2cm ) 
-
+    call MPI_Barrier(MPI_COMM_WORLD, ier)
     !-----------------------------------------------------------------
     !       ... part 0b,  for temperature dependent of henrys
     !                     xxhe1 = henry con for hno3
@@ -445,6 +450,7 @@ contains
        xhen_nh3 (:,k)     = 1.e6_r8
        xhen_ch3cn(:,k)     = 50._r8 * exp( 4000._r8 * work1(:) )
        xhen_hcn(:,k)       = 12._r8 * exp( 5000._r8 * work1(:) )
+      
        do i = 1, ncol
           so2_diss        = 1.23e-2_r8 * exp( 1960._r8 * work1(i) )
           xhen_so2(i,k)   = 1.23_r8 * exp( 3120._r8 * work1(i) ) * ( 1._r8 + so2_diss / xph0 )
@@ -452,7 +458,7 @@ contains
        !
        tmp_hetrates(:,k,:) = 0._r8
     end do
-
+    call MPI_Barrier(MPI_COMM_WORLD, ier)
     !-----------------------------------------------------------------
     !       ... part 1, solve for high henry constant ( hno3, h2o2)
     !-----------------------------------------------------------------
@@ -629,7 +635,6 @@ contains
           tmp_hetrates(i,kk,8) = max( 1._r8 / ysogx,0._r8 ) * stay
        end do level_loop1
     end do col_loop
-
     !-----------------------------------------------------------------
     !       ... part 2, in-cloud solve for low henry constant
     !                   hno3 and h2o2 have both in and under cloud
@@ -862,7 +867,6 @@ contains
 
        end do Column_loop2
     end do level_loop2
-
     !-----------------------------------------------------------------
     !	... Set rates above tropopause = 0.
     !-----------------------------------------------------------------
@@ -878,7 +882,6 @@ contains
           call endrun('sethet: het_rates (wet dep) not set for het reaction number : '//hetratestrg)
        endif
     end do
-
   end subroutine sethet
 
 end module mo_sethet

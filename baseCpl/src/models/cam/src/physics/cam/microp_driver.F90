@@ -186,12 +186,17 @@ subroutine microp_driver_tend( &
       call t_startf('microp_mg_tend')
       call micro_mg_cam_tend(state, ptend, dtime, pbuf)
       call t_stopf('microp_mg_tend')
+      if(isnan(ptend%q(15,29,1)))then
+          print *,'MG bad'
+      end if
    case ('RK')
       ! microp_driver doesn't handle this one
       continue
    case default
       call endrun('microp_driver_tend:: unrecognized microp_scheme')
    end select
+   
+
 
 end subroutine microp_driver_tend
 

@@ -325,6 +325,7 @@
 ! For non-SPMD mode, geopk_[cd]dist are set to false.
 
       logical geopk_cdist, geopk_ddist
+      integer :: ierr
 
       geopk_cdist = .false.
       geopk_ddist = .false.
@@ -1106,7 +1107,7 @@
 !-----------------------------------------------------------------
 ! Call the vertical independent part of the dynamics on the D-grid
 !-----------------------------------------------------------------
-
+         print *,'d_sw:', k
          call d_sw( grid, u(1,jfirst-ng_d,k),      v(1,jfirst-ng_s,k),     &
                     uc(1,jfirst-ng_d,k),    vc(1,jfirst-2,k),        &
                     pt(1,jfirst-ng_d,k),   delp(1,jfirst,k),         &
@@ -1120,7 +1121,8 @@
                     grid%cdx4 (js2g0:,k),grid%cdy4(js2g0:,k) ,       & 
                     grid%cdtau4(js2g0:,k), ldiv2, ldiv4, ldel2,      & 
                     iord, jord, tiny )
-
+         print *,'d_sw end:', k 
+         call MPI_Barrier(MPI_COMM_WORLD, ierr)
       enddo
 #if !defined(USE_OMP)
 !CSD$ END PARALLEL DO

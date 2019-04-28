@@ -564,7 +564,7 @@ CONTAINS
     !-----------------------------------------------------------------------------
     ! Allocate and fill foxd, drat and mapping as well as species indices
     !-----------------------------------------------------------------------------
-
+    print *,'-----see drydep', n_drydep
     if ( n_drydep > 0 ) then
 
        allocate( foxd(n_drydep) )
@@ -695,6 +695,7 @@ CONTAINS
     where( rac < small_value)
        rac = small_value
     endwhere
+
 
   end subroutine seq_drydep_init
 

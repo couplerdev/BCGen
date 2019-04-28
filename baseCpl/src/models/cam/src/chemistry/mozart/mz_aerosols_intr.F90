@@ -1341,7 +1341,6 @@ contains
 
 
     !------------------------------------------------------------------------
-
     vlc_grv(:ncol,:top_lev-1) = 0._r8
     vlc_dry(:ncol,:top_lev-1) = 0._r8
 
@@ -1396,7 +1395,6 @@ contains
                 interception = 0.0_r8
              endif
              impaction = (stk_nbr/(alpha(lt)+stk_nbr))**2.0_r8   
-
              if (iwet(lt) > 0) then
                 stickfrac = 1.0_r8
              else
@@ -1405,7 +1403,7 @@ contains
              endif
              rss_lmn = 1.0_r8 / (3.0_r8 * fv(i) * stickfrac * (brownian+interception+impaction))
              rss_trb = ram1(i) + rss_lmn + ram1(i)*rss_lmn*vlc_grv(i,k)
-
+              
              wrk1 = 1.0_r8 / rss_trb
              wrk2 = wrk2 + lnd_frc*( wrk1 )
              wrk3 = wrk3 + lnd_frc*( wrk1 + vlc_grv(i,k) )
@@ -1414,7 +1412,6 @@ contains
        vlc_trb(i) = wrk2
        vlc_dry(i,k) = wrk3
     enddo !ncol
-
     return
   end subroutine modal_aero_depvel_part
 

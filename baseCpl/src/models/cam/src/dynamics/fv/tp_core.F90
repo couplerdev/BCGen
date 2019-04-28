@@ -167,7 +167,8 @@ CONTAINS
                  ffsl, xfx, yfx, cosp, id, jfirst, jlast)
 !-----------------------------------------------------------------------
 ! !USES:
-
+ use mpi
+  
  implicit none
 
 ! !INPUT PARAMETERS:
@@ -220,6 +221,7 @@ CONTAINS
    real (r8)   al(-im/3:im+im/3)
    real (r8)   ar(-im/3:im+im/3)
    real (r8)   a6(-im/3:im+im/3)
+   integer ierr
 
 ! Number of ghost latitudes
     js2g0  = max(2,jfirst)          !  No ghosting
@@ -260,9 +262,8 @@ CONTAINS
           adx(i,jm) = q(i,jm)
         enddo
      endif
-
+     call MPI_Barrier(MPI_COMM_WORLD, ierr)
      call ytp(im,jm,fy, adx,cry,yfx,ng,jord,0,jfirst,jlast)
-
 #if defined(INNER_OMP)
 !$omp parallel do default(shared) private(j,i,jp)
 #endif
@@ -1046,7 +1047,6 @@ CONTAINS
 
    js2g0  = max(2,jfirst)       ! No ghosting
    jn1g1  = min(jm,jlast+1)     ! Ghost N*1
-     
    if(jord == 1) then
 #if defined(INNER_OMP)
 !$omp parallel do default(shared) private(j,i,jt)
