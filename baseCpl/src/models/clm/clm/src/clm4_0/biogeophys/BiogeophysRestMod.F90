@@ -222,7 +222,7 @@ contains
                         filetypes(nsrest), " file and ", trim(fileusing), " file(s)."
                    write(iulog,*) "ERROR:: maximum difference is ", maxdiff, " max allowed = ", adiff
                    write(iulog,*) "ERROR:: Run interpinic on your initial condition file to interpolate to the new surface dataset"
-                   call endrun( sub//"::ERROR:: Weights between initial condition file and surface dataset are too different" )
+                   !call endrun( sub//"::ERROR:: Weights between initial condition file and surface dataset are too different" )
                 else
                    write(iulog,*) sub//"::NOTE, PFT weights from ", filetypes(nsrest),      &
                         " file and ", trim(fileusing), " file(s) are different to < ", &
