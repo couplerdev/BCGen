@@ -464,6 +464,7 @@ if (defined $use_case_file) {
 # Are we building namelists for the cpl6 scripts, the cpl7 scripts, or for standalone CAM 
 # scripts.
 my $cpl7_build = $cfg->get('ccsm_seq');
+my $noc_build = $cfg->get('noc_bld');
 my $ccsm_build = $cpl7_build;
 my $cam_build  = $ccsm_build ? 0 : 1;
 if ($print>=2) { 
@@ -472,6 +473,9 @@ if ($print>=2) {
     }
     elsif ($cam_build) {
 	print "Writing namelist files for cam standalone scripts$eol";
+    }
+    elsif ($noc_build) {
+        print "Writing namelist files for noc scripts$eol";
     }
 }
 
@@ -500,7 +504,7 @@ add_default($nl, 'cplflds_custom', 'val'=>'');
 # environment variable or the nthreads configuration parameter to set the thread
 # count for each component.
 
-# Is this an smp build?
+# Is this an smp build?  may be unnessesary MODI
 my $smp = $cfg->get('smp');
 if ($smp) {
 

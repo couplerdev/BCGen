@@ -211,7 +211,9 @@ contains
     !-----------------------------------------------------------------------
     !	... initialize the dry deposition module
     !-----------------------------------------------------------------------
+    print *,'****** dry dep',drydep_method, DD_XATM, DD_XLND 
     if ( drydep_method == DD_XATM .or. drydep_method == DD_XLND ) then
+       print *,'----------init here', drydep_method
        call drydep_inti(depvel_lnd_file, clim_soilw_file, season_wes_file )
     else
        call drydep_inti( depvel_file )

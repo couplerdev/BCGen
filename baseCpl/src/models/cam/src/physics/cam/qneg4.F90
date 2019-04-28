@@ -22,6 +22,7 @@ subroutine qneg4 (subnam  ,lchnk   ,ncol    ,ztodt   ,        &
    use physconst,    only: gravit, latvap
    use constituents, only: qmin, pcnst
    use cam_logfile,  only: iulog
+   use mpi
 
    implicit none
 
@@ -52,6 +53,16 @@ subroutine qneg4 (subnam  ,lchnk   ,ncol    ,ztodt   ,        &
 !
    real(r8):: worst             ! biggest violator
    real(r8):: excess(pcols)     ! Excess downward sfc latent heat flux
+   integer :: ierr ! MODI
+   integer :: rank ! MODI
+   character(*), parameter :: fmt1 = "('QNEG4 WARNING from', a8&
+                              , 'Max Possible LH flx exceeded at ', i4, 'points.' &
+                              ,', worst exceed = ', 1pe12.4 &
+                              , ', lchnk = ',i3 &
+                              ,', i= ',i4 &
+                              ,', smae as indices lat = ', i4 &
+                              ,', lon =',i4&
+                              )"
 !
 !-----------------------------------------------------------------------
 !
@@ -60,6 +71,10 @@ subroutine qneg4 (subnam  ,lchnk   ,ncol    ,ztodt   ,        &
 ! given moisture content of lowest level of the model atmosphere.
 !
    nptsexc = 0
+   call MPI_COMM_rank(MPI_COMM_WORLD, rank, ierr)
+   print *, rank,size(srfrpdel), srfrpdel
+   print *, 'qbot', qbot(ncol,1)
+   call MPI_Barrier(MPI_COMM_WORLD, ierr)
    do i = 1,ncol
       excess(i) = qflx(i,1) - (qmin(1) - qbot(i,1))/(ztodt*gravit*srfrpdel(i))
 !
@@ -74,6 +89,8 @@ subroutine qneg4 (subnam  ,lchnk   ,ncol    ,ztodt   ,        &
          shflx(i) = shflx(i) + excess(i)*latvap
       end if
    end do
+   call MPI_Barrier(MPI_COMM_WORLD, ierr)
+   call MPI_Barrier(MPI_COMM_WORLD,ierr)
 !
 ! Write out worst value if excess
 !
@@ -86,7 +103,8 @@ subroutine qneg4 (subnam  ,lchnk   ,ncol    ,ztodt   ,        &
             iw = i
          end if
       end do
-      write(iulog,9000) subnam,nptsexc,worst, lchnk, iw, get_lat_p(lchnk,iw),get_lon_p(lchnk,iw)
+      !write(iulog,9000) subnam,nptsexc,worst, lchnk, iw, get_lat_p(lchnk,iw),get_lon_p(lchnk,iw)
+      write(iulog, fmt1) subnam, nptsexc, worst, lchnk, iw, get_lat_p(lchnk, iw), get_lon_p(lchnk, iw)
    end if
 !
    return

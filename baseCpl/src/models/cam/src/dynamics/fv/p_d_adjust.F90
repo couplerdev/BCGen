@@ -114,10 +114,11 @@
        enddo
 
        call t_startf("pdadj_reprosum")
+       print *,"shr_reprosum_calc:", size(pole), size(pole_sum)
        call shr_reprosum_calc(pole, pole_sum, lim, lim, km*(ntotq+2), gbl_count=im, &
                       commid=grid%commxy_x, rel_diff=rel_diff) ! South pole
        call t_stopf("pdadj_reprosum")
-
+       print *, 'end this calc'
        ! check that "fast" reproducible sum is accurate enough. If not, calculate
        ! using old method
        write_warning = .false.

@@ -95,7 +95,7 @@
 		<name>atm</name>
 		<version>cam</version>
 		<src>cam</src>
-   		<metaFile>/share/BCGen/develDir/BCGenV1.0/BCGen/composing/camDesc.xml</metaFile>
+   		<metaFile>/share/BCGen/develDir/BCGen/composing/camDesc.xml</metaFile>
 		<attrVect>
 			<name></name>
 			<gsize>3312</gsize>

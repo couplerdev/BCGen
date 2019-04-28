@@ -34,7 +34,6 @@ subroutine cam_initial( dyn_in, dyn_out, NLFileName )
    dyn_state => get_dyn_state()
 
    call dyn_init(initial_file_get_id(), dyn_state, dyn_in, dyn_out, NLFileName )
-
    ! Initialize dynamics grid
    call initcom
 
@@ -49,6 +48,7 @@ subroutine cam_initial( dyn_in, dyn_out, NLFileName )
    call ref_pres_init()
 
    call initial_conds( dyn_in )
+
 
 end subroutine cam_initial
 

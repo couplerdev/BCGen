@@ -5,6 +5,7 @@ module comp_atm
                                pio_closefile, pio_write_darray, pio_def_var, pio_inq_varid, &
 	                       pio_noerr, pio_bcast_error, pio_internal_error, pio_seterrorhandling 
   use mct_mod
+  use mpi
   use esmf
   use global_var       , only: metaData
   use time_mod
@@ -12,7 +13,7 @@ module comp_atm
   !use seq_cdata_mod
   !use seq_infodata_mod
   !use seq_timemgr_mod
-
+  use shr_orb_mod ! MODI for debug
   use shr_kind_mod     , only: r8 => shr_kind_r8, cl=>shr_kind_cl
   use shr_file_mod     , only: shr_file_getunit, shr_file_freeunit, &
                                shr_file_setLogUnit, shr_file_setLogLevel, &
@@ -52,7 +53,7 @@ module comp_atm
   use runtime_opts     , only: read_namelist
   use phys_control     , only: cam_chempkg_is
   use scamMod          , only: single_column,scmlat,scmlon
-
+  use seq_drydep_mod   , only: seq_drydep_init, seq_drydep_read
 !
 ! !PUBLIC TYPES:
   implicit none
@@ -162,7 +163,9 @@ CONTAINS
     logical :: first_time = .true.
     character(len=SHR_KIND_CS) :: calendar  ! Calendar type
     character(len=SHR_KIND_CS) :: starttype ! infodata start type
+    character(len=SHR_KIND_CXX) :: drydep_fields
     integer :: lbnum
+    integer :: lchk ! MODI
     integer :: hdim1_d, hdim2_d ! dimensions of rectangular horizontal grid
                                 ! data structure, If 1D data structure, then
                                 ! hdim2_d == 1.
@@ -180,10 +183,10 @@ CONTAINS
     !call seq_cdata_setptrs(cdata_a, ID=ATMID, mpicom=mpicom_atm, &
     !     gsMap=gsMap_atm, dom=dom_a, infodata=infodata)
 
-    call compMeta_getInfo(compInfo, ID=ATMID, domain=dom_a, comm=mpicom_atm)
+    call compMeta_getInfo(compInfo, ID=ATMID, comm=mpicom_atm)
 
     gsmap_atm => compInfo%comp_gsmap
-  
+    dom_a => compInfo%domain 
     print *,'before', first_time
 
     if (first_time) then
@@ -239,7 +242,13 @@ CONTAINS
        ! Get nsrest from startup type methods
        !MODI
        !if (     trim(starttype) == trim(seq_infodata_start_type_start)) then
-          nsrest = 0
+
+       caseid = "testCase"
+       perpetual_run = .false.   ! using info_data default
+       perpetual_ymd = -999
+       nsrest = 0
+       aqua_planet = .false.
+       ideal_phys = .false.
        !else if (trim(starttype) == trim(seq_infodata_start_type_cont) ) then
        !   nsrest = 1
        !else if (trim(starttype) == trim(seq_infodata_start_type_brnch)) then
@@ -259,9 +268,11 @@ CONTAINS
        !
        ! Read namelist
        !
+       print *, '*************before atm_in read**************', start_ymd, stop_ymd
        filein = "atm_in" // trim(inst_suffix)
        call read_namelist(single_column_in=single_column, scmlat_in=scmlat, &
             scmlon_in=scmlon, nlfilename_in=filein)
+       print *, '****************end atm_in read************', start_ymd, stop_ymd
        !
        ! Initialize cam time manager
        !
@@ -273,6 +284,7 @@ CONTAINS
                              perpetual_run=perpetual_run,               &
                              perpetual_ymd=perpetual_ymd )
        end if
+       print *, 'time end here', start_ymd, stop_ymd
        !
        ! First phase of cam initialization 
        ! Initialize mpicom_atm, allocate cam_in and cam_out and determine 
@@ -282,9 +294,14 @@ CONTAINS
        ! Set defaults then override with user-specified input and initialize time manager
        ! Note that the following arguments are needed to cam_init for timemgr_restart only
        !
+       print *,'drydep initiated'
+       call seq_drydep_read(nlfilename="drv_flds_in",seq_drydep_fields=drydep_fields)
+       call seq_drydep_init()
        call cam_init( cam_out, cam_in, mpicom_atm, &
                       start_ymd, start_tod, ref_ymd, ref_tod, stop_ymd, stop_tod, &
                       perpetual_run, perpetual_ymd, calendar)
+       print *,'cam init end'
+
        !
        ! Check consistency of restart time information with input clock
        !
@@ -312,7 +329,7 @@ CONTAINS
        call mct_aVect_zero(x2a_a)
        
        !call mct_aVect_init(a2x_a_SNAP, rList=a2x_avg_flds, lsize=lsize)
-       !call mct_aVect_zero(a2x_a_SNAP)MODI
+       !call mct_aVect_zero(a2x_a_SNAP)
        
        !call mct_aVect_init(a2x_a_SUM , rList=a2x_avg_flds, lsize=lsize)
        !call mct_aVect_zero(a2x_a_SUM )
@@ -329,6 +346,7 @@ CONTAINS
        !
        !call seq_infodata_PutData(infodata, atm_prognostic=.true.)  ! MODI
        call get_horiz_grid_dim_d(hdim1_d, hdim2_d)
+       print *, 'dimension:', hdim1_d, hdim2_d
        !call seq_infodata_PutData(infodata, atm_nx=hdim1_d, atm_ny=hdim2_d)  ! MODI
 
        ! Set flag to indicate that CAM will provide carbon and dust deposition fluxes.
@@ -346,7 +364,7 @@ CONTAINS
        end if
        
        ! End redirection of share output to cam log
-       
+    
        call shr_file_setLogUnit (shrlogunit)
        call shr_file_setLogLevel(shrloglev)
 
@@ -363,6 +381,13 @@ CONTAINS
 
        ! Redirect share output to cam log
 
+       caseid = "testCase"
+       perpetual_run = .false.
+       perpetual_ymd = -999
+       nsrest = 0
+       aqua_planet = .false.
+       ideal_phys = .false.
+ 
        call shr_file_getLogUnit (shrlogunit)
        call shr_file_getLogLevel(shrloglev)
        call shr_file_setLogUnit (iulog)
@@ -370,6 +395,7 @@ CONTAINS
        ! MODI
        call time_clockGetInfo(EClock, curr_ymd=CurrentYMD, StepNo=StepNo, dtime=DTime_Sync)
        !call seq_timemgr_EClockGetData(EClock,curr_ymd=CurrentYMD, StepNo=StepNo, dtime=DTime_Sync )
+       StepNo = 0
        if (StepNo == 0) then
           call atm_import_mct( x2a_a, cam_in )
           call cam_run1 ( cam_in, cam_out ) 
@@ -377,9 +403,8 @@ CONTAINS
        else
           call atm_read_srfrest_mct( EClock,compInfo, x2a_a, a2x_a )
           call atm_import_mct( x2a_a, cam_in )
-          call cam_run1 ( cam_in, cam_out ) 
+          call cam_run1 ( cam_in, cam_out )
        end if
-
        ! Compute time of next radiation computation, like in run method for exact restart
 
 ! tcx was
@@ -399,7 +424,6 @@ CONTAINS
        else
           call shr_sys_abort('dtime must be less than or equal to atm_cpl_dt')
        end if
-       ! MODI
        !call seq_infodata_PutData( infodata, nextsw_cday=nextsw_cday ) 
 
        ! End redirection of share output to cam log
@@ -431,13 +455,13 @@ CONTAINS
     !
     use time_manager,    only: advance_timestep, get_curr_date, get_curr_calday, &
 	                       get_nstep, get_step_size
-!   use iop,             only: scam_use_iop_srf
+    !use iop,             only: scam_use_iop_srf
     use pmgrid,          only: plev, plevp
     use constituents,    only: pcnst
     use shr_sys_mod,     only: shr_sys_flush
     use chemistry,       only: chem_reset_fluxes
     use offline_driver,  only: offline_driver_dorun, offline_driver_end_of_data
-
+    use mpi
     ! 
     ! Arguments
     !
@@ -481,7 +505,7 @@ CONTAINS
     character(len=*), parameter :: subname="atm_run_mct"
     !-----------------------------------------------------------------------
     integer :: lbnum
-
+    write(*,*)'begin the run'
 #if (defined _MEMTRACE)
     if(masterproc) then
       lbnum=1
@@ -507,6 +531,10 @@ CONTAINS
     !call seq_infodata_GetData( infodata,                                           &
     !   orb_eccen=eccen, orb_mvelpp=mvelpp, orb_lambm0=lambm0, orb_obliqr=obliqr)
 
+    eccen =  SHR_ORB_UNDEF_REAL
+    mvelpp = SHR_ORB_UNDEF_REAL
+    lambm0 = SHR_ORB_UNDEF_REAL
+    obliqr = SHR_ORB_UNDEF_REAL
     nlend_sync = time_alarmIsOn(EClock, "alarm_stop_name")
     !nlend_sync = seq_timemgr_StopAlarmIsOn(EClock)
     rstwr_sync = time_alarmIsOn(EClock, "alarm_restart_name")
@@ -517,7 +545,8 @@ CONTAINS
     call t_startf ('CAM_import')
     call atm_import_mct( x2a_a, cam_in )
     call t_stopf  ('CAM_import')
-    
+   
+
     ! Cycle over all time steps in the atm coupling interval
     
     dosend = .false.
@@ -540,9 +569,10 @@ CONTAINS
           dosend  = time_clockDateInSync(EClock, ymd, tod)
           !dosend = (seq_timemgr_EClockDateInSync( EClock, ymd, tod))
        endif
-       
+       print *, 'dosend:', dosend, offline_driver_dorun, ymd, tod
        ! Determine if time to write cam restart and stop
-       
+       call MPI_Barrier(MPI_COMM_WORLD, ierr)
+      
        rstwr = .false.
        if (rstwr_sync .and. dosend) rstwr = .true.
        nlend = .false.
@@ -553,27 +583,29 @@ CONTAINS
        if (single_column) then
           call scam_use_iop_srf( cam_in )
        endif
-
        ! Run CAM (run2, run3, run4)
-       
+       print *,'begin run2'
+       call MPI_Barrier(MPI_COMM_WORLD, ierr)  
        call t_startf ('CAM_run2')
        call cam_run2( cam_out, cam_in )
        call t_stopf  ('CAM_run2')
-
+       call MPI_Barrier(MPI_COMM_WORLD, ierr)
+       print *, 'cam run2 end '
        call t_startf ('CAM_run3')
        call cam_run3( cam_out )
        call t_stopf  ('CAM_run3')
-       
+       print *, 'cam run3 end'     
        call t_startf ('CAM_run4')
        call cam_run4( cam_out, cam_in, rstwr, nlend, &
             yr_spec=yr_sync, mon_spec=mon_sync, day_spec=day_sync, sec_spec=tod_sync)
        call t_stopf  ('CAM_run4')
-       
+       print *,'cam run4 end', yr_sync, mon_sync, day_sync, tod_sync
        ! Advance cam time step 
        if( .not.offline_driver_dorun ) then
           call t_startf ('CAM_adv_timestep')
           call advance_timestep()
           call t_stopf  ('CAM_adv_timestep')
+          print *, 'time step advanced'
        endif
        
        ! Run cam radiation/clouds (run1)
@@ -581,7 +613,7 @@ CONTAINS
        call t_startf ('CAM_run1')
        call cam_run1 ( cam_in, cam_out ) 
        call t_stopf  ('CAM_run1')
-       
+       print *, 'cam run1 end' 
        ! Map output from cam to mct data structures
        
        call t_startf ('CAM_export')
@@ -593,23 +625,24 @@ CONTAINS
 ! don't accumulate on first coupling freq ts1 and ts2
 ! for consistency with ccsm3 when flxave is off
        nstep = get_nstep()
-       if (nstep <= 2) then
-          call mct_aVect_copy( a2x_a, a2x_a_SUM )
-          avg_count = 1
-       else
-          call mct_aVect_copy( a2x_a, a2x_a_SNAP )
-          call mct_aVect_accum( aVin=a2x_a_SNAP, aVout=a2x_a_SUM )
-          avg_count = avg_count + 1
-       endif
-       
+       print *, 'check nstep', nstep
+       !if (nstep <= 2) then
+       !   call mct_aVect_copy( a2x_a, a2x_a_SUM )
+       !   avg_count = 1
+       !else
+       !   call mct_aVect_copy( a2x_a, a2x_a_SNAP )
+       !   call mct_aVect_accum( aVin=a2x_a_SNAP, aVout=a2x_a_SUM )
+       !   avg_count = avg_count + 1
+       !endif
+       print *, 'atm one pass'
     end do
-
+    print *,'end cam loop'
     ! Finish accumulation of attribute vector and average and copy accumulation 
     ! field into output attribute vector
     
-    call mct_aVect_avg ( a2x_a_SUM, avg_count)
-    call mct_aVect_copy( a2x_a_SUM, a2x_a )
-    call mct_aVect_zero( a2x_a_SUM) 
+    !call mct_aVect_avg ( a2x_a_SUM, avg_count)
+    !call mct_aVect_copy( a2x_a_SUM, a2x_a )
+    !call mct_aVect_zero( a2x_a_SUM) 
     avg_count = 0                   
     
     ! Get time of next radiation calculation - albedos will need to be 
@@ -803,7 +836,10 @@ end subroutine atm_final_mct
           cam_in(c)%lhf(i)       = -x2a_a%rAttr(index_x2a_Faxx_lat, ig)     
           cam_in(c)%shf(i)       = -x2a_a%rAttr(index_x2a_Faxx_sen, ig)     
           cam_in(c)%lwup(i)      = -x2a_a%rAttr(index_x2a_Faxx_lwup,ig)    
-          cam_in(c)%cflx(i,1)    = -x2a_a%rAttr(index_x2a_Faxx_evap,ig)                
+          cam_in(c)%cflx(i,1)    = -x2a_a%rAttr(index_x2a_Faxx_evap,ig)
+          if(i==15 .and. c==208)then
+              print *,'in atm_import', cam_in(c)%cflx(i,1), x2a_a%rAttr(index_x2a_Faxx_evap,ig), index_x2a_Faxx_evap, ig
+          end if                
           cam_in(c)%asdir(i)     =  x2a_a%rAttr(index_x2a_Sx_avsdr, ig)  
           cam_in(c)%aldir(i)     =  x2a_a%rAttr(index_x2a_Sx_anidr, ig)  
           cam_in(c)%asdif(i)     =  x2a_a%rAttr(index_x2a_Sx_avsdf, ig)  
@@ -852,8 +888,19 @@ end subroutine atm_final_mct
 	    cam_in(c)%cflx(i,dust_ndx +2)  = -x2a_a%rAttr(index_x2a_Fall_flxdst3, ig)
 	    cam_in(c)%cflx(i,dust_ndx +3)  = -x2a_a%rAttr(index_x2a_Fall_flxdst4, ig)
 #endif
+          if(i==15 .and. c==208)then
+              print *,'init cam_in', cam_in(c)%cflx(i, 1),dust_ndx, spc_ndx(1), spc_ndx(2),&
+              -x2a_a%rAttr(index_x2a_Fall_flxdst1,ig),&
+              -x2a_a%rAttr(index_x2a_Fall_flxdst2,ig),&
+              -x2a_a%rAttr(index_x2a_Fall_flxdst3,ig),&
+              -x2a_a%rAttr(index_x2a_Fall_flxdst4,ig)
+          end if
+
           endif
 
+          if(c==208 .and. i==15)then
+              print *, 'chck c', cam_in(c)%cflx(i,1)
+          end if
           ! dry dep velocities
           if ( index_x2a_Sl_ddvel/=0 .and. n_drydep>0 ) then
              cam_in(c)%depvel(i,:n_drydep) = &
@@ -885,6 +932,12 @@ end subroutine atm_final_mct
 
     ! Get total co2 flux from components,
     ! Note - co2_transport determines if cam_in(c)%cflx(i,c_i(1:4)) is allocated
+
+    do c = begchunk, endchunk
+        if(c==208)then
+        print *,'check cflx', cam_in(c)%cflx(15,1), c_i
+        end if
+    end do
 
     if (co2_transport()) then
 
@@ -1053,7 +1106,9 @@ end subroutine atm_final_mct
     !
     ! Initialize mct atm domain
     !
-    call mct_gGrid_init( GGrid=dom_a, CoordChars=trim(metaData%flds_dom_coord), OtherChars=trim(metaData%flds_dom), lsize=lsize )
+    call mct_gGrid_init( GGrid=dom_a, CoordChars=trim(metaData%flds_dom_coord), OtherChars=trim(metaData%flds_dom_other), lsize=lsize )
+
+    print *,'nRattr:',mct_aVect_nRattr(dom_a%data)
     !
     ! Allocate memory
     !
@@ -1123,6 +1178,8 @@ end subroutine atm_final_mct
     call mct_gGrid_importRAttr(dom_a,"mask"   ,data,lsize) 
     deallocate(data)
 
+    print *,'data domain:', mct_aVect_nRattr(dom_a%data)
+
   end subroutine atm_domain_mct
 
 !===========================================================================================
@@ -1164,20 +1221,23 @@ end subroutine atm_final_mct
 
     call time_clockGetInfo(EClock, curr_yr=yr_spec, curr_mon=mon_spec, &
          curr_day=day_spec, curr_tod=sec_spec)
+    print *,'rest:1'
     !call seq_timemgr_EClockGetData( EClock, curr_yr=yr_spec,curr_mon=mon_spec, &
     !     curr_day=day_spec, curr_tod=sec_spec ) 
     fname_srf_cam = interpret_filename_spec( rsfilename_spec_cam, case=get_restcase(), &
          yr_spec=yr_spec, mon_spec=mon_spec, day_spec=day_spec, sec_spec= sec_spec )
+    print *,"up" 
     pname_srf_cam = trim(get_restartdir() )//fname_srf_cam
+    print *,'rest:2'
     call getfil(pname_srf_cam, fname_srf_cam)
-    
+    print *, 'rest:3'
     call cam_pio_openfile(File, fname_srf_cam, 0)
     call mct_gsmap_OrderedPoints(compInfo%comp_gsmap, iam, Dof)
     lnx = mct_gsmap_gsize(compInfo%comp_gsmap)
     call pio_initdecomp(pio_subsystem, pio_double, (/lnx/), dof, iodesc)
     allocate(tmp(size(dof)))
     deallocate(dof)
-    
+    print *, 'rest:4'
     nf_x2a = mct_aVect_nRattr(x2a_a)
 
     do k=1,nf_x2a
@@ -1199,7 +1259,7 @@ end subroutine atm_final_mct
        end if
        call pio_seterrorhandling(File, pio_internal_error)
     end do
-
+    print *,'rest:5'
     nf_a2x = mct_aVect_nRattr(a2x_a)
 
     do k=1,nf_a2x
@@ -1211,7 +1271,7 @@ end subroutine atm_final_mct
        call pio_read_darray(File, varid, iodesc, tmp, rcode)
        a2x_a%rattr(k,:) = tmp(:)
     end do
-
+    print *,'rest:6'
     call pio_freedecomp(File,iodesc)
     call pio_closefile(File)
     deallocate(tmp)

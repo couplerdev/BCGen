@@ -1,0 +1,392 @@
+./chemistry/bulk_aero/dust_intr.F90:          call wetdepa_v1( state%t, state%pmid, state%q, state%pdel,  &
+./chemistry/bulk_aero/dust_intr.F90:    rho(:ncol,:)=  state%pmid(:ncol,:)/(rair*state%t(:ncol,:))
+./chemistry/bulk_aero/dust_intr.F90:         ustar,ram1in,ram1,state%t(:,pver),state%pmid(:,pver),&
+./chemistry/bulk_aero/dust_intr.F90:    call DustDryDep(ncol,state%t(:,:),state%pmid(:,:),ram1,fv,vlc_dry,vlc_trb,vlc_grv,landfrac)
+./chemistry/bulk_aero/dust_intr.F90:               ncol,             dt,       state%pint(:,:), state%pmid, state%pdel, state%t , &
+./chemistry/bulk_aero/dust_intr.F90:          call d3ddflux(ncol, vlc_dry(:,:,m), state%q(:,:,mm),state%pmid,state%pdel, tvs,sflx,ptend%q(:,:,mm),dt)
+./chemistry/bulk_aero/progseasalts_intr.F90:          call wetdepa_v1( state%t, state%pmid, state%q, state%pdel,  &
+./chemistry/bulk_aero/progseasalts_intr.F90:    rho(:ncol,:)=  state%pmid(:ncol,:)/(rair*state%t(:ncol,:))
+./chemistry/bulk_aero/progseasalts_intr.F90:         ustar,ram1in,ram1,state%t(:,pver),state%pmid(:,pver),&
+./chemistry/bulk_aero/progseasalts_intr.F90:    call ProgseasaltsDryDep(ncol,state%t(:,:),state%pmid(:,:),ram1,fv,vlc_dry,vlc_trb,vlc_grv,state)
+./chemistry/bulk_aero/progseasalts_intr.F90:               ncol,             dt,       state%pint(:,:), state%pmid, state%pdel, state%t , &
+./chemistry/bulk_aero/progseasalts_intr.F90:          call d3ddflux(ncol, vlc_dry(:,:,m), state%q(:,:,mm),state%pmid,state%pdel, tvs,sflx,ptend%q(:,:,mm),dt)
+./chemistry/bulk_aero/progseasalts_intr.F90:    call qsat(state%t(:ncol,:), state%pmid(:ncol,:), &
+./chemistry/bulk_aero/.svn/text-base/dust_intr.F90.svn-base:          call wetdepa_v1( state%t, state%pmid, state%q, state%pdel,  &
+./chemistry/bulk_aero/.svn/text-base/dust_intr.F90.svn-base:    rho(:ncol,:)=  state%pmid(:ncol,:)/(rair*state%t(:ncol,:))
+./chemistry/bulk_aero/.svn/text-base/dust_intr.F90.svn-base:         ustar,ram1in,ram1,state%t(:,pver),state%pmid(:,pver),&
+./chemistry/bulk_aero/.svn/text-base/dust_intr.F90.svn-base:    call DustDryDep(ncol,state%t(:,:),state%pmid(:,:),ram1,fv,vlc_dry,vlc_trb,vlc_grv,landfrac)
+./chemistry/bulk_aero/.svn/text-base/dust_intr.F90.svn-base:               ncol,             dt,       state%pint(:,:), state%pmid, state%pdel, state%t , &
+./chemistry/bulk_aero/.svn/text-base/dust_intr.F90.svn-base:          call d3ddflux(ncol, vlc_dry(:,:,m), state%q(:,:,mm),state%pmid,state%pdel, tvs,sflx,ptend%q(:,:,mm),dt)
+./chemistry/bulk_aero/.svn/text-base/aerosol_intr.F90.svn-base:      state%t, state%pmid, state%pdel, cmfdqr, evapc, &
+./chemistry/bulk_aero/.svn/text-base/progseasalts_intr.F90.svn-base:          call wetdepa_v1( state%t, state%pmid, state%q, state%pdel,  &
+./chemistry/bulk_aero/.svn/text-base/progseasalts_intr.F90.svn-base:    rho(:ncol,:)=  state%pmid(:ncol,:)/(rair*state%t(:ncol,:))
+./chemistry/bulk_aero/.svn/text-base/progseasalts_intr.F90.svn-base:         ustar,ram1in,ram1,state%t(:,pver),state%pmid(:,pver),&
+./chemistry/bulk_aero/.svn/text-base/progseasalts_intr.F90.svn-base:    call ProgseasaltsDryDep(ncol,state%t(:,:),state%pmid(:,:),ram1,fv,vlc_dry,vlc_trb,vlc_grv,state)
+./chemistry/bulk_aero/.svn/text-base/progseasalts_intr.F90.svn-base:               ncol,             dt,       state%pint(:,:), state%pmid, state%pdel, state%t , &
+./chemistry/bulk_aero/.svn/text-base/progseasalts_intr.F90.svn-base:          call d3ddflux(ncol, vlc_dry(:,:,m), state%q(:,:,mm),state%pmid,state%pdel, tvs,sflx,ptend%q(:,:,mm),dt)
+./chemistry/bulk_aero/.svn/text-base/progseasalts_intr.F90.svn-base:    call qsat(state%t(:ncol,:), state%pmid(:ncol,:), &
+./chemistry/bulk_aero/aerosol_intr.F90:      state%t, state%pmid, state%pdel, cmfdqr, evapc, &
+./chemistry/utils/modal_aero_wateruptake.F90:   pmid   => state%pmid
+./chemistry/utils/modal_aero_calcsize.F90:   pmid => state%pmid
+./chemistry/utils/.svn/text-base/modal_aero_wateruptake.F90.svn-base:   pmid   => state%pmid
+./chemistry/utils/.svn/text-base/modal_aero_calcsize.F90.svn-base:   pmid => state%pmid
+./chemistry/mozart/mz_aerosols_intr.F90:             call wetdepa_v2( state%t, state%pmid, state%q, state%pdel,  &
+./chemistry/mozart/mz_aerosols_intr.F90:             call wetdepa_v2( state%t, state%pmid, state%q, state%pdel,  &
+./chemistry/mozart/mz_aerosols_intr.F90:             call wetdepa_v1( state%t, state%pmid, state%q, state%pdel,  &
+./chemistry/mozart/mz_aerosols_intr.F90:       xhnm(:ncol,:) = 1.e-6_r8 * state%pmiddry(:ncol,:) / (boltz*state%t(:ncol,:))
+./chemistry/mozart/mz_aerosols_intr.F90:       call cldychmini( state%t,  state%pmid, totcond, rainmr, cldn, &
+./chemistry/mozart/mz_aerosols_intr.F90:       call sulf_chemdr( state%t, state%pmid, totcond, rainmr, cldn, cldv, &
+./chemistry/mozart/mz_aerosols_intr.F90:    rho(:ncol,:)=  state%pmid(:ncol,:)/(rair*state%t(:ncol,:))
+./chemistry/mozart/mz_aerosols_intr.F90:         ustar,ram1in,ram1,state%t(:,pver),state%pmid(:,pver),&
+./chemistry/mozart/mz_aerosols_intr.F90:    call modal_aero_depvel_part( ncol,state%t(:,:), state%pmid(:,:), ram1, fv,  &
+./chemistry/mozart/mz_aerosols_intr.F90:    call modal_aero_depvel_part( ncol,state%t(:,:), state%pmid(:,:), ram1, fv,  &
+./chemistry/mozart/mz_aerosols_intr.F90:             call modal_aero_depvel_part( ncol, state%t(:,:), state%pmid(:,:), ram1, fv,  & 
+./chemistry/mozart/mz_aerosols_intr.F90:             call modal_aero_depvel_part( ncol, state%t(:,:), state%pmid(:,:), ram1, fv,  & 
+./chemistry/mozart/mz_aerosols_intr.F90:                     ncol,             dt,       state%pint(:,:), state%pmid, state%pdel, state%t , &
+./chemistry/mozart/mz_aerosols_intr.F90:                call d3ddflux( ncol, vlc_dry(:,:,jvlc), state%q(:,:,mm), state%pmid, &
+./chemistry/mozart/mz_aerosols_intr.F90:                     ncol,             dt,       state%pint(:,:), state%pmid, state%pdel, state%t , &
+./chemistry/mozart/mz_aerosols_intr.F90:                call d3ddflux( ncol, vlc_dry(:,:,jvlc), qaerwat(:,:,mm), state%pmid, &
+./chemistry/mozart/mz_aerosols_intr.F90:                     ncol,             dt,       state%pint(:,:), state%pmid, state%pdel, state%t , &
+./chemistry/mozart/mz_aerosols_intr.F90:                call d3ddflux( ncol, vlc_dry(:,:,jvlc), fldcw(:,:), state%pmid, &
+./chemistry/mozart/chemistry.F90:    call neu_wetdep_tend(lchnk,ncol,state%q,state%pmid,state%pdel,state%zi,state%t,dt, &
+./chemistry/mozart/chemistry.F90:                          state%t, state%pmid, state%pdel, state%pint, &
+./chemistry/mozart/.svn/text-base/mo_waccm_hrates.F90.svn-base:      call setinv( invariants, state%t, h2ovmr, vmr, state%pmid, ncol, lchnk, pbuf )
+./chemistry/mozart/.svn/text-base/mo_waccm_hrates.F90.svn-base:                          h2ovmr, state%pmid, invariants(:,:,indexm), ncol, kbot_hrates )
+./chemistry/mozart/.svn/text-base/mo_waccm_hrates.F90.svn-base:            parg(:)     = Pa2mb*state%pmid(i,:)
+./chemistry/mozart/.svn/text-base/mo_waccm_hrates.F90.svn-base:            call heatnirco2( co2_line, scco2i, state%pmid(i,:kbot_hrates), co2_hrate_col, kbot_hrates, &
+./chemistry/mozart/.svn/text-base/mo_waccm_hrates.F90.svn-base:                   aur_hrate, cpair, state%pmid, lchnk, calday, &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:             call wetdepa_v2( state%t, state%pmid, state%q, state%pdel,  &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:             call wetdepa_v2( state%t, state%pmid, state%q, state%pdel,  &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:             call wetdepa_v1( state%t, state%pmid, state%q, state%pdel,  &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:       xhnm(:ncol,:) = 1.e-6_r8 * state%pmiddry(:ncol,:) / (boltz*state%t(:ncol,:))
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:       call cldychmini( state%t,  state%pmid, totcond, rainmr, cldn, &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:       call sulf_chemdr( state%t, state%pmid, totcond, rainmr, cldn, cldv, &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:    rho(:ncol,:)=  state%pmid(:ncol,:)/(rair*state%t(:ncol,:))
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:         ustar,ram1in,ram1,state%t(:,pver),state%pmid(:,pver),&
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:    call modal_aero_depvel_part( ncol,state%t(:,:), state%pmid(:,:), ram1, fv,  &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:    call modal_aero_depvel_part( ncol,state%t(:,:), state%pmid(:,:), ram1, fv,  &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:             call modal_aero_depvel_part( ncol, state%t(:,:), state%pmid(:,:), ram1, fv,  & 
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:             call modal_aero_depvel_part( ncol, state%t(:,:), state%pmid(:,:), ram1, fv,  & 
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:                     ncol,             dt,       state%pint(:,:), state%pmid, state%pdel, state%t , &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:                call d3ddflux( ncol, vlc_dry(:,:,jvlc), state%q(:,:,mm), state%pmid, &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:                     ncol,             dt,       state%pint(:,:), state%pmid, state%pdel, state%t , &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:                call d3ddflux( ncol, vlc_dry(:,:,jvlc), qaerwat(:,:,mm), state%pmid, &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:                     ncol,             dt,       state%pint(:,:), state%pmid, state%pdel, state%t , &
+./chemistry/mozart/.svn/text-base/mz_aerosols_intr.F90.svn-base:                call d3ddflux( ncol, vlc_dry(:,:,jvlc), fldcw(:,:), state%pmid, &
+./chemistry/mozart/.svn/text-base/chemistry.F90.svn-base:    call neu_wetdep_tend(lchnk,ncol,state%q,state%pmid,state%pdel,state%zi,state%t,dt, &
+./chemistry/mozart/.svn/text-base/chemistry.F90.svn-base:                          state%t, state%pmid, state%pdel, state%pint, &
+./chemistry/mozart/mo_waccm_hrates.F90:      call setinv( invariants, state%t, h2ovmr, vmr, state%pmid, ncol, lchnk, pbuf )
+./chemistry/mozart/mo_waccm_hrates.F90:                          h2ovmr, state%pmid, invariants(:,:,indexm), ncol, kbot_hrates )
+./chemistry/mozart/mo_waccm_hrates.F90:            parg(:)     = Pa2mb*state%pmid(i,:)
+./chemistry/mozart/mo_waccm_hrates.F90:            call heatnirco2( co2_line, scco2i, state%pmid(i,:kbot_hrates), co2_hrate_col, kbot_hrates, &
+./chemistry/mozart/mo_waccm_hrates.F90:                   aur_hrate, cpair, state%pmid, lchnk, calday, &
+./control/camsrfexch.F90:      cam_out%pbot(i)  = state%pmid(i,pver)
+./control/.svn/text-base/camsrfexch.F90.svn-base:      cam_out%pbot(i)  = state%pmid(i,pver)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 100000._r8, z3, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 70000._r8, z3, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 50000._r8, z3, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 30000._r8, z3, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 20000._r8, z3, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 10000._r8, z3, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid,  5000._r8, z3, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%omega, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 50000._r8, state%omega, p_surf)
+./physics/cam/cam_diagnostics.F90:          call qsat(state%t(:ncol,:), state%pmid(:ncol,:), &
+./physics/cam/cam_diagnostics.F90:          call qsat_water (state%t(:ncol,:), state%pmid(:ncol,:), &
+./physics/cam/cam_diagnostics.F90:       call cpslec (ncol, state%pmid, state%phis, state%ps, state%t,psl_tmp, gravit, rair) 
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%t, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 50000._r8, state%t, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 30000._r8, state%t, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 20000._r8, state%t, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%q(1,1,1), p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 20000._r8, state%q(1,1,1), p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%u, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 25000._r8, state%u, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 20000._r8, state%u, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid,  1000._r8, state%u, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%v, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 25000._r8, state%v, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 20000._r8, state%v, p_surf)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 100000._r8, state%t, p_surf_t1)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 92500._r8, state%t, p_surf_t2)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 100000._r8, state%q(1,1,1), p_surf_q1)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 92500._r8, state%q(1,1,1), p_surf_q2)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%t, p_surf_t2)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%q(1,1,1), p_surf_q2)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 70000._r8, state%t, p_surf_t2)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 70000._r8, state%q(1,1,1), p_surf_q2)
+./physics/cam/cam_diagnostics.F90:       call vertinterp(ncol, pcols, pver, state%pmid, 1000._r8, state%t, p_surf)
+./physics/cam/radiation_data.F90:    call outfld(pmid_fldn,   state%pmid,            pcols, lchnk   )
+./physics/cam/tropopause.F90:             IF (pstate%pmid(i,k) < min_stobie_pressure) cycle
+./physics/cam/tropopause.F90:             shybrid_temp = ALPHA * pstate%t(i,k) - Log10(pstate%pmid(i,k))
+./physics/cam/tropopause.F90:             IF (pstate%pmid(i,k) < max_Linoz_pressure .AND. .NOT. ltrop_linoz_set) THEN
+./physics/cam/tropopause.F90:             tropP(i) = pstate%pmid(i,tropLev(i))
+./physics/cam/tropopause.F90:        stobie(:) = ALPHA * pstate%t(i,:) - log10(pstate%pmid(i, :))
+./physics/cam/tropopause.F90:          if (pstate%pmid(i, k) <= 4000._r8) then
+./physics/cam/tropopause.F90:          if (pstate%pmid(i, k) >= 55000._r8) then
+./physics/cam/tropopause.F90:            tP    = pstate%pmid(i, k)
+./physics/cam/tropopause.F90:        call twmo(pver, pstate%t(i, :), pstate%pmid(i, :), plimu, pliml, gamma, tP)
+./physics/cam/tropopause.F90:                tP = pstate%pmid(i, k)
+./physics/cam/tropopause.F90:    if (tropP == pstate%pmid(icol, tropLev)) then
+./physics/cam/tropopause.F90:    else if (tropP < pstate%pmid(icol, tropLev)) then
+./physics/cam/tropopause.F90:          (log(pstate%pmid(icol, tropLev)) - log(pstate%pmid(icol, tropLev - 1)))
+./physics/cam/tropopause.F90:        tropT = pstate%t(icol, tropLev) + (log(tropP) - log(pstate%pmid(icol, tropLev))) * dTdlogP
+./physics/cam/tropopause.F90:          (log(pstate%pmid(icol, tropLev + 1)) - log(pstate%pmid(icol, tropLev)))
+./physics/cam/tropopause.F90:        tropT = pstate%t(icol, tropLev) + (log(tropP) - log(pstate%pmid(icol, tropLev))) * dTdlogP
+./physics/cam/tropopause.F90:    if (tropP == pstate%pmid(icol, tropLev)) then
+./physics/cam/tropopause.F90:    else if (tropP < pstate%pmid(icol, tropLev)) then
+./physics/cam/tropopause.F90:        (log(pstate%pmid(icol, tropLev)) - log(pstate%pint(icol, tropLev)))
+./physics/cam/tropopause.F90:      tropZ = pstate%zm(icol, tropLev) + (log(tropP) - log(pstate%pmid(icol, tropLev))) * dZdlogP
+./physics/cam/tropopause.F90:        (log(pstate%pmid(icol, tropLev)) - log(pstate%pint(icol, tropLev+1)))
+./physics/cam/tropopause.F90:      tropZ = pstate%zm(icol, tropLev) + (log(tropP) - log(pstate%pmid(icol, tropLev))) * dZdlogP
+./physics/cam/ndrop.F90:   pmid     => state%pmid
+./physics/cam/modal_aer_opt.F90:   air_density(:ncol,:) = state%pmid(:ncol,:)/(rair*state%t(:ncol,:))
+./physics/cam/microp_aero.F90:   pmid  => state%pmid
+./physics/cam/cam3_ozone_data.F90:                                 1, ozonedata%pin, state%pmid, ozmixin , q)
+./physics/cam/radiation.F90:       call radinp(ncol, state%pmid, state%pint, pbr, pnm, eccf)
+./physics/cam/radiation.F90:       call cloud_cover_diags_out(lchnk, ncol, cld, state%pmid, nmxrgn, pmxrgn )
+./physics/cam/radiation.F90:          ftem(i,k) = (qrs(i,k) + qrl(i,k))/cpair * (1.e5_r8/state%pmid(i,k))**cappa
+./physics/cam/aer_rad_props.F90:   call qsat(state%t(1:ncol,1:pver), state%pmid(1:ncol,1:pver), &
+./physics/cam/aer_rad_props.F90:      call qsat(state%t(1:ncol,1:pver), state%pmid(1:ncol,1:pver), &
+./physics/cam/cloud_diagnostics.F90:       call cloud_cover_diags_out(lchnk, ncol, cld, state%pmid, nmxrgn, pmxrgn )
+./physics/cam/.svn/text-base/zm_conv_intr.F90.svn-base:                    ptend_loc%s    ,state%pmid     ,state%pint    ,state%pdel     , &
+./physics/cam/.svn/text-base/zm_conv_intr.F90.svn-base:          pcont(ideep(i,lchnk)) = state%pmid(ideep(i,lchnk),jt(i,lchnk))  ! gathered array (or jctop ungathered)
+./physics/cam/.svn/text-base/zm_conv_intr.F90.svn-base:          pconb(ideep(i,lchnk)) = state%pmid(ideep(i,lchnk),maxg(i,lchnk))! gathered array
+./physics/cam/.svn/text-base/aer_rad_props.F90.svn-base:   call qsat(state%t(1:ncol,1:pver), state%pmid(1:ncol,1:pver), &
+./physics/cam/.svn/text-base/aer_rad_props.F90.svn-base:      call qsat(state%t(1:ncol,1:pver), state%pmid(1:ncol,1:pver), &
+./physics/cam/.svn/text-base/microp_aero.F90.svn-base:   pmid  => state%pmid
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:            state%lnpint, state%lnpmid, state%pint  , state%pmid  , state%pdel  , state%rpdel  , &
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:    call shr_assert_in_domain(state%pmid(:ncol,:),      is_nan=.false., &
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:         varname="state%pmid",      msg=msg)
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:    call shr_assert_in_domain(state%pmiddry(:ncol,:),   is_nan=.false., &
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:         varname="state%pmiddry",   msg=msg)
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:    call shr_assert_in_domain(state%pmid(:ncol,:),      lt=posinf_r8, gt=0._r8, &
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:         varname="state%pmid",      msg=msg)
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:    call shr_assert_in_domain(state%pmiddry(:ncol,:),   lt=posinf_r8, gt=0._r8, &
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:         varname="state%pmiddry",   msg=msg)
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:            state%pmid  , state%pdel    , state%rpdel,  &
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:     state%pmiddry(:ncol,k) = (state%pintdry(:ncol,k+1)+state%pintdry(:ncol,k))/2._r8
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:  state%lnpmiddry(:ncol,:) = log(state%pmiddry(:ncol,:))
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:  allocate(state%pmid(psetcols,pver), stat=ierr)
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:  if ( ierr /= 0 ) call endrun('physics_state_alloc error: allocation error for state%pmid')
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:  allocate(state%pmiddry(psetcols,pver), stat=ierr)
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:  if ( ierr /= 0 ) call endrun('physics_state_alloc error: allocation error for state%pmiddry')
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:  state%pmid(:,:) = inf
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:  state%pmiddry(:,:) = inf
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:  deallocate(state%pmid, stat=ierr)
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:  if ( ierr /= 0 ) call endrun('physics_state_dealloc error: deallocation error for state%pmid')
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:  deallocate(state%pmiddry, stat=ierr)
+./physics/cam/.svn/text-base/physics_types.F90.svn-base:  if ( ierr /= 0 ) call endrun('physics_state_dealloc error: deallocation error for state%pmiddry')
+./physics/cam/.svn/text-base/modal_aer_opt.F90.svn-base:   air_density(:ncol,:) = state%pmid(:ncol,:)/(rair*state%t(:ncol,:))
+./physics/cam/.svn/text-base/cam3_ozone_data.F90.svn-base:                                 1, ozonedata%pin, state%pmid, ozmixin , q)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 100000._r8, z3, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 70000._r8, z3, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 50000._r8, z3, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 30000._r8, z3, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 20000._r8, z3, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 10000._r8, z3, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid,  5000._r8, z3, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%omega, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 50000._r8, state%omega, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:          call qsat(state%t(:ncol,:), state%pmid(:ncol,:), &
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:          call qsat_water (state%t(:ncol,:), state%pmid(:ncol,:), &
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call cpslec (ncol, state%pmid, state%phis, state%ps, state%t,psl_tmp, gravit, rair) 
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%t, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 50000._r8, state%t, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 30000._r8, state%t, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 20000._r8, state%t, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%q(1,1,1), p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 20000._r8, state%q(1,1,1), p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%u, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 25000._r8, state%u, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 20000._r8, state%u, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid,  1000._r8, state%u, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%v, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 25000._r8, state%v, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 20000._r8, state%v, p_surf)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 100000._r8, state%t, p_surf_t1)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 92500._r8, state%t, p_surf_t2)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 100000._r8, state%q(1,1,1), p_surf_q1)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 92500._r8, state%q(1,1,1), p_surf_q2)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%t, p_surf_t2)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 85000._r8, state%q(1,1,1), p_surf_q2)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 70000._r8, state%t, p_surf_t2)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 70000._r8, state%q(1,1,1), p_surf_q2)
+./physics/cam/.svn/text-base/cam_diagnostics.F90.svn-base:       call vertinterp(ncol, pcols, pver, state%pmid, 1000._r8, state%t, p_surf)
+./physics/cam/.svn/text-base/cospsimulator_intr.F90.svn-base:   !state%pmid  ! ph - p_in_half_levels (Pa)
+./physics/cam/.svn/text-base/cospsimulator_intr.F90.svn-base:   call qsat_water(state%t(1:ncol,1:pver), state%pmid(1:ncol,1:pver), &
+./physics/cam/.svn/text-base/cospsimulator_intr.F90.svn-base:   gbx%p = state%pmid(1:ncol,pver:1:-1) 			! Pressure at full model levels [Pa] (at model levels per yuying)
+./physics/cam/.svn/text-base/cospsimulator_intr.F90.svn-base:call CmpDayNite(state%pmid, pmid_day, 	Nday, IdxDay, Nno, IdxNo, 1, pcols, 1, pver)
+./physics/cam/.svn/text-base/cospsimulator_intr.F90.svn-base:call CmpDayNite(state%pmid, pmid_atrain,         Natrain, IdxAtrain, Nno, IdxNo, 1, pcols, 1, pver)
+./physics/cam/.svn/text-base/cospsimulator_intr.F90.svn-base:  pmid_atrain=state%pmid
+./physics/cam/.svn/text-base/radiation.F90.svn-base:       call radinp(ncol, state%pmid, state%pint, pbr, pnm, eccf)
+./physics/cam/.svn/text-base/radiation.F90.svn-base:       call cloud_cover_diags_out(lchnk, ncol, cld, state%pmid, nmxrgn, pmxrgn )
+./physics/cam/.svn/text-base/radiation.F90.svn-base:          ftem(i,k) = (qrs(i,k) + qrl(i,k))/cpair * (1.e5_r8/state%pmid(i,k))**cappa
+./physics/cam/.svn/text-base/radiation_data.F90.svn-base:    call outfld(pmid_fldn,   state%pmid,            pcols, lchnk   )
+./physics/cam/.svn/text-base/vertical_diffusion.F90.svn-base:                          state%u    , state%v  , state%t , state%pmid , & 
+./physics/cam/.svn/text-base/vertical_diffusion.F90.svn-base:                               state%zm , state%zi    , state%pmid , state%pint , state%u        , state%v , &
+./physics/cam/.svn/text-base/vertical_diffusion.F90.svn-base:                             state%pmid, state%u  , state%v , tautotx  , tautoty , &
+./physics/cam/.svn/text-base/vertical_diffusion.F90.svn-base:    call qsat(state%t(:ncol,:), state%pmid(:ncol,:), &
+./physics/cam/.svn/text-base/vertical_diffusion.F90.svn-base:                            pcols         , pver               , pcnst        , ncol          , state%pmid    , &
+./physics/cam/.svn/text-base/vertical_diffusion.F90.svn-base:                            pcols         , pver               , pcnst        , ncol          , state%pmiddry , &
+./physics/cam/.svn/text-base/vertical_diffusion.F90.svn-base:    call qsat(t_aftPBL(:ncol,:pver), state%pmid(:ncol,:pver), &
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:             IF (pstate%pmid(i,k) < min_stobie_pressure) cycle
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:             shybrid_temp = ALPHA * pstate%t(i,k) - Log10(pstate%pmid(i,k))
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:             IF (pstate%pmid(i,k) < max_Linoz_pressure .AND. .NOT. ltrop_linoz_set) THEN
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:             tropP(i) = pstate%pmid(i,tropLev(i))
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:        stobie(:) = ALPHA * pstate%t(i,:) - log10(pstate%pmid(i, :))
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:          if (pstate%pmid(i, k) <= 4000._r8) then
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:          if (pstate%pmid(i, k) >= 55000._r8) then
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:            tP    = pstate%pmid(i, k)
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:        call twmo(pver, pstate%t(i, :), pstate%pmid(i, :), plimu, pliml, gamma, tP)
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:                tP = pstate%pmid(i, k)
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:    if (tropP == pstate%pmid(icol, tropLev)) then
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:    else if (tropP < pstate%pmid(icol, tropLev)) then
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:          (log(pstate%pmid(icol, tropLev)) - log(pstate%pmid(icol, tropLev - 1)))
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:        tropT = pstate%t(icol, tropLev) + (log(tropP) - log(pstate%pmid(icol, tropLev))) * dTdlogP
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:          (log(pstate%pmid(icol, tropLev + 1)) - log(pstate%pmid(icol, tropLev)))
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:        tropT = pstate%t(icol, tropLev) + (log(tropP) - log(pstate%pmid(icol, tropLev))) * dTdlogP
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:    if (tropP == pstate%pmid(icol, tropLev)) then
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:    else if (tropP < pstate%pmid(icol, tropLev)) then
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:        (log(pstate%pmid(icol, tropLev)) - log(pstate%pint(icol, tropLev)))
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:      tropZ = pstate%zm(icol, tropLev) + (log(tropP) - log(pstate%pmid(icol, tropLev))) * dZdlogP
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:        (log(pstate%pmid(icol, tropLev)) - log(pstate%pint(icol, tropLev+1)))
+./physics/cam/.svn/text-base/tropopause.F90.svn-base:      tropZ = pstate%zm(icol, tropLev) + (log(tropP) - log(pstate%pmid(icol, tropLev))) * dZdlogP
+./physics/cam/.svn/text-base/tphysidl.F90.svn-base:         pmid(i,k) = state%pmid(i,k)
+./physics/cam/.svn/text-base/cloud_diagnostics.F90.svn-base:       call cloud_cover_diags_out(lchnk, ncol, cld, state%pmid, nmxrgn, pmxrgn )
+./physics/cam/.svn/text-base/micro_mg_cam.F90.svn-base:         ni, state%pmid, state%pdel, ast, alst_mic,         &
+./physics/cam/.svn/text-base/micro_mg_cam.F90.svn-base:         state%pmid,         state%pdel,         state%pint,         &
+./physics/cam/.svn/text-base/clubb_intr.F90.svn-base:      call calc_ustar( state%t(i,pver), state%pmid(i,pver), cam_in%wsx(i), cam_in%wsy(i), &
+./physics/cam/.svn/text-base/ndrop.F90.svn-base:   pmid     => state%pmid
+./physics/cam/.svn/text-base/convect_shallow.F90.svn-base:                   nstep        ,  ztodt        ,  state%pmid ,  state%pdel  ,                  &
+./physics/cam/.svn/text-base/convect_shallow.F90.svn-base:                   state%pmiddry,  state%pdeldry,  state%rpdeldry )
+./physics/cam/.svn/text-base/convect_shallow.F90.svn-base:                               state%pint, state%zi, state%pmid     , state%zm      , state%pdel    ,                   & 
+./physics/cam/.svn/text-base/convect_shallow.F90.svn-base:      pcnt(i) = state%pmid(i,int(cnt(i)))
+./physics/cam/.svn/text-base/convect_shallow.F90.svn-base:      pcnb(i) = state%pmid(i,int(cnb(i)))     
+./physics/cam/.svn/text-base/gw_drag.F90.svn-base:         state%u   , state%v   , state%t   , state%pmid   , state%pint, &
+./physics/cam/.svn/text-base/gw_drag.F90.svn-base:            state%u    , state%v    , state%t    , state%pmid , state%pint , &
+./physics/cam/.svn/text-base/gw_drag.F90.svn-base:         state%u    , state%v    , state%t    , sgh        , state%pmid , &
+./physics/cam/.svn/text-base/physpkg.F90.svn-base:    call dadadj (lchnk, ncol, state%pmid,  state%pint,  state%pdel,  &
+./physics/cam/cospsimulator_intr.F90:   !state%pmid  ! ph - p_in_half_levels (Pa)
+./physics/cam/cospsimulator_intr.F90:   call qsat_water(state%t(1:ncol,1:pver), state%pmid(1:ncol,1:pver), &
+./physics/cam/cospsimulator_intr.F90:   gbx%p = state%pmid(1:ncol,pver:1:-1) 			! Pressure at full model levels [Pa] (at model levels per yuying)
+./physics/cam/cospsimulator_intr.F90:call CmpDayNite(state%pmid, pmid_day, 	Nday, IdxDay, Nno, IdxNo, 1, pcols, 1, pver)
+./physics/cam/cospsimulator_intr.F90:call CmpDayNite(state%pmid, pmid_atrain,         Natrain, IdxAtrain, Nno, IdxNo, 1, pcols, 1, pver)
+./physics/cam/cospsimulator_intr.F90:  pmid_atrain=state%pmid
+./physics/cam/convect_shallow.F90:                   nstep        ,  ztodt        ,  state%pmid ,  state%pdel  ,                  &
+./physics/cam/convect_shallow.F90:                   state%pmiddry,  state%pdeldry,  state%rpdeldry )
+./physics/cam/convect_shallow.F90:                               state%pint, state%zi, state%pmid     , state%zm      , state%pdel    ,                   & 
+./physics/cam/convect_shallow.F90:      pcnt(i) = state%pmid(i,int(cnt(i)))
+./physics/cam/convect_shallow.F90:      pcnb(i) = state%pmid(i,int(cnb(i)))     
+./physics/cam/physpkg.F90:    call dadadj (lchnk, ncol, state%pmid,  state%pint,  state%pdel,  &
+./physics/cam/micro_mg_cam.F90:         ni, state%pmid, state%pdel, ast, alst_mic,         &
+./physics/cam/micro_mg_cam.F90:         state%pmid,         state%pdel,         state%pint,         &
+./physics/cam/gw_drag.F90:         state%u   , state%v   , state%t   , state%pmid   , state%pint, &
+./physics/cam/gw_drag.F90:            state%u    , state%v    , state%t    , state%pmid , state%pint , &
+./physics/cam/gw_drag.F90:         state%u    , state%v    , state%t    , sgh        , state%pmid , &
+./physics/cam/tphysidl.F90:         pmid(i,k) = state%pmid(i,k)
+./physics/cam/physics_types.F90:            state%lnpint, state%lnpmid, state%pint  , state%pmid  , state%pdel  , state%rpdel  , &
+./physics/cam/physics_types.F90:    call shr_assert_in_domain(state%pmid(:ncol,:),      is_nan=.false., &
+./physics/cam/physics_types.F90:         varname="state%pmid",      msg=msg)
+./physics/cam/physics_types.F90:    call shr_assert_in_domain(state%pmiddry(:ncol,:),   is_nan=.false., &
+./physics/cam/physics_types.F90:         varname="state%pmiddry",   msg=msg)
+./physics/cam/physics_types.F90:    call shr_assert_in_domain(state%pmid(:ncol,:),      lt=posinf_r8, gt=0._r8, &
+./physics/cam/physics_types.F90:         varname="state%pmid",      msg=msg)
+./physics/cam/physics_types.F90:    call shr_assert_in_domain(state%pmiddry(:ncol,:),   lt=posinf_r8, gt=0._r8, &
+./physics/cam/physics_types.F90:         varname="state%pmiddry",   msg=msg)
+./physics/cam/physics_types.F90:            state%pmid  , state%pdel    , state%rpdel,  &
+./physics/cam/physics_types.F90:     state%pmiddry(:ncol,k) = (state%pintdry(:ncol,k+1)+state%pintdry(:ncol,k))/2._r8
+./physics/cam/physics_types.F90:  state%lnpmiddry(:ncol,:) = log(state%pmiddry(:ncol,:))
+./physics/cam/physics_types.F90:  allocate(state%pmid(psetcols,pver), stat=ierr)
+./physics/cam/physics_types.F90:  if ( ierr /= 0 ) call endrun('physics_state_alloc error: allocation error for state%pmid')
+./physics/cam/physics_types.F90:  allocate(state%pmiddry(psetcols,pver), stat=ierr)
+./physics/cam/physics_types.F90:  if ( ierr /= 0 ) call endrun('physics_state_alloc error: allocation error for state%pmiddry')
+./physics/cam/physics_types.F90:  state%pmid(:,:) = inf
+./physics/cam/physics_types.F90:  state%pmiddry(:,:) = inf
+./physics/cam/physics_types.F90:  deallocate(state%pmid, stat=ierr)
+./physics/cam/physics_types.F90:  if ( ierr /= 0 ) call endrun('physics_state_dealloc error: deallocation error for state%pmid')
+./physics/cam/physics_types.F90:  deallocate(state%pmiddry, stat=ierr)
+./physics/cam/physics_types.F90:  if ( ierr /= 0 ) call endrun('physics_state_dealloc error: deallocation error for state%pmiddry')
+./physics/cam/vertical_diffusion.F90:                          state%u    , state%v  , state%t , state%pmid , & 
+./physics/cam/vertical_diffusion.F90:                               state%zm , state%zi    , state%pmid , state%pint , state%u        , state%v , &
+./physics/cam/vertical_diffusion.F90:                             state%pmid, state%u  , state%v , tautotx  , tautoty , &
+./physics/cam/vertical_diffusion.F90:    call qsat(state%t(:ncol,:), state%pmid(:ncol,:), &
+./physics/cam/vertical_diffusion.F90:                            pcols         , pver               , pcnst        , ncol          , state%pmid    , &
+./physics/cam/vertical_diffusion.F90:                            pcols         , pver               , pcnst        , ncol          , state%pmiddry , &
+./physics/cam/vertical_diffusion.F90:    call qsat(t_aftPBL(:ncol,:pver), state%pmid(:ncol,:pver), &
+./physics/cam/zm_conv_intr.F90:                    ptend_loc%s    ,state%pmid     ,state%pint    ,state%pdel     , &
+./physics/cam/zm_conv_intr.F90:          pcont(ideep(i,lchnk)) = state%pmid(ideep(i,lchnk),jt(i,lchnk))  ! gathered array (or jctop ungathered)
+./physics/cam/zm_conv_intr.F90:          pconb(ideep(i,lchnk)) = state%pmid(ideep(i,lchnk),maxg(i,lchnk))! gathered array
+./physics/cam/clubb_intr.F90:      call calc_ustar( state%t(i,pver), state%pmid(i,pver), cam_in%wsx(i), cam_in%wsy(i), &
+./physics/waccm/nlte_lw.F90:    call nlte_fomichev_calc (ncol,state%pmid,state%pint,state%t,xo2mmr,xommr,xo3mmr,xn2mmr,xco2mmr,qrlf)
+./physics/waccm/nlte_lw.F90:    call nocooling (lchnk, ncol, state%t, state%pmid, xnommr,xommr,xo2mmr,xo3mmr,xn2mmr,nocool)
+./physics/waccm/iondrag.F90:          press(i)     = 10._r8*state%pmid(i,k) ! from Pa to dyne/cm^2
+./physics/waccm/.svn/text-base/nlte_lw.F90.svn-base:    call nlte_fomichev_calc (ncol,state%pmid,state%pint,state%t,xo2mmr,xommr,xo3mmr,xn2mmr,xco2mmr,qrlf)
+./physics/waccm/.svn/text-base/nlte_lw.F90.svn-base:    call nocooling (lchnk, ncol, state%t, state%pmid, xnommr,xommr,xo2mmr,xo3mmr,xn2mmr,nocool)
+./physics/waccm/.svn/text-base/iondrag.F90.svn-base:          press(i)     = 10._r8*state%pmid(i,k) ! from Pa to dyne/cm^2
+./physics/waccm/.svn/text-base/gw_drag.F90.svn-base:         state%u   , state%v   , state%t   , state%pmid   , state%pint, &
+./physics/waccm/.svn/text-base/gw_drag.F90.svn-base:            state%u    , state%v    , state%t    , state%pmid , state%pint , &
+./physics/waccm/.svn/text-base/gw_drag.F90.svn-base:            kvtt       , state%pmid , state%q    , state%s    , ttgw       , qtgw, .true.     , &
+./physics/waccm/.svn/text-base/gw_drag.F90.svn-base:            state%u    , state%v    , state%t    , state%pmid , state%pint , &
+./physics/waccm/.svn/text-base/gw_drag.F90.svn-base:            kvtt       ,state%pmid  , state%q    , state%s    , ttgw       , qtgw , .false.  ,&
+./physics/waccm/.svn/text-base/gw_drag.F90.svn-base:         state%u    , state%v    , state%t    , sgh        , state%pmid , &
+./physics/waccm/.svn/text-base/gw_drag.F90.svn-base:            kvtt       ,state%pmid  , state%q    , state%s    , ttgw       , qtgw , .false.  ,&
+./physics/waccm/gw_drag.F90:         state%u   , state%v   , state%t   , state%pmid   , state%pint, &
+./physics/waccm/gw_drag.F90:            state%u    , state%v    , state%t    , state%pmid , state%pint , &
+./physics/waccm/gw_drag.F90:            kvtt       , state%pmid , state%q    , state%s    , ttgw       , qtgw, .true.     , &
+./physics/waccm/gw_drag.F90:            state%u    , state%v    , state%t    , state%pmid , state%pint , &
+./physics/waccm/gw_drag.F90:            kvtt       ,state%pmid  , state%q    , state%s    , ttgw       , qtgw , .false.  ,&
+./physics/waccm/gw_drag.F90:         state%u    , state%v    , state%t    , sgh        , state%pmid , &
+./physics/waccm/gw_drag.F90:            kvtt       ,state%pmid  , state%q    , state%s    , ttgw       , qtgw , .false.  ,&
+./physics/rrtmg/rrtmg_state.F90:    allocate( rstate%pmidmb(pcols,num_rrtmg_levs) )
+./physics/rrtmg/rrtmg_state.F90:       rstate%pmidmb(:ncol,k) = pstate%pmid(:ncol,kk) * 1.e-2_r8
+./physics/rrtmg/rrtmg_state.F90:       rstate%pmidmb(:ncol,1) = 0.5_r8 * rstate%pintmb(:ncol,2) 
+./physics/rrtmg/rrtmg_state.F90:    deallocate(rstate%pmidmb)
+./physics/rrtmg/radiation.F90:       call radinp(ncol, state%pmid, state%pint, pbr, pnm, eccf)
+./physics/rrtmg/radiation.F90:                       state%pmid,   cldfprime,                                                &
+./physics/rrtmg/radiation.F90:                       state%pmid,   aer_lw_abs,   cldfprime,       c_cld_lw_abs,                &
+./physics/rrtmg/radiation.F90:          ftem(i,k) = (qrs(i,k) + qrl(i,k))/cpair * (1.e5_r8/state%pmid(i,k))**cappa
+./physics/rrtmg/radlw.F90:        r_state%pmidmb  ,r_state%pintmb  ,r_state%tlay    ,r_state%tlev    ,tsfc    ,r_state%h2ovmr, &
+./physics/rrtmg/.svn/text-base/radlw.F90.svn-base:        r_state%pmidmb  ,r_state%pintmb  ,r_state%tlay    ,r_state%tlev    ,tsfc    ,r_state%h2ovmr, &
+./physics/rrtmg/.svn/text-base/radsw.F90.svn-base:   call CmpDayNite(r_state%pmidmb, pmidmb, Nday, IdxDay, Nnite, IdxNite, 1, pcols, 1, rrtmg_levs)
+./physics/rrtmg/.svn/text-base/radiation.F90.svn-base:       call radinp(ncol, state%pmid, state%pint, pbr, pnm, eccf)
+./physics/rrtmg/.svn/text-base/radiation.F90.svn-base:                       state%pmid,   cldfprime,                                                &
+./physics/rrtmg/.svn/text-base/radiation.F90.svn-base:                       state%pmid,   aer_lw_abs,   cldfprime,       c_cld_lw_abs,                &
+./physics/rrtmg/.svn/text-base/radiation.F90.svn-base:          ftem(i,k) = (qrs(i,k) + qrl(i,k))/cpair * (1.e5_r8/state%pmid(i,k))**cappa
+./physics/rrtmg/.svn/text-base/rrtmg_state.F90.svn-base:    allocate( rstate%pmidmb(pcols,num_rrtmg_levs) )
+./physics/rrtmg/.svn/text-base/rrtmg_state.F90.svn-base:       rstate%pmidmb(:ncol,k) = pstate%pmid(:ncol,kk) * 1.e-2_r8
+./physics/rrtmg/.svn/text-base/rrtmg_state.F90.svn-base:       rstate%pmidmb(:ncol,1) = 0.5_r8 * rstate%pintmb(:ncol,2) 
+./physics/rrtmg/.svn/text-base/rrtmg_state.F90.svn-base:    deallocate(rstate%pmidmb)
+./physics/rrtmg/radsw.F90:   call CmpDayNite(r_state%pmidmb, pmidmb, Nday, IdxDay, Nnite, IdxNite, 1, pcols, 1, rrtmg_levs)
+./physics/waccmx/ionosphere.F90:    pMid(1:ncol,1:pver) = state%pmid(1:ncol,1:pver)
+./physics/waccmx/ionosphere.F90:    pMid(1:ncol,1:pver)  = state%pmid(1:ncol,1:pver)
+./physics/waccmx/majorsp_diffusion.F90:                  state%t    ,ptend%q    ,state%pmid ,state%pint ,             &
+./physics/waccmx/.svn/text-base/majorsp_diffusion.F90.svn-base:                  state%t    ,ptend%q    ,state%pmid ,state%pint ,             &
+./physics/waccmx/.svn/text-base/ionosphere.F90.svn-base:    pMid(1:ncol,1:pver) = state%pmid(1:ncol,1:pver)
+./physics/waccmx/.svn/text-base/ionosphere.F90.svn-base:    pMid(1:ncol,1:pver)  = state%pmid(1:ncol,1:pver)
+./physics/carma/models/meteor_smoke/carma_model_mod.F90:          pressure = state%pmid(icol, k)
+./physics/carma/models/meteor_smoke/.svn/text-base/carma_model_mod.F90.svn-base:          pressure = state%pmid(icol, k)
+./physics/carma/models/cirrus/carma_cloudfraction.F90:        call astG_RHU_single(ssl + 1._f, state%pmid(icol, iz), state%q(icol, iz, 1), &
+./physics/carma/models/cirrus/carma_cloudfraction.F90:        call astG_PDF_single(ssl + 1._f, state%pmid(icol, iz), state%q(icol, iz, 1), &
+./physics/carma/models/cirrus/carma_cloudfraction.F90:      call aist_single(state%q(icol, iz, 1), state%t(icol, iz), state%pmid(icol, iz), &
+./physics/carma/models/cirrus/.svn/text-base/carma_cloudfraction.F90.svn-base:        call astG_RHU_single(ssl + 1._f, state%pmid(icol, iz), state%q(icol, iz, 1), &
+./physics/carma/models/cirrus/.svn/text-base/carma_cloudfraction.F90.svn-base:        call astG_PDF_single(ssl + 1._f, state%pmid(icol, iz), state%q(icol, iz, 1), &
+./physics/carma/models/cirrus/.svn/text-base/carma_cloudfraction.F90.svn-base:      call aist_single(state%q(icol, iz, 1), state%t(icol, iz), state%pmid(icol, iz), &
+./physics/carma/models/pmc/carma_model_mod.F90:          pressure = state%pmid(icol, k)
+./physics/carma/models/pmc/.svn/text-base/carma_model_mod.F90.svn-base:          pressure = state%pmid(icol, k)
+./physics/carma/cam/.svn/text-base/carma_intr.F90.svn-base:    call clddiag( state%t, state%pmid, state%pdel, cmfdqr, evapc, cldn, cldc, clds, cme, evapr, prain, &
+./physics/carma/cam/.svn/text-base/carma_intr.F90.svn-base:                           state%pmid, &
+./physics/carma/cam/.svn/text-base/carma_intr.F90.svn-base:                           state%pmid, &
+./physics/carma/cam/carma_intr.F90:    call clddiag( state%t, state%pmid, state%pdel, cmfdqr, evapc, cldn, cldc, clds, cme, evapr, prain, &
+./physics/carma/cam/carma_intr.F90:                           state%pmid, &
+./physics/carma/cam/carma_intr.F90:                           state%pmid, &
+./unit_drivers/rad/camrt/radiation.F90:       call radinp(ncol, state%pmid, state%pint, pbr, pnm, eccf)
+./unit_drivers/rad/camrt/radiation.F90:                   if ( state%pmid(i,k) < p_trop(i)) then
+./unit_drivers/rad/camrt/radiation.F90:                if ( state%pmid(i,k) < p_trop(i)) then
+./unit_drivers/rad/camrt/radiation.F90:       call cloud_cover_diags_out(lchnk, ncol, cld, state%pmid, nmxrgn, pmxrgn )
+./unit_drivers/rad/camrt/radiation.F90:          ftem(i,k) = (qrs(i,k) + qrl(i,k))/cpair * (1.e5_r8/state%pmid(i,k))**cappa
+./unit_drivers/rad/camrt/.svn/text-base/radiation.F90.svn-base:       call radinp(ncol, state%pmid, state%pint, pbr, pnm, eccf)
+./unit_drivers/rad/camrt/.svn/text-base/radiation.F90.svn-base:                   if ( state%pmid(i,k) < p_trop(i)) then
+./unit_drivers/rad/camrt/.svn/text-base/radiation.F90.svn-base:                if ( state%pmid(i,k) < p_trop(i)) then
+./unit_drivers/rad/camrt/.svn/text-base/radiation.F90.svn-base:       call cloud_cover_diags_out(lchnk, ncol, cld, state%pmid, nmxrgn, pmxrgn )
+./unit_drivers/rad/camrt/.svn/text-base/radiation.F90.svn-base:          ftem(i,k) = (qrs(i,k) + qrl(i,k))/cpair * (1.e5_r8/state%pmid(i,k))**cappa

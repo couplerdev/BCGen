@@ -199,7 +199,8 @@ contains
 ! !INTERFACE:
   subroutine map1_ppm( km,   pe1,   q1,  kn,   pe2,   q2,                &
                        ng_s, ng_n, itot, i1, i2,                         &
-                       j, jfirst, jlast, iv, kord)
+                       j, jfirst, jlast, iv, kord, optp)
+  use mpi
 
       implicit none
 
@@ -227,6 +228,8 @@ contains
 
 ! !INPUT/OUTPUT PARAMETERS:
       real(r8), intent(inout)::  q2(itot,jfirst-ng_s:jlast+ng_n,kn) ! Field output
+
+      logical, optional, intent(in) :: optp
 
 ! !DESCRIPTION:
 !
@@ -257,7 +260,23 @@ contains
 
       integer i, k, kk, kl, k0(i1:i2,0:kn+1), k0found
       real(r8)    pl, pr, qsum, qsumk(i1:i2,kn), delp, esl
+      integer :: cnt, rank, ierr ! MODI
+      real(r8) :: tmpArg
 
+      call MPI_Comm_rank(MPI_COMM_WORLD, rank, ierr)
+      if(present(optp))then
+          print *,'bad map:', km, i1,i2, rank
+      end if
+      cnt = 10
+      do k = 1, km
+         do i = i1, i2
+             if(present(optp)  .and. j==24 .and. k>=27 .and. i==32)then
+                 print *, "q1 bif", q1(i,j,k), i,j,k, rank, kn
+             end if
+         end do
+      end do
+
+      cnt = 10
       do k=1,km
          do i=i1,i2
              dp1(i,k) = pe1(i,k+1) - pe1(i,k)
@@ -269,7 +288,7 @@ contains
 
 ! Compute vertical subgrid distribution
       call ppm2m( q4, dp1, km, i1, i2, iv, kord )
-
+   
 ! For each pe2(i,k), determine lowest pe1 interval = smallest k0 (= k0(i,k))
 !   such that pe1(i,k0) <= pe2(i,k) <= pe1(i,k0+1)
 !   Note that pe2(i,1)==pe1(i,1) and pe2(i,kn+1)==pe1(i,kn+1)
@@ -327,6 +346,21 @@ contains
                pr = (pe2(i,k+1)-pe1(i,kk)) / dp1(i,kk)
                q2(i,j,k) = q4(2,i,kk) + D0_5*(q4(4,i,kk)+q4(3,i,kk)-q4(2,i,kk))  &
                   *(pr+pl) - q4(4,i,kk)*r3*(pr*(pr+pl)+pl**2)
+               if (present(optp) .and. i==32 .and. j==24 .and. k>=26)then
+                   print *,'q2:if', q2(i,j,k), q4(2,i,kk), q4(4,i,kk), &
+                   q4(3,i,kk), pr, pl, r3, kk, i, j, k
+                   !qsum = (pe1(i,kk+1)-pe2(i,k))*(q4(2,i,kk)+D0_5*(q4(4, i, kk)+ &
+                   !   q4(3,i,kk)-q4(2,i,kk))*(D1_0+pl)-q4(4,i,kk)* &
+                   !   (r3*(D1_0+pl*(D1_0+pl))))
+                   !qsum = qsum + qsumk(i,k)
+                   !kl = k0(i,k+1)
+                   !delp = pe2(i,k+1)-pe1(i,kl)
+                   !esl = delp / dp1(i,kl)
+                   !qsum = qsum + delp*(q4(2,i,kl)+D0_5*esl* &
+                   !      (q4(3, i, kl)- q4(2,i,kl)+q4(4,i,kl)*(D1_0-r23*esl)))
+                   !tmpArg = qsum / (pe2(i,k+1)-pe2(i,k))
+                   !print *,'in another:', tmpArg
+               end if
             else
 ! Consider contribution between pe2(i,k) and pe1(i,kk+1)
                qsum = (pe1(i,kk+1)-pe2(i,k))*(q4(2,i,kk)+D0_5*(q4(4,i,kk)+       &
@@ -340,10 +374,21 @@ contains
                esl = delp / dp1(i,kl)
                qsum = qsum + delp*(q4(2,i,kl)+D0_5*esl*                          &
                   (q4(3,i,kl)-q4(2,i,kl)+q4(4,i,kl)*(D1_0-r23*esl)))
-               q2(i,j,k) = qsum / ( pe2(i,k+1) - pe2(i,k) )
+               q2(i,j,k) = qsum / ( pe2(i,k+1) - pe2(i,k) ) 
+               if(i==32 .and. j==24 .and. k>=25)then
+                   print *,'q2:', q2(i,j,k), qsum, pe2(i,k+1), pe2(i,k), i,j,k,&
+                           kl, q4(2, i, kl), q4(3, i, kl), q4(4, i,kl)
+               end if
             endif
+            if(present(optp) .and. i==32 .and. j==24 .and. k>=25)then
+                print *,'q2:', q2(i,j,k), qsum, pe2(i,k+1), pe2(i,k),i,j,k, kl
+            end if
          enddo
       enddo
+
+      if(present(optp))then
+          print *,'*********end map1', j, rank
+      end if
 
       return
 !EOC
