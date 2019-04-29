@@ -335,7 +335,7 @@ class InstCreator:
                 sname = av['mapperName']
                 path = av['w_file']
                 path = path[1:-1]
-                path = self.metaManager.inputPath+"/map/"+path
+                path = self.metaManager.inputPath+'/'+path
                 stype = sname+"_type"
                 f.write(sname+'   '+path+'\n')
                 f.write(stype+'    \'X\'\n')
