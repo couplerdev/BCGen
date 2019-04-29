@@ -168,7 +168,7 @@ subroutine mapper_spmat_init_rc(mapper, gsmap_src, gsmap_dst, mpicom, &
         mapper%map_type="spmat"
         call I90_LoadF(rcfile, ierr)
         if(ierr/=0)then
-            call shr_sys_abort(subname//':abort not find rcfile')
+            call shr_sys_abort(subname//':abort not find rcfile:'//trim(rcfile))
         end if
         call I90_Label(trim(mapname), ierr)
         if(ierr/=0)then

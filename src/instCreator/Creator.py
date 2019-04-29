@@ -335,6 +335,8 @@ class InstCreator:
                 sname = av['mapperName']
                 path = av['w_file']
                 path = path[1:-1]
+                if path == 'samegrid':
+                    continue
                 path = self.metaManager.inputPath+'/'+path
                 stype = sname+"_type"
                 f.write(sname+'   '+path+'\n')
