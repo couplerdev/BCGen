@@ -164,12 +164,13 @@ subroutine mapper_spmat_init_rc(mapper, gsmap_src, gsmap_dst, mpicom, &
         mapper%map_type = "rearr"
         call mct_rearr_init(gsmap_src, gsmap_dst, mpicom, mapper%rearr)
     else
-
         mapper%map_type="spmat"
         call I90_LoadF(rcfile, ierr)
+        print *, mapname
         if(ierr/=0)then
             call shr_sys_abort(subname//':abort not find rcfile:'//trim(rcfile))
         end if
+        print *,'end rcfile', mapname
         call I90_Label(trim(mapname), ierr)
         if(ierr/=0)then
             call shr_sys_abort(subname//':abort not find label'//trim(mapname))
@@ -186,6 +187,7 @@ subroutine mapper_spmat_init_rc(mapper, gsmap_src, gsmap_dst, mpicom, &
     !call I90_gtoken(maptype, ierr)
         call sMatPinitnc_mapfile(mapper%sMatPlus, gsmap_src, gsmap_dst, &
                             trim(mapfilePath), trim(maprctype), mpicom)
+         call I90_Release(ierr)
     end if
 
 end subroutine mapper_spmat_init_rc
