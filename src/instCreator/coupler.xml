@@ -32,7 +32,7 @@
 					<mapper>
 						<name>mapper_Smatocn2atm</name>
 						<type>offline</type>
-						<w_file>map_gx3v7_to_fv4x5_aave_da_091218.nc</w_file>
+						<w_file>cpl/cpl6/map_gx3v7_to_fv4x5_aave_da_091218.nc</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -82,7 +82,7 @@
 					<mapper>
 						<name>mapper_Smatice2atm</name>
 						<type>offline</type>
-						<w_file>map_gx3v7_to_fv4x5_aave_da_091218.nc</w_file>
+						<w_file>cpl/cpl6/map_gx3v7_to_fv4x5_aave_da_091218.nc</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -139,7 +139,7 @@
 					<mapper>
 						<name>mapper_Smatatm2ocn</name>
 						<type>offline</type>
-						<w_file>map_fv4x5_to_gx3v7_bilin_da_091218.nc</w_file>
+						<w_file>cpl/cpl6/map_fv4x5_to_gx3v7_bilin_da_091218.nc</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -224,7 +224,7 @@
 					<mapper>
 						<name>mapper_Smatrof2lnd</name>
 						<type>offline</type>
-						<w_file>no.nc</w_file>
+						<w_file>lnd/clm2/mappingdata/maps/4x5/map_0.5x0.5_nomask_to_4x5_nomask_aave_da_c110822.nc</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -279,7 +279,7 @@
 					<mapper>
 						<name>mapper_Smatatm2ice</name>
 						<type>offline</type>
-						<w_file>map_fv4x5_to_gx3v7_bilin_da_091218.nc</w_file>
+						<w_file>cpl/cpl6/map_fv4x5_to_gx3v7_bilin_da_091218.nc</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>
@@ -333,7 +333,7 @@
 					<mapper>
 						<name>mapper_Smatlnd2rof</name>
 						<type>offline</type>
-						<w_file>no1.nc</w_file>
+						<w_file>lnd/clm2/mappingdata/maps/4x5/map_4x5_nomask_to_0.5x0.5_nomask_aave_da_c110822.nc</w_file>
 						<method>
 							<phase>
 								<name>smat_init</name>

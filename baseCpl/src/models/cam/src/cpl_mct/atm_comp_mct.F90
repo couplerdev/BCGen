@@ -269,7 +269,7 @@ CONTAINS
        ! Read namelist
        !
        print *, '*************before atm_in read**************', start_ymd, stop_ymd
-       filein = "atm_in" // trim(inst_suffix)
+       filein = "atm_in"
        call read_namelist(single_column_in=single_column, scmlat_in=scmlat, &
             scmlon_in=scmlon, nlfilename_in=filein)
        print *, '****************end atm_in read************', start_ymd, stop_ymd

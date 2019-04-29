@@ -4,7 +4,7 @@
  co2_type = 'constant'
  create_crop_landunit = .false.
  dtime = 1800
- fatmlndfrc = '/home/hq/git/BCGen/inputdata/domain.lnd.fv4x5_gx3v7.091218.nc'
+ fatmlndfrc = '/mnt/CESM-data/inputdata/share/domains/domain.lnd.fv4x5_gx3v7.091218.nc'
  finidat = '/mnt/CESM-data/inputdata/lnd/clm2/initdata/clmi.BCN.1949-01-01_4x5_gx3v7_simyr1850_c100322.nc'
  fpftcon = '/mnt/CESM-data/inputdata/lnd/clm2/pftdata/pft-physiology.clm40.c130424.nc'
  fsnowaging = '/mnt/CESM-data/inputdata/lnd/clm2/snicardata/snicar_drdt_bst_fit_60_c070416.nc'

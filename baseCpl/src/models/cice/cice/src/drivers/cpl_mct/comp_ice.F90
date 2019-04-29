@@ -1390,8 +1390,8 @@ contains
     ! Initialize mct domain type
     ! lat/lon in degrees,  area in radians^2, mask is 1 (ocean), 0 (non-ocean)
     !
-    call mct_gGrid_init( GGrid=dom_i, CoordChars=trim('lat:lon'), &
-       OtherChars=trim('area:frac:mask:aream'), lsize=lsize )
+    call mct_gGrid_init( GGrid=dom_i, CoordChars=trim(metaData%flds_dom_coord), &
+       OtherChars=trim(metaData%flds_dom_other), lsize=lsize )
     call mct_aVect_zero(dom_i%data)
     !  
     allocate(data(lsize))
@@ -1709,8 +1709,8 @@ contains
     deallocate(start,length,pe_loc)
 
     lsize = mct_gsmap_lsize(gsmap_i,mpicom_i)
-    call mct_gGrid_init( GGrid=dom_i, CoordChars=trim('x:y:z'), &
-       OtherChars=trim('lat:lon:area:frac:mask:aream'), lsize=lsize )
+    call mct_gGrid_init( GGrid=dom_i, CoordChars=trim(metaData%flds_dom_coord), &
+       OtherChars=trim(metaData%flds_dom_other), lsize=lsize )
     call mct_aVect_zero(dom_i%data)
 
     ! Determine global gridpoint number attribute, GlobGridNum, which is set automatically by MCT

@@ -53,7 +53,8 @@ public read_namelist        ! Set and/or get all runtime options
 ! Private data ---------------------------------------------------------
 !-----------------------------------------------------------------------
 
-character(len=SHR_KIND_CL), private :: nlfilename = 'atm_in' ! Namelist filename
+character(len=SHR_KIND_CL), private :: nlfilename = &
+       'atm_in' ! Namelist filename
 
 !-----------------------------------------------------------------------
 !
@@ -495,6 +496,8 @@ contains
   if (present(nlfilename_in)) then
      nlfilename = nlfilename_in
   end if
+
+
 !
 ! Determine preset values (this is currently being phased out)
 !
