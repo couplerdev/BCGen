@@ -186,7 +186,7 @@ subroutine ocn_init_mct(compInfo, EClock, x2o, o2x, ierr)
 
     call t_startf('docn_readnml')
 
-    filename = "/home/hq/git/BCGen/inputdata/docn_in"
+    filename = "docn_in"
     ocn_in = "unset"
     decomp = "1d"
     restfilm = trim(nullstr)
@@ -689,8 +689,8 @@ subroutine ocn_domain_init(mpicomm, gsMap_ocnocn, domain)
   integer ::ierr,lsize
 
   call mct_gGrid_init(GGrid=domain, &
-      CoordChars=trim('lat:lon'), &
-      otherchars=trim('area:frac:mask:aream'),&
+      coordChars=trim(metaData%flds_dom_coord), &
+      otherchars=trim(metaData%flds_dom_other),&
       lsize=mct_gsMap_lsize(gsMap_ocnocn, mpicomm))
   call mct_avect_zero(domain%data)
 

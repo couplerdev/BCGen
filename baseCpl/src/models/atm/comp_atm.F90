@@ -219,8 +219,8 @@ subroutine atm_domain_init(mpicomm, gsMap_atmatm, domain)
   integer ::ierr,lsize
 
   call mct_gGrid_init(GGrid=domain, &
-      CoordChars=trim('x:y:z'), &
-      otherchars=trim('lat:lon:area:frac:mask:aream'),&
+      CoordChars=trim(metaData%flds_dom_coord), &
+      otherchars=trim(metaData%fids_dom_other),&
       lsize=mct_gsMap_lsize(gsMap_atmatm, mpicomm))
   call mct_avect_zero(domain%data)
 

@@ -1,0 +1,37 @@
+<streamstemplate>
+<stream>
+      <comment>
+         Stream description file for generic SST/ifrac data on the CAM grid
+      </comment> 
+      <dataSource>
+         DATASET
+      </dataSource>
+      <domainInfo> 
+         <variableNames>
+            time time
+            xc   lon
+            yc   lat
+            area area
+            mask mask
+         </variableNames>
+         <filePath>
+            /mnt/CESM-data/inputdata/atm/cam/ocnfrac
+         </filePath>
+         <fileNames>
+            domain.camocn.10x15_USGS_070807.nc
+         </fileNames>
+      </domainInfo>
+      <fieldInfo>
+         <variableNames>
+            SST_cpl    t
+         </variableNames>
+         <filePath>
+            /mnt/CESM-data/inputdata/atm/cam/sst
+         </filePath>
+         <fileNames>
+            sst_HadOIBl_bc_10x15_clim_c050526.nc
+         </fileNames>
+      </fieldInfo>
+</stream>
+</streamstemplate>
+

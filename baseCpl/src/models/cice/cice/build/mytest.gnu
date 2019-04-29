@@ -36,8 +36,8 @@ COMMDIR = serial
 
 #  netcdf paths
 
-NETCDFINC = -I/home/hq/include
-NETCDFLIB = -L/home/hq/lib
+NETCDFINC = -I$(NETCDFINCL)
+NETCDFLIB = -L$(NETCDFLIB)
 
 #  Enable MPI library for parallel code, yes/no.
 
@@ -80,7 +80,7 @@ endif
 #
 #----------------------------------------------------------------------------
  
-FBASE = -v -I/usr/local/include -I/home/hq/include -I$(DepDir) -I$(INCLDIR) -I/home/hq/share/BCGen_case/BCGen_inst/include -ffree-line-length-none -I/usr/local/esmf/mod/modO/Linux.gfortran.64.mpiuni.default/ 
+FBASE = -v -I/usr/local/include -I$(DepDir) -I$(INCLDIR) -I../../../../include -ffree-line-length-none -I/usr/local/esmf/mod/modO/Linux.gfortran.64.mpiuni.default/ 
 MODSUF = mod
 
 ifeq ($(TRAP_FPE),yes)

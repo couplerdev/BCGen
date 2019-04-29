@@ -400,8 +400,8 @@ contains
 
     ! lat/lon in degrees,  area in radians^2, mask is 1 (land), 0 (non-land)
     ! Note that in addition land carries around landfrac for the purposes of domain checking
-    call mct_gGrid_init( GGrid=dom_r, CoordChars=trim('lat:lon'), &
-      OtherChars=trim('area:frac:mask:aream'), lsize=lsize )
+    call mct_gGrid_init( GGrid=dom_r, CoordChars=trim(metaData%flds_dom_coord), &
+      OtherChars=trim(metaData%flds_dom_other), lsize=lsize )
 
     ! Allocate memory
     allocate(data(lsize))

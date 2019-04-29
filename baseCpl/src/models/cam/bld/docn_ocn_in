@@ -1,0 +1,6 @@
+ &shr_strdata_nml
+   dataMode   = 'SSTDATA'
+   domainFile = '/mnt/CESM-data/inputdata/atm/cam/ocnfrac/domain.camocn.10x15_USGS_070807.nc'
+   streams    = 'docn.stream.txt 0 0 0 '
+   vectors    = 'null'
+ /

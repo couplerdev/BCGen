@@ -84,8 +84,8 @@ module RtmMod
   character(len=256) :: rtm_mode
   character(len=256) :: rtm_effvel    
 
-  character(len=256) :: nlfilename_rof = '/home/hq/git/BCGen/inputdata/rof_in' 
-  character(len=256) :: nlfilename_lnd = '/home/hq/git/BCGen/inputdata/lnd_in' 
+  character(len=256) :: nlfilename_rof = 'rof_in' 
+  character(len=256) :: nlfilename_lnd = 'lnd_in' 
 !
 !EOP
 !-----------------------------------------------------------------------
@@ -199,7 +199,7 @@ contains
     nrevsn_rtm  = ' '
     rtm_tstep   = -1
 
-    nlfilename_rof = "/home/hq/git/BCGen/inputdata/rof_in"
+    nlfilename_rof = "rof_in"
     inquire (file = trim(nlfilename_rof), exist = lexist)
     if ( .not. lexist ) then
        write(iulog,*) subname // ' ERROR: nlfilename_rof does NOT exist:'&

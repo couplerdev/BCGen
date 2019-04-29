@@ -148,7 +148,7 @@ subroutine cam_init( cam_out, cam_in, mpicom_atm, &
    !
    ! Determine input namelist filename
    !
-   filein = "atm_in" // trim(inst_suffix)
+   filein = "atm_in"
    !
    ! Do appropriate dynamics and history initialization depending on whether initial, restart, or 
    ! branch.  On restart run intht need not be called because all the info is on restart dataset.
