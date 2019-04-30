@@ -176,7 +176,7 @@
 			<name>lnd2x_lndx</name>
 			<model>lnd</model>
 			<fraction>
-				<fraclist>lfrac:afrac:rfrac</fraclist>
+				<fraclist>lfrin:afrac:rfrac</fraclist>
 				<init>fraction_lnd_init</init>
 				<update></update>
 				<fracs>
