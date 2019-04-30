@@ -15,9 +15,9 @@ use proc_def
 contains
 subroutine domain_areafactinit(comp, mdl2drv, drv2mdl)
     implicit none
-    type(compMeta), intent(in) :: comp
-    real(r8), pointer            :: mdl2drv(:)
-    real(r8), pointer            :: drv2mdl(:)
+    type(compMeta), target, intent(in) :: comp
+    real(r8), pointer                  :: mdl2drv(:)
+    real(r8), pointer                  :: drv2mdl(:)
 
     type(mct_gGrid), pointer :: domain
     integer                  :: ID
@@ -30,7 +30,7 @@ subroutine domain_areafactinit(comp, mdl2drv, drv2mdl)
     character(len=*), parameter :: subName = "(domain_araefactinit)"
 
     ID = comp%ID
-    domain = comp%domain
+    domain => comp%domain
     mpicom = comp%comm
     !iamroot = comp%iamroot
     
