@@ -198,7 +198,7 @@ subroutine fraction_ice_update(domain, i2x_i, fraction_ice)
     dom => domain 
     call mct_aVect_copy(i2x_i, fraction_ice, "Si_ifrac","ifrac")
     ki = mct_aVect_indexRA(fraction_ice, "ifrac")
-    ko = mct_aVect_indexRA(fraction_ice, "ofrac")
+    !ko = mct_aVect_indexRA(fraction_ice, "ofrac")
     kf = mct_aVect_indexRA(dom%data, "frac", perrwith=subName)
     fraction_ice%rAttr(ki, :) = fraction_ice%rAttr(ki,:)*dom%data%rAttr(kf,:)
     fraction_ice%rAttr(ko, :) = dom%data%rAttr(kf,:) - fraction_ice%rAttr(ki,:)

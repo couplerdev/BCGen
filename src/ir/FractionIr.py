@@ -6,7 +6,7 @@ class FractionMapper:
     def __init__(self, mapper, method, src, target, frac):
 	self.mapper = mapper
         self.mapSubroutine = Subroutine(subroutineName=method)
-        argList = [mapper, "fraction_"+src, "fraction_"+target,"\""+ frac+"\"", "ierr=ierr"]
+        argList = [mapper, "fraction_"+src, "fraction_"+target,"field=\""+ frac+"\"", "ierr=ierr"]
         self.mapSubroutine.argList = argList
 
 class Fraction(AttrVect):
