@@ -244,11 +244,11 @@ model_${model_name}_cfg = { # Model M's cfg
 #end for
 
 
-model_cfgs = [
+model_cfgs = {
 #for $model in $models
     #set $model_name = $model.name
-    model_${model_name}_cfg,
+    "${model_name}":model_${model_name}_cfg,
 #end for
-]
+}
 
 

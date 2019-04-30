@@ -306,7 +306,11 @@ subroutine mapper_comp_map(mapper, src, dst, field,norm, avwts, avwtsfld, msgtag
     if(mapper%map_type=="copy")then
         call mct_avect_copy(src, dst)
     else if(mapper%map_type=="rearr")then
-        call mct_rearr_rearrange(src, dst, mapper%rearr, msgtag)
+        if(present(field))then
+            call mct_rearr_rearrange_fldlist(src, dst, mapper%rearr, tag=msgtag, fldlist=field)
+        else
+            call mct_rearr_rearrange(src, dst, mapper%rearr, msgtag)
+        end if
     else if(mapper%map_type=="spmat")then
         if(present(avwts))then
             if(present(field))then
