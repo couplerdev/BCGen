@@ -45,6 +45,7 @@ class FakeModel(CoupleEntity):
         self.__variables = {}
         self.__variablesType = ['attrVect']
         self.__flds = []
+        #self.__fldsType = ['states','fluxes', 'fields']
 
     def addVariables(self, var):
         if var.varType not in self.__variablesType:
@@ -73,3 +74,4 @@ class FakeModel(CoupleEntity):
     @flds.setter
     def flds(self, _flds):
         self.__flds = _flds
+       
