@@ -590,12 +590,12 @@ model_ocn_cfg = { # Model M's cfg
 }
 
 
-model_cfgs = [
-    model_lnd_cfg,
-    model_atm_cfg,
-    model_rof_cfg,
-    model_ice_cfg,
-    model_ocn_cfg,
-]
+model_cfgs = {
+    "lnd":model_lnd_cfg,
+    "atm":model_atm_cfg,
+    "rof":model_rof_cfg,
+    "ice":model_ice_cfg,
+    "ocn":model_ocn_cfg,
+}
 
 
