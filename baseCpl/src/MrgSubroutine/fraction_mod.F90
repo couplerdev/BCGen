@@ -101,9 +101,9 @@ subroutine fraction_ice_init(domain, fraction_ice, fraclist)
     lsize = mct_avect_lsize(dom%data)
     call mct_avect_init(fraction_ice,rList=fraclist, lsize=lsize )
     call mct_avect_zero(fraction_ice)
-    ko = mct_avect_indexRa(fraction_ice, "ofrac", perrWith=subName)    
+    !ko = mct_avect_indexRa(fraction_ice, "ofrac", perrWith=subName)    
     kf = mct_avect_indexRa(dom%data, "frac", perrWith=subName)
-    fraction_ice%rAttr(ko,:) = dom%data%rAttr(kf,:)
+    !fraction_ice%rAttr(ko,:) = dom%data%rAttr(kf,:)
 
 end subroutine fraction_ice_init
 
