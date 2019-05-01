@@ -167,6 +167,7 @@ use field_def
        character(SHR_KIND_CXX) :: flds_x2ocn_states 
        character(SHR_KIND_CXX) :: flds_x2atm 
        character(SHR_KIND_CXX) :: flds_lnd2x 
+       character(SHR_KIND_CXX) :: flds_xao_fields 
        character(SHR_KIND_CXX) :: flds_ice2x_fluxes 
        character(SHR_KIND_CXX) :: flds_ocn2x_states 
        character(SHR_KIND_CXX) :: flds_x2ocn_fluxes 

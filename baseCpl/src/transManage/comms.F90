@@ -21,6 +21,9 @@ use comms_nc, only : sMatPInitnc_mapfile
     public :: mapper_readdata
     private :: gsmap_check    
 
+logical :: local_vector = .true.
+logical :: local_alltoall = .true.
+
 interface mapper_init ; module procedure &
     mapper_init_nil, &
     mapper_init_func
@@ -307,7 +310,10 @@ subroutine mapper_comp_map(mapper, src, dst, field,norm, avwts, avwtsfld, msgtag
         call mct_avect_copy(src, dst)
     else if(mapper%map_type=="rearr")then
         if(present(field))then
-            call mct_rearr_rearrange_fldlist(src, dst, mapper%rearr, tag=msgtag, fldlist=field)
+            call mct_rearr_rearrange_fldlist(src, dst, mapper%rearr, &
+                                             vector=local_vector, &
+                                             tag=msgtag, fldlist=field, &
+                                             alltoall=local_alltoall)
         else
             call mct_rearr_rearrange(src, dst, mapper%rearr, msgtag)
         end if
