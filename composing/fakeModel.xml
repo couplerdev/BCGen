@@ -2,7 +2,7 @@
 	<model type='fake'>
 		<name>xao</name>
 		<package></package>
-		<fields>flds_xao_states,flds_xao_fluxes</fields>
+		<fields>flds_xao_states,flds_xao_fluxes,flds_xao_fields</fields>
 		<deps>atm:ocn</deps>
                 <variables>
 			<variable type='attrVect'>
