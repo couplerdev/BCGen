@@ -39,6 +39,10 @@
 		</sub>
 		<sub model="lnd">
 			<name>fraction_lnd_init</name>
+			<frac>lfrin</frac>
+		</sub>
+		<sub model="lnd">
+			<name>fraction_lnd_init</name>
 			<frac>lfrac</frac>
 		</sub>
 		<sub model="rof">
