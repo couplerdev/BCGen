@@ -49,7 +49,7 @@ use fraction_mod
     type(mct_aVect), pointer :: $name
          #end for
     #end for
-
+   
     ! declare xao attrVect if xao is defined
     #for $fake in $fake_cfgs
         #set $fakeModel = $fake_cfgs[$fake]
@@ -163,7 +163,8 @@ subroutine cpl_init()
     !-------------------------------------------------------
     ! Model init
     !-------------------------------------------------------
-    #for $cfg in $model_cfgs
+    #for $model_name in $model_cfgs
+         #set $cfg = $model_cfgs[$model_name]
          #set $name = $cfg['model_unique_name']
          #set $subroutine  = $cfg['subroutine']
          #set $init_method = $subroutine['init_method']
@@ -181,7 +182,8 @@ subroutine cpl_init()
     !--------------------------------------------------------
     !  Model_x gsmap_ext av_ext
     !--------------------------------------------------------
-    #for $cfg in $model_cfgs
+    #for $model_name in $model_cfgs
+        #set $cfg = $model_cfgs[$model_name]
         #set $av_mx = $cfg['mx_av_set']
         #set $gm = $cfg['mx_gsmap_set']
         #set $dom = $cfg['domain']
@@ -241,7 +243,18 @@ subroutine cpl_init()
 
     if(metaData%iamin_cpl)then
         #for $cfg in $fake_cfgs
-        
+            #set $fake_model = $fake_cfgs[$cfg]
+            #set $fld = $fake_model.flds[2]
+            #for $var in $fake_model.variables
+                #set $fake_av = $fake_model.variables[$var]
+                #set $grid = $fake_av.grid
+                #set $model = $model_cfgs[$grid]
+                #set $gm = $model['mx_gsmap_set']
+                #set $gx = $gm['mx']['name']
+        lsize = mct_gsmap_lsize($gx, metaData%mpi_model${$grid}2cpl) 
+        call mct_aVect_init($var, rList=metaData%$(fld), lsize=lsize) 
+        call mct_aVect_zero($var)  
+            #end for
         #end for
     end if
     
@@ -285,7 +298,8 @@ subroutine cpl_init()
 
 
     ! areacorr init
-    #for $model in $model_cfgs
+    #for $model_name in $model_cfgs
+        #set $model = $model_cfgs[$model_name]
         #set $grid = $model['model_unique_name']
         #set $av_mx = $model['mx_av_set']
         #set $gm = $model['mx_gsmap_set']['mm']
@@ -366,7 +380,8 @@ subroutine cpl_final()
     !----------------------------------------
     !     end component
     !----------------------------------------
-    #for $cfg in $model_cfgs
+    #for $model_name in $model_cfgs
+         #set $cfg = $model_cfgs[$model_name]
          #set $name = $cfg['model_unique_name']
          #set $subroutine = $cfg['subroutine']
          #set $final_method = $subroutine['final_method']

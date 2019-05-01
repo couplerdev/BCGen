@@ -164,12 +164,13 @@ subroutine mapper_spmat_init_rc(mapper, gsmap_src, gsmap_dst, mpicom, &
         mapper%map_type = "rearr"
         call mct_rearr_init(gsmap_src, gsmap_dst, mpicom, mapper%rearr)
     else
-
         mapper%map_type="spmat"
         call I90_LoadF(rcfile, ierr)
+        print *, mapname
         if(ierr/=0)then
             call shr_sys_abort(subname//':abort not find rcfile:'//trim(rcfile))
         end if
+        print *,'end rcfile', mapname
         call I90_Label(trim(mapname), ierr)
         if(ierr/=0)then
             call shr_sys_abort(subname//':abort not find label'//trim(mapname))
@@ -186,6 +187,7 @@ subroutine mapper_spmat_init_rc(mapper, gsmap_src, gsmap_dst, mpicom, &
     !call I90_gtoken(maptype, ierr)
         call sMatPinitnc_mapfile(mapper%sMatPlus, gsmap_src, gsmap_dst, &
                             trim(mapfilePath), trim(maprctype), mpicom)
+         call I90_Release(ierr)
     end if
 
 end subroutine mapper_spmat_init_rc
@@ -304,7 +306,11 @@ subroutine mapper_comp_map(mapper, src, dst, field,norm, avwts, avwtsfld, msgtag
     if(mapper%map_type=="copy")then
         call mct_avect_copy(src, dst)
     else if(mapper%map_type=="rearr")then
-        call mct_rearr_rearrange(src, dst, mapper%rearr, msgtag)
+        if(present(field))then
+            call mct_rearr_rearrange_fldlist(src, dst, mapper%rearr, tag=msgtag, fldlist=field)
+        else
+            call mct_rearr_rearrange(src, dst, mapper%rearr, msgtag)
+        end if
     else if(mapper%map_type=="spmat")then
         if(present(avwts))then
             if(present(field))then
