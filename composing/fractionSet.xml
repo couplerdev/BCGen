@@ -53,7 +53,7 @@
 	<update>
 		<sub model="ice">
 			<name>fraction_ice_update</name>
-			<frac>ofrac:ifrac</frac>
+			<frac>ifrac</frac>
 		</sub>
 		<sub model="ocn">
 			<name>fraction_ocn_update</name>
