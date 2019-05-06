@@ -17,14 +17,14 @@ use global_var
 
 contains
 
-subroutine mrg_x2atm(metaData, ocn2x_atm, lnd2x_atmx, ice2x_atmx, xao_atm, atm2x_atm, fraction_atm,&
+subroutine mrg_x2atm(metaData, ocn2x_atm, lnd2x_atm, ice2x_atm, xao_atm, atm2x_atm, fraction_atm,&
 x2atm_atm)
     implicit none
     type(Meta),        intent(in)    :: metaData
-    type(mct_aVect),   intent(in)    :: lnd2x_atmx
+    type(mct_aVect),   intent(in)    :: lnd2x_atm
     type(mct_aVect),   intent(in)    :: ocn2x_atm
     type(mct_aVect),   intent(in)    :: xao_atm
-    type(mct_aVect),   intent(in)    :: ice2x_atmx
+    type(mct_aVect),   intent(in)    :: ice2x_atm
     type(mct_aVect),   intent(in)    :: atm2x_atm
     type(mct_aVect),   intent(in)    :: fraction_atm
     type(mct_aVect),   intent(inout) :: x2atm_atm
@@ -40,30 +40,41 @@ x2atm_atm)
     integer :: index_x2a_Sf_ofrac
     character(CL) :: field_atm
     character(CL) :: field_ocn
+    character(CL) :: field_ice
+    character(CL) :: field_lnd
     character(CL) :: field_xao
     character(CL) :: itemc_atm
     character(CL) :: itemc_ocn
     character(CL) :: itemc_xao
+    character(CL) :: itemc_lnd
+    character(CL) :: itemc_ice
     logical :: iamroot
     logical :: first_time = .true.
-    logical, pointer, save :: xmerge(:), omerge(:)
-    integer, pointer, save :: oindx(:), xindx(:)
-    integer, pointer, save :: naflds, noflds, nxflds
-
+    logical, pointer, save :: xmerge(:), omerge(:), imerge(:), lmerge(:)
+    integer, pointer, save :: oindx(:), xindx(:), iindx(:), lindx(:)
+    integer,  save :: naflds, noflds, nxflds, klflds, niflds
     if(first_time)then
-      
         naflds = mct_aVect_nRattr(x2atm_atm)
         noflds = mct_aVect_nRattr(ocn2x_atm)
         nxflds = mct_aVect_nRattr(xao_atm)
+        niflds = mct_aVect_nRattr(ice2x_atm)
+        klflds = mct_aVect_nRattr(lnd2x_atm)
 
         allocate(oindx(naflds), omerge(naflds))
         allocate(xindx(naflds), xmerge(naflds))
-        
+        allocate(lindx(naflds), lmerge(naflds))
+        allocate(iindx(naflds), imerge(naflds))       
+
+        lindx(:) = 0
+        iindx(:) = 0
         oindx(:) = 0
         xindx(:) = 0
         omerge(:) = .true.
         xmerge(:) = .true.
+        lmerge(:) = .true.
+        imerge(:) = .true.
 
+        
         do ka = 1, naflds
             call getfld(ka, x2atm_atm, field_atm, itemc_atm)
             if(field_atm(1:2)=='PF')then
@@ -72,6 +83,31 @@ x2atm_atm)
             if(field_atm(1:1)=='S' .and. field_atm(2:2)/='x')then
                 cycle
             end if
+
+            do kl = 1, klflds
+                call getfld(kl, lnd2x_atm, field_lnd, itemc_lnd)
+                if(trim(itemc_atm) == trim(itemc_lnd))then
+                    if(trim(field_atm)==trim(field_lnd))then
+                        if(field_lnd(1:1)=='F') lmerge(ka) = .false.
+                    end if
+                    lindx(ka) = kl
+                    exit
+                end if
+            end do
+
+            do ki = 1, niflds
+                call getfld(ki, ice2x_atm, field_atm, itemc_atm)
+                if(field_ice(1:1) == 'F' .and. field_ice(2:4)=='ioi')then
+                    cycle
+                end if
+                if(trim(itemc_atm)==trim(itemc_ice))then
+                    if(trim(field_atm)==trim(field_ice))then
+                        if(field_ice(1:1)=='F') imerge(ka) = .false.
+                    end if 
+                    iindx(ka) = ki 
+                    exit
+                end if
+            end do
 
             do kx = 1, nxflds
                 call getfld(kx, xao_atm, field_xao, itemc_xao)
@@ -96,29 +132,52 @@ x2atm_atm)
             end do
             if(oindx(ka)==0) itemc_ocn = 'unset'
             if(xindx(ka)==0) itemc_xao = 'unset'
-
+            if(lindx(ka)==0) itemc_lnd = 'unset'
+            if(iindx(ka)==0) itemc_ice = 'unset'
         end do
         first_time = .false.
     end if 
 
-
     call mct_aVect_zero(x2atm_atm)
 
     kof = mct_aVect_indexRA(fraction_atm,'ofrac')
+    kif = mct_aVect_indexRA(fraction_atm,'ifrac')
+    klf = mct_aVect_indexRA(fraction_atm,'lfrac')
     lsize = mct_aVect_lsize(x2atm_atm)
 
     index_x2a_Sf_ofrac = mct_aVect_indexRA(x2atm_atm, 'Sf_ofrac')
+    index_x2a_Sf_ifrac = mct_aVect_indexRA(x2atm_atm, 'Sf_ifrac')
+    index_x2a_Sf_lfrac = mct_aVect_indexRA(x2atm_atm, 'Sf_lfrac')
     do n =1, lsize
         x2atm_atm%rAttr(index_x2a_Sf_ofrac, n) = fraction_atm%Rattr(kof, n)
+        x2atm_atm%rAttr(index_x2a_Sf_ifrac, n) = fraction_atm%Rattr(kif, n)
+        x2atm_atm%rAttr(index_x2a_Sf_lfrac, n) = fraction_atm%Rattr(klf, n)
     end do
 
     call mct_aVect_copy(aVin=ocn2x_atm, aVout=x2atm_atm, vector=mct_usevector)
     call mct_aVect_copy(aVin=xao_atm, aVout=x2atm_atm, vector=mct_usevector)
-
+    call mct_aVect_copy(aVin=ice2x_atm, aVout=x2atm_atm, vector=mct_usevector)
+    call mct_aVect_copy(aVin=lnd2x_atm, aVout=x2atm_atm, vector=mct_usevector)
 
     do ka = 1, naflds
         do n =  1, lsize
             fraco = fraction_atm%Rattr(kof, n)
+            fraci = fraction_atm%Rattr(kif, n)
+            fracl = fraction_atm%Rattr(kof, n)
+            if(lindx(ka)>0 .and. fracl > 0._r8)then
+                if(lmerge(ka))then
+                    x2atm_atm%rAttr(ka, n) = x2atm_atm%rAttr(ka, n) + lnd2x_atm%rAttr(lindx(ka), n)*fracl
+                else
+                    x2atm_atm%rAttr(ka, n) = lnd2x_atm%rAttr(lindx(ka), n)*fracl
+                end if
+            end if
+            if(iindx(ka) > 0 .and. fraci > 0._r8)then
+                if(imerge(ka))then
+                    x2atm_atm%rAttr(ka, n) = x2atm_atm%rAttr(ka, n) + ice2x_atm%rAttr(iindx(ka), n)*fraci
+                else
+                    x2atm_atm%rAttr(ka, n) = ice2x_atm%rAttr(iindx(ka), n)*fraci
+                end if
+            end if
             if(xindx(ka) > 0 .and. fraco > 0._r8)then
                 if (xmerge(ka))then
                     x2atm_atm%rAttr(ka, n) = x2atm_atm%rAttr(ka, n) + xao_atm%rAttr(xindx(ka), n)*fraco
@@ -131,7 +190,7 @@ x2atm_atm)
                     x2atm_atm%rAttr(ka, n) = x2atm_atm%rAttr(ka,n) + ocn2x_atm%rAttr(oindx(ka),n)*fraco
                 end if
                 if(.not. omerge(ka))then
-                    !x2atm_atm%rAttr(ka, n) = ocn2x_atm%rAttr(oindx(ka),n)*fraci
+                    x2atm_atm%rAttr(ka, n) = ocn2x_atm%rAttr(oindx(ka),n)*fraci
                     x2atm_atm%rAttr(ka, n) = x2atm_atm%rAttr(ka,n) + ocn2x_atm%rAttr(oindx(ka), n)*fraco
                 end if
             end if
@@ -432,9 +491,12 @@ x2rof_rofx)
     !----------------------------------------------------------------------- 
 
     if (first_time) then
+       print *, 'herre'
        index_l2x_Flrl_rofliq = mct_aVect_indexRA(lnd2x_rofx,'Flrl_rofliq' )
+       print *, 'zero'
        index_l2x_Flrl_rofice = mct_aVect_indexRA(lnd2x_rofx,'Flrl_rofice' )
        index_x2r_Flrl_rofliq = mct_aVect_indexRA(x2rof_rofx,'Flrl_rofliq' )
+       print *, 'vero'
        index_x2r_Flrl_rofice = mct_aVect_indexRA(x2rof_rofx,'Flrl_rofice' )
        index_lfrac = mct_aVect_indexRA(fractions_r,"lfrac")
        first_time = .false.
