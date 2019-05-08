@@ -1266,6 +1266,7 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
    klastct  = grid%klastct
    commnyz = grid%commnyz
    iamlocal = grid%iam
+
 ! kaux is an index describing the set of npes_yz processes; 0 for first set, 1 for second set, etc.
    kaux = iamlocal/grid%npes_yz
 ! ct_aux is true if current process is auxiliary, false otherwise
@@ -1690,7 +1691,7 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
                  enddo
               enddo
            enddo
-
+           print *, 'our u first', u(3,25,1), uxy(3,25,1)
 !$omp parallel do private(i,j,k)
            do k = 1,km
               do j = jfirst,jlast
@@ -1855,7 +1856,7 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
                    end do
                end do
            end do
-           
+           print *, 'check your u', u(3,25,1) 
            if (grid%iam .lt. grid%npes_xy) then
               call cd_core(grid,   nx,     u,   v,   pt,                     &
                             delp,   pe,     pk,  nsplit,  dt,                &
@@ -1875,7 +1876,7 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
               ctreqs(5,:) = cdcreqs(:,4)
            endif  !  (grid%iam .lt. grid%npes_yz)
            if(dyn_out%pt(32,24,30)<-0 .or. ptxy(32,24,30)<-0)then
-               print *,'grab dyn', dyn_out%pt(32, 24,30)
+               print *,'grab dyn', dyn_out%pt(3, 25,1)
            end if
 
            call t_stopf  ('cd_core')

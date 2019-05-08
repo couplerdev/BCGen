@@ -794,7 +794,7 @@ end function radiation_nextsw_cday
 
     character(*), parameter :: name = 'radiation_tend'
 !----------------------------------------------------------------------
-
+    if(isnan(cam_in%lwup(8)))print *,'cam_inlwup'
     lchnk = state%lchnk
     ncol = state%ncol
 
@@ -809,7 +809,7 @@ end function radiation_nextsw_cday
 
     call pbuf_get_field(pbuf, qrs_idx,      qrs)
     call pbuf_get_field(pbuf, qrl_idx,      qrl)
-
+    print *,'the qrl', qrl(8,1)
     if (spectralflux) then
       call pbuf_get_field(pbuf, su_idx, su)
       call pbuf_get_field(pbuf, sd_idx, sd)
@@ -855,7 +855,8 @@ end function radiation_nextsw_cday
 
        ! construct an RRTMG state object
        r_state => rrtmg_state_create( state, cam_in )
-
+       print *,'initr_state'
+       print *,'r_stateinit', r_state%tlev(8,32)
        ! For CRM, make cloud liquid water path equal to input observations
        if(single_column.and.scm_crm_mode.and.have_clwp)then
           call endrun('cloud water path must be passed through radiation interface')
@@ -1003,9 +1004,11 @@ end function radiation_nextsw_cday
           do icall = N_DIAG, 0, -1
 
               if (active_calls(icall)) then
-
+                  print *, 'icall', icall, r_state%tlev(8,32)
                   ! update the concentrations in the RRTMG state object
+                  if(isnan(r_state%tlev(8,32)))print *,'activer_state', r_state%tlev(8,32)
                   call  rrtmg_state_update( state, pbuf, icall, r_state )
+                  if(isnan(r_state%tlev(8,32)))print *,'acendr_state', r_state%tlev(8,32)                 
 
                   call aer_rad_props_sw( icall, state, pbuf, nnite, idxnite, &
                                          aer_tau, aer_tau_w, aer_tau_w_g, aer_tau_w_f)
@@ -1113,7 +1116,7 @@ end function radiation_nextsw_cday
           do icall = N_DIAG, 0, -1
 
               if (active_calls(icall)) then
-
+                  if(isnan(r_state%tlev(8,32)))print *,'r_state nan', r_state%tlev(8,32)
                   ! update the conctrations in the RRTMG state object
                   call  rrtmg_state_update( state, pbuf, icall, r_state)
 
@@ -1152,7 +1155,7 @@ end function radiation_nextsw_cday
 
               end if
           end do
-
+          print *, 'dolw', qrl(8,1)
        end if  !dolw
 
        ! deconstruct the RRTMG state object

@@ -122,6 +122,7 @@ subroutine cam_init( cam_out, cam_in, mpicom_atm, &
    !
    ! Local variables
    !
+   integer :: lchnk !***
    logical :: log_print        ! Flag to print out log information or not
    character(len=cs) :: filein ! Input namelist filename
    !-----------------------------------------------------------------------
@@ -177,10 +178,19 @@ subroutine cam_init( cam_out, cam_in, mpicom_atm, &
 #endif
    end if
 
-
+   do lchnk = begchunk, endchunk
+       if(lchnk==57)then
+           !print *,'tepros', phys_state(lchnk)%t(8,1)
+       end if
+   end do
    call phys_init( phys_state, phys_tend, pbuf2d,  cam_out )
-
    call bldfld ()       ! master field list (if branch, only does hash tables)
+
+   do lchnk = begchunk, endchunk
+       if(lchnk==57)then
+           print *, 'physinit', phys_tend(lchnk)%dudt(8,1), phys_tend(lchnk)%dvdt(8,1), phys_tend(lchnk)%dudt(7,1), phys_state(lchnk)%t(8,1), phys_state(lchnk)%t(8,2)
+       end if
+   end do
 
    !
    ! Setup the characteristics of the orbit
@@ -225,6 +235,7 @@ subroutine cam_run1(cam_in, cam_out)
 
    type(cam_in_t)  :: cam_in(begchunk:endchunk)
    type(cam_out_t) :: cam_out(begchunk:endchunk)
+   integer :: lchnk
 
 #if ( defined SPMD )
    real(r8) :: mpi_wtime
@@ -245,10 +256,20 @@ subroutine cam_run1(cam_in, cam_out)
    ! First phase of dynamics (at least couple from dynamics to physics)
    ! Return time-step for physics from dynamics.
    !----------------------------------------------------------
+   do lchnk = begchunk, endchunk
+       if(lchnk==57 .or. lchnk==54)then
+           print *,'bfsteponrun1', phys_state(lchnk)%t(8,1), cam_in(lchnk)%lwup(8)
+       end if
+   end do
    call t_barrierf ('sync_stepon_run1', mpicom)
    call t_startf ('stepon_run1')
    call stepon_run1( dtime, phys_state, phys_tend, pbuf2d, dyn_in, dyn_out )
    call t_stopf  ('stepon_run1')
+   do lchnk = begchunk, endchunk
+       if(lchnk==57 .or. lchnk==54)then
+           print *, 'steponrun1', phys_tend(lchnk)%dudt(8,1), phys_tend(lchnk)%dudt(7,1), phys_state(lchnk)%t(8,1)
+       end if
+   end do   
 
    !
    !----------------------------------------------------------
@@ -259,6 +280,11 @@ subroutine cam_run1(cam_in, cam_out)
    call t_startf ('phys_run1')
    call phys_run1(phys_state, dtime, phys_tend, pbuf2d,  cam_in, cam_out)
    call t_stopf  ('phys_run1')
+   do lchnk = begchunk, endchunk
+       if(lchnk==57 .or. lchnk==54)then
+           print *,'physrun1', lchnk, phys_tend(lchnk)%dudt(8,1), phys_tend(lchnk)%dudt(7,1), phys_state(lchnk)%t(8,1)
+       end if
+   end do
 
 end subroutine cam_run1
 
@@ -286,6 +312,7 @@ subroutine cam_run2( cam_out, cam_in )
 
    type(cam_out_t), intent(inout) :: cam_out(begchunk:endchunk)
    type(cam_in_t),  intent(inout) :: cam_in(begchunk:endchunk)
+   integer :: lchnk
 
    if (offline_driver_dorun) then
       call offline_driver_run( phys_state, pbuf2d, cam_out, cam_in, dtime )
@@ -295,18 +322,35 @@ subroutine cam_run2( cam_out, cam_in )
    !
    ! Second phase of physics (after surface model update)
    !
+
+   do lchnk = begchunk, endchunk
+       if(lchnk==57)then
+           print *, 'beforephys', phys_tend(lchnk)%dudt(8,1), phys_tend(lchnk)%dudt(7,1), phys_state(lchnk)%t(8,1)
+       end if
+   end do
    call t_barrierf ('sync_phys_run2', mpicom)
    call t_startf ('phys_run2')
    call phys_run2(phys_state, dtime, phys_tend, pbuf2d,  cam_out, cam_in )
    call t_stopf  ('phys_run2')
+   do lchnk = begchunk, endchunk
+       if(lchnk==57)then
+           print *, 'endphys', phys_tend(lchnk)%dudt(8,1), phys_tend(lchnk)%dudt(7,1)
+       end if
+   end do
 
    !
    ! Second phase of dynamics (at least couple from physics to dynamics)
    !
    call t_barrierf ('sync_stepon_run2', mpicom)
    call t_startf ('stepon_run2')
+   print *, 'stepon run2', dyn_in%u3s(10, 35,1), dyn_in%u3s(10,34,1)
    call stepon_run2( phys_state, phys_tend, dyn_in, dyn_out )
-
+   print *, 'stepon run2 end ', dyn_in%u3s(10,35,1)
+   do lchnk = begchunk, endchunk
+       if(lchnk==57)then
+           print *,'steponrun2', phys_tend(lchnk)%dudt(8,1), phys_tend(lchnk)%dudt(7,1)
+       end if
+   end do
    call t_stopf  ('stepon_run2')
 
    if (is_first_step() .or. is_first_restart_step()) then
@@ -344,8 +388,9 @@ subroutine cam_run3( cam_out )
    !
    call t_barrierf ('sync_stepon_run3', mpicom)
    call t_startf ('stepon_run3')
+   print *, 'stepon_run3',dyn_in%u3s(10,35,1)
    call stepon_run3( dtime, etamid, cam_out, phys_state, dyn_in, dyn_out )
-
+   print *, 'stepon_run3 end ',dyn_in%u3s(10,35,1)
    call t_stopf  ('stepon_run3')
 
    if (is_first_step() .or. is_first_restart_step()) then

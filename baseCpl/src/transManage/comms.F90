@@ -497,9 +497,7 @@ subroutine mapper_comp_avNormArr(mapper, av_i, av_o, norm_i, rList, norm)
             avp_i%rAttr(:,j) = avp_i%rAttr(:,j)*norm_i(j)  
         end do
     end if
-
     call mct_sMat_avMult(avp_i, sMatp, avp_o, VECTOR=mct_usevector)
-
     if(lnorm)then
         do j = 1, lsize_o
             kf = mct_aVect_indexRA(avp_o, ffld)
@@ -510,9 +508,7 @@ subroutine mapper_comp_avNormArr(mapper, av_i, av_o, norm_i, rList, norm)
             avp_o%rAttr(:,j) = avp_o%rAttr(:,j)*normval
         end do
     end if
-
     call mct_aVect_copy(aVin=avp_o, aVout=av_o, VECTOR=mct_usevector)
-
     call mct_aVect_clean(avp_i)
     call mct_aVect_clean(avp_o)
  

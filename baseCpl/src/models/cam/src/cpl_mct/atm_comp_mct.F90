@@ -636,7 +636,7 @@ CONTAINS
        !endif
        print *, 'atm one pass'
     end do
-    print *,'end cam loop'
+    print *,'end cam loop, haha'
     ! Finish accumulation of attribute vector and average and copy accumulation 
     ! field into output attribute vector
     
@@ -650,6 +650,7 @@ CONTAINS
     
     call time_clockGetInfo(EClock, dtime=atm_cpl_dt)
     !call seq_timemgr_EClockGetData(Eclock,dtime=atm_cpl_dt)
+    print *,'zbit'
     dtime = get_step_size()          
     if (dtime < atm_cpl_dt) then
        nextsw_cday = radiation_nextsw_cday() 
@@ -663,14 +664,14 @@ CONTAINS
     !call seq_infodata_PutData( infodata, nextsw_cday=nextsw_cday ) 
     
     ! Write merged surface data restart file if appropriate
-    
+    print *, 'ego' 
     if (rstwr_sync) then
        call atm_write_srfrest_mct(compInfo,  x2a_a, a2x_a, &
             yr_spec=yr_sync, mon_spec=mon_sync, day_spec=day_sync, sec_spec=tod_sync)
     end if
     
     ! Check for consistency of internal cam clock with master sync clock 
-    
+    print *,'cus'
     dtime = get_step_size()
     call get_curr_date( yr, mon, day, tod, offset=-dtime )
     ymd = yr*10000 + mon*100 + day
@@ -685,7 +686,7 @@ CONTAINS
     end if
     
     ! End redirection of share output to cam log
-
+    print *,'bp'
     call shr_file_setLogUnit (shrlogunit)
     call shr_file_setLogLevel(shrloglev)
 
@@ -835,7 +836,8 @@ end subroutine atm_final_mct
           cam_in(c)%wsy(i)       = -x2a_a%rAttr(index_x2a_Faxx_tauy,ig)     
           cam_in(c)%lhf(i)       = -x2a_a%rAttr(index_x2a_Faxx_lat, ig)     
           cam_in(c)%shf(i)       = -x2a_a%rAttr(index_x2a_Faxx_sen, ig)     
-          cam_in(c)%lwup(i)      = -x2a_a%rAttr(index_x2a_Faxx_lwup,ig)    
+          cam_in(c)%lwup(i)      = -x2a_a%rAttr(index_x2a_Faxx_lwup,ig)
+          if(i==8 .and. c==57)print *,'badx2a_a', x2a_a%rAttr(index_x2a_Faxx_lwup, ig)    
           cam_in(c)%cflx(i,1)    = -x2a_a%rAttr(index_x2a_Faxx_evap,ig)
           if(i==15 .and. c==208)then
               print *,'in atm_import', cam_in(c)%cflx(i,1), x2a_a%rAttr(index_x2a_Faxx_evap,ig), index_x2a_Faxx_evap, ig
@@ -845,6 +847,7 @@ end subroutine atm_final_mct
           cam_in(c)%asdif(i)     =  x2a_a%rAttr(index_x2a_Sx_avsdf, ig)  
           cam_in(c)%aldif(i)     =  x2a_a%rAttr(index_x2a_Sx_anidf, ig)
           cam_in(c)%ts(i)        =  x2a_a%rAttr(index_x2a_Sx_t,     ig)  
+          if(c==57 .and. i==8)print *,'the ts', cam_in(c)%ts(i), index_x2a_Sx_t, ig
           cam_in(c)%sst(i)       =  x2a_a%rAttr(index_x2a_So_t,     ig)             
           cam_in(c)%snowhland(i) =  x2a_a%rAttr(index_x2a_Sl_snowh, ig)  
           cam_in(c)%snowhice(i)  =  x2a_a%rAttr(index_x2a_Si_snowh, ig)  
@@ -998,6 +1001,7 @@ end subroutine atm_final_mct
              ncols = get_ncols_p(c)
              do i=1,ncols
                 cam_in(c)%lwup(i) = shr_const_stebol*(cam_in(c)%ts(i)**4)
+                if(c==57 .and. i==8)print *, 'cam_infirst_time', cam_in(c)%lwup(i), shr_const_stebol, cam_in(c)%ts(i)
              end do
           end do
        end if

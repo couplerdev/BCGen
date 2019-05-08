@@ -379,7 +379,6 @@
       real(kind=r8), allocatable, save :: plankbndst(:,:,:)                ! 
       real(kind=r8), allocatable, save :: pwvcmst(:,:)                     ! precipitable water vapor (cm)
 
-
 ! Allocate storage arrays
       if (.not.allocated(taugst)) allocate (taugst(pcols,nlay+1,ngptlw,begchunk:endchunk))
       if (.not.allocated(fracst)) allocate (fracst(pcols,nlay+1,ngptlw,begchunk:endchunk))
