@@ -582,8 +582,11 @@ chnk_loop2 : &
 
 ! Compute energy and water integrals of input state
        pbuf_chnk => pbuf_get_chunk(pbuf2d, lchnk)
+       if(lchnk==57)then
+           print *,'dpphy', phys_tend(lchnk)%dudt(8,1)
+       end if
        call check_energy_timestep_init(phys_state(lchnk), phys_tend(lchnk), pbuf_chnk)
-
+       if(lchnk==57)print *, 'afphy', phys_tend(lchnk)%dudt(8,1)
     end do
     call t_stopf('derived_fields')
 
@@ -861,10 +864,12 @@ chnk_loop2 : &
 
        call t_barrierf('sync_uv3s_update', grid%commxy)
        call t_startf('uv3s_update')
+       print *,'the u3sxy bf', u3sxy(3,25,1)
        if (iam .lt. grid%npes_xy) then
           call uv3s_update( grid, dudtxy, u3sxy, dvdtxy, v3sxy, dt5 )
        end if  ! (iam .lt. grid%npes_xy)
        call t_stopf('uv3s_update')
+       print *,'the u3sxy af', u3sxy(3,25,1)
 
 ! -------------------------------------------------------------------------
 ! Compute pt, q3, pe, delp, ps, peln, pkz and pk.

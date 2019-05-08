@@ -494,7 +494,7 @@
          l = lev - 1
 
 ! Calculate heating rates at model layers
-         htr(l)=heatfac*(fnet(l)-fnet(lev))/(pz(l)-pz(lev)) 
+         htr(l)=heatfac*(fnet(l)-fnet(lev))/(pz(l)-pz(lev))
          htrc(l)=heatfac*(fnetc(l)-fnetc(lev))/(pz(l)-pz(lev)) 
       enddo
 

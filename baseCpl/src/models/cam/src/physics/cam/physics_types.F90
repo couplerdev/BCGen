@@ -399,7 +399,7 @@ contains
                tend%dtdt(:ncol,k) = tend%dtdt(:ncol,k) + ptend%s(:ncol,k)/cpairv(:ncol,k,state%lchnk)
        end do
     end if
-
+   
     ! Derive new temperature and geopotential fields if heating or water tendency not 0.
     if (ptend%ls .or. ptend%lq(1)) then
        call geopotential_dse(  &

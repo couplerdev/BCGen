@@ -16,7 +16,7 @@ IGNORE_LINE_TRUNCAT := -ffree-line-length-none
 
 include ../../Makefile.conf
 
-INCLFLAG := -I${INCLDIR} -I${ESMF_MOD} -I${PIO_INCL}
+INCLFLAG := -I${INCLDIR} -I${ESMF_MOD}
 
 null  :=
 space := $(null) $(null)

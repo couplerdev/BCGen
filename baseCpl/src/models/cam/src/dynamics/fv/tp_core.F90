@@ -229,7 +229,7 @@ CONTAINS
     jn2g0  = min(jm-1,jlast)        !  No ghosting
     jn2gng = min(jm-1,jlast+ng)     !  Number needed on N
     iad = 1
-
+    print *, 'the cv', crx(10, 34), crx(10, 32)
     call xtpv(im,  ffsl, wk1v, q, crx, iad, crx,        &
              cosp, 0, dm, qtmpv, al, ar, a6,            &
              jfirst, jlast, js2gng, jn2gng, jm,         &
@@ -273,7 +273,7 @@ CONTAINS
            wk1v(i,j) = q(i,j) +D0_5*va(i,j)*(q(i,jp)-q(i,jp+1))
         enddo
       enddo
-
+      print *, 'second cv', crx(10, 34), crx(10, 33)
       call xtpv(im,  ffsl, fx, wk1v, crx, iord, xfx,        &
                cosp, id, dm, qtmpv, al, ar, a6,             &
                jfirst, jlast, js2g0, jn2g0, jm,             &
@@ -299,7 +299,7 @@ CONTAINS
                 jl4, jh4, jl5, jh5,                              &
                 jl7, jh7, jl11, jh11)
 !-----------------------------------------------------------------------
-
+use mpi
  implicit none
  
 ! !INPUT PARAMETERS:
@@ -357,6 +357,8 @@ CONTAINS
    real (r8) al(-im/3:im+im/3)
    real (r8) ar(-im/3:im+im/3)
    real (r8) a6(-im/3:im+im/3)
+   integer :: ierr !debug
+
 
    imp = im + 1
 
@@ -364,7 +366,6 @@ CONTAINS
 !$omp parallel do default(shared) private(j,i,iuw,iue,iu,itmp,isave,tmp,qmax,qmin,dm,rut,ist,al,ar,a6)
 #endif
   do j = jlow, jhigh
-
    do i=1,im
       qtmpv(i,j) = qv(i,j)
    enddo
@@ -383,7 +384,6 @@ CONTAINS
 ! Figure out ghost zone for the eastern edge:
       iue = im - cv(im,j)
       iue = max(imp, iue)
-
       do i=imp, iue
          qtmpv(i,j) = qv(i-im,j)
       enddo
@@ -465,8 +465,10 @@ CONTAINS
       qtmpv(  0,j) = qv(im,j)
 
       if(iord == 1 .or. cosav(j) < cos_upw) then
+         if(jhigh==45)print *, 'xtpv 5', j, size(qtmpv), maxval(cv), minval(cv), cv(10,34), cv(10, 35), cv(9,24)
          do i=1,im
             iu = real(i,r8) - cv(i,j)
+            !if(jhigh==45)print *, 'the iu:', iu, i, cv(i, j), i, j
             fxv(i,j) = mfxv(i,j)*qtmpv(iu,j)
          enddo
       else
@@ -504,7 +506,9 @@ CONTAINS
    endif
 
   enddo
-
+  call MPI_Barrier(MPI_COMM_WORLD, ierr)
+  print *, 'the end'
+  call MPI_Barrier(MPI_COMM_WORLD, ierr)
    return
 !EOC
  end subroutine xtpv

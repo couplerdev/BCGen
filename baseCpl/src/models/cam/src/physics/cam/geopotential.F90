@@ -108,7 +108,9 @@ contains
 	                                                               rair(i,k)*hkk(i))
 
           t (i,k) = tv / tvfac
-
+          if(i==8 .and. k==1 .and. isnan(t(i,k)))then
+              print *, 'dsenan', t(i,k), dse(i,k), phis(i), gravit,zi(i,k+1),cpair(i,k), rair(i,k),hkk(i), tvfac
+          end if
           zm(i,k) = zi(i,k+1) + rog(i,k) * tv * hkk(i)
           zi(i,k) = zi(i,k+1) + rog(i,k) * tv * hkl(i)
        end do

@@ -387,7 +387,7 @@ subroutine stepon_run1( dtime_out, phys_state, phys_tend, pbuf2d,        &
 #if (! defined SPMD)
    integer  :: mpicom = 0
 #endif
-
+   print *, 'in stepon', dyn_in%u3s(10,35,1)
    dtime_out = dtime
    dyn_state => get_dyn_state()
 
@@ -437,8 +437,10 @@ subroutine stepon_run1( dtime_out, phys_state, phys_tend, pbuf2d,        &
    !----------------------------------------------------------
    call t_barrierf('sync_d_p_coupling', mpicom)
    call t_startf('d_p_coupling')
+   !print *, 'phystend bf', phys_tend(57)%dudt(8,1)
    call d_p_coupling(dyn_state%grid, phys_state, phys_tend,  pbuf2d, dyn_out)
    call t_stopf('d_p_coupling')
+   !print *,'phystend', phys_tend(57)%dudt(8,1)
 
 !EOC
 end subroutine stepon_run1

@@ -58,7 +58,7 @@ subroutine flds_init(metaData, ierr)
     metaData%flds_xao_states = "So_tref:So_qref:So_ssq:So_re:So_u10:So_duu10n:So_ustar"
     metaData%flds_ocn2x_fluxes = "Fioo_q"
     metaData%flds_x2atm_fluxes = "Faxx_taux:Faxx_tauy:Faxx_lat:Faxx_sen:Faxx_lwup:Faxx_evap:Fall_flxdst1:Fall_flxdst2:Fall_flxdst3:Fall_flxdst4"
-    metaData%flds_x2rof = "Flrl_rofliq:Flrl_rofice:"
+    metaData%flds_x2rof = "Flrl_rofliq:Flrl_rofice"
 
     fldDesc%shortname = "Faxa_rainl"
     fldDesc%longname = " Large-scale (stable) precipitation rate"
