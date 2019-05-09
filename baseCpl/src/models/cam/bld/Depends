@@ -1,0 +1,813 @@
+# Declare all module files used to build each object.
+FVperf_module.o : dynamics_vars.mod mod_comm.mod   
+abortutils.o :    
+advect_tend.o : dynamics_vars.mod constituents.mod time_manager.mod cam_history.mod   
+aer_rad_props.o : rad_constituents.mod abortutils.mod radconstants.mod physics_types.mod ref_pres.mod phys_control.mod wv_saturation.mod physics_buffer.mod ppgrid.mod physconst.mod modal_aer_opt.mod cam_history_support.mod cam_history.mod   
+aerodep_flx.o : mpishorthand.mod tracer_data.mod spmd_utils.mod abortutils.mod physics_types.mod namelist_utils.mod modal_aero_deposition.mod physics_buffer.mod ppgrid.mod cam_logfile.mod camsrfexch.mod units.mod cam_history.mod   
+aerosol_intr.o : mpishorthand.mod rad_constituents.mod abortutils.mod constituents.mod mz_aerosols_intr.mod mo_chem_utls.mod phys_grid.mod progseasalts_intr.mod drydep_mod.mod spmd_utils.mod dust_intr.mod physics_types.mod namelist_utils.mod phys_control.mod modal_aero_wateruptake.mod physics_buffer.mod time_manager.mod cam_logfile.mod ppgrid.mod modal_aero_calcsize.mod camsrfexch.mod physconst.mod wetdep.mod carma_flags_mod.mod units.mod   
+aircraft_emit.o : mpishorthand.mod abortutils.mod constituents.mod phys_grid.mod cam_history.mod tracer_data.mod spmd_utils.mod physics_types.mod namelist_utils.mod physics_buffer.mod string_utils.mod ppgrid.mod cam_logfile.mod physconst.mod units.mod   
+aoa_tracers.o : mpishorthand.mod abortutils.mod constituents.mod phys_grid.mod dyn_grid.mod cam_history.mod spmd_utils.mod physics_types.mod namelist_utils.mod time_manager.mod dycore.mod cam_logfile.mod ppgrid.mod physconst.mod units.mod   
+apex_subs.o : abortutils.mod cam_logfile.mod   
+atm_comp_mct.o : mpishorthand.mod abortutils.mod scammod.mod iofilemod.mod constituents.mod mo_chem_utls.mod phys_grid.mod dyn_grid.mod cam_comp.mod cam_history.mod cam_control_mod.mod dust_intr.mod spmd_utils.mod cam_restart.mod cam_cpl_indices.mod cam_pio_utils.mod co2_cycle.mod radiation.mod phys_control.mod runtime_opts.mod time_manager.mod seq_drydep_mod.mod cam_logfile.mod ppgrid.mod offline_driver.mod physconst.mod camsrfexch.mod cam_instance.mod chemistry.mod filenames.mod pmgrid.mod   
+benergy.o : dynamics_vars.mod mod_comm.mod cam_logfile.mod   
+bnddyi.o : abortutils.mod cam_logfile.mod   
+boundarydata.o : mpishorthand.mod abortutils.mod error_messages.mod ref_pres.mod iofilemod.mod spmd_utils.mod physics_types.mod time_manager.mod cam_logfile.mod ppgrid.mod interpolate_data.mod physconst.mod   
+buffer.o : abortutils.mod cam_logfile.mod   
+cam3_aero_data.o : mpishorthand.mod abortutils.mod error_messages.mod scammod.mod iofilemod.mod phys_grid.mod spmd_utils.mod physics_types.mod namelist_utils.mod infnan.mod physics_buffer.mod time_manager.mod cam_logfile.mod boundarydata.mod ppgrid.mod interpolate_data.mod physconst.mod units.mod   
+cam3_ozone_data.o : mpishorthand.mod abortutils.mod cam_history.mod spmd_utils.mod physics_types.mod namelist_utils.mod physics_buffer.mod boundarydata.mod cam_logfile.mod ppgrid.mod physconst.mod units.mod   
+cam_comp.o : mpishorthand.mod abortutils.mod scammod.mod cam_initfiles.mod history_scam.mod cam_history.mod inital.mod cam_control_mod.mod spmd_utils.mod cam_restart.mod cam_pio_utils.mod physics_types.mod infnan.mod physpkg.mod time_manager.mod physics_buffer.mod dyn_comp.mod stepon.mod dycore.mod cam_logfile.mod ppgrid.mod offline_driver.mod camsrfexch.mod cam_instance.mod history_defaults.mod units.mod pmgrid.mod   
+cam_control_mod.o :    
+cam_cpl_indices.o : shr_megan_mod.mod seq_drydep_mod.mod   
+cam_diagnostics.o : mpishorthand.mod abortutils.mod scammod.mod check_energy.mod constituents.mod constituent_burden.mod cam_control_mod.mod cam_history.mod spmd_utils.mod co2_cycle.mod physics_types.mod infnan.mod namelist_utils.mod wv_saturation.mod phys_control.mod time_manager.mod physics_buffer.mod dycore.mod ppgrid.mod interpolate_data.mod physconst.mod camsrfexch.mod tidal_diag.mod chemistry.mod units.mod   
+cam_history.o : hycoef.mod abortutils.mod cam_history_buffers.mod scammod.mod chem_surfvals.mod iofilemod.mod rgrid.mod phys_grid.mod mo_solar_parms.mod dyn_grid.mod cam_history_support.mod sat_hist.mod interp_mod.mod cam_control_mod.mod spmd_utils.mod cam_pio_utils.mod solar_data.mod phys_control.mod time_manager.mod cosp_share.mod string_utils.mod dycore.mod cam_logfile.mod ppgrid.mod physconst.mod cam_instance.mod pspect.mod filenames.mod units.mod pmgrid.mod   
+cam_history_buffers.o : abortutils.mod phys_grid.mod dyn_grid.mod cam_history_support.mod cam_pio_utils.mod time_manager.mod physconst.mod   
+cam_history_support.o : abortutils.mod spmd_utils.mod cam_logfile.mod   
+cam_initfiles.o : iofilemod.mod cam_pio_utils.mod readinitial.mod filenames.mod   
+cam_instance.o :    
+cam_logfile.o :    
+cam_pio_utils.o : abortutils.mod phys_grid.mod dyn_grid.mod cam_history_support.mod cam_control_mod.mod spmd_utils.mod ppgrid.mod dycore.mod cam_logfile.mod cam_instance.mod   
+cam_restart.o : mpishorthand.mod abortutils.mod ref_pres.mod chem_surfvals.mod iofilemod.mod rgrid.mod phys_grid.mod cam_history.mod spmd_utils.mod cam_pio_utils.mod spmd_dyn.mod radiation.mod time_manager.mod physics_buffer.mod dyn_comp.mod restart_dynamics.mod dycore.mod cam_logfile.mod ppgrid.mod restart_physics.mod camsrfexch.mod cam_instance.mod filenames.mod units.mod pmgrid.mod   
+camsrfexch.o : abortutils.mod chem_surfvals.mod comsrf.mod constituents.mod phys_grid.mod cam_control_mod.mod cam_history.mod cam_cpl_indices.mod co2_cycle.mod physics_types.mod infnan.mod physics_buffer.mod seq_drydep_mod.mod cam_logfile.mod ppgrid.mod physconst.mod   
+carma_flags_mod.o : mpishorthand.mod abortutils.mod carma_model_flags_mod.mod spmd_utils.mod namelist_utils.mod units.mod   
+carma_intr.o : hycoef.mod scammod.mod constituents.mod physics_types.mod time_manager.mod physics_buffer.mod ppgrid.mod camsrfexch.mod pmgrid.mod   
+carma_model_flags_mod.o : mpishorthand.mod abortutils.mod spmd_utils.mod namelist_utils.mod units.mod   
+cd_core.o : mpishorthand.mod abortutils.mod pft_module.mod sw_core.mod spmd_utils.mod dynamics_vars.mod metdata.mod mod_comm.mod fv_control_mod.mod cam_logfile.mod fvperf_module.mod   
+cfc11star.o : abortutils.mod constituents.mod cam_history.mod spmd_utils.mod physics_types.mod infnan.mod physics_buffer.mod ppgrid.mod cam_logfile.mod   
+charge_neutrality.o : chem_mods.mod constituents.mod mo_chem_utls.mod ppgrid.mod cam_logfile.mod physconst.mod   
+check_energy.o : abortutils.mod constituents.mod phys_gmean.mod cam_history.mod spmd_utils.mod physics_types.mod phys_control.mod physics_buffer.mod time_manager.mod cam_logfile.mod ppgrid.mod physconst.mod   
+chem_mods.o :    
+chem_surfvals.o : mpishorthand.mod abortutils.mod error_messages.mod iofilemod.mod constituents.mod spmd_utils.mod physics_types.mod infnan.mod namelist_utils.mod time_manager.mod ppgrid.mod cam_logfile.mod interpolate_data.mod mo_flbc.mod physconst.mod m_types.mod units.mod   
+chemistry.o : mpishorthand.mod mo_srf_emissions.mod shr_megan_mod.mod iofilemod.mod mo_drydep.mod phys_grid.mod mo_chem_utls.mod llnl_o1d_to_2oh_adj.mod tracer_data.mod spmd_utils.mod infnan.mod physconst.mod gas_wetdep_opts.mod aerosol_intr.mod tracer_srcs.mod chem_surfvals.mod constituents.mod cfc11star.mod upper_bc.mod mo_chemini.mod cam_history.mod cam_cpl_indices.mod namelist_utils.mod linoz_data.mod ppgrid.mod cam_logfile.mod mo_aurora.mod abortutils.mod chlorine_loading_data.mod mo_sulf.mod mo_tracname.mod spedata.mod mz_aerosols_intr.mod mo_jlong.mod progseasalts_intr.mod mo_solar_parms.mod short_lived_species.mod mo_strato_sad.mod dust_intr.mod mo_sad.mod tracer_cnst.mod physics_types.mod mo_neu_wetdep.mod mo_gas_phase_chemdr.mod mo_flbc.mod mo_extfrc.mod m_types.mod mo_sim_dat.mod lin_strat_chem.mod modal_aero_initialize_data.mod mo_jshort.mod aerodep_flx.mod chem_mods.mod mo_constants.mod mo_ghg_chem.mod mo_photo.mod tropopause.mod phys_control.mod physics_buffer.mod time_manager.mod modal_aero_data.mod camsrfexch.mod units.mod mo_setsoa.mod   
+chlorine_loading_data.o : iofilemod.mod spmd_utils.mod physconst.mod cam_pio_utils.mod linoz_data.mod cam_logfile.mod abortutils.mod time_manager.mod   
+cldwat.o : mpishorthand.mod comsrf.mod phys_grid.mod spmd_utils.mod wv_saturation.mod physconst.mod pmgrid.mod ref_pres.mod namelist_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod cam_control_mod.mod dycore.mod units.mod   
+cldwat2m_macro.o : spmd_utils.mod wv_saturation.mod physconst.mod ref_pres.mod constituents.mod cam_history.mod cam_logfile.mod ppgrid.mod cloud_fraction.mod abortutils.mod time_manager.mod   
+cloud_cover_diags.o : cam_history.mod ppgrid.mod phys_control.mod   
+cloud_diagnostics.o : conv_water.mod physconst.mod cloud_cover_diags.mod constituents.mod cam_history.mod radiation.mod ppgrid.mod pkg_cldoptics.mod physics_types.mod phys_control.mod physics_buffer.mod   
+cloud_fraction.o : mpishorthand.mod phys_grid.mod spmd_utils.mod wv_saturation.mod physconst.mod ref_pres.mod namelist_utils.mod cam_logfile.mod ppgrid.mod chemistry.mod abortutils.mod dycore.mod phys_control.mod physics_buffer.mod units.mod   
+cloud_rad_props.o : mpishorthand.mod rad_constituents.mod iofilemod.mod spmd_utils.mod radconstants.mod constituents.mod cam_logfile.mod ppgrid.mod abortutils.mod oldcloud.mod physics_types.mod error_messages.mod slingo.mod physics_buffer.mod ebert_curry.mod   
+clubb_intr.o : rad_constituents.mod mpishorthand.mod scammod.mod phys_grid.mod spmd_utils.mod physconst.mod hb_diff.mod ref_pres.mod constituents.mod pbl_utils.mod cam_history.mod namelist_utils.mod cam_logfile.mod ppgrid.mod cldwat2m_macro.mod abortutils.mod physics_types.mod error_messages.mod phys_control.mod time_manager.mod physics_buffer.mod modal_aero_data.mod camsrfexch.mod trb_mtn_stress.mod units.mod   
+clybry_fam.o : mo_chem_utls.mod constituents.mod ppgrid.mod short_lived_species.mod chem_mods.mod physics_buffer.mod time_manager.mod   
+cmparray_mod.o :    
+co2_cycle.o : mpishorthand.mod spmd_utils.mod physconst.mod chem_surfvals.mod constituents.mod co2_data_flux.mod cam_history.mod namelist_utils.mod ppgrid.mod abortutils.mod physics_types.mod time_manager.mod units.mod   
+co2_data_flux.o : mpishorthand.mod iofilemod.mod phys_grid.mod spmd_utils.mod interpolate_data.mod cam_logfile.mod ppgrid.mod abortutils.mod error_messages.mod time_manager.mod   
+commap.o : pmgrid.mod   
+comspe.o : pmgrid.mod pspect.mod   
+comsrf.o : infnan.mod ppgrid.mod abortutils.mod cam_control_mod.mod   
+constituent_burden.o : physconst.mod constituents.mod cam_history.mod ppgrid.mod physics_types.mod   
+constituents.o : spmd_utils.mod physconst.mod cam_logfile.mod abortutils.mod   
+conv_water.o : physconst.mod constituents.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod phys_control.mod physics_buffer.mod   
+convect_deep.o : spmd_utils.mod physconst.mod pmgrid.mod constituents.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod zm_conv_intr.mod phys_control.mod physics_buffer.mod   
+convect_shallow.o : hk_conv.mod spmd_utils.mod wv_saturation.mod physconst.mod pmgrid.mod constituents.mod uwshcu.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod zm_conv.mod phys_control.mod time_manager.mod physics_buffer.mod   
+cosp_share.o : ppgrid.mod   
+cospsimulator_intr.o : rad_constituents.mod mpishorthand.mod phys_grid.mod spmd_utils.mod wv_saturation.mod cmparray_mod.mod interpolate_data.mod physconst.mod constituents.mod cam_history_support.mod cam_history.mod cam_pio_utils.mod namelist_utils.mod ppgrid.mod abortutils.mod physics_types.mod cosp_share.mod error_messages.mod phys_control.mod time_manager.mod physics_buffer.mod camsrfexch.mod units.mod   
+cpslec.o : ppgrid.mod   
+ctem.o : mpishorthand.mod spmd_utils.mod interpolate_data.mod physconst.mod pmgrid.mod cam_history.mod namelist_utils.mod cam_logfile.mod hycoef.mod abortutils.mod dynamics_vars.mod parutilitiesmodule.mod units.mod   
+d2a3dijk.o : dynamics_vars.mod parutilitiesmodule.mod mod_comm.mod   
+d2a3dikj.o : cam_logfile.mod dynamics_vars.mod parutilitiesmodule.mod mod_comm.mod   
+dadadj.o : phys_grid.mod physconst.mod cam_logfile.mod ppgrid.mod abortutils.mod cam_control_mod.mod   
+datetime.o :    
+debugutilitiesmodule.o : cam_logfile.mod   
+decompmodule.o : cam_logfile.mod debugutilitiesmodule.mod debug.h  
+diag_dynvar_ic.o : constituents.mod cam_history.mod dynamics_vars.mod   
+diag_module.o : dynamics_vars.mod mod_comm.mod   
+diffusion_solver.o : cam_logfile.mod phys_debug_util.mod phys_control.mod time_manager.mod   
+dp_coupling.o : rgrid.mod phys_grid.mod ctem.mod physconst.mod pmgrid.mod constituents.mod gravity_waves_sources.mod cam_logfile.mod ppgrid.mod abortutils.mod zonal_mean.mod check_energy.mod geopotential.mod dynamics_vars.mod physics_types.mod spmd_dyn.mod dyn_comp.mod phys_control.mod metdata.mod physics_buffer.mod   
+drv_input_data.o : iofilemod.mod spmd_utils.mod pmgrid.mod cam_pio_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod ncdio_atm.mod time_manager.mod   
+dryairm.o : mean_module.mod constituents.mod cam_logfile.mod cam_control_mod.mod dynamics_vars.mod   
+drydep_mod.o : ppgrid.mod   
+dust_intr.o : iofilemod.mod phys_grid.mod mo_chem_utls.mod spmd_utils.mod interpolate_data.mod physconst.mod constituents.mod cam_history.mod cam_pio_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod wetdep.mod dust_sediment_mod.mod aerodep_flx.mod mo_constants.mod drydep_mod.mod phys_control.mod modal_aero_data.mod camsrfexch.mod   
+dust_sediment_mod.o : physconst.mod cam_logfile.mod ppgrid.mod abortutils.mod   
+dycore.o : pmgrid.mod   
+dyn_comp.o : mpishorthand.mod ctem.mod spmd_utils.mod infnan.mod diag_module.mod physconst.mod pmgrid.mod constituents.mod cam_history.mod fv_control_mod.mod ppgrid.mod cam_logfile.mod hycoef.mod abortutils.mod dynamics_vars.mod spmd_dyn.mod dycore.mod parutilitiesmodule.mod phys_control.mod metdata.mod time_manager.mod mod_comm.mod pfixer.mod   
+dyn_grid.o : rgrid.mod spmd_utils.mod physconst.mod pmgrid.mod commap.mod cam_logfile.mod hycoef.mod abortutils.mod spmd_dyn.mod   
+dyn_internal_state.o : dynamics_vars.mod   
+dynamics_vars.o : mpishorthand.mod pft_module.mod fv_control_mod.mod cam_logfile.mod decompmodule.mod parutilitiesmodule.mod ghostmodule.mod mod_comm.mod   
+ebert_curry.o : mpishorthand.mod iofilemod.mod spmd_utils.mod radconstants.mod physconst.mod constituents.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod error_messages.mod physics_buffer.mod   
+eddy_diff.o : spmd_utils.mod wv_saturation.mod physconst.mod ref_pres.mod pbl_utils.mod cam_history.mod ppgrid.mod cam_logfile.mod abortutils.mod phys_debug_util.mod diffusion_solver.mod error_messages.mod phys_control.mod time_manager.mod   
+efield.o : iofilemod.mod spmd_utils.mod physconst.mod cam_logfile.mod abortutils.mod mag_parms.mod mo_solar_parms.mod cam_control_mod.mod time_manager.mod sv_decomp.mod units.mod   
+epvd.o : mapz_module.mod dynamics_vars.mod parutilitiesmodule.mod mod_comm.mod   
+error_messages.o : cam_logfile.mod abortutils.mod   
+euvac.o : iofilemod.mod spmd_utils.mod cam_pio_utils.mod cam_logfile.mod abortutils.mod error_messages.mod   
+exbdrift.o : phys_grid.mod physconst.mod cam_history.mod cam_logfile.mod ppgrid.mod cam_control_mod.mod mo_apex.mod efield.mod time_manager.mod physics_buffer.mod   
+fft99.o : cam_logfile.mod   
+filenames.o : cam_logfile.mod abortutils.mod time_manager.mod   
+fill_module.o : cam_logfile.mod   
+flux_avg.o : phys_grid.mod phys_debug.mod ppgrid.mod physics_types.mod physics_buffer.mod camsrfexch.mod   
+fv_control_mod.o : mpishorthand.mod spmd_utils.mod namelist_utils.mod cam_logfile.mod abortutils.mod units.mod   
+fv_prints.o : mpishorthand.mod phys_grid.mod constituents.mod ppgrid.mod cam_logfile.mod dynamics_vars.mod physics_types.mod parutilitiesmodule.mod phys_gmean.mod camsrfexch.mod   
+gas_wetdep_opts.o : mpishorthand.mod spmd_utils.mod constituents.mod namelist_utils.mod cam_logfile.mod abortutils.mod units.mod   
+gauaw_mod.o : abortutils.mod   
+geopk.o : decompmodule.mod dynamics_vars.mod spmd_dyn.mod parutilitiesmodule.mod mod_comm.mod   
+geopotential.o : ppgrid.mod dycore.mod   
+ghg_data.o : physconst.mod chem_surfvals.mod ppgrid.mod abortutils.mod physics_types.mod error_messages.mod physics_buffer.mod   
+ghostmodule.o : decompmodule.mod pilgrim.h debugutilitiesmodule.mod debug.h  
+gravity_waves_sources.o : physconst.mod pmgrid.mod ppgrid.mod hycoef.mod dynamics_vars.mod mod_comm.mod   
+gw_drag.o : mpishorthand.mod scammod.mod phys_grid.mod spmd_utils.mod cam_history.mod namelist_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod dycore.mod phys_control.mod physics_buffer.mod units.mod   
+hb_diff.o : spmd_utils.mod phys_debug.mod pbl_utils.mod cam_logfile.mod ppgrid.mod   
+hirsbt.o : physconst.mod hirsbtpar.mod ppgrid.mod time_manager.mod   
+hirsbtpar.o :    
+history_defaults.o : pmgrid.mod constituents.mod cam_history.mod ppgrid.mod dycore.mod phys_control.mod   
+history_scam.o : scammod.mod pmgrid.mod constituents.mod cam_history.mod ppgrid.mod   
+hk_conv.o : mpishorthand.mod phys_grid.mod spmd_utils.mod wv_saturation.mod constituents.mod namelist_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod dycore.mod units.mod   
+horizontal_interpolate.o : scammod.mod cam_logfile.mod abortutils.mod   
+hycoef.o : spmd_utils.mod pmgrid.mod cam_logfile.mod abortutils.mod   
+infnan.o :    
+inidat.o : mpishorthand.mod aoa_tracers.mod phys_grid.mod spmd_utils.mod tracers.mod carma_intr.mod physconst.mod aerosol_intr.mod pmgrid.mod constituents.mod dyn_grid.mod cam_history_support.mod commap.mod fv_control_mod.mod cam_logfile.mod chemistry.mod abortutils.mod ncdio_atm.mod cam_control_mod.mod dynamics_vars.mod spmd_dyn.mod stratiform.mod dyn_comp.mod dyn_internal_state.mod microp_driver.mod co2_cycle.mod phys_control.mod mod_comm.mod   
+inital.o : phys_grid.mod ref_pres.mod chem_surfvals.mod cam_initfiles.mod startup_initialconds.mod dynamics_vars.mod dyn_comp.mod dyn_internal_state.mod   
+initcom.o : rgrid.mod spmd_utils.mod physconst.mod pmgrid.mod commap.mod cam_logfile.mod abortutils.mod pspect.mod   
+interp_mod.o : abortutils.mod   
+interpolate_data.o : scammod.mod cam_logfile.mod abortutils.mod   
+intp_util.o : phys_grid.mod ppgrid.mod cam_logfile.mod abortutils.mod   
+ioFileMod.o : spmd_utils.mod cam_logfile.mod abortutils.mod   
+iondrag.o : ppgrid.mod abortutils.mod physics_types.mod physics_buffer.mod   
+ionosphere.o : abortutils.mod physics_types.mod physics_buffer.mod   
+iop_surf.o : scammod.mod physconst.mod ppgrid.mod camsrfexch.mod   
+lin_strat_chem.o : mo_chem_utls.mod spmd_utils.mod physconst.mod cam_history.mod linoz_data.mod cam_logfile.mod ppgrid.mod abortutils.mod chlorine_loading_data.mod physics_types.mod physics_buffer.mod   
+linoz_data.o : tracer_data.mod spmd_utils.mod physconst.mod cam_history.mod string_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod physics_types.mod error_messages.mod physics_buffer.mod   
+llnl_O1D_to_2OH_adj.o : mo_chem_utls.mod spmd_utils.mod ppgrid.mod cam_logfile.mod mo_setinv.mod chem_mods.mod   
+m_rxt_id.o :    
+m_sad_data.o :    
+m_spc_id.o :    
+m_types.o :    
+macrop_driver.o : mpishorthand.mod convect_shallow.mod spmd_utils.mod physconst.mod ref_pres.mod constituents.mod cam_history.mod namelist_utils.mod cam_logfile.mod ppgrid.mod cldwat2m_macro.mod cloud_fraction.mod abortutils.mod physics_types.mod phys_control.mod time_manager.mod physics_buffer.mod units.mod   
+mag_parms.o : mo_solar_parms.mod   
+majorsp_diffusion.o : ppgrid.mod abortutils.mod physics_types.mod   
+mapz_module.o : cam_logfile.mod abortutils.mod fvperf_module.mod   
+marsaglia.o :    
+mcica_random_numbers.o :    
+mcica_subcol_gen_lw.o : parrrtm.mod rrlw_con.mod abortutils.mod mcica_random_numbers.mod rrlw_wvn.mod rrlw_vsn.mod mersennetwister.mod   
+mcica_subcol_gen_sw.o : rrsw_wvn.mod abortutils.mod parrrsw.mod rrsw_con.mod mcica_random_numbers.mod rrsw_vsn.mod mersennetwister.mod   
+mean_module.o : commap.mod cam_logfile.mod dynamics_vars.mod parutilitiesmodule.mod   
+memstuff.o :    
+metdata.o : mpishorthand.mod iofilemod.mod phys_grid.mod spmd_utils.mod infnan.mod pmgrid.mod cam_history.mod cam_pio_utils.mod namelist_utils.mod string_utils.mod cam_logfile.mod ppgrid.mod hycoef.mod abortutils.mod ncdio_atm.mod cam_control_mod.mod dynamics_vars.mod physics_types.mod time_manager.mod mod_comm.mod camsrfexch.mod units.mod   
+micro_mg1_0.o : wv_sat_methods.mod   
+micro_mg1_5.o : wv_sat_methods.mod   
+micro_mg_cam.o : mpishorthand.mod micro_mg1_5.mod spmd_utils.mod conv_water.mod physconst.mod ref_pres.mod constituents.mod cam_history.mod namelist_utils.mod cam_logfile.mod ppgrid.mod cldwat2m_macro.mod abortutils.mod physics_types.mod error_messages.mod micro_mg1_0.mod phys_control.mod time_manager.mod physics_buffer.mod units.mod   
+microp_aero.o : mpishorthand.mod rad_constituents.mod spmd_utils.mod wv_saturation.mod physconst.mod ref_pres.mod constituents.mod nucleate_ice.mod cam_history.mod namelist_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod ndrop.mod phys_control.mod physics_buffer.mod ndrop_bam.mod units.mod   
+microp_driver.o : cam_logfile.mod ppgrid.mod cldwat2m_macro.mod abortutils.mod micro_mg_cam.mod physics_types.mod phys_control.mod physics_buffer.mod   
+mo_adjrxt.o : ppgrid.mod chem_mods.mod   
+mo_aero_settling.o : physconst.mod cam_history.mod ppgrid.mod chem_mods.mod   
+mo_aerosols.o : mo_chem_utls.mod spmd_utils.mod cam_history.mod cam_logfile.mod ppgrid.mod chem_mods.mod   
+mo_airglow.o : mo_chem_utls.mod physconst.mod cam_history.mod ppgrid.mod abortutils.mod chem_mods.mod   
+mo_airmas.o : ppgrid.mod mo_params.mod   
+mo_airplane.o : iofilemod.mod phys_grid.mod mo_chem_utls.mod spmd_utils.mod interpolate_data.mod cam_history.mod cam_pio_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod chem_mods.mod phys_gmean.mod mo_constants.mod   
+mo_apex.o : phys_grid.mod spmd_utils.mod physconst.mod dyn_grid.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod cam_control_mod.mod   
+mo_aurora.o : phys_grid.mod mo_chem_utls.mod spmd_utils.mod physconst.mod pmgrid.mod ref_pres.mod constituents.mod dyn_grid.mod cam_history.mod ppgrid.mod cam_logfile.mod mag_parms.mod mo_apex.mod chem_mods.mod physics_buffer.mod   
+mo_calcoe.o : ppgrid.mod   
+mo_chem_utls.o : gas_wetdep_opts.mod mo_tracname.mod chem_mods.mod   
+mo_chemini.o : mo_srf_emissions.mod mo_drydep.mod mo_chem_utls.mod mo_setext.mod spmd_utils.mod mo_aerosols.mod mo_exp_sol.mod mo_mass_xforms.mod tracer_srcs.mod pmgrid.mod mo_imp_sol.mod mo_airplane.mod seq_drydep_mod.mod mo_mean_mass.mod cam_logfile.mod mo_cph.mod mo_aurora.mod clybry_fam.mod mo_strato_rates.mod abortutils.mod mo_setinv.mod mo_sulf.mod mo_solar_parms.mod mo_solarproton.mod mo_strato_sad.mod mo_sad.mod tracer_cnst.mod mo_lightning.mod mo_neu_wetdep.mod mo_gas_phase_chemdr.mod mo_setsox.mod euvac.mod mo_usrrxt.mod mo_extfrc.mod m_types.mod mo_fstrat.mod mo_waccm_hrates.mod mo_synoz.mod mo_photo.mod physics_buffer.mod mo_sethet.mod mo_heatnirco2.mod mo_airglow.mod mo_setsoa.mod   
+mo_chm_diags.o : phys_grid.mod mo_chem_utls.mod constituents.mod dyn_grid.mod cam_history.mod ppgrid.mod mo_tracname.mod chem_mods.mod mo_constants.mod mo_jeuv.mod phys_control.mod physics_buffer.mod modal_aero_data.mod   
+mo_constants.o : physconst.mod   
+mo_cph.o : mo_chem_utls.mod cam_history.mod ppgrid.mod chem_mods.mod   
+mo_drydep.o : mpishorthand.mod scammod.mod iofilemod.mod phys_grid.mod mo_chem_utls.mod spmd_utils.mod interpolate_data.mod physconst.mod filenames.mod pmgrid.mod constituents.mod dyn_grid.mod cam_pio_utils.mod string_utils.mod seq_drydep_mod.mod cam_logfile.mod ppgrid.mod abortutils.mod mo_tracname.mod ncdio_atm.mod physics_types.mod dycore.mod chem_mods.mod mo_constants.mod phys_control.mod time_manager.mod metdata.mod camsrfexch.mod   
+mo_exp_sol.o : mo_indprd.mod mo_prod_loss.mod cam_history.mod ppgrid.mod mo_tracname.mod chem_mods.mod   
+mo_extfrc.o : mo_chem_utls.mod tracer_data.mod spmd_utils.mod cam_history.mod cam_pio_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod mo_tracname.mod physics_types.mod chem_mods.mod phys_control.mod physics_buffer.mod   
+mo_flbc.o : time_utils.mod iofilemod.mod phys_grid.mod spmd_utils.mod interpolate_data.mod constituents.mod cam_pio_utils.mod string_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod m_types.mod phys_gmean.mod mo_constants.mod time_manager.mod   
+mo_fstrat.o : mpishorthand.mod iofilemod.mod mo_chem_utls.mod phys_grid.mod spmd_utils.mod interpolate_data.mod constituents.mod dyn_grid.mod cam_pio_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod mo_tracname.mod chem_mods.mod mo_synoz.mod mo_constants.mod time_manager.mod   
+mo_gas_phase_chemdr.o : mo_srf_emissions.mod modal_aero_newnuc.mod mo_drydep.mod phys_grid.mod mo_setext.mod mo_chem_utls.mod llnl_o1d_to_2oh_adj.mod spmd_utils.mod infnan.mod mo_aerosols.mod wv_saturation.mod mo_exp_sol.mod mo_mass_xforms.mod physconst.mod constituents.mod mo_phtadj.mod mo_imp_sol.mod cam_history.mod linoz_data.mod seq_drydep_mod.mod mo_mean_mass.mod ppgrid.mod modal_aero_coag.mod mo_aero_settling.mod mo_strato_rates.mod abortutils.mod mo_setinv.mod mo_sulf.mod mo_tracname.mod mz_aerosols_intr.mod progseasalts_intr.mod short_lived_species.mod cam_control_mod.mod mo_strato_sad.mod mo_sad.mod dust_intr.mod mo_lightning.mod mo_neu_wetdep.mod mo_setsox.mod mo_adjrxt.mod mo_usrrxt.mod rate_diags.mod mo_flbc.mod mo_fstrat.mod lin_strat_chem.mod chem_mods.mod mo_ghg_chem.mod charge_neutrality.mod mo_negtrc.mod mo_chm_diags.mod mo_setrxt.mod mo_photo.mod phys_control.mod time_manager.mod physics_buffer.mod modal_aero_data.mod mo_sethet.mod carma_flags_mod.mod modal_aero_gasaerexch.mod mo_setsoa.mod   
+mo_ghg_chem.o : mo_chem_utls.mod chem_surfvals.mod cam_history.mod ppgrid.mod abortutils.mod physics_types.mod boundarydata.mod mo_flbc.mod chem_mods.mod mo_constants.mod   
+mo_heatnirco2.o : cam_logfile.mod abortutils.mod   
+mo_imp_sol.o : mo_chem_utls.mod mo_indprd.mod mo_lu_factor.mod mo_prod_loss.mod cam_history.mod ppgrid.mod cam_logfile.mod mo_lin_matrix.mod abortutils.mod mo_tracname.mod chem_mods.mod mo_nln_matrix.mod mo_lu_solve.mod time_manager.mod   
+mo_indprd.o : ppgrid.mod chem_mods.mod   
+mo_inter.o : cam_logfile.mod abortutils.mod   
+mo_jeuv.o : iofilemod.mod mo_chem_utls.mod physconst.mod cam_history.mod ppgrid.mod cam_logfile.mod abortutils.mod euvac.mod mo_jshort.mod units.mod   
+mo_jlong.o : mpishorthand.mod iofilemod.mod spmd_utils.mod solar_data.mod physconst.mod ppgrid.mod cam_logfile.mod abortutils.mod mo_util.mod error_messages.mod chem_mods.mod time_manager.mod   
+mo_jpl.o :    
+mo_jshort.o : iofilemod.mod spmd_utils.mod solar_data.mod physconst.mod cam_pio_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod mo_util.mod error_messages.mod chem_mods.mod mo_constants.mod phys_control.mod time_manager.mod units.mod   
+mo_lightning.o : iofilemod.mod mo_chem_utls.mod phys_grid.mod spmd_utils.mod physconst.mod dyn_grid.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod mo_constants.mod physics_buffer.mod camsrfexch.mod   
+mo_lin_matrix.o : chem_mods.mod   
+mo_lu_factor.o :    
+mo_lu_solve.o :    
+mo_lymana.o : ppgrid.mod mo_params.mod   
+mo_mass_xforms.o : mo_chem_utls.mod m_spc_id.mod ppgrid.mod chem_mods.mod physics_buffer.mod modal_aero_data.mod   
+mo_mean_mass.o : mo_chem_utls.mod physconst.mod ppgrid.mod abortutils.mod chem_mods.mod phys_control.mod   
+mo_msis_ubc.o : phys_grid.mod spmd_utils.mod physconst.mod pmgrid.mod ref_pres.mod constituents.mod ppgrid.mod cam_logfile.mod abortutils.mod time_manager.mod   
+mo_negtrc.o : ppgrid.mod chem_mods.mod   
+mo_neu_wetdep.o : phys_grid.mod spmd_utils.mod gas_wetdep_opts.mod constituents.mod cam_history.mod seq_drydep_mod.mod ppgrid.mod cam_logfile.mod abortutils.mod   
+mo_nln_matrix.o : chem_mods.mod   
+mo_params.o : physconst.mod   
+mo_pchem.o : mo_xsections.mod cam_logfile.mod ppgrid.mod mo_params.mod   
+mo_photo.o : iofilemod.mod phys_grid.mod mo_chem_utls.mod spmd_utils.mod solar_data.mod interpolate_data.mod mo_wavelen.mod ref_pres.mod dyn_grid.mod cam_pio_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod mo_jlong.mod mo_solar_parms.mod progseasalts_intr.mod mo_params.mod dust_intr.mod euvac.mod mo_photoin.mod mo_jshort.mod chem_mods.mod mo_constants.mod mo_jeuv.mod phys_control.mod time_manager.mod physics_buffer.mod mo_seto2.mod mo_tuv_inti.mod   
+mo_photoin.o : mo_wavelen.mod mo_setair.mod ppgrid.mod cam_logfile.mod mo_zadj.mod abortutils.mod mo_setcld.mod mo_params.mod mo_wavelab.mod mo_setz.mod mo_sphers.mod mo_rtlink.mod mo_airmas.mod chem_mods.mod mo_pchem.mod mo_setaer.mod mo_seto2.mod mo_setozo.mod mo_tuv_inti.mod   
+mo_phtadj.o : ppgrid.mod chem_mods.mod   
+mo_prod_loss.o : ppgrid.mod   
+mo_ps2str.o : mo_trislv.mod ppgrid.mod mo_params.mod mo_constants.mod   
+mo_rtlink.o : ppgrid.mod mo_params.mod mo_ps2str.mod   
+mo_rxt_rates_conv.o :    
+mo_sad.o : m_sad_data.mod spmd_utils.mod physconst.mod ref_pres.mod cam_history.mod cam_pio_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod time_manager.mod physics_buffer.mod   
+mo_schu.o : ppgrid.mod   
+mo_setaer.o : mo_chem_utls.mod ppgrid.mod progseasalts_intr.mod dust_intr.mod chem_mods.mod mo_constants.mod   
+mo_setair.o : ppgrid.mod mo_params.mod   
+mo_setcld.o : mo_waveo3.mod ppgrid.mod cam_logfile.mod mo_params.mod   
+mo_setext.o : mo_chem_utls.mod spmd_utils.mod tracer_srcs.mod cam_history.mod mo_airplane.mod ppgrid.mod cam_logfile.mod mo_aurora.mod mo_solarproton.mod mo_lightning.mod mo_extfrc.mod chem_mods.mod mo_synoz.mod physics_buffer.mod   
+mo_sethet.o : phys_grid.mod mo_chem_utls.mod spmd_utils.mod physconst.mod gas_wetdep_opts.mod ppgrid.mod cam_logfile.mod abortutils.mod chem_mods.mod   
+mo_setinv.o : mo_chem_utls.mod spmd_utils.mod cam_history.mod ppgrid.mod cam_logfile.mod tracer_cnst.mod chem_mods.mod mo_constants.mod physics_buffer.mod   
+mo_seto2.o : iofilemod.mod spmd_utils.mod mo_wavelen.mod mo_inter.mod cam_pio_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod mo_params.mod mo_lymana.mod mo_schu.mod   
+mo_setozo.o : mo_waveo3.mod ppgrid.mod mo_params.mod   
+mo_setrxt.o : mo_jpl.mod ppgrid.mod chem_mods.mod   
+mo_setsoa.o : mo_chem_utls.mod spmd_utils.mod cam_history.mod ppgrid.mod cam_logfile.mod abortutils.mod cam_control_mod.mod chem_mods.mod physics_buffer.mod   
+mo_setsox.o : mo_chem_utls.mod spmd_utils.mod physconst.mod cam_history.mod ppgrid.mod cam_logfile.mod chem_mods.mod mo_constants.mod modal_aero_data.mod   
+mo_setz.o : ppgrid.mod cam_logfile.mod abortutils.mod mo_params.mod mo_calcoe.mod chem_mods.mod mo_tuv_inti.mod   
+mo_sim_dat.o : cam_logfile.mod abortutils.mod mo_tracname.mod chem_mods.mod   
+mo_snoe.o : iofilemod.mod phys_grid.mod spmd_utils.mod physconst.mod constituents.mod cam_pio_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod mo_constants.mod time_manager.mod   
+mo_solar_parms.o : time_utils.mod iofilemod.mod spmd_utils.mod cam_pio_utils.mod cam_logfile.mod abortutils.mod error_messages.mod time_manager.mod   
+mo_solarproton.o : physconst.mod spehox.mod ppgrid.mod spedata.mod mo_apex.mod   
+mo_sphers.o : ppgrid.mod mo_params.mod mo_constants.mod   
+mo_srf_emissions.o : iofilemod.mod mo_chem_utls.mod tracer_data.mod spmd_utils.mod chem_surfvals.mod cam_pio_utils.mod string_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod mo_tracname.mod physics_types.mod chem_mods.mod mo_constants.mod time_manager.mod physics_buffer.mod   
+mo_strato_rates.o : mo_chem_utls.mod cam_logfile.mod ppgrid.mod mo_aero_settling.mod mo_sad.mod chem_mods.mod   
+mo_strato_sad.o : time_utils.mod iofilemod.mod phys_grid.mod mo_chem_utls.mod spmd_utils.mod interpolate_data.mod cam_pio_utils.mod string_utils.mod cam_logfile.mod ppgrid.mod mo_strato_rates.mod abortutils.mod m_types.mod mo_constants.mod time_manager.mod   
+mo_sulf.o : mo_chem_utls.mod spmd_utils.mod tracer_data.mod interpolate_data.mod cam_history.mod ppgrid.mod cam_logfile.mod abortutils.mod physics_types.mod physics_buffer.mod   
+mo_synoz.o : mo_chem_utls.mod phys_grid.mod spmd_utils.mod physconst.mod ref_pres.mod dyn_grid.mod ppgrid.mod cam_logfile.mod abortutils.mod chem_mods.mod   
+mo_tgcm_ubc.o : tracer_data.mod constituents.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod physics_buffer.mod   
+mo_tracname.o : chem_mods.mod   
+mo_trislv.o :    
+mo_tuv_inti.o : iofilemod.mod spmd_utils.mod mo_wavelen.mod mo_waveall.mod mo_xsections.mod mo_waveo3.mod cam_pio_utils.mod cam_logfile.mod mo_zadj.mod abortutils.mod mo_params.mod mo_wavelab.mod chem_mods.mod mo_schu.mod   
+mo_usrrxt.o : mo_chem_utls.mod spmd_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod mo_setinv.mod chem_mods.mod mo_constants.mod physics_buffer.mod modal_aero_data.mod carma_flags_mod.mod   
+mo_util.o :    
+mo_waccm_hrates.o : phys_grid.mod mo_chem_utls.mod mo_mass_xforms.mod physconst.mod ref_pres.mod constituents.mod cam_history.mod mo_mean_mass.mod ppgrid.mod cam_logfile.mod mo_cph.mod mo_aurora.mod mo_setinv.mod mo_jlong.mod short_lived_species.mod cam_control_mod.mod physics_types.mod mo_gas_phase_chemdr.mod mo_adjrxt.mod mo_usrrxt.mod set_cp.mod mo_jshort.mod chem_mods.mod mo_constants.mod mo_jeuv.mod mo_setrxt.mod mo_photo.mod phys_control.mod physics_buffer.mod time_manager.mod mo_heatnirco2.mod mo_airglow.mod   
+mo_waveall.o : mo_params.mod   
+mo_wavelab.o : mo_params.mod   
+mo_wavelen.o : mo_params.mod   
+mo_waveo3.o : mo_params.mod   
+mo_xsections.o : mo_waveall.mod mo_waveo3.mod cam_logfile.mod ppgrid.mod abortutils.mod mo_params.mod   
+mo_zadj.o :    
+mod_comm.o : cam_logfile.mod   
+modal_aer_opt.o : mpishorthand.mod rad_constituents.mod iofilemod.mod spmd_utils.mod radconstants.mod physconst.mod ref_pres.mod constituents.mod cam_history_support.mod cam_history.mod cam_pio_utils.mod namelist_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod modal_aero_calcsize.mod phys_control.mod modal_aero_wateruptake.mod physics_buffer.mod units.mod   
+modal_aero_calcsize.o : rad_constituents.mod modal_aero_rename.mod spmd_utils.mod physconst.mod ref_pres.mod constituents.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod phys_control.mod physics_buffer.mod modal_aero_data.mod   
+modal_aero_coag.o : spmd_utils.mod physconst.mod ref_pres.mod constituents.mod cam_history.mod ppgrid.mod abortutils.mod chem_mods.mod mo_constants.mod phys_control.mod modal_aero_data.mod modal_aero_gasaerexch.mod   
+modal_aero_data.o : radconstants.mod constituents.mod abortutils.mod physics_buffer.mod time_manager.mod   
+modal_aero_deposition.o : constituents.mod ppgrid.mod abortutils.mod camsrfexch.mod   
+modal_aero_gasaerexch.o : modal_aero_rename.mod spmd_utils.mod physconst.mod ref_pres.mod constituents.mod cam_history.mod ppgrid.mod abortutils.mod mo_tracname.mod chem_mods.mod phys_control.mod modal_aero_data.mod   
+modal_aero_initialize_data.o : rad_constituents.mod modal_aero_newnuc.mod modal_aero_rename.mod spmd_utils.mod physconst.mod pmgrid.mod constituents.mod cam_history.mod modal_aero_deposition.mod ppgrid.mod cam_logfile.mod modal_aero_coag.mod abortutils.mod mz_aerosols_intr.mod modal_aero_calcsize.mod aerodep_flx.mod phys_control.mod physics_buffer.mod time_manager.mod modal_aero_data.mod modal_aero_gasaerexch.mod   
+modal_aero_newnuc.o : modal_aero_rename.mod spmd_utils.mod wv_saturation.mod physconst.mod ref_pres.mod constituents.mod cam_history.mod ppgrid.mod abortutils.mod chem_mods.mod mo_constants.mod phys_control.mod modal_aero_data.mod   
+modal_aero_rename.o : spmd_utils.mod physconst.mod constituents.mod ppgrid.mod abortutils.mod chem_mods.mod mo_constants.mod modal_aero_data.mod units.mod   
+modal_aero_wateruptake.o : rad_constituents.mod wv_saturation.mod physconst.mod ref_pres.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod phys_control.mod physics_buffer.mod   
+molec_diff.o : infnan.mod physconst.mod constituents.mod upper_bc.mod ppgrid.mod physics_types.mod phys_control.mod physics_buffer.mod   
+mp_assign_to_cpu.o :    
+mpishorthand.o :    
+msise00.o : cam_logfile.mod   
+mz_aerosols_intr.o : mo_drydep.mod mo_chem_utls.mod spmd_utils.mod physconst.mod gas_wetdep_opts.mod pmgrid.mod ref_pres.mod constituents.mod cam_history.mod modal_aero_deposition.mod cam_logfile.mod ppgrid.mod abortutils.mod progseasalts_intr.mod sulchem.mod dust_intr.mod tracer_cnst.mod physics_types.mod wetdep.mod dust_sediment_mod.mod aerodep_flx.mod chem_mods.mod drydep_mod.mod phys_control.mod physics_buffer.mod modal_aero_data.mod camsrfexch.mod   
+namelist_utils.o :    
+ncdio_atm.o : scammod.mod phys_grid.mod spmd_utils.mod constituents.mod dyn_grid.mod cam_pio_utils.mod string_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod dycore.mod xpavg_mod.mod   
+ndrop.o : rad_constituents.mod spmd_utils.mod wv_saturation.mod physconst.mod ref_pres.mod constituents.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod phys_control.mod physics_buffer.mod   
+ndrop_bam.o : rad_constituents.mod spmd_utils.mod wv_saturation.mod physconst.mod ref_pres.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod   
+nucleate_ice.o : wv_saturation.mod cam_logfile.mod   
+offline_driver.o : tracer_data.mod spmd_utils.mod drv_input_data.mod namelist_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod physics_types.mod unit_driver.mod time_manager.mod physics_buffer.mod camsrfexch.mod units.mod   
+oldcloud.o : rad_constituents.mod radconstants.mod physconst.mod constituents.mod cam_history_support.mod cam_history.mod ppgrid.mod abortutils.mod physics_types.mod physics_buffer.mod ebert_curry.mod   
+p_d_adjust.o : cam_logfile.mod dynamics_vars.mod parutilitiesmodule.mod   
+par_vecsum.o : parutilitiesmodule.mod   
+par_xsum.o : cam_logfile.mod dynamics_vars.mod fvperf_module.mod parutilitiesmodule.mod   
+parrrsw.o :    
+parrrtm.o :    
+parutilitiesmodule.o : cam_logfile.mod decompmodule.mod ghostmodule.mod mod_comm.mod pilgrim.h debugutilitiesmodule.mod debug.h  
+pbl_utils.o :    
+pfixer.o : mpishorthand.mod spmd_utils.mod commap.mod cam_logfile.mod hycoef.mod abortutils.mod dynamics_vars.mod spmd_dyn.mod parutilitiesmodule.mod time_manager.mod metdata.mod mod_comm.mod   
+pft_module.o : fv_control_mod.mod   
+phys_control.o : mpishorthand.mod spmd_utils.mod namelist_utils.mod cam_logfile.mod abortutils.mod units.mod   
+phys_debug.o : constituents.mod cam_logfile.mod ppgrid.mod phys_debug_util.mod physics_types.mod camsrfexch.mod   
+phys_debug_util.o : mpishorthand.mod phys_grid.mod spmd_utils.mod namelist_utils.mod cam_logfile.mod abortutils.mod units.mod   
+phys_gmean.o : mpishorthand.mod rgrid.mod phys_grid.mod spmd_utils.mod physconst.mod constituents.mod dyn_grid.mod cam_logfile.mod ppgrid.mod physics_types.mod dycore.mod   
+phys_grid.o : mpishorthand.mod spmd_utils.mod physconst.mod pmgrid.mod dyn_grid.mod cam_logfile.mod ppgrid.mod abortutils.mod spmd_dyn.mod dycore.mod mod_comm.mod   
+phys_prop.o : iofilemod.mod spmd_utils.mod radconstants.mod cam_pio_utils.mod cam_logfile.mod abortutils.mod   
+physconst.o : mpishorthand.mod spmd_utils.mod namelist_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod units.mod   
+physics_buffer.o : phys_grid.mod spmd_utils.mod constituents.mod dyn_grid.mod cam_pio_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod buffer.mod dtypes.h  
+physics_types.o : scammod.mod phys_grid.mod infnan.mod physconst.mod pmgrid.mod constituents.mod cam_logfile.mod ppgrid.mod abortutils.mod geopotential.mod dycore.mod phys_control.mod   
+physpkg.o : rad_constituents.mod mpishorthand.mod scammod.mod aoa_tracers.mod convect_shallow.mod comsrf.mod majorsp_diffusion.mod exbdrift.mod phys_grid.mod cam3_ozone_data.mod iondrag.mod spmd_utils.mod solar_data.mod tracers.mod infnan.mod wv_saturation.mod gw_drag.mod convect_deep.mod prescribed_ghg.mod carma_intr.mod conv_water.mod ionosphere.mod flux_avg.mod physconst.mod prescribed_ozone.mod aerosol_intr.mod chem_surfvals.mod ref_pres.mod constituents.mod cam_initfiles.mod microp_aero.mod polar_avg.mod rayleigh_friction.mod pbl_utils.mod cam_history.mod radiation.mod string_utils.mod cam_logfile.mod ppgrid.mod chemistry.mod clybry_fam.mod cam_diagnostics.mod cloud_fraction.mod abortutils.mod macrop_driver.mod check_energy.mod aer_rad_props.mod phys_debug_util.mod ncdio_atm.mod short_lived_species.mod cam_control_mod.mod rad_solar_var.mod mo_lightning.mod physics_types.mod vertical_diffusion.mod mo_gas_phase_chemdr.mod cloud_diagnostics.mod stratiform.mod dycore.mod ghg_data.mod clubb_intr.mod aircraft_emit.mod sslt_rebin.mod efield.mod aerodep_flx.mod prescribed_volcaero.mod microp_driver.mod cloud_rad_props.mod phys_gmean.mod charge_neutrality.mod tropopause.mod co2_cycle.mod cam3_aero_data.mod prescribed_aero.mod phys_control.mod time_manager.mod metdata.mod physics_buffer.mod modal_aero_data.mod radheat.mod camsrfexch.mod carma_flags_mod.mod   
+pkez.o :    
+pkg_cld_sediment.o : mpishorthand.mod cldwat.mod spmd_utils.mod physconst.mod namelist_utils.mod cam_logfile.mod ppgrid.mod pkg_cldoptics.mod abortutils.mod units.mod   
+pkg_cldoptics.o : physconst.mod ppgrid.mod phys_control.mod   
+pmgrid.o : decompmodule.mod   
+polar_avg.o : mpishorthand.mod phys_grid.mod dyn_grid.mod ppgrid.mod dycore.mod   
+ppgrid.o :    
+prescribed_aero.o : rad_constituents.mod mpishorthand.mod tracer_data.mod spmd_utils.mod physconst.mod cam_history.mod namelist_utils.mod string_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod physics_types.mod error_messages.mod time_manager.mod physics_buffer.mod units.mod   
+prescribed_ghg.o : mpishorthand.mod tracer_data.mod spmd_utils.mod physconst.mod cam_history.mod namelist_utils.mod string_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod physics_types.mod error_messages.mod physics_buffer.mod units.mod   
+prescribed_ozone.o : mpishorthand.mod tracer_data.mod spmd_utils.mod physconst.mod cam_history.mod namelist_utils.mod string_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod cam_control_mod.mod physics_types.mod error_messages.mod phys_control.mod physics_buffer.mod units.mod   
+prescribed_volcaero.o : mpishorthand.mod tracer_data.mod spmd_utils.mod physconst.mod cam_history.mod namelist_utils.mod string_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod physics_types.mod error_messages.mod tropopause.mod physics_buffer.mod units.mod   
+progseasalts_intr.o : phys_grid.mod mo_chem_utls.mod spmd_utils.mod wv_saturation.mod physconst.mod constituents.mod cam_history.mod cam_logfile.mod ppgrid.mod physics_types.mod wetdep.mod dust_sediment_mod.mod mo_constants.mod drydep_mod.mod phys_control.mod time_manager.mod camsrfexch.mod   
+pspect.o :    
+puminterfaces.o : decompmodule.mod parutilitiesmodule.mod pilgrim.h  
+qneg3.o : cam_logfile.mod   
+qneg4.o : phys_grid.mod physconst.mod constituents.mod cam_logfile.mod ppgrid.mod   
+quicksort.o :    
+rad_constituents.o : mpishorthand.mod spmd_utils.mod radconstants.mod physconst.mod phys_prop.mod constituents.mod cam_history.mod namelist_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod error_messages.mod physics_buffer.mod units.mod   
+rad_solar_var.o : radconstants.mod solar_data.mod abortutils.mod mo_util.mod   
+radae.o : iofilemod.mod spmd_utils.mod radconstants.mod infnan.mod wv_saturation.mod filenames.mod pmgrid.mod ref_pres.mod cam_pio_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod phys_control.mod   
+radconstants.o : abortutils.mod   
+radheat.o : pmgrid.mod ppgrid.mod chemistry.mod physics_types.mod metdata.mod physics_buffer.mod   
+radiation.o : rad_constituents.mod scammod.mod radsw.mod phys_grid.mod parrrtm.mod spmd_utils.mod radconstants.mod interpolate_data.mod physconst.mod hirsbtpar.mod constituents.mod cam_history_support.mod cam_history.mod hirsbt.mod cam_logfile.mod ppgrid.mod radiation_data.mod abortutils.mod parrrsw.mod aer_rad_props.mod rrtmg_state.mod cam_control_mod.mod rad_solar_var.mod physics_types.mod radlw.mod cosp_share.mod pspect.mod error_messages.mod cloud_rad_props.mod slingo.mod cospsimulator_intr.mod phys_control.mod physics_buffer.mod time_manager.mod ebert_curry.mod radheat.mod camsrfexch.mod modal_aer_opt.mod   
+radiation_data.o : mpishorthand.mod rad_constituents.mod spmd_utils.mod radconstants.mod constituents.mod cam_history_support.mod cam_history.mod namelist_utils.mod ppgrid.mod abortutils.mod physics_types.mod phys_control.mod physics_buffer.mod camsrfexch.mod units.mod   
+radlw.o : scammod.mod mcica_subcol_gen_lw.mod rrtmg_lw_init.mod parrrtm.mod spmd_utils.mod radconstants.mod physconst.mod ref_pres.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod rrtmg_state.mod rrtmg_lw_rad.mod   
+radsw.o : scammod.mod radconstants.mod rrtmg_sw_rad.mod cmparray_mod.mod physconst.mod cam_history.mod mcica_subcol_gen_sw.mod cam_logfile.mod ppgrid.mod rrtmg_sw_init.mod abortutils.mod parrrsw.mod rrtmg_state.mod phys_control.mod   
+rate_diags.o : mo_rxt_rates_conv.mod cam_history.mod ppgrid.mod chem_mods.mod   
+rayleigh_friction.o : spmd_utils.mod cam_logfile.mod ppgrid.mod physics_types.mod   
+readinitial.o : scammod.mod pmgrid.mod cam_logfile.mod abortutils.mod   
+redistributemodule.o : decompmodule.mod parutilitiesmodule.mod pilgrim.h debugutilitiesmodule.mod debug.h  
+ref_pres.o : mpishorthand.mod spmd_utils.mod dyn_grid.mod namelist_utils.mod ppgrid.mod abortutils.mod units.mod   
+restart_dynamics.o : pmgrid.mod constituents.mod dyn_grid.mod cam_pio_utils.mod fv_control_mod.mod cam_logfile.mod hycoef.mod abortutils.mod dynamics_vars.mod dyn_comp.mod dyn_internal_state.mod time_manager.mod metdata.mod   
+restart_physics.o : iofilemod.mod comsrf.mod phys_grid.mod spmd_utils.mod prescribed_ghg.mod prescribed_ozone.mod constituents.mod dyn_grid.mod radae.mod cam_pio_utils.mod radiation.mod ppgrid.mod cam_logfile.mod chemistry.mod abortutils.mod cam_control_mod.mod prescribed_volcaero.mod co2_cycle.mod cospsimulator_intr.mod prescribed_aero.mod physics_buffer.mod camsrfexch.mod units.mod   
+rgrid.o : pmgrid.mod pspect.mod   
+rrlw_cld.o :    
+rrlw_con.o :    
+rrlw_kg01.o :    
+rrlw_kg02.o :    
+rrlw_kg03.o :    
+rrlw_kg04.o :    
+rrlw_kg05.o :    
+rrlw_kg06.o :    
+rrlw_kg07.o :    
+rrlw_kg08.o :    
+rrlw_kg09.o :    
+rrlw_kg10.o :    
+rrlw_kg11.o :    
+rrlw_kg12.o :    
+rrlw_kg13.o :    
+rrlw_kg14.o :    
+rrlw_kg15.o :    
+rrlw_kg16.o :    
+rrlw_ref.o :    
+rrlw_tbl.o :    
+rrlw_vsn.o :    
+rrlw_wvn.o : parrrtm.mod   
+rrsw_aer.o : parrrsw.mod   
+rrsw_cld.o :    
+rrsw_con.o :    
+rrsw_kg16.o : parrrsw.mod   
+rrsw_kg17.o : parrrsw.mod   
+rrsw_kg18.o : parrrsw.mod   
+rrsw_kg19.o : parrrsw.mod   
+rrsw_kg20.o : parrrsw.mod   
+rrsw_kg21.o : parrrsw.mod   
+rrsw_kg22.o : parrrsw.mod   
+rrsw_kg23.o : parrrsw.mod   
+rrsw_kg24.o : parrrsw.mod   
+rrsw_kg25.o : parrrsw.mod   
+rrsw_kg26.o : parrrsw.mod   
+rrsw_kg27.o : parrrsw.mod   
+rrsw_kg28.o : parrrsw.mod   
+rrsw_kg29.o : parrrsw.mod   
+rrsw_ref.o :    
+rrsw_tbl.o :    
+rrsw_vsn.o :    
+rrsw_wvn.o : parrrsw.mod   
+rrtmg_lw_cldprmc.o : parrrtm.mod rrlw_cld.mod rrlw_wvn.mod rrlw_vsn.mod   
+rrtmg_lw_cldprop.o : parrrtm.mod rrlw_cld.mod rrlw_vsn.mod   
+rrtmg_lw_init.o : rrlw_kg11.mod rrlw_kg05.mod rrlw_kg04.mod parrrtm.mod rrlw_kg12.mod physconst.mod rrlw_kg15.mod rrlw_tbl.mod rrlw_kg06.mod rrtmg_lw_setcoef.mod rrlw_kg16.mod rrlw_kg03.mod rrlw_kg08.mod rrlw_kg01.mod rrlw_con.mod rrlw_kg14.mod rrlw_kg09.mod rrlw_cld.mod rrlw_kg07.mod rrlw_wvn.mod rrlw_kg10.mod rrlw_kg13.mod rrlw_vsn.mod rrlw_kg02.mod   
+rrtmg_lw_k_g.o : rrlw_kg11.mod rrlw_kg05.mod rrlw_kg04.mod rrlw_kg12.mod rrlw_kg15.mod rrlw_kg06.mod rrlw_kg16.mod rrlw_kg03.mod rrlw_kg08.mod rrlw_kg01.mod rrlw_kg14.mod rrlw_kg09.mod rrlw_kg07.mod rrlw_kg10.mod rrlw_kg13.mod rrlw_vsn.mod rrlw_kg02.mod   
+rrtmg_lw_rad.o : mcica_subcol_gen_lw.mod parrrtm.mod rrtmg_lw_taumol.mod rrtmg_lw_setcoef.mod ppgrid.mod rrlw_con.mod rrtmg_lw_rtrnmc.mod rrtmg_lw_cldprmc.mod rrlw_wvn.mod rrlw_vsn.mod   
+rrtmg_lw_rtrn.o : parrrtm.mod rrlw_tbl.mod rrlw_con.mod rrlw_wvn.mod rrlw_vsn.mod   
+rrtmg_lw_rtrnmc.o : parrrtm.mod rrlw_tbl.mod rrlw_con.mod rrlw_wvn.mod rrlw_vsn.mod   
+rrtmg_lw_rtrnmr.o : parrrtm.mod rrlw_tbl.mod rrlw_con.mod rrlw_wvn.mod rrlw_vsn.mod   
+rrtmg_lw_setcoef.o : parrrtm.mod rrlw_ref.mod rrlw_wvn.mod rrlw_vsn.mod   
+rrtmg_lw_taumol.o : rrlw_kg11.mod rrlw_kg05.mod rrlw_kg04.mod parrrtm.mod rrlw_kg12.mod rrlw_ref.mod rrlw_kg15.mod rrlw_kg06.mod rrlw_kg16.mod rrlw_kg03.mod rrlw_kg08.mod rrlw_kg01.mod rrlw_con.mod rrlw_kg14.mod rrlw_kg09.mod rrlw_kg07.mod rrlw_wvn.mod rrlw_kg10.mod rrlw_kg13.mod rrlw_vsn.mod rrlw_kg02.mod   
+rrtmg_state.o : rad_constituents.mod physconst.mod ref_pres.mod ppgrid.mod physics_types.mod physics_buffer.mod camsrfexch.mod   
+rrtmg_sw_cldprmc.o : rrsw_cld.mod rrsw_wvn.mod parrrsw.mod rrsw_vsn.mod   
+rrtmg_sw_cldprop.o : rrsw_cld.mod rrsw_wvn.mod parrrsw.mod rrsw_vsn.mod   
+rrtmg_sw_init.o : rrsw_kg21.mod rrsw_kg16.mod rrsw_cld.mod rrsw_kg20.mod physconst.mod rrtmg_sw_setcoef.mod rrsw_aer.mod rrsw_kg22.mod rrsw_tbl.mod rrsw_kg28.mod rrsw_kg24.mod rrsw_wvn.mod rrsw_kg26.mod rrsw_kg17.mod parrrsw.mod rrsw_kg19.mod rrsw_con.mod rrsw_kg27.mod rrsw_kg23.mod rrsw_kg25.mod rrsw_kg18.mod rrsw_vsn.mod rrsw_kg29.mod   
+rrtmg_sw_k_g.o : rrsw_kg21.mod rrsw_kg16.mod rrsw_kg20.mod rrsw_kg22.mod rrsw_kg28.mod rrsw_kg24.mod rrsw_kg26.mod rrsw_kg17.mod rrsw_kg19.mod rrsw_kg27.mod rrsw_kg23.mod rrsw_kg25.mod rrsw_kg18.mod rrsw_vsn.mod rrsw_kg29.mod   
+rrtmg_sw_rad.o : rrtmg_sw_cldprmc.mod rrtmg_sw_setcoef.mod rrsw_aer.mod mcica_subcol_gen_sw.mod rrsw_wvn.mod parrrsw.mod rrsw_con.mod rrsw_vsn.mod rrtmg_sw_cldprop.mod rrtmg_sw_spcvmc.mod   
+rrtmg_sw_reftra.o : rrsw_tbl.mod rrsw_vsn.mod   
+rrtmg_sw_setcoef.o : rrsw_ref.mod parrrsw.mod rrsw_vsn.mod   
+rrtmg_sw_spcvmc.o : rrtmg_sw_reftra.mod rrtmg_sw_taumol.mod rrsw_tbl.mod ppgrid.mod rrsw_wvn.mod parrrsw.mod rrtmg_sw_vrtqdr.mod rrsw_vsn.mod   
+rrtmg_sw_spcvrt.o : rrtmg_sw_reftra.mod rrtmg_sw_taumol.mod rrsw_tbl.mod ppgrid.mod rrsw_wvn.mod parrrsw.mod rrtmg_sw_vrtqdr.mod rrsw_vsn.mod   
+rrtmg_sw_taumol.o : rrsw_kg21.mod rrsw_kg16.mod rrsw_kg20.mod rrsw_kg22.mod rrsw_kg28.mod rrsw_kg24.mod rrsw_wvn.mod rrsw_kg26.mod rrsw_kg17.mod parrrsw.mod rrsw_kg19.mod rrsw_con.mod rrsw_kg27.mod rrsw_kg23.mod rrsw_kg25.mod rrsw_kg18.mod rrsw_vsn.mod rrsw_kg29.mod   
+rrtmg_sw_vrtqdr.o :    
+runtime_opts.o : mpishorthand.mod rad_constituents.mod cldwat.mod scammod.mod aoa_tracers.mod rgrid.mod hk_conv.mod phys_grid.mod cam3_ozone_data.mod iondrag.mod spmd_utils.mod cam_restart.mod solar_data.mod tracers.mod gw_drag.mod wv_saturation.mod prescribed_ghg.mod physconst.mod cam_instance.mod prescribed_ozone.mod filenames.mod pmgrid.mod ref_pres.mod chem_surfvals.mod constituents.mod uwshcu.mod microp_aero.mod cam_history_support.mod rayleigh_friction.mod sat_hist.mod cam_history.mod radiation.mod namelist_utils.mod cam_logfile.mod radiation_data.mod chemistry.mod cloud_fraction.mod cam_diagnostics.mod abortutils.mod macrop_driver.mod pkg_cld_sediment.mod check_energy.mod phys_debug_util.mod cam_control_mod.mod vertical_diffusion.mod dycore.mod pspect.mod aircraft_emit.mod aerodep_flx.mod prescribed_volcaero.mod microp_driver.mod zm_conv.mod tropopause.mod co2_cycle.mod cospsimulator_intr.mod cam3_aero_data.mod prescribed_aero.mod phys_control.mod metdata.mod time_manager.mod radheat.mod modal_aer_opt.mod carma_flags_mod.mod units.mod   
+sat_hist.o : mpishorthand.mod iofilemod.mod phys_grid.mod spmd_utils.mod physconst.mod cam_instance.mod dyn_grid.mod cam_history_support.mod cam_pio_utils.mod namelist_utils.mod string_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod time_manager.mod units.mod   
+scamMod.o : pmgrid.mod constituents.mod wrap_nf.mod cam_logfile.mod   
+scyc.o : cam_logfile.mod   
+seq_drydep_mod.o :    
+set_cp.o : mo_chem_utls.mod physconst.mod ppgrid.mod chem_mods.mod   
+sgexx.o : cam_logfile.mod abortutils.mod   
+short_lived_species.o : iofilemod.mod spmd_utils.mod ppgrid.mod cam_logfile.mod mo_tracname.mod ncdio_atm.mod dycore.mod error_messages.mod chem_mods.mod physics_buffer.mod   
+shr_megan_mod.o :    
+slingo.o : mpishorthand.mod iofilemod.mod spmd_utils.mod radconstants.mod physconst.mod constituents.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod error_messages.mod physics_buffer.mod   
+solar_data.o : iofilemod.mod spmd_utils.mod infnan.mod physconst.mod cam_pio_utils.mod namelist_utils.mod cam_logfile.mod abortutils.mod time_manager.mod units.mod   
+spedata.o : mpishorthand.mod iofilemod.mod spmd_utils.mod interpolate_data.mod cam_pio_utils.mod string_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod cam_control_mod.mod time_manager.mod   
+spehox.o : ppgrid.mod abortutils.mod   
+spmd_dyn.o : mpishorthand.mod spmd_utils.mod pmgrid.mod namelist_utils.mod fv_control_mod.mod cam_logfile.mod abortutils.mod decompmodule.mod parutilitiesmodule.mod ghostmodule.mod units.mod   
+spmd_utils.o : mpishorthand.mod namelist_utils.mod cam_logfile.mod abortutils.mod units.mod   
+srchutil.o :    
+sslt_rebin.o : constituents.mod cam_history.mod ppgrid.mod physics_types.mod physics_buffer.mod   
+startup_initialconds.o : comsrf.mod inidat.mod cam_initfiles.mod radae.mod cam_pio_utils.mod history_defaults.mod dyn_comp.mod   
+stepon.o : mpishorthand.mod spmd_utils.mod physconst.mod pmgrid.mod constituents.mod dp_coupling.mod commap.mod fv_control_mod.mod cam_logfile.mod ppgrid.mod hycoef.mod abortutils.mod cam_control_mod.mod dynamics_vars.mod physics_types.mod dyn_comp.mod dyn_internal_state.mod fv_prints.mod physics_buffer.mod time_manager.mod camsrfexch.mod advect_tend.mod   
+stratiform.o : cldwat.mod convect_shallow.mod physconst.mod constituents.mod cam_history.mod cam_logfile.mod ppgrid.mod pkg_cldoptics.mod cloud_fraction.mod abortutils.mod pkg_cld_sediment.mod physics_types.mod phys_control.mod physics_buffer.mod   
+string_utils.o :    
+sulchem.o : physconst.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod   
+sv_decomp.o :    
+sw_core.o : pft_module.mod tp_core.mod dynamics_vars.mod   
+te_map.o : mapz_module.mod cam_logfile.mod abortutils.mod dynamics_vars.mod phys_control.mod mod_comm.mod   
+tidal_diag.o : physconst.mod cam_history.mod ppgrid.mod physics_types.mod time_manager.mod   
+time_manager.o : mpishorthand.mod spmd_utils.mod string_utils.mod cam_logfile.mod abortutils.mod dycore.mod   
+time_utils.o : cam_logfile.mod abortutils.mod time_manager.mod   
+tp_core.o :    
+tphysidl.o : phys_grid.mod physconst.mod ref_pres.mod cam_history.mod cam_logfile.mod ppgrid.mod abortutils.mod check_energy.mod physics_types.mod time_manager.mod   
+trac2d.o : tp_core.mod dynamics_vars.mod fvperf_module.mod parutilitiesmodule.mod mod_comm.mod fill_module.mod   
+tracer_cnst.o : mo_chem_utls.mod tracer_data.mod spmd_utils.mod physconst.mod cam_history.mod string_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod physics_types.mod error_messages.mod chem_mods.mod physics_buffer.mod   
+tracer_data.o : mpishorthand.mod iofilemod.mod phys_grid.mod spmd_utils.mod interpolate_data.mod physconst.mod ref_pres.mod dyn_grid.mod polar_avg.mod cam_pio_utils.mod horizontal_interpolate.mod string_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod mo_util.mod cam_control_mod.mod physics_types.mod dycore.mod mo_constants.mod physics_buffer.mod time_manager.mod   
+tracer_srcs.o : mo_chem_utls.mod tracer_data.mod spmd_utils.mod cam_history.mod ppgrid.mod cam_logfile.mod abortutils.mod physics_types.mod physics_buffer.mod   
+tracers.o : physconst.mod constituents.mod cam_history.mod ppgrid.mod cam_logfile.mod tracers_suite.mod physics_types.mod   
+tracers_suite.o : ref_pres.mod cam_logfile.mod ppgrid.mod abortutils.mod   
+trb_mtn_stress.o :    
+tropopause.o : mpishorthand.mod iofilemod.mod phys_grid.mod spmd_utils.mod interpolate_data.mod physconst.mod dyn_grid.mod cam_history_support.mod cam_history.mod cam_pio_utils.mod namelist_utils.mod cam_logfile.mod ppgrid.mod abortutils.mod physics_types.mod time_manager.mod units.mod   
+trunc.o :    
+tsinti.o : cam_control_mod.mod   
+unit_driver.o : ppgrid.mod physics_types.mod physics_buffer.mod camsrfexch.mod   
+units.o : abortutils.mod   
+upper_bc.o : spmd_utils.mod physconst.mod constituents.mod cam_logfile.mod ppgrid.mod mo_msis_ubc.mod abortutils.mod mo_solar_parms.mod mo_tgcm_ubc.mod physics_types.mod mo_snoe.mod phys_control.mod physics_buffer.mod time_manager.mod   
+uv3s_update.o : cam_history.mod dynamics_vars.mod parutilitiesmodule.mod mod_comm.mod   
+uwshcu.o : mpishorthand.mod spmd_utils.mod wv_saturation.mod constituents.mod cam_history.mod namelist_utils.mod ppgrid.mod cam_logfile.mod abortutils.mod modal_aero_data.mod units.mod   
+vertical_diffusion.o : rad_constituents.mod mpishorthand.mod spmd_utils.mod wv_saturation.mod physconst.mod hb_diff.mod ref_pres.mod constituents.mod pbl_utils.mod cam_history.mod namelist_utils.mod molec_diff.mod cam_logfile.mod ppgrid.mod abortutils.mod eddy_diff.mod diffusion_solver.mod physics_types.mod error_messages.mod phys_control.mod physics_buffer.mod time_manager.mod trb_mtn_stress.mod units.mod   
+vrtmap.o : cam_logfile.mod abortutils.mod srchutil.mod   
+wei96.o : iofilemod.mod cam_logfile.mod abortutils.mod units.mod   
+wetdep.o : physconst.mod cam_logfile.mod ppgrid.mod phys_control.mod   
+wrap_mpi.o : mpishorthand.mod cam_logfile.mod abortutils.mod   
+wrap_nf.o : cam_logfile.mod abortutils.mod   
+wv_sat_methods.o :    
+wv_saturation.o : mpishorthand.mod spmd_utils.mod physconst.mod wv_sat_methods.mod namelist_utils.mod cam_logfile.mod abortutils.mod error_messages.mod units.mod   
+xpavg_mod.o :    
+zenith.o : cam_control_mod.mod   
+zm_conv.o : mpishorthand.mod phys_grid.mod spmd_utils.mod wv_saturation.mod physconst.mod constituents.mod namelist_utils.mod cam_logfile.mod ppgrid.mod cloud_fraction.mod abortutils.mod dycore.mod phys_control.mod units.mod   
+zm_conv_intr.o : phys_grid.mod spmd_utils.mod physconst.mod pmgrid.mod constituents.mod cam_history.mod cam_logfile.mod ppgrid.mod check_energy.mod physics_types.mod error_messages.mod zm_conv.mod phys_control.mod time_manager.mod physics_buffer.mod   
+zonal_mean.o : pmgrid.mod dynamics_vars.mod   
+# The following section relates each module to the corresponding file.
+%.mod : 
+	@:
+abortutils.mod : abortutils.o
+advect_tend.mod : advect_tend.o
+aer_rad_props.mod : aer_rad_props.o
+aerodep_flx.mod : aerodep_flx.o
+aerosol_intr.mod : aerosol_intr.o
+aircraft_emit.mod : aircraft_emit.o
+aoa_tracers.mod : aoa_tracers.o
+boundarydata.mod : boundarydata.o
+buffer.mod : buffer.o
+cam3_aero_data.mod : cam3_aero_data.o
+cam3_ozone_data.mod : cam3_ozone_data.o
+cam_comp.mod : cam_comp.o
+cam_control_mod.mod : cam_control_mod.o
+cam_cpl_indices.mod : cam_cpl_indices.o
+cam_diagnostics.mod : cam_diagnostics.o
+cam_history.mod : cam_history.o
+cam_history_buffers.mod : cam_history_buffers.o
+cam_history_support.mod : cam_history_support.o
+cam_initfiles.mod : cam_initfiles.o
+cam_instance.mod : cam_instance.o
+cam_logfile.mod : cam_logfile.o
+cam_pio_utils.mod : cam_pio_utils.o
+cam_restart.mod : cam_restart.o
+camsrfexch.mod : camsrfexch.o
+carma_flags_mod.mod : carma_flags_mod.o
+carma_intr.mod : carma_intr.o
+carma_model_flags_mod.mod : carma_model_flags_mod.o
+cfc11star.mod : cfc11star.o
+charge_neutrality.mod : charge_neutrality.o
+check_energy.mod : check_energy.o
+chem_mods.mod : chem_mods.o
+chem_surfvals.mod : chem_surfvals.o
+chemistry.mod : chemistry.o
+chlorine_loading_data.mod : chlorine_loading_data.o
+cldwat.mod : cldwat.o
+cldwat2m_macro.mod : cldwat2m_macro.o
+cloud_cover_diags.mod : cloud_cover_diags.o
+cloud_diagnostics.mod : cloud_diagnostics.o
+cloud_fraction.mod : cloud_fraction.o
+cloud_rad_props.mod : cloud_rad_props.o
+clubb_intr.mod : clubb_intr.o
+clybry_fam.mod : clybry_fam.o
+cmparray_mod.mod : cmparray_mod.o
+co2_cycle.mod : co2_cycle.o
+co2_data_flux.mod : co2_data_flux.o
+commap.mod : commap.o
+comsrf.mod : comsrf.o
+constituent_burden.mod : constituent_burden.o
+constituents.mod : constituents.o
+conv_water.mod : conv_water.o
+convect_deep.mod : convect_deep.o
+convect_shallow.mod : convect_shallow.o
+cosp_share.mod : cosp_share.o
+cospsimulator_intr.mod : cospsimulator_intr.o
+ctem.mod : ctem.o
+debugutilitiesmodule.mod : debugutilitiesmodule.o
+decompmodule.mod : decompmodule.o
+diag_module.mod : diag_module.o
+diffusion_solver.mod : diffusion_solver.o
+dp_coupling.mod : dp_coupling.o
+drv_input_data.mod : drv_input_data.o
+drydep_mod.mod : drydep_mod.o
+dust_intr.mod : dust_intr.o
+dust_sediment_mod.mod : dust_sediment_mod.o
+dycore.mod : dycore.o
+dyn_comp.mod : dyn_comp.o
+dyn_grid.mod : dyn_grid.o
+dyn_internal_state.mod : dyn_internal_state.o
+dynamics_vars.mod : dynamics_vars.o
+ebert_curry.mod : ebert_curry.o
+eddy_diff.mod : eddy_diff.o
+efield.mod : efield.o
+error_messages.mod : error_messages.o
+euvac.mod : euvac.o
+exbdrift.mod : exbdrift.o
+filenames.mod : filenames.o
+fill_module.mod : fill_module.o
+flux_avg.mod : flux_avg.o
+fv_control_mod.mod : fv_control_mod.o
+fv_prints.mod : fv_prints.o
+fvperf_module.mod : FVperf_module.o
+gas_wetdep_opts.mod : gas_wetdep_opts.o
+geopotential.mod : geopotential.o
+ghg_data.mod : ghg_data.o
+ghostmodule.mod : ghostmodule.o
+gravity_waves_sources.mod : gravity_waves_sources.o
+gw_drag.mod : gw_drag.o
+hb_diff.mod : hb_diff.o
+hirsbt.mod : hirsbt.o
+hirsbtpar.mod : hirsbtpar.o
+history_defaults.mod : history_defaults.o
+history_scam.mod : history_scam.o
+hk_conv.mod : hk_conv.o
+horizontal_interpolate.mod : horizontal_interpolate.o
+hycoef.mod : hycoef.o
+infnan.mod : infnan.o
+inidat.mod : inidat.o
+inital.mod : inital.o
+interp_mod.mod : interp_mod.o
+interpolate_data.mod : interpolate_data.o
+iofilemod.mod : ioFileMod.o
+iondrag.mod : iondrag.o
+ionosphere.mod : ionosphere.o
+lin_strat_chem.mod : lin_strat_chem.o
+linoz_data.mod : linoz_data.o
+llnl_o1d_to_2oh_adj.mod : llnl_O1D_to_2OH_adj.o
+m_sad_data.mod : m_sad_data.o
+m_spc_id.mod : m_spc_id.o
+m_types.mod : m_types.o
+macrop_driver.mod : macrop_driver.o
+mag_parms.mod : mag_parms.o
+majorsp_diffusion.mod : majorsp_diffusion.o
+mapz_module.mod : mapz_module.o
+mcica_random_numbers.mod : mcica_random_numbers.o
+mcica_subcol_gen_lw.mod : mcica_subcol_gen_lw.o
+mcica_subcol_gen_sw.mod : mcica_subcol_gen_sw.o
+mean_module.mod : mean_module.o
+mersennetwister.mod : mcica_random_numbers.o
+metdata.mod : metdata.o
+micro_mg1_0.mod : micro_mg1_0.o
+micro_mg1_5.mod : micro_mg1_5.o
+micro_mg_cam.mod : micro_mg_cam.o
+microp_aero.mod : microp_aero.o
+microp_driver.mod : microp_driver.o
+mo_adjrxt.mod : mo_adjrxt.o
+mo_aero_settling.mod : mo_aero_settling.o
+mo_aerosols.mod : mo_aerosols.o
+mo_airglow.mod : mo_airglow.o
+mo_airmas.mod : mo_airmas.o
+mo_airplane.mod : mo_airplane.o
+mo_apex.mod : mo_apex.o
+mo_aurora.mod : mo_aurora.o
+mo_calcoe.mod : mo_calcoe.o
+mo_chem_utls.mod : mo_chem_utls.o
+mo_chemini.mod : mo_chemini.o
+mo_chm_diags.mod : mo_chm_diags.o
+mo_constants.mod : mo_constants.o
+mo_cph.mod : mo_cph.o
+mo_drydep.mod : mo_drydep.o
+mo_exp_sol.mod : mo_exp_sol.o
+mo_extfrc.mod : mo_extfrc.o
+mo_flbc.mod : mo_flbc.o
+mo_fstrat.mod : mo_fstrat.o
+mo_gas_phase_chemdr.mod : mo_gas_phase_chemdr.o
+mo_ghg_chem.mod : mo_ghg_chem.o
+mo_heatnirco2.mod : mo_heatnirco2.o
+mo_imp_sol.mod : mo_imp_sol.o
+mo_indprd.mod : mo_indprd.o
+mo_inter.mod : mo_inter.o
+mo_jeuv.mod : mo_jeuv.o
+mo_jlong.mod : mo_jlong.o
+mo_jpl.mod : mo_jpl.o
+mo_jshort.mod : mo_jshort.o
+mo_lightning.mod : mo_lightning.o
+mo_lin_matrix.mod : mo_lin_matrix.o
+mo_lu_factor.mod : mo_lu_factor.o
+mo_lu_solve.mod : mo_lu_solve.o
+mo_lymana.mod : mo_lymana.o
+mo_mass_xforms.mod : mo_mass_xforms.o
+mo_mean_mass.mod : mo_mean_mass.o
+mo_msis_ubc.mod : mo_msis_ubc.o
+mo_negtrc.mod : mo_negtrc.o
+mo_neu_wetdep.mod : mo_neu_wetdep.o
+mo_nln_matrix.mod : mo_nln_matrix.o
+mo_params.mod : mo_params.o
+mo_pchem.mod : mo_pchem.o
+mo_photo.mod : mo_photo.o
+mo_photoin.mod : mo_photoin.o
+mo_phtadj.mod : mo_phtadj.o
+mo_prod_loss.mod : mo_prod_loss.o
+mo_ps2str.mod : mo_ps2str.o
+mo_rtlink.mod : mo_rtlink.o
+mo_rxt_rates_conv.mod : mo_rxt_rates_conv.o
+mo_sad.mod : mo_sad.o
+mo_schu.mod : mo_schu.o
+mo_setaer.mod : mo_setaer.o
+mo_setair.mod : mo_setair.o
+mo_setcld.mod : mo_setcld.o
+mo_setext.mod : mo_setext.o
+mo_sethet.mod : mo_sethet.o
+mo_setinv.mod : mo_setinv.o
+mo_seto2.mod : mo_seto2.o
+mo_setozo.mod : mo_setozo.o
+mo_setrxt.mod : mo_setrxt.o
+mo_setsoa.mod : mo_setsoa.o
+mo_setsox.mod : mo_setsox.o
+mo_setz.mod : mo_setz.o
+mo_sim_dat.mod : mo_sim_dat.o
+mo_snoe.mod : mo_snoe.o
+mo_solar_parms.mod : mo_solar_parms.o
+mo_solarproton.mod : mo_solarproton.o
+mo_sphers.mod : mo_sphers.o
+mo_srf_emissions.mod : mo_srf_emissions.o
+mo_strato_rates.mod : mo_strato_rates.o
+mo_strato_sad.mod : mo_strato_sad.o
+mo_sulf.mod : mo_sulf.o
+mo_synoz.mod : mo_synoz.o
+mo_tgcm_ubc.mod : mo_tgcm_ubc.o
+mo_tracname.mod : mo_tracname.o
+mo_trislv.mod : mo_trislv.o
+mo_tuv_inti.mod : mo_tuv_inti.o
+mo_usrrxt.mod : mo_usrrxt.o
+mo_util.mod : mo_util.o
+mo_waccm_hrates.mod : mo_waccm_hrates.o
+mo_waveall.mod : mo_waveall.o
+mo_wavelab.mod : mo_wavelab.o
+mo_wavelen.mod : mo_wavelen.o
+mo_waveo3.mod : mo_waveo3.o
+mo_xsections.mod : mo_xsections.o
+mo_zadj.mod : mo_zadj.o
+mod_comm.mod : mod_comm.o
+modal_aer_opt.mod : modal_aer_opt.o
+modal_aero_calcsize.mod : modal_aero_calcsize.o
+modal_aero_coag.mod : modal_aero_coag.o
+modal_aero_data.mod : modal_aero_data.o
+modal_aero_deposition.mod : modal_aero_deposition.o
+modal_aero_gasaerexch.mod : modal_aero_gasaerexch.o
+modal_aero_initialize_data.mod : modal_aero_initialize_data.o
+modal_aero_newnuc.mod : modal_aero_newnuc.o
+modal_aero_rename.mod : modal_aero_rename.o
+modal_aero_wateruptake.mod : modal_aero_wateruptake.o
+molec_diff.mod : molec_diff.o
+mpishorthand.mod : mpishorthand.o
+mz_aerosols_intr.mod : mz_aerosols_intr.o
+namelist_utils.mod : namelist_utils.o
+ncdio_atm.mod : ncdio_atm.o
+ndrop.mod : ndrop.o
+ndrop_bam.mod : ndrop_bam.o
+nucleate_ice.mod : nucleate_ice.o
+offline_driver.mod : offline_driver.o
+oldcloud.mod : oldcloud.o
+parrrsw.mod : parrrsw.o
+parrrtm.mod : parrrtm.o
+parutilitiesmodule.mod : parutilitiesmodule.o
+pbl_utils.mod : pbl_utils.o
+pfixer.mod : pfixer.o
+pft_module.mod : pft_module.o
+phys_control.mod : phys_control.o
+phys_debug.mod : phys_debug.o
+phys_debug_util.mod : phys_debug_util.o
+phys_gmean.mod : phys_gmean.o
+phys_grid.mod : phys_grid.o
+phys_prop.mod : phys_prop.o
+physconst.mod : physconst.o
+physics_buffer.mod : physics_buffer.o
+physics_types.mod : physics_types.o
+physpkg.mod : physpkg.o
+pkg_cld_sediment.mod : pkg_cld_sediment.o
+pkg_cldoptics.mod : pkg_cldoptics.o
+pmgrid.mod : pmgrid.o
+polar_avg.mod : polar_avg.o
+ppgrid.mod : ppgrid.o
+prescribed_aero.mod : prescribed_aero.o
+prescribed_ghg.mod : prescribed_ghg.o
+prescribed_ozone.mod : prescribed_ozone.o
+prescribed_volcaero.mod : prescribed_volcaero.o
+progseasalts_intr.mod : progseasalts_intr.o
+pspect.mod : pspect.o
+rad_constituents.mod : rad_constituents.o
+rad_solar_var.mod : rad_solar_var.o
+radae.mod : radae.o
+radconstants.mod : radconstants.o
+radheat.mod : radheat.o
+radiation.mod : radiation.o
+radiation_data.mod : radiation_data.o
+radlw.mod : radlw.o
+radsw.mod : radsw.o
+rate_diags.mod : rate_diags.o
+rayleigh_friction.mod : rayleigh_friction.o
+readinitial.mod : readinitial.o
+ref_pres.mod : ref_pres.o
+restart_dynamics.mod : restart_dynamics.o
+restart_physics.mod : restart_physics.o
+rgrid.mod : rgrid.o
+rrlw_cld.mod : rrlw_cld.o
+rrlw_con.mod : rrlw_con.o
+rrlw_kg01.mod : rrlw_kg01.o
+rrlw_kg02.mod : rrlw_kg02.o
+rrlw_kg03.mod : rrlw_kg03.o
+rrlw_kg04.mod : rrlw_kg04.o
+rrlw_kg05.mod : rrlw_kg05.o
+rrlw_kg06.mod : rrlw_kg06.o
+rrlw_kg07.mod : rrlw_kg07.o
+rrlw_kg08.mod : rrlw_kg08.o
+rrlw_kg09.mod : rrlw_kg09.o
+rrlw_kg10.mod : rrlw_kg10.o
+rrlw_kg11.mod : rrlw_kg11.o
+rrlw_kg12.mod : rrlw_kg12.o
+rrlw_kg13.mod : rrlw_kg13.o
+rrlw_kg14.mod : rrlw_kg14.o
+rrlw_kg15.mod : rrlw_kg15.o
+rrlw_kg16.mod : rrlw_kg16.o
+rrlw_ref.mod : rrlw_ref.o
+rrlw_tbl.mod : rrlw_tbl.o
+rrlw_vsn.mod : rrlw_vsn.o
+rrlw_wvn.mod : rrlw_wvn.o
+rrsw_aer.mod : rrsw_aer.o
+rrsw_cld.mod : rrsw_cld.o
+rrsw_con.mod : rrsw_con.o
+rrsw_kg16.mod : rrsw_kg16.o
+rrsw_kg17.mod : rrsw_kg17.o
+rrsw_kg18.mod : rrsw_kg18.o
+rrsw_kg19.mod : rrsw_kg19.o
+rrsw_kg20.mod : rrsw_kg20.o
+rrsw_kg21.mod : rrsw_kg21.o
+rrsw_kg22.mod : rrsw_kg22.o
+rrsw_kg23.mod : rrsw_kg23.o
+rrsw_kg24.mod : rrsw_kg24.o
+rrsw_kg25.mod : rrsw_kg25.o
+rrsw_kg26.mod : rrsw_kg26.o
+rrsw_kg27.mod : rrsw_kg27.o
+rrsw_kg28.mod : rrsw_kg28.o
+rrsw_kg29.mod : rrsw_kg29.o
+rrsw_ref.mod : rrsw_ref.o
+rrsw_tbl.mod : rrsw_tbl.o
+rrsw_vsn.mod : rrsw_vsn.o
+rrsw_wvn.mod : rrsw_wvn.o
+rrtmg_lw_cldprmc.mod : rrtmg_lw_cldprmc.o
+rrtmg_lw_init.mod : rrtmg_lw_init.o
+rrtmg_lw_rad.mod : rrtmg_lw_rad.o
+rrtmg_lw_rtrnmc.mod : rrtmg_lw_rtrnmc.o
+rrtmg_lw_setcoef.mod : rrtmg_lw_setcoef.o
+rrtmg_lw_taumol.mod : rrtmg_lw_taumol.o
+rrtmg_state.mod : rrtmg_state.o
+rrtmg_sw_cldprmc.mod : rrtmg_sw_cldprmc.o
+rrtmg_sw_cldprop.mod : rrtmg_sw_cldprop.o
+rrtmg_sw_init.mod : rrtmg_sw_init.o
+rrtmg_sw_rad.mod : rrtmg_sw_rad.o
+rrtmg_sw_reftra.mod : rrtmg_sw_reftra.o
+rrtmg_sw_setcoef.mod : rrtmg_sw_setcoef.o
+rrtmg_sw_spcvmc.mod : rrtmg_sw_spcvmc.o
+rrtmg_sw_taumol.mod : rrtmg_sw_taumol.o
+rrtmg_sw_vrtqdr.mod : rrtmg_sw_vrtqdr.o
+runtime_opts.mod : runtime_opts.o
+sat_hist.mod : sat_hist.o
+scammod.mod : scamMod.o
+seq_drydep_mod.mod : seq_drydep_mod.o
+set_cp.mod : set_cp.o
+short_lived_species.mod : short_lived_species.o
+shr_megan_mod.mod : shr_megan_mod.o
+slingo.mod : slingo.o
+solar_data.mod : solar_data.o
+spedata.mod : spedata.o
+spehox.mod : spehox.o
+spmd_dyn.mod : spmd_dyn.o
+spmd_utils.mod : spmd_utils.o
+srchutil.mod : srchutil.o
+sslt_rebin.mod : sslt_rebin.o
+startup_initialconds.mod : startup_initialconds.o
+stepon.mod : stepon.o
+stratiform.mod : stratiform.o
+string_utils.mod : string_utils.o
+sulchem.mod : sulchem.o
+sv_decomp.mod : sv_decomp.o
+sw_core.mod : sw_core.o
+tidal_diag.mod : tidal_diag.o
+time_manager.mod : time_manager.o
+time_utils.mod : time_utils.o
+tp_core.mod : tp_core.o
+tracer_cnst.mod : tracer_cnst.o
+tracer_data.mod : tracer_data.o
+tracer_srcs.mod : tracer_srcs.o
+tracers.mod : tracers.o
+tracers_suite.mod : tracers_suite.o
+trb_mtn_stress.mod : trb_mtn_stress.o
+tropopause.mod : tropopause.o
+unit_driver.mod : unit_driver.o
+units.mod : units.o
+upper_bc.mod : upper_bc.o
+uwshcu.mod : uwshcu.o
+vertical_diffusion.mod : vertical_diffusion.o
+wetdep.mod : wetdep.o
+wrap_nf.mod : wrap_nf.o
+wv_sat_methods.mod : wv_sat_methods.o
+wv_saturation.mod : wv_saturation.o
+xpavg_mod.mod : xpavg_mod.o
+zm_conv.mod : zm_conv.o
+zm_conv_intr.mod : zm_conv_intr.o
+zonal_mean.mod : zonal_mean.o

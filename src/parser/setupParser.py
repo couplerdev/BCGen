@@ -169,6 +169,7 @@ class Setup:
                 self.__couple.append(attrVect)
                 #mrg['args'].append('fraction')
     def dictDom(self,doc, k, v):
+        print(k, v)
         key = doc.createElement(k)
         value = doc.createTextNode(v)
         key.appendChild(value)

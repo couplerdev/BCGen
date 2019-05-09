@@ -17,7 +17,7 @@ CPPDEFS       := -DSPMD -fcray-pointer
 IGNORE_LINE_TRUNCAT := -ffree-line-length-none
 
 
-INCLFLAG := -I${INCLDIR} -I${ESMF_MOD}
+INCLFLAG := -I${INCLDIR} -I${ESMF_MOD} -I$(PIO_INCL)
 
 null  :=
 space := $(null) $(null)
