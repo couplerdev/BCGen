@@ -148,9 +148,11 @@ x2atm_atm)
     index_x2a_Sf_ofrac = mct_aVect_indexRA(x2atm_atm, 'Sf_ofrac')
     index_x2a_Sf_ifrac = mct_aVect_indexRA(x2atm_atm, 'Sf_ifrac')
     index_x2a_Sf_lfrac = mct_aVect_indexRA(x2atm_atm, 'Sf_lfrac')
+    print *, 'index', index_x2a_Sf_ofrac, index_x2a_Sf_ifrac, index_x2a_Sf_lfrac
     do n =1, lsize
         x2atm_atm%rAttr(index_x2a_Sf_ofrac, n) = fraction_atm%Rattr(kof, n)
         x2atm_atm%rAttr(index_x2a_Sf_ifrac, n) = fraction_atm%Rattr(kif, n)
+        if(n==8)print *,'the ice', fraction_atm%Rattr(kif, n)
         x2atm_atm%rAttr(index_x2a_Sf_lfrac, n) = fraction_atm%Rattr(klf, n)
     end do
 
@@ -160,10 +162,12 @@ x2atm_atm)
     call mct_aVect_copy(aVin=lnd2x_atm, aVout=x2atm_atm, vector=mct_usevector)
 
     do ka = 1, naflds
+        if(ka==12)print *, lindx(ka), lmerge(ka), iindx(ka), imerge(ka), xindx(ka), xmerge(ka), oindx(ka), omerge(ka)
         do n =  1, lsize
+            if(ka==12 .and. n==8)print *,'then8', x2atm_atm%rAttr(ka, n)
             fraco = fraction_atm%Rattr(kof, n)
             fraci = fraction_atm%Rattr(kif, n)
-            fracl = fraction_atm%Rattr(kof, n)
+            fracl = fraction_atm%Rattr(klf, n)
             if(lindx(ka)>0 .and. fracl > 0._r8)then
                 if(lmerge(ka))then
                     x2atm_atm%rAttr(ka, n) = x2atm_atm%rAttr(ka, n) + lnd2x_atm%rAttr(lindx(ka), n)*fracl

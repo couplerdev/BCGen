@@ -224,9 +224,7 @@
                -0.72_r8,-0.243_r8,  0.19_r8,-0.062_r8, &
                0.414_r8,  0.00_r8,  0.00_r8,  0.00_r8, &
                 0.00_r8,  0.00_r8,  0.00_r8,  0.00_r8 /
-
       hvrrtc = '$Revision: 1.3 $'
-
       do ibnd = 1,nbndlw
          if (ibnd.eq.1 .or. ibnd.eq.4 .or. ibnd.ge.10) then
            secdiff(ibnd) = 1.66_r8
@@ -312,10 +310,16 @@
                      odtot_rec = rec_6*odtot
                      bbdtot =  plfrac * (blay+dplankdn*odtot_rec)
                      bbd = plfrac*(blay+dplankdn*odepth_rec)
+                     if(isnan(bbdtot))then
+                         print *,'gassrc', plfrac, blay, dplankdn, odtot_rec, odepth_rec, planklev(lev-1, iband), blay, iband, lev
+                     end if
                      radld = radld - radld * (atrans(lev) + &
                          efclfrac(lev,igc) * (1. - atrans(lev))) + &
                          gassrc + cldfmc(igc,lev) * &
                          (bbdtot * atot(lev) - gassrc)
+                     if(isnan(radld))then
+                         print *, 'radldbad', atrans(lev),efclfrac(lev, igc), gassrc, cldfmc(igc, lev), bbdtot, atot(lev)
+                     end if
                      drad(lev-1) = drad(lev-1) + radld
                   
                      bbugas(lev) =  plfrac * (blay+dplankup*odepth_rec)
@@ -373,6 +377,7 @@
                   if (odepth .le. 0.06_r8) then
                      atrans(lev) = odepth-0.5_r8*odepth*odepth
                      odepth = rec_6*odepth
+                     odepth = rec_6*odepth
                      bbd = plfrac*(blay+dplankdn*odepth)
                      bbugas(lev) = plfrac*(blay+dplankup*odepth)
                   else
@@ -411,7 +416,7 @@
          radlu = rad0 + reflect * radld
          radclru = rad0 + reflect * radclrd
 
-
+         if(isnan(radlu))print *,'corrradlu', radlu, rad0, reflect, radld, fracs(1, igc), igc, plankbnd(iband), iband
 ! Upward radiative transfer loop.
          urad(0) = urad(0) + radlu
          clrurad(0) = clrurad(0) + radclru
@@ -424,10 +429,16 @@
                    efclfrac(lev,igc) * (1._r8 - atrans(lev))) + &
                    gassrc + cldfmc(igc,lev) * &
                    (bbutot(lev) * atot(lev) - gassrc)
+               if(isnan(urad(lev)) .or. isnan(radlu))then
+                   print *,'checkurad',radlu, urad(lev), bbugas(lev), atrans(lev), efclfrac(lev, igc), cldfmc(igc, lev), bbutot(lev), atot(lev), lev
+               endif
                urad(lev) = urad(lev) + radlu
 !  Clear layer
             else
                radlu = radlu + (bbugas(lev)-radlu)*atrans(lev)
+               if(isnan(radlu) .or. isnan(urad(lev)))then
+                   print *, 'checkurad2',radlu,urad(lev), bbugas(lev), atrans(lev), lev
+               end if
                urad(lev) = urad(lev) + radlu
             endif
 !  Set clear sky stream to total sky stream as long as all layers
@@ -453,9 +464,11 @@
          do lev = nlayers, 0, -1
             uflux(lev) = urad(lev)*wtdiff
             dflux(lev) = drad(lev)*wtdiff
+            if(isnan(urad(lev)))print *,'urad', urad(lev)
             urad(lev) = 0.0_r8
             drad(lev) = 0.0_r8
             totuflux(lev) = totuflux(lev) + uflux(lev) * delwave(iband)
+            if(isnan(totuflux(lev)))print *, 'totuflux', totuflux(lev), lev, uflux(lev), urad(lev), delwave(iband), wtdiff
             totdflux(lev) = totdflux(lev) + dflux(lev) * delwave(iband)
             uclfl(lev) = clrurad(lev)*wtdiff
             dclfl(lev) = clrdrad(lev)*wtdiff
@@ -493,7 +506,8 @@
          l = lev - 1
 
 ! Calculate heating rates at model layers
-         htr(l)=heatfac*(fnet(l)-fnet(lev))/(pz(l)-pz(lev)) 
+         htr(l)=heatfac*(fnet(l)-fnet(lev))/(pz(l)-pz(lev))
+         if(isnan(htr(l)))print *, 'htrbad', htr(l), l, lev,fnet(l), fnet(lev), pz(l), pz(lev), heatfac, totuflux(lev), fluxfac
          htrc(l)=heatfac*(fnetc(l)-fnetc(lev))/(pz(l)-pz(lev)) 
       enddo
 

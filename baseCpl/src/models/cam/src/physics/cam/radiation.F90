@@ -694,7 +694,8 @@ end function radiation_nextsw_cday
 
     call pbuf_get_field(pbuf, qrs_idx,qrs)
     call pbuf_get_field(pbuf, qrl_idx,qrl)
-
+    print *, 'thebad qrl pbuf', qrl(8,1)
+    print *,'*******'
     call pbuf_get_field(pbuf, rel_idx, rel    )
     call pbuf_get_field(pbuf, rei_idx, rei    )
    
@@ -901,7 +902,7 @@ end function radiation_nextsw_cday
           call t_startf('aero_optics_lw')
           if (doabsems) call aer_rad_props_lw(0, state, pbuf,  odap_aer)
           call t_stopf('aero_optics_lw')
-
+          print *, 'the qrl', qrl(8,1)
           call radclwmx(lchnk, ncol, doabsems, &
              lwupcgs, state%t, sp_hum, o3, pbr, &
              pnm, state%lnpmid, state%lnpint, n2o, ch4, &
@@ -987,6 +988,7 @@ end function radiation_nextsw_cday
              do i = 1, ncol
                 qrs(i,k) = qrs(i,k)/state%pdel(i,k)
                 qrl(i,k) = qrl(i,k)/state%pdel(i,k)
+                if(i==8 .and. k==1)print *,'qrlpdel', qrl(i,k), state%pdel(i,k)
              end do
           end do
        end if
@@ -995,7 +997,7 @@ end function radiation_nextsw_cday
 
     ! output rad inputs and resulting heating rates
     call output_rad_data(  pbuf, state, cam_in, landm, coszrs )
-
+    print *,'call radhead'
     ! Compute net radiative heating tendency
     call radheat_tend(state, pbuf,  ptend, qrl, qrs, fsns, &
                       fsnt, flns, flnt, cam_in%asdir, net_flx)

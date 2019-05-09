@@ -585,12 +585,12 @@ contains
     !--- update current ifrad/ofrad values if albedo was updated
 
     if (update_alb) then
-       kx = mct_aVect_indexRA(fractions_o,"ifrac")
-       kr = mct_aVect_indexRA(fractions_o,"ifrad")
-       fractions_o%rAttr(kr,:) = fractions_o%rAttr(kx,:)
+       !kx = mct_aVect_indexRA(fractions_o,"ifrac")
+       !kr = mct_aVect_indexRA(fractions_o,"ifrad")
+       !fractions_o%rAttr(kr,:) = fractions_o%rAttr(kx,:)
        kx = mct_aVect_indexRA(fractions_o,"ofrac")
-       kr = mct_aVect_indexRA(fractions_o,"ofrad")
-       fractions_o%rAttr(kr,:) = fractions_o%rAttr(kx,:)
+       !kr = mct_aVect_indexRA(fractions_o,"ofrad")
+       !fractions_o%rAttr(kr,:) = fractions_o%rAttr(kx,:)
     endif
        
     end subroutine flux_ocnalb_mct
