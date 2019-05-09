@@ -54,6 +54,8 @@ subroutine domain_areafactinit(comp, mdl2drv, drv2mdl)
                 mdl2drv(n) = rarea/raream
                 drv2mdl(n) = 1.0_R8/mdl2drv(n)
             else
+                mdl2drv(n) = 1.0_R8
+                drv2mdl(n) = 1.0_R8
                 !write(logunit, *) trim(subname), 'ERROR area, aream= ', &
                 !      rarea, raream, ' in ', n, gridsize
                 !call shr_sys_flush(logunit)

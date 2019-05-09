@@ -322,6 +322,12 @@ subroutine cpl_init()
     if(restart)call base_rest_read(metaData, rest_file)
     #end if
 
+
+    if(metaData%iamin_modelatm)then
+         call atm_init_mct(metaData%atm, EClock_atm, x2atm_atmatm, atm2x_atmatm, ierr=ierr)
+    end if
+
+
     call MPI_Barrier(MPI_COMM_WORLD, ierr)
     write(logUnit, *)'---------------Init End------------'
     call MPI_Barrier(MPI_COMM_WORLD, ierr)

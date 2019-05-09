@@ -203,6 +203,27 @@
 					</method>
 				<mapper>
 			</src>
+			<src>
+				<attrVect>rof2x_rofx</attrVect>
+				<field></field>
+				<mapper>
+					<name>mapper_Smatrof2ocn</name>
+					<type>offline</type>
+					<w_file></w_file>
+					<method>
+						<phase>
+							<name></name>
+							<in_args></in_args>
+							<out_args></out_args>
+						</phase>
+						<phase>
+							<name></name>
+							<in_args></int_args>
+							<out_args></out_args>
+						</phase>
+					</method>
+				<mapper>
+			</src>
 		</srcs>
 		<mrg>
 			<name>mrg_x2ocn</name>

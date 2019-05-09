@@ -502,7 +502,7 @@ subroutine mapper_comp_avNormArr(mapper, av_i, av_o, norm_i, rList, norm)
         do j = 1, lsize_o
             kf = mct_aVect_indexRA(avp_o, ffld)
             normval = avp_o%rAttr(kf, j)
-            if(normval /= 0.0_r8)then
+            if(normval > 0.001_r8)then
                 normval = 1.0_r8/normval
             end if
             avp_o%rAttr(:,j) = avp_o%rAttr(:,j)*normval
