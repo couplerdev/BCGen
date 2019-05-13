@@ -943,11 +943,9 @@ subroutine phys_run1(phys_state, ztodt, phys_tend, pbuf2d,  cam_in, cam_out)
           call diag_physvar_ic ( c,  phys_buffer_chunk, cam_out(c), cam_in(c) )
           call t_stopf ('diag_physvar_ic')
 
-          if(c==57)print *,'tphysbc', phys_state(c)%t(8,1), phys_state(c)%t(8,2), cam_in(c)%lwup(8)
           call tphysbc (ztodt, fsns(1,c), fsnt(1,c), flns(1,c), flnt(1,c), phys_state(c),        &
                        phys_tend(c), phys_buffer_chunk,  fsds(1,c), landm(1,c),          &
                        sgh30(1,c), cam_out(c), cam_in(c) )
-          if(c==57)print *,'tphysbcend', phys_state(c)%t(8,1), phys_state(c)%t(8,2)
        end do
 
        call t_adj_detailf(-1)
@@ -1130,12 +1128,10 @@ subroutine phys_run2(phys_state, ztodt, phys_tend, pbuf2d,  cam_out, &
        call t_startf('diag_surf')
        call diag_surf(cam_in(c), cam_out(c), phys_state(c)%ps,trefmxav(1,c), trefmnav(1,c))
        call t_stopf('diag_surf')
-       if(c==57)print *,'physrun2',phys_tend(c)%dudt(8,1), phys_state(c)%t(8,1)
        call tphysac(ztodt, cam_in(c),  &
             sgh(1,c), sgh30(1,c), cam_out(c),                              &
             phys_state(c), phys_tend(c), phys_buffer_chunk,&
             fsds(1,c))
-       if(c==57)print *,'physrunend', phys_tend(c)%dudt(8,1)
     end do                    ! Chunk loop
 
     call t_adj_detailf(-1)
@@ -1315,7 +1311,6 @@ subroutine tphysac (ztodt,   cam_in,  &
     ncol  = state%ncol
 
     nstep = get_nstep()
-    print *, 'statephy', state%t(8,2), state%t(8,1) 
     call phys_getopts( do_clubb_sgs_out       = do_clubb_sgs, &
                        state_debug_checks_out = state_debug_checks)
 
@@ -1365,7 +1360,6 @@ subroutine tphysac (ztodt,   cam_in,  &
        call carma_emission_tend (state, ptend, cam_in, ztodt)
        call physics_update(state, ptend, ztodt, tend)
     end if
-    if(isnan(tend%dudt(8,1)))print *, 'tphysac1'
     ! get nstep and zero array for energy checker
     zero = 0._r8
     nstep = get_nstep()
@@ -1390,14 +1384,12 @@ subroutine tphysac (ztodt,   cam_in,  &
     call check_tracers_chng(state, tracerint, "tracers_timestep_tend", nstep, ztodt,   &
          cam_in%cflx)
 
-    if(isnan(tend%dudt(8,1)))print *, 'tphysac2'
 
     call aoa_tracers_timestep_tend(state, ptend, cam_in%cflx, cam_in%landfrac, ztodt)      
     call physics_update(state, ptend, ztodt, tend)
     call check_tracers_chng(state, tracerint, "aoa_tracers_timestep_tend", nstep, ztodt,   &
          cam_in%cflx)
 
-    if(isnan(tend%dudt(8,1)))print *, 'tphysac3'
 
     ! Chemistry calculation
     if (chem_is_active()) then
@@ -1411,7 +1403,6 @@ subroutine tphysac (ztodt,   cam_in,  &
     end if
     call t_stopf('adv_tracer_src_snk')
 
-    if(isnan(tend%dudt(8,1)))print *, 'tphysac4'
     !===================================================
     ! Vertical diffusion/pbl calculation
     ! Call vertical diffusion code (pbl, free atmosphere and molecular)
@@ -1426,9 +1417,7 @@ subroutine tphysac (ztodt,   cam_in,  &
        
        ! Update surface flux constituents 
        call physics_update(state, ptend, ztodt, tend)
-       print *, 'do_clubb'
     else
-       print *,'verticaltend', ptend%top_level, ptend%bot_level, state%ncol
        !print *, 'ptendu',ptend%u(:8,1)
        call t_startf('vertical_diffusion_tend')
        call vertical_diffusion_tend (ztodt ,state ,cam_in%wsx, cam_in%wsy,   &
@@ -1448,7 +1437,6 @@ subroutine tphysac (ztodt,   cam_in,  &
     
     endif
 
-    if(isnan(tend%dudt(8,1)))print *,'tphysac5', do_clubb_sgs
 
     !===================================================
     ! Rayleigh friction calculation
@@ -1458,7 +1446,6 @@ subroutine tphysac (ztodt,   cam_in,  &
     call physics_update(state, ptend, ztodt, tend)
     call t_stopf('rayleigh_friction')
 
-    if(isnan(tend%dudt(8,1)))print *, 'tphysac6'
 
     if (do_clubb_sgs) then
       call check_energy_chng(state, tend, "vdiff", nstep, ztodt, zero, zero, zero, zero)
@@ -1476,7 +1463,6 @@ subroutine tphysac (ztodt,   cam_in,  &
     call physics_update(state, ptend, ztodt, tend)
     call t_stopf('aero_drydep')
 
-    if(isnan(tend%dudt(8,1)))print *, 'tphysac7'
 
    ! CARMA microphysics
    !
@@ -1512,7 +1498,6 @@ subroutine tphysac (ztodt,   cam_in,  &
     call check_energy_chng(state, tend, "gwdrag", nstep, ztodt, zero, zero, zero, zero)
     call t_stopf('gw_intr')
 
-    if(isnan(tend%dudt(8,1)))print *, 'tphysac8'
 
 #if ( defined WACCM_PHYS )
 
@@ -1594,7 +1579,6 @@ subroutine tphysac (ztodt,   cam_in,  &
 
     call clybry_fam_set( ncol, lchnk, map2chm, state%q, pbuf )
 
-    if(isnan(tend%dudt(8,1)))print *, 'tphysac9'
 
 end subroutine tphysac
 
@@ -1873,7 +1857,6 @@ subroutine tphysbc (ztodt,               &
     end if
     ! Save state for convective tendency calculations.
     call diag_conv_tend_ini(state, pbuf)
-    if(isnan(state%t(8,1)))print *,'nanbug1'
     call cnst_get_ind('CLDLIQ', ixcldliq)
     call cnst_get_ind('CLDICE', ixcldice)
     qini     (:ncol,:pver) = state%q(:ncol,:pver,       1)
@@ -2075,7 +2058,6 @@ subroutine tphysbc (ztodt,               &
           call check_energy_chng(state, tend, "clubb_tend", nstep, ztodt, cam_in%lhf/latvap, flx_cnd, det_ice, flx_heat)
  
        endif 
-       print *, 'errorno'
        !if(isnan(ptend%s(8,1)))print *, 'nanbug5'
 
        call t_stopf('macrop_tend') 
@@ -2177,13 +2159,11 @@ subroutine tphysbc (ztodt,               &
     ! Radiation computations
     !===================================================
     call t_startf('radiation')
-    print *,'bevin tend'
     call radiation_tend(state,ptend, pbuf, &
          cam_out, cam_in, &
          cam_in%landfrac,landm,cam_in%icefrac, cam_in%snowhland, &
          fsns,    fsnt, flns,    flnt,  &
          fsds, net_flx)
-    if(isnan(state%s(8,1)) .or. isnan(ptend%s(8,1)))print *, 'nanbug7', state%s(8,1), ptend%s(8,1),  state%s(7,1)
 
     ! Set net flux used by spectral dycores
     do i=1,ncol
@@ -2191,7 +2171,6 @@ subroutine tphysbc (ztodt,               &
     end do
     call physics_update(state, ptend, ztodt, tend)
     call check_energy_chng(state, tend, "radheat", nstep, ztodt, zero, zero, zero, net_flx)
-    if(isnan(state%t(8,1)))print *,'nanbug7.1'
     call t_stopf('radiation')
 
     ! Diagnose the location of the tropopause and its location to the history file(s).
@@ -2200,7 +2179,6 @@ subroutine tphysbc (ztodt,               &
     call t_stopf('tropopause')
 
 
-    if(isnan(state%t(8,1)))print *, 'nanbug7.2'
     ! Save atmospheric fields to force surface models
     call t_startf('cam_export')
     call cam_export (state,cam_out,pbuf)
@@ -2211,8 +2189,6 @@ subroutine tphysbc (ztodt,               &
     call diag_export(cam_out)
     call t_stopf('diag_export')
 
-    if(isnan(state%t(8,1)))print *,"nanbug8"
-    print *,'tendnan', tend%dudt(8,1)
 
 
 end subroutine tphysbc

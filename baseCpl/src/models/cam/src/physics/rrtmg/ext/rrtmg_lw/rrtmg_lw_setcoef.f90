@@ -147,7 +147,6 @@
 
       hvrset = '$Revision: 1.2 $'
 
-      print *,'setcoef'
 
       stpfac = 296._r8/1013._r8
 
@@ -165,7 +164,7 @@
          indlev0 = 180
       endif
       t0frac = tz(0) - 159._r8 - float(indlev0)
-      if(isnan(t0frac))print *,'t0bad',t0frac,tz(0), indlev0
+      !if(isnan(t0frac))print *,'t0bad',t0frac,tz(0), indlev0
       laytrop = 0
 
 ! Begin layer loop 
@@ -200,7 +199,7 @@
             dbdtlay = totplnk(indlay+1,iband) - totplnk(indlay,iband)
             planklay(lay,iband) = totplnk(indlay,iband) + tlayfrac * dbdtlay
             planklev(lay,iband) = totplnk(indlev,iband) + tlevfrac * dbdtlev
-            if(isnan(planklev(lay, iband)))print *, 'planklev', totplnk(indlev, iband), tlevfrac, dbdtlev, indlev, lay, iband
+            !if(isnan(planklev(lay, iband)))print *, 'planklev', totplnk(indlev, iband), tlevfrac, dbdtlev, indlev, lay, iband
          enddo
 
 !  For band 16, if radiative transfer will be performed on just
@@ -229,14 +228,14 @@
                     (totplnk(indbound,iband) + tbndfrac * dbdtlev)
                dbdtlev = totplnk(indlev0+1,iband)-totplnk(indlev0,iband)
                planklev(0,iband) = totplnk(indlev0,iband) + t0frac * dbdtlev
-               if(isnan(planklev(0, iband)))print *,'plank0', planklev(0, iband), totplnk(indlev0, iband), t0frac, dbdtlev
+               !if(isnan(planklev(0, iband)))print *,'plank0', planklev(0, iband), totplnk(indlev0, iband), t0frac, dbdtlev
             endif
             dbdtlev = totplnk(indlev+1,iband) - totplnk(indlev,iband)
             dbdtlay = totplnk(indlay+1,iband) - totplnk(indlay,iband)
             planklay(lay,iband) = totplnk(indlay,iband) + tlayfrac * dbdtlay
             planklev(lay,iband) = totplnk(indlev,iband) + tlevfrac * dbdtlev
          endif
-         if(isnan(planklev(lay, iband)))print *,'planksss', totplnk(indlev, iband), tlevfrac, dbdtlev, iband
+         !if(isnan(planklev(lay, iband)))print *,'planksss', totplnk(indlev, iband), tlevfrac, dbdtlev, iband
 !  Find the two reference pressures on either side of the
 !  layer pressure.  Store them in JP and JP1.  Store in FP the
 !  fraction of the difference (in ln(pressure)) between these

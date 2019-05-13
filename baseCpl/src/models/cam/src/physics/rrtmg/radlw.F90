@@ -273,7 +273,6 @@ subroutine rad_rrtmg_lw(lchnk   ,ncol      ,rrtmg_levs,r_state,       &
    qrlc = 0._r8
    qrl (:ncol,pverp-rrtmg_levs+1:pver)=hr (:ncol,rrtmg_levs-1:1:-1)*cpair*dps
    qrlc(:ncol,pverp-rrtmg_levs+1:pver)=hrc(:ncol,rrtmg_levs-1:1:-1)*cpair*dps
-   print *,'rrtmqrl', qrl(8,1), hr(8,1), cpair, dps
    ! Return 0 above solution domain
    if ( ntoplw > 1 )then
       qrl(:ncol,:ntoplw-1) = 0._r8
