@@ -474,7 +474,7 @@ x2ice_icex)
 
 end subroutine mrg_x2ice
 
-subroutine mrg_x2rof(metaData, lnd2x_rofx, fractions_r, rof2x_rofx,&
+subroutine mrg_x2rof(metaData, lnd2x_rofx, rof2x_rofx, fractions_r, &
 x2rof_rofx)
 
     implicit none

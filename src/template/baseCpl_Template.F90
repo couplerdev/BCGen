@@ -236,7 +236,7 @@ subroutine cpl_init()
             #set $dst = $av['dst']
             #set $src = $av['src']
         lsize = mct_gsmap_lsize($gn, metaData%mpi_model${dst}2cpl) 
-        call mct_aVect_init($cfg, rList=metaData%flds_${src}2x_states, lsize=lsize)
+        call mct_aVect_init($cfg, rList=metaData%flds_${src}2x, lsize=lsize)
         call mct_aVect_zero($cfg)
         #end for
     end if

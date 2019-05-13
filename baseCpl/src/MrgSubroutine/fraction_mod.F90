@@ -147,7 +147,7 @@ subroutine fraction_rof_init(domain, fraction_rof, fraclist)
     call mct_avect_zero(fraction_rof)
     ko = mct_avect_indexRa(fraction_rof, "rfrac", perrWith=subName)    
     kf = mct_avect_indexRa(dom%data, "frac", perrWith=subName)
-
+    fraction_rof%rAttr(ko,:) = dom%data%rAttr(kf,:)
 end subroutine fraction_rof_init
 
 subroutine fraction_glc_init(domain, fraction_glc, fraclist)
