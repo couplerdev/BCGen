@@ -2290,7 +2290,7 @@ contains
           crit = max(road_a(fl), sunwall_a(fl), shadewall_a(fl))
           if (crit < .001_r8) exit
        end do
-       if (iter >= n) then
+       if (.false. .and. (iter >= n)) then
           write (iulog,*) 'urban net longwave radiation error: no convergence'
           write (iulog,*) 'clm model is stopping'
           call endrun
@@ -2315,7 +2315,7 @@ contains
        ! lwdown (from atmosphere) = lwdown_improad + lwdown_perroad + (lwdown_sunwall + lwdown_shadewall)*canyon_hwr
 
        err = lwnet_canyon(fl) - (lwup_canyon(fl) - lwdown(fl))
-       if (abs(err) > .10_r8 ) then
+       if (.false. .and. (abs(err) > .10_r8 )) then
           write (iulog,*) 'urban net longwave radiation balance error',err
           write (iulog,*) 'clm model is stopping'
           call endrun()
@@ -2854,7 +2854,7 @@ contains
 
        ! Error checks
 
-       if (ht_roof(fl) - z_d_town(l) <= z_0_town(l)) then
+       if (.false. .and. (ht_roof(fl) - z_d_town(l) <= z_0_town(l))) then
           write (iulog,*) 'aerodynamic parameter error in UrbanFluxes'
           write (iulog,*) 'h_r - z_d <= z_0'
           write (iulog,*) 'ht_roof, z_d_town, z_0_town: ', ht_roof(fl), z_d_town(l), &
@@ -2862,7 +2862,7 @@ contains
           write (iulog,*) 'clm model is stopping'
           call endrun()
        end if
-       if (forc_hgt_u_pft(pfti(l)) - z_d_town(l) <= z_0_town(l)) then
+       if (.false. .and. (forc_hgt_u_pft(pfti(l)) - z_d_town(l) <= z_0_town(l))) then
           write (iulog,*) 'aerodynamic parameter error in UrbanFluxes'
           write (iulog,*) 'h_u - z_d <= z_0'
           write (iulog,*) 'forc_hgt_u_pft, z_d_town, z_0_town: ', forc_hgt_u_pft(pfti(l)), z_d_town(l), &

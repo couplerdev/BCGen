@@ -34,7 +34,7 @@
 							<args>
 								<arg model='ocn'>comp</arg>
 								<arg model='atm' src='atm' dst='cpl'>attrVect</arg>
-								<arg model='ocn' src='atm' dst='cpl'>attrVect</arg>
+								<arg model='ocn' src='ocn' dst='cpl'>attrVect</arg>
 								<arg>xao_ox</arg>
 							</args>
 							<in_args>
