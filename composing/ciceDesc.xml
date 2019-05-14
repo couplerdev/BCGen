@@ -1,5 +1,5 @@
 <ciceDescXml>
-	<packageDir>/share/BCGen/develDir/BCGen/baseCpl/src/models/clm</packageDir>
+	<packageDir>/home/hq/git/protected/BCGen/baseCpl/src/models/clm</packageDir>
 	<configure>
 		<script></script>
 		<workDir>./</workDir>

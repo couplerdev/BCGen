@@ -169,9 +169,11 @@ subroutine base_hist_write(metaData, EClock_d)
 
    if (iamin_CPLID) then
 
+      print *, "DEBUG_HQ_HIST_!"
       !if (drv_threading) call seq_comm_setnthreads(nthreads_CPLID)
       call base_io_wopen(my_proc, hist_file,clobber=.true.,cdf64=cdf64)
 
+      print *, "DEBUG_HQ_HIST_2"
 
       ! loop twice, first time write header, second time write data for perf
 
@@ -189,6 +191,7 @@ subroutine base_hist_write(metaData, EClock_d)
 
          !print *, '---------curr_time---------', fk
          tbnds = curr_time
+          print *, "DEBUG_HQ_HIST_3"
 !------- tcx nov 2011 tbnds of same values causes problems in ferret
          if (tbnds(1) >= tbnds(2)) then
             call base_io_write(hist_file,&
@@ -200,6 +203,7 @@ subroutine base_hist_write(metaData, EClock_d)
                               whead=whead,wdata=wdata,tbnds=tbnds)
          endif
 
+        print *, "DEBUG_HQ_HIST_4"
          !print *,'call :-----------------'
          !if (lnd_present) then
             call compMeta_GetInfo(metaData%lnd, comp_gsmap=gsmap)
@@ -207,6 +211,7 @@ subroutine base_hist_write(metaData, EClock_d)
             call base_io_write(hist_file,gsmap,dom_lndx%data,'dom_lndx', &
                               nx=lnd_nx,ny=lnd_ny,nt=1,whead=whead,wdata=wdata,pre='domlnd')
             !print *, 'data write'
+          print *, "DEBUG_HQ_HIST_5"
             !call base_io_write(hist_file,gsmap,fractions_lndx,'fractions_lndx', &
             !                  nx=lnd_nx,ny=lnd_ny,nt=1,whead=whead,wdata=wdata,pre='fraclnd')
             call base_io_write(hist_file,gsmap,x2lnd_lndx,'x2lnd_lndx', &
@@ -214,6 +219,7 @@ subroutine base_hist_write(metaData, EClock_d)
             call base_io_write(hist_file,gsmap,lnd2x_lndx,'lnd2x_lndx', &
                               nx=lnd_nx,ny=lnd_ny,nt=1,whead=whead,wdata=wdata,pre='lnd2x')
          !endif
+          print *, "DEBUG_HQ_HIST_6"
          !if (atm_present) then
             call compMeta_GetInfo(metaData%atm, comp_gsmap=gsmap)
             !print *, 'base io'
@@ -227,6 +233,7 @@ subroutine base_hist_write(metaData, EClock_d)
             call base_io_write(hist_file,gsmap,atm2x_atmx,'atm2x_atmx', &
                               nx=atm_nx,ny=atm_ny,nt=1,whead=whead,wdata=wdata,pre='atm2x')
          !endif
+          print *, "DEBUG_HQ_HIST_7"
          !if (rof_present) then
             call compMeta_GetInfo(metaData%rof, comp_gsmap=gsmap)
             !print *, 'base io'
@@ -240,6 +247,7 @@ subroutine base_hist_write(metaData, EClock_d)
             call base_io_write(hist_file,gsmap,rof2x_rofx,'rof2x_rofx', &
                               nx=rof_nx,ny=rof_ny,nt=1,whead=whead,wdata=wdata,pre='rof2x')
          !endif
+          print *, "DEBUG_HQ_HIST_8"
          !if (ice_present) then
             call compMeta_GetInfo(metaData%ice, comp_gsmap=gsmap)
             !print *, 'base io'
@@ -253,6 +261,7 @@ subroutine base_hist_write(metaData, EClock_d)
             call base_io_write(hist_file,gsmap,ice2x_icex,'ice2x_icex', &
                               nx=ice_nx,ny=ice_ny,nt=1,whead=whead,wdata=wdata,pre='ice2x')
          !endif
+          print *, "DEBUG_HQ_HIST_9"
          !if (ocn_present) then
             call compMeta_GetInfo(metaData%ocn, comp_gsmap=gsmap)
             !print *, 'base io'
@@ -267,6 +276,7 @@ subroutine base_hist_write(metaData, EClock_d)
                               nx=ocn_nx,ny=ocn_ny,nt=1,whead=whead,wdata=wdata,pre='ocn2x')
          !endif
          !print *,'***********'
+          print *, "DEBUG_HQ_HIST_A"
       end do
       call base_io_close(hist_file)
       

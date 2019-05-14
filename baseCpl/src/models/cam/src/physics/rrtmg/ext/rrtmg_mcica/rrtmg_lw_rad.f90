@@ -713,14 +713,11 @@
 
       pz(0) = plev(iplon,nlay+1)
       tz(0) = tlev(iplon,nlay+1) 
-      if(isnan(tz(0)))print *,'inatmtz', tlev(iplon, nlay+1), iplon, nlay
       do l = 1, nlay
          pavel(l) = play(iplon,nlay-l+1)
          tavel(l) = tlay(iplon,nlay-l+1)
          pz(l) = plev(iplon,nlay-l+1)
-         if(isnan(pz(l)))print *,'inatmpz', pz(l), l, plev(iplon, nlay-l+1), iplon, nlay
          tz(l) = tlev(iplon,nlay-l+1)
-         if(isnan(tz(l)))print *,'inatmtzl', tz(l), l, tlev(iplon, nlay-l+1), iplon, nlay
 ! For h2o input in vmr:
          wkl(1,l) = h2ovmr(iplon,nlay-l+1)
 ! For h2o input in mmr:

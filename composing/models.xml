@@ -95,7 +95,7 @@
 		<name>atm</name>
 		<version>cam</version>
 		<src>cam</src>
-   		<metaFile>/share/BCGen/develDir/BCGen/composing/camDesc.xml</metaFile>
+   		<metaFile>/home/hq/git/protected/BCGen/composing/camDesc.xml</metaFile>
 		<attrVect>
 			<name></name>
 			<gsize>3312</gsize>
@@ -141,7 +141,7 @@
 		<name>lnd</name>
 		<version>clm</version>
 		<src>clm</src>
-		<metaFile>/share/BCGen/develDir/BCGen/composing/clmDesc.xml</metaFile>
+		<metaFile>/home/hq/git/protected/BCGen/composing/clmDesc.xml</metaFile>
 		<attrVect>
 			<name></name>
 			<gsize>3312</gsize>
@@ -187,7 +187,7 @@
 		<name>ice</name>
 		<version>cice</version>
 		<src>cice</src>
-		<metaFile>/share/BCGen/develDir/BCGen/composing/ciceDesc.xml</metaFile>
+		<metaFile>/home/hq/git/protected/BCGen/composing/ciceDesc.xml</metaFile>
 		<attrVect>
 			<name></name>
 			<gsize>11600</gsize>
@@ -233,7 +233,7 @@
 		<name>rof</name>
 		<version>rtm</version>
 		<src>rtm</src>
-		<metaFile>/share/BCGen/develDir/BCGen/composing/rofDesc.xml</metaFile>
+		<metaFile>/home/hq/git/protected/BCGen/composing/rofDesc.xml</metaFile>
 		<attrVect>
 			<name></name>
 			<gsize>259200</gsize>

@@ -1,5 +1,5 @@
 case_dir:
 namelist:
-baseCplDir:/home/hq/git/BCGen/baseCpl
+baseCplDir:/home/hq/git/protected/BCGen/baseCpl
 case_desc:no desc
 case_name:default name

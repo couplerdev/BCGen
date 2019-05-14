@@ -902,7 +902,6 @@ end function radiation_nextsw_cday
           call t_startf('aero_optics_lw')
           if (doabsems) call aer_rad_props_lw(0, state, pbuf,  odap_aer)
           call t_stopf('aero_optics_lw')
-          print *, 'the qrl', qrl(8,1)
           call radclwmx(lchnk, ncol, doabsems, &
              lwupcgs, state%t, sp_hum, o3, pbr, &
              pnm, state%lnpmid, state%lnpint, n2o, ch4, &

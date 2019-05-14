@@ -1,5 +1,5 @@
 <camDescXml>
-	<packageDir>/share/BCGen/develDir/BCGen/baseCpl/src/models/cam</packageDir>
+	<packageDir>/home/hq/git/protected/BCGen/baseCpl/src/models/cam</packageDir>
 	<configure>
 		<script>./bld/configure</script>
 		<workDir>./bld</workDir>

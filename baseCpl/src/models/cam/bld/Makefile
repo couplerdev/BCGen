@@ -1,9 +1,7 @@
 #Make macros for CAM.
 
-include ../../Makefile.conf
-
 UNAMES        :=  LINUX
-ROOTDIR       :=  $(ABSDIR)
+ROOTDIR       :=  /home/hq/git/protected/BCGen/baseCpl/src
 INC_NETCDF    :=  
 MOD_NETCDF    :=  
 USER_CFLAGS   :=  
@@ -16,8 +14,9 @@ CPPDEFS       := -DSPMD -fcray-pointer
 
 IGNORE_LINE_TRUNCAT := -ffree-line-length-none
 
+include ../../Makefile.conf
 
-INCLFLAG := -I${INCLDIR} -I${ESMF_MOD} -I$(PIO_INCL)
+INCLFLAG := -I${INCLDIR} -I${ESMF_MOD}
 
 null  :=
 space := $(null) $(null)
@@ -45,10 +44,10 @@ LIB_COMP: $(OBJS)
 	mv comp_atm.mod ../../../include
 
 $(CURDIR)/Depends: $(CURDIR)/Srcfiles  $(CURDIR)/Filepath
-	$(ROOTDIR)/models/atm/bld/mkDepends Filepath Srcfiles > $@
+	$(ROOTDIR)/models/cam/bld/mkDepends Filepath Srcfiles > $@
 
 $(CURDIR)/Srcfiles: $(CURDIR)/Filepath
-	$(ROOTDIR)/models/atm/bld/mkSrcfiles > $@
+	$(ROOTDIR)/models/cam/bld/mkSrcfiles > $@
 
 
 
