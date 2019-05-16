@@ -1106,8 +1106,8 @@ subroutine modal_aero_lw(list_idx, state, pbuf, tauxar)
 
                   nerr_dopaer = nerr_dopaer + 1
                   if (nerr_dopaer >= nerrmax_dopaer) then
-                     write(iulog,*) '*** halting in '//subname//' after nerr_dopaer =', nerr_dopaer
-                     call endrun()
+                     !write(iulog,*) '*** halting in '//subname//' after nerr_dopaer =', nerr_dopaer
+                     !call endrun()
                   end if
 
                end if
