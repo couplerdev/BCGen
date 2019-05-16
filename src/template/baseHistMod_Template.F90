@@ -91,7 +91,7 @@ subroutine base_hist_write(metaData, EClock_d)
    integer(IN)   :: lsize        ! local size of an aVect
    real(R8)      :: tbnds(2)     ! CF1.0 time bounds
    logical       :: whead,wdata  ! for writing restart/history cdf files
-   type(mct_gsMap) :: gsmap
+   type(mct_gsMap), pointer :: gsmap
    #for $model in $proc_cfgs
        #set $_name = $model.name
    type(mct_aVect), pointer :: $(_name)2x_$(_name)x
@@ -179,10 +179,12 @@ subroutine base_hist_write(metaData, EClock_d)
          #for $model in $proc_cfgs
              #set $model_name = $model.name
          !if (${model_name}_present) then
-            call compMeta_GetInfo(metaData%${model_name}, comp_gsmap=gsmap)
+            !call compMeta_GetInfo(metaData%${model_name}, comp_gsmap=gsmap)
+                gsmap => metaData%$(model_name)%comp_gsmap
             !print *, 'base io'
             call base_io_write(hist_file,gsmap,dom_${model_name}x%data,'dom_${model_name}x', &
                               nx=${model_name}_nx,ny=${model_name}_ny,nt=1,whead=whead,wdata=wdata,pre='dom${model_name}')
+                gsmap => metaData%comp_gsmap_${model_name}x
             !print *, 'data write'
             !call base_io_write(hist_file,gsmap,fractions_${model_name}x,'fractions_${model_name}x', &
             !                  nx=${model_name}_nx,ny=${model_name}_ny,nt=1,whead=whead,wdata=wdata,pre='frac${model_name}')

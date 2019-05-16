@@ -38,7 +38,7 @@ use fraction_mod
          #set $cpl_name = $gms['cpl'].name
          #set $comp_name = $gms['comp'].name
     type(mct_gsMap), pointer ::$comp_name
-    type(mct_gsMap)          :: $cpl_name
+    type(mct_gsMap), pointer :: $cpl_name
     #end for    
 
     ! declare AttrVect of each Model(c2x_cx, c2x_cc, x2c_cx, x2c_cc)
@@ -152,12 +152,14 @@ subroutine cpl_init()
 
     #for $model in $proc_cfgs
          #set $gm = $model.gsMaps["comp"].name
+         #set $gmx = $model.gsMaps['cpl'].name
          #set $domainm = $model.domain['m']
          #set $domainx = $model.domain['x']
          #set $model_name = $model.name
     ${domainm} =>   metaData%${model_name}%domain
     ${domainx} =>   metaData%domain_${model_name}x
     $gm => metaData%${model_name}%comp_gsMap
+    $gmx => metaData%comp_gsmap_${model_name}x
     #end for
      
     !-------------------------------------------------------

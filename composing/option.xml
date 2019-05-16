@@ -2,13 +2,13 @@
 	<time>
 		<calendar type='string'>NO_LEAP</calendar>
 		<stop_option type='string'>ndays</stop_option>
-		<stop_n type='int'>5</stop_n>
+		<stop_n type='int'>10</stop_n>
 		<stop_ymd type='int'>20010301</stop_ymd>
 		<restart_option type='string'>ndays</restart_option>
 		<restart_n type='int'>5</restart_n>
 		<restart_ymd type='int'>-999</restart_ymd>
 		<history_option type='string'>ndays</history_option>
-		<history_n type='int'>3</history_n>
+		<history_n type='int'>1</history_n>
 		<history_ymd type='int'>-999</history_ymd>
 		<histavg_option type='string'>never</histavg_option>
 		<histavg_n type='int'>-999</histavg_n>

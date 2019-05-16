@@ -10,10 +10,15 @@ use field_def
        type(procMeta)    :: my_proc
        type(confMeta)    :: conf
        type(compMeta)    :: lnd
+       type(mct_gsMap) :: comp_gsmap_lndx
        type(compMeta)    :: atm
+       type(mct_gsMap) :: comp_gsmap_atmx
        type(compMeta)    :: rof
+       type(mct_gsMap) :: comp_gsmap_rofx
        type(compMeta)    :: ice
+       type(mct_gsMap) :: comp_gsmap_icex
        type(compMeta)    :: ocn
+       type(mct_gsMap) :: comp_gsmap_ocnx
        character(SHR_KIND_CL) :: datanml
        character(SHR_KIND_CL) :: datarc
        character(SHR_KIND_CL) :: case_name
