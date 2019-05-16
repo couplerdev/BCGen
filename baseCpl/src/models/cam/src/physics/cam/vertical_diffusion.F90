@@ -791,7 +791,6 @@ contains
     rztodt = 1._r8 / ztodt
     lchnk  = state%lchnk
     ncol   = state%ncol
-    print *, 'statet', state%t(8, 1), state%t(8,2)
     call pbuf_get_field(pbuf, tauresx_idx,  tauresx)
     call pbuf_get_field(pbuf, tauresy_idx,  tauresy)
     call pbuf_get_field(pbuf, tpert_idx,    tpert)
@@ -966,8 +965,6 @@ contains
     q_tmp(:ncol,:,:) = state%q(:ncol,:,:)
     s_tmp(:ncol,:) = state%s(:ncol,:)
     u_tmp(:ncol,:) = state%u(:ncol,:)
-    print *, 'theu_tmp', u_tmp(8,1)
-    print *, 'statet2', state%t(8,1), state%t(8,2)
     v_tmp(:ncol,:) = state%v(:ncol,:)
 
     !------------------------------------------------------ !
@@ -1037,7 +1034,6 @@ contains
 
         call handle_errmsg(errstring, subname="compute_vdiff", &
              extra_msg="Error in fieldlist_wet call from vertical_diffusion.")
-        print *,'wetu_tmp', u_tmp(8,1)
     end if
  
     if( any( fieldlist_dry ) ) then
@@ -1060,7 +1056,6 @@ contains
 
         call handle_errmsg(errstring, subname="compute_vdiff", &
              extra_msg="Error in fieldlist_dry call from vertical_diffusion.")
-        print *,'dryu_tmp', u_tmp(8,1)
     end if
 
     if (prog_modal_aero) then
@@ -1142,7 +1137,6 @@ contains
 
     ptend%s(:ncol,:)       = ( s_tmp(:ncol,:) - state%s(:ncol,:) ) * rztodt
     ptend%u(:ncol,:)       = ( u_tmp(:ncol,:) - state%u(:ncol,:) ) * rztodt
-    print *, 'the bad ptend', ptend%u(8,1), state%u(8,1), rztodt, u_tmp(8,1)
     ptend%v(:ncol,:)       = ( v_tmp(:ncol,:) - state%v(:ncol,:) ) * rztodt
     ptend%q(:ncol,:pver,:) = ( q_tmp(:ncol,:pver,:) - state%q(:ncol,:pver,:) ) * rztodt
     slten(:ncol,:)         = ( sl(:ncol,:) - sl_prePBL(:ncol,:) ) * rztodt

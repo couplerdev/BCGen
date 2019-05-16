@@ -327,7 +327,6 @@
       logical geopk_cdist, geopk_ddist
       integer :: ierr
 
-      print *, 'cd_core', uc(10, 34, 1), uc(10,33, 1), u(10,35,1)
       geopk_cdist = .false.
       geopk_ddist = .false.
 #if defined( SPMD )
@@ -673,7 +672,6 @@
 #if (!defined USE_OMP) 
 !CSD$ PARALLEL DO PRIVATE (K, WK, WK2)
 #endif
-      print *, 'bf d2a2c', uc(10,34,1), uc(10,33,1), u(3,25,1)
       do  k=kfirst,klast
          call d2a2c_winds(grid, u(1,jfirst-ng_d,k),         v(1,jfirst-ng_s,k),     &
                                 ua(1,jfirst-ng_d,k),       va(1,jfirst-ng_s,k),     &
@@ -688,7 +686,6 @@
          endif
 
       enddo
-      print *, 'd2a2c', uc(10, 34, 1), uc(10,33,1), u(10,34,1)
 #if (!defined USE_OMP) 
 !CSD$ END PARALLEL DO
 #endif
@@ -732,7 +729,6 @@
 !-----------------------------------------------------------------
 ! Call the vertical independent part of the dynamics on the C-grid
 !-----------------------------------------------------------------
-         print *, 'in loop k ',kfirst, klast, uc(10,34,k)
          call c_sw( grid, u(1,jfirst-ng_d,k),   v(1,jfirst-ng_s,k),   &
                     pt(1,jfirst-ng_d,k),  delp(1,jfirst,k),           &
                     ua(1,jfirst-ng_d,k),  va(1,jfirst-ng_s,k),        &
@@ -1110,7 +1106,6 @@
 !-----------------------------------------------------------------
 ! Call the vertical independent part of the dynamics on the D-grid
 !-----------------------------------------------------------------
-         print *,'d_sw:', k
          call d_sw( grid, u(1,jfirst-ng_d,k),      v(1,jfirst-ng_s,k),     &
                     uc(1,jfirst-ng_d,k),    vc(1,jfirst-2,k),        &
                     pt(1,jfirst-ng_d,k),   delp(1,jfirst,k),         &
@@ -1124,7 +1119,6 @@
                     grid%cdx4 (js2g0:,k),grid%cdy4(js2g0:,k) ,       & 
                     grid%cdtau4(js2g0:,k), ldiv2, ldiv4, ldel2,      & 
                     iord, jord, tiny )
-         print *,'d_sw end:', k 
          call MPI_Barrier(MPI_COMM_WORLD, ierr)
       enddo
 #if !defined(USE_OMP)

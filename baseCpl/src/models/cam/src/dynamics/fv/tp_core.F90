@@ -229,7 +229,6 @@ CONTAINS
     jn2g0  = min(jm-1,jlast)        !  No ghosting
     jn2gng = min(jm-1,jlast+ng)     !  Number needed on N
     iad = 1
-    print *, 'the cv', crx(10, 34), crx(10, 32)
     call xtpv(im,  ffsl, wk1v, q, crx, iad, crx,        &
              cosp, 0, dm, qtmpv, al, ar, a6,            &
              jfirst, jlast, js2gng, jn2gng, jm,         &
@@ -273,7 +272,6 @@ CONTAINS
            wk1v(i,j) = q(i,j) +D0_5*va(i,j)*(q(i,jp)-q(i,jp+1))
         enddo
       enddo
-      print *, 'second cv', crx(10, 34), crx(10, 33)
       call xtpv(im,  ffsl, fx, wk1v, crx, iord, xfx,        &
                cosp, id, dm, qtmpv, al, ar, a6,             &
                jfirst, jlast, js2g0, jn2g0, jm,             &
@@ -465,7 +463,6 @@ use mpi
       qtmpv(  0,j) = qv(im,j)
 
       if(iord == 1 .or. cosav(j) < cos_upw) then
-         if(jhigh==45)print *, 'xtpv 5', j, size(qtmpv), maxval(cv), minval(cv), cv(10,34), cv(10, 35), cv(9,24)
          do i=1,im
             iu = real(i,r8) - cv(i,j)
             !if(jhigh==45)print *, 'the iu:', iu, i, cv(i, j), i, j
@@ -506,8 +503,6 @@ use mpi
    endif
 
   enddo
-  call MPI_Barrier(MPI_COMM_WORLD, ierr)
-  print *, 'the end'
   call MPI_Barrier(MPI_COMM_WORLD, ierr)
    return
 !EOC

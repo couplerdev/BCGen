@@ -135,9 +135,6 @@ subroutine radheat_tend(state, pbuf,  ptend, qrl, qrs, fsns, &
    enddo 
 #else
    ptend%s(:ncol,:) = (qrs(:ncol,:) + qrl(:ncol,:))
-   if(isnan(ptend%s(8,1)))then
-       print *,'radhead_tend', qrs(8,1), qrl(8,1)
-   end if
 #endif
 
    do i = 1, ncol

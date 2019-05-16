@@ -114,11 +114,9 @@ contains
     do i = 1,ncol
        tint(i,1) = pstate%t(i,1)
        tint(i,pverp) = sqrt(sqrt(cam_in%lwup(i)/stebol))
-       if(isnan(tint(i, pverp)))print *, 'cam_in bad', cam_in%lwup(i), stebol,i
        do k = 2,pver
           dy = (pstate%lnpint(i,k) - pstate%lnpmid(i,k)) / (pstate%lnpmid(i,k-1) - pstate%lnpmid(i,k))
           tint(i,k) = pstate%t(i,k) - dy * (pstate%t(i,k) - pstate%t(i,k-1))
-          if(isnan(tint(i,k)))print *,'badtint', pstate%t(i,k), pstate%t(i,k-1), dy
        end do
     end do
 

@@ -72,8 +72,6 @@ subroutine qneg4 (subnam  ,lchnk   ,ncol    ,ztodt   ,        &
 !
    nptsexc = 0
    call MPI_COMM_rank(MPI_COMM_WORLD, rank, ierr)
-   print *, rank,size(srfrpdel), srfrpdel
-   print *, 'qbot', qbot(ncol,1)
    call MPI_Barrier(MPI_COMM_WORLD, ierr)
    do i = 1,ncol
       excess(i) = qflx(i,1) - (qmin(1) - qbot(i,1))/(ztodt*gravit*srfrpdel(i))
