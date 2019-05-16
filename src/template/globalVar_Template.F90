@@ -12,6 +12,7 @@ use field_def
        #for $model in $proc_cfgs
            #set $name = $model.name
        type(compMeta)    :: $name
+       type(mct_gsMap) :: comp_gsmap_${name}x
        #end for    
        character(SHR_KIND_CL) :: datanml
        character(SHR_KIND_CL) :: datarc

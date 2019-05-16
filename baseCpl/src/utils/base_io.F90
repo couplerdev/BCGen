@@ -585,6 +585,9 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
         print *, "DEBUG_HQ_WRITE_AV_8"
         call mct_gsmap_OrderedPoints(comp_gsmap, iam, Dof)
         call pio_initdecomp(cpl_io_subsystem, pio_double, (/lnx, lny/), dof, iodesc)
+        print *, "DEBUG_HQ_LNX_LNY", (/lnx, lny/)
+        print *, "DEBUG_HQ_IODESC_NDOF", iodesc%ndof
+        print *, "DEBUG_HQ_AV_RATTR", shape(av%rattr)
         deallocate(dof)
         print *, "DEBUG_HQ_WRITE_AV_9"
         do k = 1, nf
