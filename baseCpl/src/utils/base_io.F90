@@ -559,7 +559,7 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
             lname = 'lname:' 
             sname = 'sname:'
             cunit = 'cunit:'
-            !call fldsMeta_lookup(metaData%fld, itemc, longname=lname,stdname=sname, units=cunits)
+            call fldsMeta_lookup(metaData%fldsMetaData, itemc, longname=lname,stdname=sname, units=cunit)
             if(luse_float)then
                 rcode = pio_def_var(cpl_io_file, trim(name1), PIO_REAL, dimid, varid)
             else
