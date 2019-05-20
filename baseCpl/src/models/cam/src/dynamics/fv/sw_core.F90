@@ -289,9 +289,6 @@ contains
         do j=js2gc,jn2gc                ! ffsl needed on N*sg S*sg
           do i=1,im
             crx(i,j) = uc(i,j)*dtdx2(j)
-            if(i==10 .and. j>=33 .and. j<=34)then
-                print *, i, j, crx(i,j),uc(i,j), dtdx2(j)
-            end if
           enddo
           ffsl(j) = .false.
           if( cosp(j) < zt_c ) then
@@ -308,7 +305,6 @@ contains
 
 ! 2D transport of polar filtered delp (for computing fluxes!)
 ! Update is done on the unfiltered delp
-   print *, 'the tp2c', crx(10, 34), crx(10, 33)
    call tp2c( ptk,  va(1,jfirst),  delpf(1,jfirst-ng_c),    &
               crx(1,jfirst-ng_c), cry(1,jfirst),             &
               im, jm, iord, jord, ng_c, xfx,                 &
@@ -894,7 +890,6 @@ contains
      enddo
   enddo
 
-print *,'zet'
 call MPI_Barrier(MPI_COMM_WORLD,ierr)
 ! transport polar filtered delp
       call tp2c(ub(1,jfirst), va(1,jfirst), delpf(1,jfirst-ng_d),   &
@@ -902,7 +897,6 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
                 ng_d, xfx, yfx, ffsl,                               &
                 rcap, acosp,crx(1,jfirst), ymass,                   &
                 cosp, 0, jfirst, jlast)
-print *,'jod'
 #if defined(FILTER_MASS_FLUXES)
    call pft2d( xfx(1,js2g0), sc, dc, im, jn2g0-js2g0+1, &
                     v2, u2 )
@@ -1508,7 +1502,6 @@ end if
   coslon => grid%coslon
   sinl5  => grid%sinl5
   cosl5  => grid%cosl5
-  print *, 'the u begin ', u(3,25)
 ! Get D-grid V-wind at the poles.
 
     r2im = 0.5_r16/real(im,r16)
@@ -1599,7 +1592,6 @@ end if
           ua(i,j) = u(i,j) + u(i,j+1)
        enddo
     enddo
-    !print *, 'the ua', ua(3,24), u(3,24), u(3,25), js2gd, jn2gsm1, im
 !
 ! reset cell center winds to the offline meteorlogy data
 !
