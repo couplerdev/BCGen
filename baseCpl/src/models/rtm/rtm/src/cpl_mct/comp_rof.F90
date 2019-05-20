@@ -193,6 +193,9 @@ contains
        call rof_export_mct( rof2x )
     end if
 
+    compInfo%nx = rtmlon
+    compInfo%ny = rtmlat
+
     ! Fill in infodata
 
     ! Reset shr logging to original values

@@ -390,6 +390,8 @@ contains
     else
        call ice_export_mct (ice2x)  !Send initial state to driver
     endif
+    compInfo%nx = nxg
+    compInfo%ny = nyg
     call t_stopf ('cice_mct_init')
 
     !---------------------------------------------------------------------------

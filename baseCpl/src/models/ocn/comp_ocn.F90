@@ -276,6 +276,9 @@ subroutine ocn_init_mct(compInfo, EClock, x2o, o2x, ierr)
 
     call t_stopf('docn_strdata_init')
 
+    compInfo%nx = SDOCN%nxg
+    compInfo%ny = SDOCN%nyg
+
     call t_startf('docn_initgsmaps')
     if (my_task == master_task) write(logunit,F00) ' initialize gsmaps'
     call shr_sys_flush(logunit)

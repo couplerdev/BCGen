@@ -204,7 +204,7 @@ class Parser():
     def schedule(self):
         #sort seq
         pass
-	
+        
     def coupleAttrVectParse(self):
         root = self.load(self.__couplerFile)
         avParser = CouplerParser(self.__NameManager, self.__seqRun)  ## not implemented now
@@ -323,26 +323,26 @@ class SubroutineParser:
         self.__isParsed = False
 
     def subroutineParse(self):
-	if self.__root == "":
-	    raise UnSetError("self.__root not set! Try setRoot method")
-	self.__subroutine =  ModelSubroutine()
-	for child in self.__root:
-	    if child.tag == "name":
-		self.__subroutine.subroutineName = child.text
-	    elif child.tag == "in_args":
-		root = self.__root.find("in_args")
-		for sub in root:
-		    if sub.tag == "arg":
-			self.inArgs.append(sub.text)
-	    elif child.tag == "out_args":
-		root = self.__root.find("out_args")
-		for sub in root:
-		    if sub.tag == "arg":
-			self.outArgs.append(sub.text)
-	    else:
-		raise NoTagError("No such tag "+child.tag)
-	self.__isParsed = True
-	#print self.__subroutine.subroutineName
+        if self.__root == "":
+            raise UnSetError("self.__root not set! Try setRoot method")
+        self.__subroutine =  ModelSubroutine()
+        for child in self.__root:
+            if child.tag == "name":
+                self.__subroutine.subroutineName = child.text
+            elif child.tag == "in_args":
+                root = self.__root.find("in_args")
+                for sub in root:
+                    if sub.tag == "arg":
+                        self.inArgs.append(sub.text)
+            elif child.tag == "out_args":
+                root = self.__root.find("out_args")
+                for sub in root:
+                    if sub.tag == "arg":
+                        self.outArgs.append(sub.text)
+            else:
+                raise NoTagError("No such tag "+child.tag)
+        self.__isParsed = True
+        #print self.__subroutine.subroutineName
 
     def appendArgs(self, args):
         for arg in args:
@@ -352,7 +352,7 @@ class SubroutineParser:
 
     def getSubroutineNode(self, model='', phase=-1, inArgs=[], outArgs=[], strFormat=""):
         if len(self.inArgs)!=0 and len(self.outArgs)!=0:
-	    self.subroutineNode = SubroutineNode(self.__subroutine.subroutineName, \
+            self.subroutineNode = SubroutineNode(self.__subroutine.subroutineName, \
                                    model, phase=phase, inputArg=self.inArgs, \
                                    outputArg=self.outArgs, strFormat=strFormat)
         elif len(inArgs)!=0 and len(outArgs)!=0:
@@ -368,7 +368,7 @@ class SubroutineParser:
         if self.__isParsed == False:
             self.subroutineParse()
         return self.__subroutine
-		
+                
 class ModelParser:
     __slots__=['__root', '__model', '__isParsed', '__name',\
                '__gsize','__nx','__ny','__field','__NameManager']
@@ -386,7 +386,7 @@ class ModelParser:
     def setRoot(self, root):
         self.__root = root
         self.__isParsed = False
-	
+        
     def __setGsMap(self):
         srcGsMap = GsMap(grid=self.__name, pes=self.__name)
         dstGsMap = GsMap(grid=self.__name, pes="x")
@@ -444,16 +444,16 @@ class ModelParser:
 
 ## set time modi 8/11
     def __setTime(self):
-	root = self.__root.find('time')
-	base_root = root.find('base')
-	y = 0
-	m = 0
-	d = 0
-	h = 0
-	if base_root.find('y')!=None:
-	    y = base_root.find('y').text
+        root = self.__root.find('time')
+        base_root = root.find('base')
+        y = 0
+        m = 0
+        d = 0
+        h = 0
+        if base_root.find('y')!=None:
+            y = base_root.find('y').text
         if base_root.find('m')!=None:
-	    m = base_root.find('m').text
+            m = base_root.find('m').text
         if base_root.find('d')!=None:
             d = base_root.find('d').text
         if base_root.find('h')!=None:
@@ -467,29 +467,29 @@ class ModelParser:
         minute = 0
         sec = 0
         if interval_root.find('m')!=None and interval_root.find('m').text!=None:
-	    m = interval_root.find('m').text
+            m = interval_root.find('m').text
         if interval_root.find('d')!=None and interval_root.find('d').text!=None:
-	    d = interval_root.find('d').text
+            d = interval_root.find('d').text
         if interval_root.find('h')!=None and interval_root.find('h').text!=None:
-	    h = interval_root.find('h').text
+            h = interval_root.find('h').text
         if interval_root.find('minute')!=None and interval_root.find('minute').text!=None:
-	    minute = interval_root.find('minute').text
+            minute = interval_root.find('minute').text
         if interval_root.find('sec')!=None and interval_root.find('sec').text!=None:
-	    sec = interval_root.find('sec').text
+            sec = interval_root.find('sec').text
         #interval  = Interval(m, d, h, minute, sec)
         self.__model.Time = {"m":m,"d":d,"h":h,"minute":minute,"sec":sec}
     def __setDomain(self):
-	'''
+        '''
         root = self.__root
         domain_root = root.find('domain')
         field = ""
         if domain_root.find('field') != None:
             field = domain_root.find('field').text
         if domain_root.find('path') == None:
-	    raise UnsetError("domain data path not set!")
+            raise UnsetError("domain data path not set!")
         path  = domain_root.find('path').text
         self.__domain = Domain(field, path)
-	'''
+        '''
         self.__model.domain['m'] = "domain_"+self.__name+self.__name
         self.__model.domain['x'] = "domain_"+self.__name+'x'
 
@@ -505,7 +505,7 @@ class ModelParser:
         self.__model.model_init.argList = args
 
         args = ["metaData%"+grid ,"EClock_"+grid, self.__model.attrVects["x2c_cc"].name, \
-		self.__model.attrVects["c2x_cc"].name, "ierr=ierr"]
+                self.__model.attrVects["c2x_cc"].name, "ierr=ierr"]
         subroutine = SubroutineParser()
         subroutine.setRoot(root.find("run"))
         subroutine.appendArgs(args)
@@ -596,7 +596,7 @@ class ModelParser:
         self.__nx = root.find("nx").text
         self.__ny = root.find("ny").text
         self.__field = root.find("field").text
-	if self.__gsize == 0:
+        if self.__gsize == 0:
             self.__gsize = self.__nx*self.__ny
         self.__model.gSize = self.__gsize
         self.__setAttrVect()
@@ -607,7 +607,7 @@ class ModelParser:
         self.__setSubroutine()
         self.__setField()
         self.__isParsed = True
-	
+        
     @property
     def model(self):
         if not self.__isParsed:
@@ -625,7 +625,7 @@ class CouplerParser: ###!!!!
         self.__NameManager = nameManager
         self.__attrVect = AttrVect()    
         self.__mergeSubroutine = MergeSubroutine()
-	self.__fraction = None
+        self.__fraction = None
         self.seqRun = seqRun
     
     @property
@@ -808,7 +808,7 @@ class ScheduleParser:
     pass
 
 class DeployParser:
-    __slots__ = ["__root", "__NameManager", "__isParsed"]	
+    __slots__ = ["__root", "__NameManager", "__isParsed"]        
     def __init__(self, nameManager):
         self.__root = ""
         self.__isParsed = False
