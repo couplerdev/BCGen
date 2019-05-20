@@ -124,9 +124,8 @@ subroutine base_hist_write(metaData, EClock_d)
 
    #for $model in $proc_cfgs
         #set $name = $model.name
-   call compMeta_getInfo(metaData%${name}, prognostic=${name}_prognostic, case_name = case_name, domain=dom_${name}x)
+   call compMeta_getInfo(metaData%${name}, prognostic=${name}_prognostic, case_name = case_name, domain=dom_${name}x, nx=${name}_nx, ny=${name}_ny)
    #end for
-
 
    !--- Get current date from clock needed to label the history pointer file ---
 

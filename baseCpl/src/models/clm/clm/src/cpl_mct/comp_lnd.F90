@@ -322,6 +322,8 @@ contains
 
     ! Fill in infodata
 
+    compInfo%nx = ldomain%ni
+    compInfo%ny = ldomain%nj
     !call seq_infodata_PutData( infodata, lnd_prognostic=.true.)
     !call seq_infodata_PutData( infodata, lnd_nx=ldomain%ni, lnd_ny=ldomain%nj)
 

@@ -146,12 +146,11 @@ subroutine base_hist_write(metaData, EClock_d)
    x2ocn_ocnx => metaData%x2ocn_ocnx
    my_proc => metaData%my_proc
 
-   call compMeta_getInfo(metaData%lnd, prognostic=lnd_prognostic, case_name = case_name, domain=dom_lndx)
-   call compMeta_getInfo(metaData%atm, prognostic=atm_prognostic, case_name = case_name, domain=dom_atmx)
-   call compMeta_getInfo(metaData%rof, prognostic=rof_prognostic, case_name = case_name, domain=dom_rofx)
-   call compMeta_getInfo(metaData%ice, prognostic=ice_prognostic, case_name = case_name, domain=dom_icex)
-   call compMeta_getInfo(metaData%ocn, prognostic=ocn_prognostic, case_name = case_name, domain=dom_ocnx)
-
+   call compMeta_getInfo(metaData%lnd, prognostic=lnd_prognostic, case_name = case_name, domain=dom_lndx, nx=lnd_nx, ny=lnd_ny)
+   call compMeta_getInfo(metaData%atm, prognostic=atm_prognostic, case_name = case_name, domain=dom_atmx, nx=atm_nx, ny=atm_ny)
+   call compMeta_getInfo(metaData%rof, prognostic=rof_prognostic, case_name = case_name, domain=dom_rofx, nx=rof_nx, ny=rof_ny)
+   call compMeta_getInfo(metaData%ice, prognostic=ice_prognostic, case_name = case_name, domain=dom_icex, nx=ice_nx, ny=ice_ny)
+   call compMeta_getInfo(metaData%ocn, prognostic=ocn_prognostic, case_name = case_name, domain=dom_ocnx, nx=ocn_nx, ny=ocn_ny)
 
    !--- Get current date from clock needed to label the history pointer file ---
 

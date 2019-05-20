@@ -141,7 +141,7 @@ subroutine fldsMeta_lookup(fldsMetaData, shortname, longname, stdname, units)
 
     if(present(longname))longname = llongname
     if(present(stdname)) stdname = lstdname
-    if(present(units))lunits = units
+    if(present(units))units = lunits
 end subroutine fldsMeta_lookup
 
 subroutine fldsMeta_final(fldsMetaData)

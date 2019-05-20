@@ -347,6 +347,8 @@ CONTAINS
        !call seq_infodata_PutData(infodata, atm_prognostic=.true.)  ! MODI
        call get_horiz_grid_dim_d(hdim1_d, hdim2_d)
        print *, 'dimension:', hdim1_d, hdim2_d
+       compInfo%nx = hdim1_d
+       compInfo%ny = hdim2_d
        !call seq_infodata_PutData(infodata, atm_nx=hdim1_d, atm_ny=hdim2_d)  ! MODI
 
        ! Set flag to indicate that CAM will provide carbon and dust deposition fluxes.
@@ -1147,6 +1149,7 @@ end subroutine atm_final_mct
           data(n) = lats(i)*radtodeg
        end do
     end do
+    print *, "DEBUG_HQ_LAT_MAX_MIN", maxval(lats), ' ', minval(lats)
     call mct_gGrid_importRAttr(dom_a,"lat",data,lsize) 
 
     n=0
