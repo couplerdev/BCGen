@@ -322,7 +322,6 @@
       ! Compute variables needed for vertical thermo calculation
       !-----------------------------------------------------------------
 
-      print *, 'DEBUG_HQ_THERMO_VERTICAL_0'
 
       call init_vertical_profile (nx_block,     ny_block,     &
                                   my_task,      istep1,       &
@@ -355,7 +354,6 @@
 
       if (heat_capacity) then   ! usual case
          
-         print *, 'DEBUG_HQ_THERMO_VERTICAL_1'
 
          call temperature_changes(nx_block,      ny_block, &
                                   my_task,       istep1,   &
@@ -382,7 +380,6 @@
 
          if (calc_Tsfc) then       
          
-         print *, 'DEBUG_HQ_THERMO_VERTICAL_2'
 
             call zerolayer_temperature(nx_block,      ny_block, &
                                        my_task,       istep1,   &
@@ -403,7 +400,6 @@
 
          else
 
-            print *, 'DEBUG_HQ_THERMO_VERTICAL_3'
             !------------------------------------------------------------
             ! Set fcondbot = fcondtop for zero layer thermodynamics
             ! fcondtop is set in call to set_sfcflux in step_therm1
@@ -426,7 +422,6 @@
       ! Add new snowfall.
       ! Repartition ice into equal-thickness layers, conserving energy.
       !-----------------------------------------------------------------
-      print *, 'DEBUG_HQ_THERMO_VERTICAL_4'
 
       call thickness_changes(nx_block,     ny_block, &
                              dt,                     &
@@ -451,7 +446,6 @@
       ! to the net energy input
       !-----------------------------------------------------------------
 
-      print *, 'DEBUG_HQ_THERMO_VERTICAL_5'
 
       call conservation_check_vthermo(nx_block, ny_block, &
                                       my_task,  istep1,   &
@@ -470,7 +464,6 @@
       ! If prescribed ice, set hi back to old values
       !-----------------------------------------------------------------
 
-      print *, 'DEBUG_HQ_THERMO_VERTICAL_6'
 
       if (prescribed_ice) then
          do ij = 1, icells
@@ -504,7 +497,6 @@
       !   qin, qsn,), compute the new ice state variables (vicen, vsnon,
       !   Tsfcn, eicen, esnon).
       !-----------------------------------------------------------------
-      print *, 'DEBUG_HQ_THERMO_VERTICAL_7'
 
       call update_state_vthermo(nx_block,     ny_block,   &
                                 icells,                   &

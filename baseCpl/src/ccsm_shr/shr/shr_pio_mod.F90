@@ -101,7 +101,6 @@ contains
        call mpi_comm_create(GLOBAL_COMM, mpigrp, mpicom, ierr)
        Global_COMM=mpicom
 
-       print *,__FILE__,__LINE__,subname, ' complete'
 #endif
     end if
     total_comps = ncomps
@@ -316,7 +315,6 @@ contains
 
      index = -1  ! flag for not found
      do i=1,size(io_compname)
-        print *, ' debug.shr_pio_getindex.heqi ', component_ucase, io_compname(i)
         if (trim(component_ucase) == trim(io_compname(i))) then
            index = i
            exit
@@ -410,12 +408,10 @@ contains
           end do
           close(unitn)
           call shr_file_freeUnit( unitn )
-          print *,'----pio_typename:', pio_typename
           call shr_pio_getiotypefromname(pio_typename, pio_iotype, pio_iotype_netcdf)
        end if
     end if
 
-    print *, 'able to init'
 
     call shr_pio_namelist_set(npes, Comm, pio_stride, pio_root, pio_numiotasks, pio_iotype, iamroot)
     call shr_mpi_bcast(pio_debug_level, Comm)

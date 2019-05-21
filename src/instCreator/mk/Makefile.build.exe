@@ -34,6 +34,9 @@ LINK_COMP += -l$name
 #end for
 
 EXE:
+	mkdir -p archive
+	cp ../../conf/* .
+	cp /home/hq/git/protected/BCGen/inputdata/*_in .
 	$(FC) -c -I$(INCLDIR) -I$(ESMF_MOD) -L$(LIBDIR) $(CPPDEFS) baseCpl.F90
 	echo 'finish mod'
 	$(FC) -o $(EXE) $(MAIN) $(OBJS_ALL) $(BASE_DEPS) $(FLAGS) $(CPPDEFS) -I$(INCLDIR) -L$(LIBDIR) \

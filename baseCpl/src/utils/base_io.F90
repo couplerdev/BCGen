@@ -490,8 +490,6 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
     integer, pointer :: Dof(:)
     logical :: luse_float
 
-    print *, "DEBUG_HQ_WRITE_AV_1"
-
     if(present(fillval))then
         lfillvalue = fillval
     end if
@@ -513,7 +511,6 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
    
     call procMeta_getInfo(metaData%my_proc, ID=CPLID, rank=iam)
 
-    print *, "DEBUG_HQ_WRITE_AV_2"
     ng = mct_gsmap_gsize(comp_gsmap)
     lnx = ng
     lny =  1
@@ -535,12 +532,10 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
         call shr_sys_abort(subname//" ERROR: grid2d size not consitent")
     end if
 
-    print *, "DEBUG_HQ_WRITE_AV_3"
 
     if(lwhead) then
         rcode = pio_def_dim(cpl_io_file, trim(lpre)//'_nx', lnx, dimid2(1)) 
         rcode = pio_def_dim(cpl_io_file, trim(lpre)//'_ny', lny, dimid2(2))
-        print *, "DEBUG_HQ_WRITE_AV_4"
         if(present(nt)) then
             dimid3(1:2) = dimid2
             rcode =  pio_inq_dimid(cpl_io_file, 'time', dimid3(3))
@@ -549,13 +544,12 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
             dimid => dimid2
         end if
 
-        print *, "DEBUG_HQ_WRITE_AV_5"
         do k = 1, nf
             call mct_avect_getRList(mstring,k, AV)  ! check defined
             itemc = mct_string_toChar(mstring)  ! not defined
             call mct_string_clean(mstring)
             write (name2, "(i8.8)") k
-            name1 = trim(lpre)//'_'//trim(itemc)//'_'//name2
+            name1 = trim(lpre)//'_'//trim(itemc)
             lname = 'lname:' 
             sname = 'sname:'
             cunit = 'cunit:'
@@ -576,26 +570,19 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
                 end if
             end if
         end do
-        print *, "DEBUG_HQ_WRITE_AV_6"
         if (lwdata)call base_io_enddef(filename)
     end if
-    print *, "DEBUG_HQ_WRITE_AV_7"
             
     if(lwdata)then
-        print *, "DEBUG_HQ_WRITE_AV_8"
         call mct_gsmap_OrderedPoints(comp_gsmap, iam, Dof)
         call pio_initdecomp(cpl_io_subsystem, pio_double, (/lnx, lny/), dof, iodesc)
-        print *, "DEBUG_HQ_LNX_LNY", (/lnx, lny/)
-        print *, "DEBUG_HQ_IODESC_NDOF", iodesc%ndof
-        print *, "DEBUG_HQ_AV_RATTR", shape(av%rattr)
         deallocate(dof)
-        print *, "DEBUG_HQ_WRITE_AV_9"
         do k = 1, nf
             call mct_avect_getRList(mstring, k, AV)
             itemc = mct_string_toChar(mstring)
             call mct_string_clean(mstring)
             write (name2, "(i8.8)") k
-            name1 = trim(lpre)//'_'//trim(itemc)//'_'//name2
+            name1 = trim(lpre)//'_'//trim(itemc)
             rcode = pio_inq_varid(cpl_io_file, trim(name1), varid)
             if(present(nt))then
                 frame = nt
@@ -605,11 +592,9 @@ subroutine base_io_write_av(filename, comp_gsmap, AV, dname, whead, wdata, nx, n
             call pio_setframe(varid, frame)
             call pio_write_darray(cpl_io_file, varid, iodesc, av%rattr(k,:), rcode, fillval=lfillvalue)
         end do
-        print *, "DEBUG_HQ_WRITE_AV_A"
  
         call pio_freedecomp(cpl_io_file, iodesc)
     end if
-    print *, "DEBUG_HQ_WRITE_AV_B"
 
 end subroutine base_io_write_av
 

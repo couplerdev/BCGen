@@ -265,7 +265,7 @@ subroutine ocn_init_mct(compInfo, EClock, x2o, o2x, ierr)
                       calendar=calendar)
        endif
     endif
-
+    
     if (trim(ocn_mode) == 'SOM') then
        ocn_prognostic = .true.
     endif

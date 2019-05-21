@@ -2,10 +2,10 @@
 	<fieldMeta>
 		<fields>
 			<fieldVar name="flds_dom_coord">
-				<field>lat:lon:area:aream:mask:frac</field>
+				<field>lat:lon</field>
 			</fieldVar>
 			<fieldVar name="flds_dom_other">
-				<field>lat:lon:area:aream:mask:frac</field>
+				<field>area:aream:mask:frac</field>
 			</fieldVar>
 			<fieldVar name="flds_atm2x_states">
 				<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot:Sa_dens:Sa_pslv</field>

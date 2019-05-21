@@ -203,9 +203,7 @@ contains
     call shr_file_setLogLevel(shrloglev)
 
     if(masterproc) then
-       print *, 'DEBUG_HQ_ROF_INIT_FIN0'
        write(iulog,*) TRIM(Sub) // ':end::'
-       print *, 'DEBUG_HQ_ROF_INIT_FIN1'
     endif
 
   end subroutine rof_init_mct
@@ -244,9 +242,6 @@ contains
     character(len=32), parameter    :: sub = "rof_run_mct"
     !-------------------------------------------------------
 
-    if(masterproc) then
-       print *, 'DEBUG_HQ_ROF_RUN_START0'
-    endif
 #if (defined _MEMTRACE)
     if(masterproc) then
        lbnum=1

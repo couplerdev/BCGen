@@ -150,8 +150,8 @@ subroutine shr_dmodel_readgrid( gGrid, gsMap, nxgo, nygo, filename, compid, mpic
   real(R8)        ,optional,intent(in)    :: scmlat   ! single column lat
 
   !----- local -----
-  character(CXX), parameter :: seq_flds_dom_coord="lat:lon:area:aream:mask:frac"
-  character(CXX), parameter :: seq_flds_dom_other="lat:lon:area:aream:mask:frac"
+  character(CXX), parameter :: seq_flds_dom_coord="lat:lon"
+  character(CXX), parameter :: seq_flds_dom_other="area:aream:mask:frac"
   integer(IN)   :: n,k,j,i    ! indices  
   integer(IN)   :: lsize      ! lsize
   integer(IN)   :: gsize      ! gsize
@@ -1356,6 +1356,7 @@ subroutine shr_dmodel_rearrGGrid( ggridi, ggrido, gsmap, rearr, mpicom )
   data(:) = 0.0_R8     
   call mct_gGrid_importRAttr(ggrido,"mask",data,lsize) 
   call mct_gGrid_importRAttr(ggrido,"frac",data,lsize) 
+
 
   deallocate(data)
 
