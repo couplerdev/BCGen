@@ -1,0 +1,287 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio
+END
+pio_msg_getput_callbacks.F90
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio_msg_getput_callbacks.F90
+END
+pionfwrite_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pionfwrite_mod.F90
+END
+alloc_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/alloc_mod.F90
+END
+piodarray.F90
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/piodarray.F90
+END
+pio_nf_utils.F90
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio_nf_utils.F90
+END
+pionfwrite_mod.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pionfwrite_mod.F90.in
+END
+pio_msg_callbacks.F90
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio_msg_callbacks.F90
+END
+alloc_mod.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/alloc_mod.F90.in
+END
+pio_spmd_utils.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio_spmd_utils.F90.in
+END
+C_interface_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/C_interface_mod.F90
+END
+pionfput_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pionfput_mod.F90
+END
+README.config
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/README.config
+END
+calcdisplace_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/calcdisplace_mod.F90
+END
+pionfread_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pionfread_mod.F90
+END
+rearrange.F90
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/rearrange.F90
+END
+pio_utils.F90
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio_utils.F90
+END
+pionfput_mod.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pionfput_mod.F90.in
+END
+pio_types.F90
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio_types.F90
+END
+pio_mpi_utils.F90
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio_mpi_utils.F90
+END
+fdepends.awk
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/fdepends.awk
+END
+iompi_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/iompi_mod.F90
+END
+piolib_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/piolib_mod.F90
+END
+pio_kinds.F90
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio_kinds.F90
+END
+pionfget_mod.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pionfget_mod.F90.in
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/CMakeLists.txt
+END
+pio_support.F90
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio_support.F90
+END
+box_rearrange.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/box_rearrange.F90.in
+END
+pionfatt_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pionfatt_mod.F90
+END
+piovdc.F90
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/piovdc.F90
+END
+pio.F90
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio.F90
+END
+pionfatt_mod.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pionfatt_mod.F90.in
+END
+pio_msg_getput_callbacks.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio_msg_getput_callbacks.F90.in
+END
+pio_spmd_utils.F90
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio_spmd_utils.F90
+END
+calcdecomp.F90
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/calcdecomp.F90
+END
+ionf_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/ionf_mod.F90
+END
+pio_msg_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pio_msg_mod.F90
+END
+piodarray.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/piodarray.F90.in
+END
+topology.c
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/topology.c
+END
+dtypes.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/dtypes.h
+END
+nf_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/nf_mod.F90
+END
+config.h.in
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/config.h.in
+END
+Makefile.conf.in
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/Makefile.conf.in
+END
+pionfget_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pionfget_mod.F90
+END
+pionfread_mod.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/pionfread_mod.F90.in
+END
+rearrange.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/rearrange.F90.in
+END
+box_rearrange.F90
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/box_rearrange.F90
+END
+iompi_mod.F90.in
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/NCAR/ParallelIO.git/!svn/ver/3005/tags/pio1_8_12/pio/iompi_mod.F90.in
+END

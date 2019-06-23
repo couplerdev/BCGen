@@ -1,0 +1,24 @@
+# - Try to find Netcdf
+# Once done this will define
+# NETCDF_Fortran_FOUND - System has Netcdf-fortran
+# NETCDF_INCLUDE_DIRS - The Netcdf include directories
+# NETCDF_Fortran_LIBARARIES - The Fortran libraries needed to use Netcdf
+# NETCDF_Fortran_DEFINITIONS
+# NETCDF_Fortran_INCLUDE_DIR
+
+find_path(NETCDF_Fortran_INCLUDE_DIR netcdf.mod
+	  HINTS ${NETCDF_FORTRAN_DIR}/include)
+
+find_path(NETCDF_Fortran_LIB_DIR libnetcdff.a libnetcdff.so
+	  HINTS ${NETCDF_FORTRAN_DIR}/lib)
+
+set(NETCDF_FORTRAN_LIBRARY "-L${NETCDF_Fortran_LIB_DIR} -lnetcdff")
+
+set(NETCDF_Fortran_INCLUDE_DIR ${NETCDF_Fortran_INCLUDE_DIR})
+
+include(FindPackageHandleStandardArgs)
+# handle the QUIETLY and REQUIRED arguments and set NETCDF_FOUND to TRUE
+# if all listed variables are TRUE
+
+find_package_handle_standard_args(NETCDF_Fortran NETCDF_Fortran_INCLUDE_DIR NETCDF_Fortran_LIB_DIR
+                                   NETCDF_FORTRAN_LIBRARY)

@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314
+END
+TryMPISERIAL.f90
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/TryMPISERIAL.f90
+END
+TryMPIMod.f90
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/TryMPIMod.f90
+END
+LICENSE
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/LICENSE
+END
+FindNETCDF.cmake
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/FindNETCDF.cmake
+END
+FindpFUnit.cmake
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/FindpFUnit.cmake
+END
+CESM_utils.cmake
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/CESM_utils.cmake
+END
+ChangeLog
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/ChangeLog
+END
+genf90_utils.cmake
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/genf90_utils.cmake
+END
+Sourcelist_utils.cmake
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/Sourcelist_utils.cmake
+END
+README.md
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/README.md
+END
+TryCSizeOf.f90
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/TryCSizeOf.f90
+END
+FindPnetcdf.cmake
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/FindPnetcdf.cmake
+END
+pFUnit_utils.cmake
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/pFUnit_utils.cmake
+END
+.gitignore
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/.gitignore
+END
+TryPnetcdf_inc.f90
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/TryPnetcdf_inc.f90
+END
+TryMPIIO.f90
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/TryMPIIO.f90
+END
+Compilers.cmake
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/Compilers.cmake
+END
+TryPnetcdf_mod.f90
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/quantheory/CMake_Fortran_utils/!svn/ver/68/tags/CMake_Fortran_utils_140314/TryPnetcdf_mod.f90
+END
