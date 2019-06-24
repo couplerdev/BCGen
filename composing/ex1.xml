@@ -1,0 +1,26 @@
+<setup>
+	<models>
+	<model>
+		<name>atm</name>
+		<version>xatm</version>
+		<res>fv4x5</res>
+     		<frac update='true'>normal</frac>
+		<input>
+			<src name='ocn'>
+				<field type='state' frac='normal'>So_t:So_s:So_u</field>
+			</src>	
+               </input>
+	</model>
+	<model>
+		<name>ocn</name>
+		<version>xocn</version>
+		<res>gx3v7</res>
+		<frac>normal</frac>
+		<input>
+			<src name='atm'>
+				<field type='state' frac="normal">Sa_z:Sa_u:Sa_tbot:Sa_ptem</field>
+			</src>
+		</input>
+	</model>
+    	</models>
+</setup>
