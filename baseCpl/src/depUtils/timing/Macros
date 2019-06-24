@@ -1,0 +1,54 @@
+#
+# Makefile Macros generated from /share/CESM/test_cesm/scripts/ccsm_utils/Machines/config_compilers.xml using
+# COMPILER=gnu
+# OS=LINUX
+# MACH=demons
+#
+CPPDEFS+= -DFORTRANUNDERSCORE -DNO_R16 -DLINUX -DCPRGNU 
+
+SLIBS+=-L/usr/local/lib  -lnetcdf -lnetcdff
+
+CXX_LINKER:=FORTRAN
+
+FC_AUTO_R8:= -fdefault-real-8 
+
+FFLAGS:= -O -fconvert=big-endian -ffree-line-length-none -ffixed-line-length-none  -fno-range-check
+
+FFLAGS_NOOPT:= -O0 
+
+FIXEDFLAGS:=  -ffixed-form 
+
+FREEFLAGS:= -ffree-form 
+
+MPICC:= mpicc  
+
+MPICXX:= mpicxx 
+
+MPIFC:= mpif90 
+
+SCC:= gcc 
+
+SCXX:= g++ 
+
+SFC:= gfortran 
+
+SUPPORTS_CXX:=TRUE
+
+ifeq ($(DEBUG), TRUE) 
+   FFLAGS += -g -Wall 
+endif
+
+ifeq ($(compile_threaded), true) 
+   LDFLAGS += -fopenmp 
+   CFLAGS += -fopenmp 
+   FFLAGS += -fopenmp 
+endif
+
+ifeq ($(MODEL), cism) 
+   CMAKE_OPTS += -D CISM_GNU=ON 
+endif
+
+ifeq ($(MODEL), pop2) 
+   CPPDEFS += -D_USE_FLOW_CONTROL 
+endif
+
