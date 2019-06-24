@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/!svn/ver/61029/timing/release_tags/timing_140416
+END
+GPTLutil.c
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/!svn/ver/61029/timing/release_tags/timing_140416/GPTLutil.c
+END
+ChangeLog
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/!svn/ver/61029/timing/release_tags/timing_140416/ChangeLog
+END
+GPTLprint_memusage.c
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/!svn/ver/61029/timing/release_tags/timing_140416/GPTLprint_memusage.c
+END
+gptl.c
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/!svn/ver/61029/timing/release_tags/timing_140416/gptl.c
+END
+perf_mod.F90
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/!svn/ver/61029/timing/release_tags/timing_140416/perf_mod.F90
+END
+f_wrappers.c
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/!svn/ver/61029/timing/release_tags/timing_140416/f_wrappers.c
+END
+gptl.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/!svn/ver/61029/timing/release_tags/timing_140416/gptl.h
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/!svn/ver/61029/timing/release_tags/timing_140416/README
+END
+gptl_papi.c
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/!svn/ver/61029/timing/release_tags/timing_140416/gptl_papi.c
+END
+private.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/!svn/ver/61029/timing/release_tags/timing_140416/private.h
+END
+COPYING
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/!svn/ver/61029/timing/release_tags/timing_140416/COPYING
+END
+perf_utils.F90
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/!svn/ver/61029/timing/release_tags/timing_140416/perf_utils.F90
+END
+GPTLget_memusage.c
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/!svn/ver/61029/timing/release_tags/timing_140416/GPTLget_memusage.c
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/!svn/ver/61029/timing/release_tags/timing_140416/CMakeLists.txt
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/!svn/ver/61029/timing/release_tags/timing_140416/Makefile
+END
+gptl.inc
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/!svn/ver/61029/timing/release_tags/timing_140416/gptl.inc
+END
