@@ -292,6 +292,7 @@ subroutine dyn_init(file, dyn_state, dyn_in, dyn_out, NLFileName )
   cp     = cpair
   ae     = rearth
 
+  print *,'gridcond:', IFIRSTXY, ILASTXY, JFIRSTXY, JLASTXY ,KM
 
 ! Set constants
   constants%pi    = pi
@@ -1187,6 +1188,18 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
    vxy      => dyn_in%v3s
    t3xy     => dyn_in%t3
    ptxy     => dyn_in%pt
+   do i = dyn_state%grid%ifirstxy, dyn_state%grid%ilastxy
+       do j = dyn_state%grid%jfirstxy, dyn_state%grid%jlastxy
+           do k =1,km
+              if(ptxy(i,j,k)<0 .or. (i==32 .and. j==24 .and. k>=27))then
+                  print *, 'echo ptxy', ptxy(i,j,k), i,j,k, &
+                      dyn_state%grid%ifirstxy, dyn_state%grid%ilastxy,&
+                      dyn_state%grid%jfirstxy, dyn_state%grid%jlastxy
+              end if
+            end do
+       end do
+   end do
+   delpxy   => dyn_in%delp
    tracer   => dyn_in%tracer
    pexy     => dyn_in%pe
    pkxy     => dyn_in%pk
@@ -1610,6 +1623,15 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
                             grid%ptxy_to_pt%RecvDesc, ptxy, pt,                         &
                             modc=grid%modc_dynrun )
 
+           do i = dyn_state%grid%ifirstxy, dyn_state%grid%ilastxy
+               do j = dyn_state%grid%jfirstxy, dyn_state%grid%jlastxy
+                   do k = 1, km
+                       if(ptxy(i,j,k)<0 .or. (i==32 .and. j==24 .and. k>=27))then
+                           print *,'after rcv', ptxy(i,j,k), i,j,k
+                       end if
+                   end do
+               end do
+           end do
            if (modc_tracers .eq. 0) then
               do mq = 1, ntotq
                  q3xypt => tracer(:,:,:,mq)
@@ -1669,6 +1691,7 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
                  enddo
               enddo
            enddo
+           print *, 'our u first', u(3,25,1), uxy(3,25,1)
 !$omp parallel do private(i,j,k)
            do k = 1,km
               do j = jfirst,jlast
@@ -1822,6 +1845,18 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
            call t_barrierf('sync_cd_core', grid%commdyn)
            call t_startf ('cd_core')
            
+           do i = dyn_state%grid%ifirstxy, dyn_state%grid%ilastxy
+               do j = dyn_state%grid%jfirstxy, dyn_state%grid%jlastxy
+                   do k = 1, km 
+                       if(dyn_out%pt(i,j,k)<-0 .or.( i==32 .and. j==24 .and. k>=27))then
+                          print *,'jojo', dyn_out%pt(i,j,k), ptxy(i,j,k),i,j,k,&
+                          dyn_state%grid%ifirstxy, dyn_state%grid%ilastxy, &
+                          dyn_state%grid%jfirstxy, dyn_state%grid%jlastxy
+                       end if 
+                   end do
+               end do
+           end do
+           print *, 'check your u', u(3,25,1) 
            if (grid%iam .lt. grid%npes_xy) then
               call cd_core(grid,   nx,     u,   v,   pt,                     &
                             delp,   pe,     pk,  nsplit,  dt,                &
@@ -1840,6 +1875,9 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
               ctreqs(4,:) = cdcreqs(:,3)
               ctreqs(5,:) = cdcreqs(:,4)
            endif  !  (grid%iam .lt. grid%npes_yz)
+           if(dyn_out%pt(32,24,30)<-0 .or. ptxy(32,24,30)<-0)then
+               print *,'grab dyn', dyn_out%pt(3, 25,1)
+           end if
 
            call t_stopf  ('cd_core')
 
@@ -2354,6 +2392,9 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
 
      endif  !  (grid%iam .lt. grid%npes_xy)
 
+     if(dyn_out%pt(32,24,29)<-300)then
+         print *,'dynb enro', dyn_out%pt(32,24,29), ptxy(32,24,29)
+     end if
 
      if ( km > 1 ) then           ! not shallow water equations
 
@@ -2367,6 +2408,16 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
 !
         call t_barrierf('sync_te_map', grid%commdyn)
         call t_startf ('te_map')
+        do i = dyn_state%grid%ifirstxy, dyn_state%grid%ilastxy
+            do j = dyn_state%grid%jfirstxy, dyn_state%grid%jlastxy
+                do k = 1, km
+                    if(ptxy(i,j,k)<-0)then
+                        print *, 'ptxy bad tend', ptxy(i,j,k), i,j,k, &
+                         dyn_state%grid%jfirstxy, dyn_state%grid%jlastxy,km
+                    end if
+                end do
+            end do
+        end do
         if (grid%iam .lt. grid%npes_xy) then
            call te_map(grid,     consv,   convt_local, psxy, omgaxy,       &
                        pexy,     delpxy,  pkzxy,  pkxy,   ndt,             &
@@ -2374,6 +2425,17 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
                        phisxy,   cp,      cappa,  kord,   pelnxy,          &
                        te0,      tempxy,  dp0xy,  mfxxy,  mfyxy,           &
                        te_method )
+           do i = dyn_state%grid%ifirstxy, dyn_state%grid%ilastxy
+               do j = dyn_state%grid%jfirstxy, dyn_state%grid%jlastxy
+                   do k = 1, km
+                       if(dyn_out%pt(i,j,k)< -300)then
+                           print *,'ptxy te map ', dyn_out%pt(i,j,k), i,j,k,&
+                           dyn_state%grid%ifirstxy, dyn_state%grid%ilastxy, &
+                           dyn_state%grid%jlastxy, dyn_state%grid%jlastxy
+                       end if
+                   end do
+               end do
+           end do
 
            if( .not. convt_local ) then
 !$omp parallel do private(i,j,k)
@@ -2392,6 +2454,9 @@ subroutine dyn_run(ptop, ndt, te0, dyn_state, dyn_in, dyn_out, rc)
         call t_stopf ('te_map')
 
      endif
+     if(dyn_out%pt(32,24,29)<-300)then
+         print *,'dyn_out error', dyn_out%pt(32,24,29)
+     end if
 !
 ! te_map computes uxy, vxy, psxy, delpxy, pexy, pkxy, pkzxy,
 ! pelnxy, omgaxy, tracer, ptxy, mfxxy and mfyxy

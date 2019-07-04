@@ -460,6 +460,9 @@ subroutine microp_aero_run ( &
    zm    => state%zm
    omega => state%omega
 
+   if(state%t(15,29)<-300)then
+       print *,'zeft:',state%t(15,29)
+   end if
 
    itim = pbuf_old_tim_idx()
    call pbuf_get_field(pbuf, ast_idx,      ast, start=(/1,1,itim/), kount=(/pcols,pver,1/))
@@ -703,6 +706,9 @@ subroutine microp_aero_run ( &
 
             ! *** Turn off soot nucleation ***
             soot_num = 0.0_r8
+            if(t(i,k)<-300)then
+                print *,'nucleation:', t(i,k)
+            end if
             call nucleati( &
                wsubi(i,k), t(i,k), relhum(i,k), icldm(i,k), qc(i,k), &
                nfice(i,k), rho(i,k), so4_num, dst_num, soot_num,     &

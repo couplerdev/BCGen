@@ -336,6 +336,8 @@
           tmpi2(i,k) = ztodt * ( gravit*rhoi(i,k) )**2 / ( pmid(i,k) - pmid(i,k-1) )
        end do
     end do
+    print *, 'rhoi:', rhoi(8,2), tint(8,2), pint(8,2), rairi(8,2), t(8,2), t(8,1)
+    print *,'tmpi2:', tmpi2(8,2), ztodt, gravit, rhoi(8,2), pmid(8,2), pmid(8,1)
     tint(:ncol,pver+1) = t(:ncol,pver)
     rhoi(:ncol,pver+1) = pint(:ncol,pver+1) / ( rair*tint(:ncol,pver+1) )
 
@@ -441,6 +443,7 @@
 
            ramda         = ztodt / timeres
            u(:ncol,pver) = u(:ncol,pver) + tmp1(:ncol)*tauresx(:ncol)*ramda
+           !print *, 'v_diff', u(8,1), tmp1(8), tauresx(8), ramda
            v(:ncol,pver) = v(:ncol,pver) + tmp1(:ncol)*tauresy(:ncol)*ramda
 
          ! Vertical integration of momentum after adding explicit residual stress
@@ -494,14 +497,17 @@
        !                                   u(pver) : explicitly include 'normal' stress          !
        ! Note that in all the two cases above, 'tms' is fully implicitly treated.                !
        ! --------------------------------------------------------------------------------------- !
+       !print *, 'ca denom', ca(8,1), dnom(8,1), kvm(8,2), tmpi2(8,2), rpdel(8,1)
        call vd_lu_decomp( pcols , pver , ncol  ,                        &
                           ksrf  , kvm  , tmpi2 , rpdel , ztodt , zero , &
                           ca    , cc   , dnom  , tmpm  , ntop  , nbot )
 
        call vd_lu_solve(  pcols , pver , ncol  ,                        &
                           u     , ca   , tmpm  , dnom  , ntop  , nbot , zero )
+       !print *, 'vd_lu', u(8,1), ca(8,1), tmpm(8,1), dnom(8,1)
        call vd_lu_solve(  pcols , pver , ncol  ,                        &
                           v     , ca   , tmpm  , dnom  , ntop  , nbot , zero )
+       !print *, 'vd_lu v', v(8,1)
        ! ---------------------------------------------------------------------- !
        ! Calculate 'total' ( tautotx ) and 'tms' ( tautmsx ) stresses that      !
        ! have been actually added into the atmosphere at the current time step. ! 

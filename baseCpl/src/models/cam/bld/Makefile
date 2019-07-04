@@ -1,7 +1,7 @@
 #Make macros for CAM.
 
 UNAMES        :=  LINUX
-ROOTDIR       :=  /home/hq/git/protected/BCGen/baseCpl/src
+ROOTDIR       :=  /share/BCGen/develDir/master/BCGen/baseCpl/src
 INC_NETCDF    :=  
 MOD_NETCDF    :=  
 USER_CFLAGS   :=  
@@ -16,7 +16,7 @@ IGNORE_LINE_TRUNCAT := -ffree-line-length-none
 
 include ../../Makefile.conf
 
-INCLFLAG := -I${INCLDIR} -I${ESMF_MOD} -I${PIO_INCL}
+INCLFLAG := -I${INCLDIR} -I${ESMF_MOD} -I${PIO_INCL} -I${NETCDFINCL}
 
 null  :=
 space := $(null) $(null)

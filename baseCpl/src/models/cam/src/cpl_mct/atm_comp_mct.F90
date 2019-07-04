@@ -1149,7 +1149,6 @@ end subroutine atm_final_mct
           data(n) = lats(i)*radtodeg
        end do
     end do
-    print *, "DEBUG_HQ_LAT_MAX_MIN", maxval(lats), ' ', minval(lats)
     call mct_gGrid_importRAttr(dom_a,"lat",data,lsize) 
 
     n=0
