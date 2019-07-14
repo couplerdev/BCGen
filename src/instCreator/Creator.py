@@ -43,6 +43,9 @@ input----
 
 class InstArgsParser:
     def __init__(self):
+	dirname, filename = os.path.split(os.path.abspath(__file__))
+	prefix = dirname+"/../../composing/"
+	defaultSetupXml = os.path.abspath(prefix+"setup.xml")
         self.argParser = argparse.ArgumentParser()
         self.args = None
         self.argParser.add_argument("-regen", "--regenerate",help="whether to regenerate coupler code", action="store_true")
@@ -51,14 +54,18 @@ class InstArgsParser:
         #self.argParser.add_argument("")
         self.argParser.add_argument("-rest","--restart", help="whether do restart", action="store_true")
         self.argParser.add_argument("-hist","--history", help="wheter do hist archive", action="store_true")
+	self.argParser.add_argument("-setup", "--setupFile", help="path of the setup.xml file", nargs='?', default=defaultSetupXml)
+	self.argParser.add_argument("-case", "--caseDir", help="target directory for generated coupled ESM case", nargs='?', default="")
 
     def argSet(self):
         self.args = self.argParser.parse_args()
 
     def instCreate(self):
+	print self.args
         instCreator = InstCreator(regen=self.args.regenerate, make=self.args.makeCode,\
                                   overwrite=self.args.overwriteDir, restart=self.args.restart, \
-                                  history=self.args.history)
+                                  history=self.args.history, setupFile=self.args.setupFile, \
+				  caseDir=self.args.caseDir )
         instCreator.instCreate()
 
 class TempConfig:
@@ -161,8 +168,8 @@ class InstCreator:
     '''
     couplerCodePath='/../../baseCpl'
     BCGenPath = '/../..'
-    def __init__(self,regen=False, make=False, overwrite=False, restart=False, history=False):
-        absPath = os.getcwd()
+    def __init__(self,regen=False, make=False, overwrite=False, restart=False, history=False, setupFile='', caseDir=''):
+	absPath = os.getcwd()
         InstCreator.BCGenPath = absPath+InstCreator.BCGenPath
         InstCreator.couplerCodePath = absPath+InstCreator.couplerCodePath
         self.metaManager = MetaManager(InstCreator.BCGenPath)        
@@ -175,6 +182,16 @@ class InstCreator:
         self.args['overwrite'] = overwrite
         self.args['rest'] = restart
         self.args['hist'] = history
+	self.args['setupFile'] = setupFile
+	self.args['caseDir'] = caseDir
+	if setupFile != '' and os.path.exists(setupFile) and os.path.isfile(setupFile) :
+		self.confXmlPath['setup.xml'] = os.path.abspath(setupFile)
+	print "Using setup file: ", self.confXmlPath['setup.xml']
+	if caseDir != '' :
+		self.caseDir = os.path.abspath(caseDir)
+	else :
+		self.caseDir = ''
+	print "Using case directory: ", self.caseDir
 
     def setDefaultXmlPath(self):
         self.absPath = os.getcwd()
@@ -226,7 +243,11 @@ class InstCreator:
         #self.merge_cfgs = get_SMat_relation(self.parser.attrVectCouple)
         self.merge_cfgs = get_merge_cfg(self.parser.attrVectCouple)
         self.conf_cfgs = {}
-        self.conf_cfgs['instPath'] = self.metaManager.instPath
+	if (self.caseDir != '') :
+		self.conf_cfgs['instPath'] = self.caseDir
+	else :
+	        self.conf_cfgs['instPath'] = self.metaManager.instPath
+	print "Using case directory: ", self.conf_cfgs['instPath']
         nmlfilePath = self.metaManager.instPath+"/conf/"+self.metaManager.nmlfile
         self.conf_cfgs['nmlfile'] = nmlfilePath
         self.conf_cfgs['confPath'] = self.metaManager.confPath
