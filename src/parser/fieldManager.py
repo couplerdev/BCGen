@@ -1,6 +1,6 @@
 #!/usr/bin/python
+import sys, os
 import xml.etree.ElementTree as ET
-
 
 class FieldMeta:
     def __init__(self, shortname, longname, stdname, units):
@@ -44,7 +44,8 @@ class FieldManager:
             if key=='dom': 
                 self.fldsQuery[name] = child.find('field').text
                 val = self.fldsQuery[name].split(':')
-                print name,val
+                if os.environ.get('VERBOSE') == 'true'  :
+                    print name,val
             elif key[0:2]=='x2':
                 model = key[2:]
                 if model in self.model:
@@ -78,8 +79,9 @@ class FieldManager:
                 fm = FieldMeta(sname, lname, stdname, units)
                 self.fieldQuery[sname] = fm
     def printf(self):
-        print self.fldsQuery
-        print self.fieldQuery
+        if os.environ.get('VERBOSE') == 'true'  :
+            print self.fldsQuery
+            print self.fieldQuery
         
 if __name__ == "__main__":
     fm = FieldManager()

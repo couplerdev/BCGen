@@ -11,7 +11,7 @@
 # parser: parse xml to generate intermediate representation
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import Document
-import sys
+import sys, os
 sys.path.append('../ir')
 from ir import Model, AttrVect, Mapper, GsMap, AttrVectCpl
 from ir import ModelSubroutine, MergeSubroutine, Subroutine
@@ -26,9 +26,6 @@ from codeWrapper import CodeWrapper, toString
 from setupParser import Setup
 from fieldManager import FieldMeta, FieldManager
 from fakeModelParser import FakeModelParser
-
-
-DEBUG = 1
 
 class Parser():
     def __init__(self, setup=True, rest=False, hist=False,fileSpec={}):
@@ -56,7 +53,7 @@ class Parser():
         self.__models = {}
         self.__attrVectCouple = {}
         self.__subroutine = {}   ## mrg subroutine
-           
+        
         self.__sMapper = {}
         self.__deployDistribution = {} # format {id: [first, last, stride]}
         self.__setupModels = {}
@@ -170,7 +167,7 @@ class Parser():
             self.__NameManager.register.modelDict[model.name] = model
                     
         if self.__enable_setup and modelCount != len(self.__setupModels):
-            print modelCount
+            print "modelCount = ", modelCount, " and self.__setupModels = ", self.__setupModel
             raise ComposingError("invalid "+self.__modelFile+\
                     " for some model(s) not supported in this file when setup.xml set them")
     
@@ -253,16 +250,16 @@ class Parser():
 
     def parse(self):
         self.modelsParse()
-        if DEBUG == 1:
+        if os.environ.get('VERBOSE') == 'true'  :
             print '...................model parsed...................'
         self.coupleAttrVectParse()
-        if DEBUG == 1:
+        if os.environ.get('VERBOSE') == 'true'  :
             print '..............couple AttrVect parsed..............'
         self.fakeModelParse()
-        if DEBUG == 1:
+        if os.environ.get('VERBOSE') == 'true'  :
             print '..............fake Model parsed...................'
         self.deployParse()
-        if DEBUG == 1:
+        if os.environ.get('VERBOSE') == 'true'  :
             print '..................deploy parsed...................'
         
         #for node in self.__seqRun.graph.Nodes:
@@ -381,7 +378,7 @@ class ModelParser:
         self.__field = field
         self.__name = ""
         self.__NameManager = NameManager
-        self.SeqRun = seqRun 
+        self.SeqRun = seqRun
 
     def setRoot(self, root):
         self.__root = root
@@ -692,7 +689,8 @@ class CouplerParser: ###!!!!
             grid = root.find('model').text
             for src in srcs:
                 srcAttrVectName = src.find("attrVect").text
-                print srcAttrVectName
+                if os.environ.get('VERBOSE') == 'true'  :
+                    print "srcAttrVectName = ", srcAttrVectName
                 srcAttrVect = parser.visitByName(srcAttrVectName)
                 if srcAttrVect == None:
                     raise AttributeError("no such attrVect {}".format(srcAttrVectName))

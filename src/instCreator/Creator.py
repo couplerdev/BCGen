@@ -52,7 +52,8 @@ print "Using BCROOT = ", bcroot
 class InstArgsParser:
     def __init__(self):
 	defaultSetupXml = os.path.abspath(bcroot+"/composing/setup.xml")
-	print "default setup xml: ", defaultSetupXml
+	if os.environ.get('VERBOSE') == 'true'  :
+		print "default setup xml: ", defaultSetupXml
         self.argParser = argparse.ArgumentParser()
         self.args = None
         self.argParser.add_argument("-regen", "--regenerate",help="whether to regenerate coupler code", action="store_true")
@@ -63,12 +64,16 @@ class InstArgsParser:
         self.argParser.add_argument("-hist","--history", help="wheter do hist archive", action="store_true")
 	self.argParser.add_argument("-setup", "--setupFile", help="path of the setup.xml file", nargs='?', default=defaultSetupXml)
 	self.argParser.add_argument("-case", "--caseDir", help="target directory for generated coupled ESM case", nargs='?', default="")
+	self.argParser.add_argument("-v", "--verbose", help="print more logs", action="store_true")
 
     def argSet(self):
         self.args = self.argParser.parse_args()
 
     def instCreate(self):
 	#print self.args
+        if self.args.verbose :
+                print "Verbose mode is set."
+		os.environ['VERBOSE']='true'
         instCreator = InstCreator(regen=self.args.regenerate, make=self.args.makeCode,\
                                   overwrite=self.args.overwriteDir, restart=self.args.restart, \
                                   history=self.args.history, setupFile=self.args.setupFile, \
@@ -81,8 +86,7 @@ class TempConfig:
         self.codeFile = codeFile
         if type(cfgs) != type({}):
             raise TypeError("cfgs not list") 
-        self.cfgs = cfgs
-        
+        self.cfgs = cfgs 
 
 class CodeMapper:
     def __init__(self, mappers=[]):
@@ -94,7 +98,8 @@ class CodeMapper:
     def genCode(self):
         for spec in self.mappers:
             code = codeGenerator(spec.template, spec.codeFile)
-            print spec.template
+            if os.environ.get('VERBOSE') == 'true' :
+                print spec.template
             for cfg in spec.cfgs:
                 code.addList(cfg, spec.cfgs[cfg])
             code.generate()
@@ -119,7 +124,8 @@ def get_merge_cfg(attrVects):
     return merge_cfg
 
 def get_SMat_relation(attrVects):
-    print attrVects
+    if os.environ.get('VERBOSE') == 'true' :
+        print attrVects
     model_names = []
     model_SMats = {}
     gsmap_dict = {}
@@ -134,8 +140,9 @@ def get_SMat_relation(attrVects):
         gsmap_dict[src_model_name] = model_gsmap_name
         #model_SMats[model_name]['gm'] = model_gsmap_name
         model_names.append(model_name)
-    print model_SMats
-    exit()
+    if os.environ.get('VERBOSE') == 'true' :
+        print model_SMats
+    #exit()
     for av in attrVects:
         for src_x_dst_x_av in attrVects[av]:
             src_model = src_x_dst_x_av.srcModel
@@ -248,6 +255,7 @@ class InstCreator:
         self.conf_cfgs = {}
 	if (self.caseDir != '') :
 		self.conf_cfgs['instPath'] = self.caseDir
+		self.metaManager.instPath = self.caseDir
 	else :
 	        self.conf_cfgs['instPath'] = self.metaManager.instPath
 	print "Using case directory: ", self.conf_cfgs['instPath']
@@ -304,8 +312,10 @@ class InstCreator:
                                                                           "fieldVar_cfgs":fieldVar_cfgs})
         baseHistTmp = TempConfig(templateDirPrefix+"baseHistMod_Template.F90","base_hist_mod.F90",{"proc_cfgs":proc_cfgs})
         baseRestTmp = TempConfig(templateDirPrefix+"baseRestMod_Template.F90","base_rest_mod.F90", {"proc_cfgs":proc_cfgs})
-        for frac in fraction_cfgs:
-            print fraction_cfgs[frac].init.name
+	if os.environ.get('VERBOSE') == 'true'  :
+	        for frac in fraction_cfgs:
+        		print fraction_cfgs[frac].init.name
+
         baseCplTmp = TempConfig(templateDirPrefix+"baseCpl_Template.F90","baseCpl.F90",\
                               {"proc_cfgs":proc_cfgs, "merge_subroutines":merge_subroutines,\
                                "merge_cfgs":merge_cfgs,"model_cfgs":model_cfgs, \
@@ -413,7 +423,8 @@ class InstCreator:
                 #modelDir = InstCreator.couplerCodePath+"/src/models/"+name
                 cmdCpComp = 'cp -r '+modelDir+"/* " + self.metaManager.instPath+"/models/"+name
                 os.system(cmdCpComp)
-                print cmdCpComp
+                if os.environ.get('VERBOSE') == 'true'  :
+                    print cmdCpComp
                  
         # mv Cpl comp to models 
         cplDir = InstCreator.couplerCodePath+"/src/models/cpl"
@@ -538,8 +549,9 @@ class InstCreator:
         BCGenPath = "../../baseCpl/"
         copyIncludeCmd = "cp -r " + BCGenPath+"include/* "+includePath
         copyLibCmd = "cp -r "+ BCGenPath+"lib/* "+libPath
-        print copyIncludeCmd
-        print copyLibCmd
+        if os.environ.get('VERBOSE') == 'true' :
+            print copyIncludeCmd
+            print copyLibCmd
         os.system(copyIncludeCmd)
         os.system(copyLibCmd)
 

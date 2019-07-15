@@ -33,10 +33,10 @@ subroutine init(metaData)
     integer :: iter
     integer, dimension(:), pointer :: mycomms
     integer, dimension(:), pointer :: myids
-    character(*), parameter :: nmlfile = "/home/hq/share/BCGen_case/BCGen_inst/conf/nmlfile"
-    character(*), parameter :: datanml = "/home/hq/share/BCGen_case/BCGen_inst/src/nmlfile_src"
-    character(*), parameter :: datarc = "/home/hq/share/BCGen_case/BCGen_inst/src/mapper.rc"
-    character(*), parameter :: pionml = "/home/hq/share/BCGen_case/BCGen_inst/conf/pioNml"
+    character(*), parameter :: nmlfile = "/root/workspace/BCGen_case/conf/nmlfile"
+    character(*), parameter :: datanml = "/root/workspace/BCGen_case/src/nmlfile_src"
+    character(*), parameter :: datarc = "/root/workspace/BCGen_case/src/mapper.rc"
+    character(*), parameter :: pionml = "/root/workspace/BCGen_case/conf/pioNml"
     integer :: testData ! if test
     integer :: local_rank ! if test
 

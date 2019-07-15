@@ -10,7 +10,7 @@
 # parser: parse xml to generate intermediate representation
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import Document
-import sys
+import sys, os
 sys.path.append('../ir')
 from Datatype import *
 from regriddingManager import *
@@ -169,7 +169,8 @@ class Setup:
                 self.__couple.append(attrVect)
                 #mrg['args'].append('fraction')
     def dictDom(self,doc, k, v):
-        print(k, v)
+	if os.environ.get('VERBOSE') == 'true'  :
+            print(k, v)
         key = doc.createElement(k)
         value = doc.createTextNode(v)
         key.appendChild(value)
@@ -195,7 +196,8 @@ class Setup:
             init = self.dictDom(doc, 'init', avDict['fraction']['init'])
             update = self.dictDom(doc, 'update', avDict['fraction']['update'])
             fracs = doc.createElement('fracs')
-            print avDict['fraction']
+	    if os.environ.get('VERBOSE') == 'true'  :
+                print avDict['fraction']
             for frac in avDict['fraction']['fracs']:
                 fracNode = doc.createElement('frac')
                 nameNode = self.dictDom(doc,'name', frac['name'])
@@ -277,7 +279,8 @@ class Setup:
             root.appendChild(attrVect)
         doc.appendChild(root)
         f = open(self.__coupleFile,'w')
-        print 'write'
+	if os.environ.get('VERBOSE') == 'true'  :
+            print 'write'
         doc.writexml(f, indent='\t',newl='\n',addindent='\t',encoding='utf-8')
     
     @property
