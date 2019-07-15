@@ -41,11 +41,18 @@ input----
      \models : comps depend data
 '''
 
+bcroot = os.environ.get('BCROOT')
+if (bcroot == None or bcroot.strip() == '') :
+	dirname, filename = os.path.split(os.path.abspath(__file__))
+	bcroot = os.path.abspath(dirname + "/../../")
+else :
+	bcroot = os.path.abspath(bcroot.strip())
+print "Using BCROOT = ", bcroot
+
 class InstArgsParser:
     def __init__(self):
-	dirname, filename = os.path.split(os.path.abspath(__file__))
-	prefix = dirname+"/../../composing/"
-	defaultSetupXml = os.path.abspath(prefix+"setup.xml")
+	defaultSetupXml = os.path.abspath(bcroot+"/composing/setup.xml")
+	print "default setup xml: ", defaultSetupXml
         self.argParser = argparse.ArgumentParser()
         self.args = None
         self.argParser.add_argument("-regen", "--regenerate",help="whether to regenerate coupler code", action="store_true")
@@ -61,7 +68,7 @@ class InstArgsParser:
         self.args = self.argParser.parse_args()
 
     def instCreate(self):
-	print self.args
+	#print self.args
         instCreator = InstCreator(regen=self.args.regenerate, make=self.args.makeCode,\
                                   overwrite=self.args.overwriteDir, restart=self.args.restart, \
                                   history=self.args.history, setupFile=self.args.setupFile, \
@@ -166,12 +173,10 @@ class InstCreator:
     '''
         presently, we can't support spec without enough xmls
     '''
-    couplerCodePath='/../../baseCpl'
-    BCGenPath = '/../..'
+    couplerCodePath='/baseCpl'
     def __init__(self,regen=False, make=False, overwrite=False, restart=False, history=False, setupFile='', caseDir=''):
-	absPath = os.getcwd()
-        InstCreator.BCGenPath = absPath+InstCreator.BCGenPath
-        InstCreator.couplerCodePath = absPath+InstCreator.couplerCodePath
+        InstCreator.BCGenPath = bcroot
+        InstCreator.couplerCodePath = bcroot+InstCreator.couplerCodePath
         self.metaManager = MetaManager(InstCreator.BCGenPath)        
         self.parser = None     
         self.confXmlPath = {}
@@ -191,11 +196,9 @@ class InstCreator:
 		self.caseDir = os.path.abspath(caseDir)
 	else :
 		self.caseDir = ''
-	print "Using case directory: ", self.caseDir
 
     def setDefaultXmlPath(self):
-        self.absPath = os.getcwd()
-        prefix = self.absPath+"/../../composing/"
+        prefix = bcroot+"/composing/"
         self.confXmlPath['instSetup.xml'] = prefix+"instSetup.xml"
         self.confXmlPath['setup.xml'] = prefix+"setup.xml"
         self.confXmlPath['coupler.xml'] = prefix+"coupler.xml"
@@ -447,8 +450,7 @@ class InstCreator:
            "case_desc":"no desc",
            "baseCplDir":""
            }
-        currDir = os.getcwd()
-        baseCplDir = currDir+"/../../baseCpl"
+        baseCplDir = bcroot+"/baseCpl"
         os.chdir(baseCplDir)
         baseCplDir = os.getcwd()
         os.chdir(currDir)
