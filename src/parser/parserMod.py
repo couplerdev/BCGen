@@ -578,6 +578,9 @@ class ModelParser:
    
         # set metaFile
         metaFile = self.__root.find("metaFile").text
+	bcroot = os.environ['BCROOT']
+	if bcroot :
+		metaFile = metaFile.replace('$(BCROOT)', bcroot)
         self.__model.metaFile = metaFile
 
         version = self.__root.find("version").text
@@ -585,6 +588,9 @@ class ModelParser:
   
         src = self.__root.find("src").text
         self.__model.src = src
+
+        if os.environ.get('verbose') == 'true' :
+                print "Model name: ", name, "version:", version, "src:", src, "Metafile path: ", metaFile
 
         #self.__model.interval = root.find('interval').text
         root = root.find('attrVect')

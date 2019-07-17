@@ -1,5 +1,5 @@
 <clmDescXml>
-	<packageDir>/home/hq/git/protected/BCGen/baseCpl/src/models/clm</packageDir>
+	<packageDir>$(BCROOT)/baseCpl/src/models/clm</packageDir>
 	<configure>
 		<script></script>
 		<workDir>./</workDir>

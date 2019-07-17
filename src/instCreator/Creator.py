@@ -48,6 +48,8 @@ if (bcroot == None or bcroot.strip() == '') :
 else :
 	bcroot = os.path.abspath(bcroot.strip())
 print "Using BCROOT = ", bcroot
+print
+os.environ['BCROOT'] = bcroot
 
 class InstArgsParser:
     def __init__(self):
@@ -259,6 +261,7 @@ class InstCreator:
 	else :
 	        self.conf_cfgs['instPath'] = self.metaManager.instPath
 	print "Using case directory: ", self.conf_cfgs['instPath']
+	os.environ['BCCASEROOT'] = self.conf_cfgs['instPath']
         nmlfilePath = self.metaManager.instPath+"/conf/"+self.metaManager.nmlfile
         self.conf_cfgs['nmlfile'] = nmlfilePath
         self.conf_cfgs['confPath'] = self.metaManager.confPath
@@ -381,7 +384,10 @@ class InstCreator:
         currDir = os.getcwd()
         os.chdir(InstCreator.couplerCodePath)
         cmdBuild = 'make'
-        os.system(cmdBuild)
+        if os.system(cmdBuild) != 0 :
+	    # make failed, quit
+	    print "Failed to make, something (maybe path settings in Makefile.conf) is wrong. Please check it."
+	    exit(11001)
         os.chdir(currDir)
         # mv libbcpl.a to lib
         cmdMvObj = 'cp '+InstCreator.couplerCodePath+'/lib/* '+self.metaManager.instPath+'/lib'
@@ -389,7 +395,7 @@ class InstCreator:
         os.system(cmdMv)
         os.system(cmdMvObj)
 
-        # mv required comp togather with its Makefile (may be modified) to models
+	# mv required comp togather with its Makefile (may be modified) to models
         # model create but for component like CAM we should build its' namelist
 	# and Makefile
         for model in self.proc_cfgs:
@@ -461,6 +467,7 @@ class InstCreator:
            "case_desc":"no desc",
            "baseCplDir":""
            }
+	currDir = os.getcwd()
         baseCplDir = bcroot+"/baseCpl"
         os.chdir(baseCplDir)
         baseCplDir = os.getcwd()
@@ -497,6 +504,8 @@ class InstCreator:
         archPath = instPath+"/archive"
         scriptsPath = instPath+"/scripts"
         docPath = instPath+"/doc"
+	if os.environ.get('VERBOSE') == 'true'  :
+	    print 'Creating dirctories...'
         os.mkdir(confPath)
         os.mkdir(srcPath)
         os.mkdir(libPath)
@@ -505,7 +514,6 @@ class InstCreator:
         os.mkdir(archPath)
         os.mkdir(scriptsPath)
         os.mkdir(docPath)
-        print 'echo' 
         # create models dir & copy relavent code and Makefile
         modelsPath = instPath+"/models/"
         os.mkdir(modelsPath)
@@ -514,6 +522,8 @@ class InstCreator:
             os.mkdir(modelDir)
         cplDir = modelsPath+"/cpl"
         os.mkdir(cplDir)
+	if os.environ.get('VERBOSE') == 'true'  :
+	    print 'Directories created. Creating and copying files...'
         
         # copy all sorts of conf file to conf dir
         copyNmlCmd = "mv "+self.metaManager.nmlfile+" "+confPath
@@ -532,16 +542,23 @@ class InstCreator:
         copyPioCmd = "mv "+ self.metaManager.pioNml+" "+confPath
         os.system(copyPioCmd)
 
+	if os.environ.get('VERBOSE') == 'true'  :
+	    print 'Creating Makefiles...'
+
         #copy Makefile to relavent dir
         self.createMakefile()
         #exit(1)
   
         # create doc, mv it and cp scripts
+	if os.environ.get('VERBOSE') == 'true'  :
+	    print 'Creating documents...'
         self.createDoc()
         cpDoc =  "cp descCase "+docPath
         os.system(cpDoc)
 
         # copy scripts
+	if os.environ.get('VERBOSE') == 'true'  :
+	    print 'Creating scripts...'
         cpScripts = "cp ./scripts/* "+scriptsPath
         os.system(cpScripts)
  
@@ -550,6 +567,7 @@ class InstCreator:
         copyIncludeCmd = "cp -r " + BCGenPath+"include/* "+includePath
         copyLibCmd = "cp -r "+ BCGenPath+"lib/* "+libPath
         if os.environ.get('VERBOSE') == 'true' :
+	    print 'Copying include and lib files...'
             print copyIncludeCmd
             print copyLibCmd
         os.system(copyIncludeCmd)

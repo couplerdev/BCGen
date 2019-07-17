@@ -1,5 +1,5 @@
 <rofDescXml>
-	<packageDir>/home/hq/git/protected/BCGen/baseCpl/src/models/rtm</packageDir>
+	<packageDir>$(BCROOT)/baseCpl/src/models/rtm</packageDir>
 	<configure>
 		<script></script>
 		<workDir>./</workDir>

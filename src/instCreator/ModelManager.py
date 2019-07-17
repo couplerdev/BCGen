@@ -43,8 +43,13 @@ class ConfModel:
 
     def createModelInst(self):
         tree = ET.parse(self.fileDesc)
+	bcroot=os.environ['BCROOT']
         # confModel
         packageDir = tree.find('packageDir').text
+	if bcroot :
+		packageDir = packageDir.replace('$(BCROOT)', bcroot)
+	if os.environ.get('verbose') == 'true' : 
+		print "Package Directory: ", packageDir
         conf = tree.find('configure')
         confScripts = conf.find("script").text or ''
         confScripts = packageDir+"/"+confScripts
