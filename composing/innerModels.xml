@@ -2,19 +2,19 @@
 <models>
 	<model>
 		<name>cam</name>
-		<location>/home/hq/git/protected/BCGen/composing/camDesc.xml</location>
+		<location>$(BCROOT)/composing/camDesc.xml</location>
 	</model>
 	<model>
 		<name>clm</name>
-		<location>/home/hq/git/protected/BCGen/composing/clmDesc.xml</location>
+		<location>$(BCROOT)/composing/clmDesc.xml</location>
 	</model>
 	<model>
 		<name>cice</name>
-		<location>/home/hq/git/protected/BCGen/composing/ciceDesc.xml</location>
+		<location>$(BCROOT)/composing/ciceDesc.xml</location>
 	</model>
 	<model>
 		<name>rtm</name>
-		<location>/home/hq/git/protected/BCGen/composing/rofDesc.xml</location>
+		<location>$(BCROOT)/composing/rofDesc.xml</location>
 	</model>
 </models>
 

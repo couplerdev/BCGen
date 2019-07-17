@@ -10,6 +10,7 @@ from xml.dom.minidom import Document
 
 
 innerModelSets = "../../composing/innerModels.xml"
+bcroot = os.environ.get('BCROOT')
 
 # pair {model name, model loc}
 modelSetsDict = {'cam':'../../composing/camDesc.xml'}
@@ -20,6 +21,7 @@ def getModelSetDict():
     for model in models:
         modelName = model.find('name').text
         modelLoc = model.find('location').text
+	modelLoc = modelLoc.replace('$(BCROOT)', bcroot)
         modelSetsDict[modelName]=modelLoc
 
 getModelSetDict()
