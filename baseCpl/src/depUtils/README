@@ -1,0 +1,3 @@
+"pio" and "timing" should be pre-installed before BCGen is executed.
+
+"ParallelIO" is currently marked as "unused".
