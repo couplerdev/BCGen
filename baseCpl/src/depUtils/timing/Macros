@@ -52,3 +52,4 @@ ifeq ($(MODEL), pop2)
    CPPDEFS += -D_USE_FLOW_CONTROL 
 endif
 
+GPTL_DIR:= . 

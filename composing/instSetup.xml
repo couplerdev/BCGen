@@ -13,6 +13,6 @@
 		<data_rc>mapper.rc</data_rc>
 	</data_location>
         <input>
-		<input_path>/mnt/CESM-data/inputdata</input_path>
+		<input_path>/share/CESM-data/inputdata</input_path>
         </input>
 </instSetup>

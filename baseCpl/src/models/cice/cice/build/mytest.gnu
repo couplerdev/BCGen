@@ -80,7 +80,7 @@ endif
 #
 #----------------------------------------------------------------------------
  
-FBASE = -v -I/usr/local/include -I$(DepDir) -I$(INCLDIR) -I../../../../include -ffree-line-length-none -I/usr/local/esmf/mod/modO/Linux.gfortran.64.mpiuni.default/ 
+FBASE = -v -I/usr/include -I/usr/local/include -I/usr/include/mpich-3.2-x86_64 -I$(DepDir) -I$(INCLDIR) -I../../../../include -ffree-line-length-none -I$(ESMF_MOD)  
 MODSUF = mod
 
 ifeq ($(TRAP_FPE),yes)

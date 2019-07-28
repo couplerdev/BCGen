@@ -27,6 +27,7 @@ CONTAINS
 subroutine shr_mem_init(prt)
 
    implicit none
+   include 'gptl.inc'
 
    !----- arguments -----
 
@@ -43,7 +44,7 @@ subroutine shr_mem_init(prt)
    logical :: lprt
    integer :: ierr
  
-   integer :: GPTLget_memusage
+!   integer :: GPTLget_memusage
 
    real(shr_kind_r8),allocatable :: mem_tmp(:)
     

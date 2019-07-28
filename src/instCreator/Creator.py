@@ -50,6 +50,7 @@ else :
 print "Using BCROOT = ", bcroot
 print
 os.environ['BCROOT'] = bcroot
+os.environ['VERBOSE'] = 'false'
 
 class InstArgsParser:
     def __init__(self):
@@ -383,7 +384,11 @@ class InstCreator:
         # build prerequists libbcpl.a
         currDir = os.getcwd()
         os.chdir(InstCreator.couplerCodePath)
-        cmdBuild = 'make'
+	print InstCreator.couplerCodePath
+	if os.environ['VERBOSE'] == 'true' :
+            cmdBuild = 'make '
+	else :
+            cmdBuild = 'make'
         if os.system(cmdBuild) != 0 :
 	    # make failed, quit
 	    print "Failed to make, something (maybe path settings in Makefile.conf) is wrong. Please check it."

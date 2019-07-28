@@ -11,6 +11,9 @@ from xml.dom.minidom import Document
 
 innerModelSets = "../../composing/innerModels.xml"
 bcroot = os.environ.get('BCROOT')
+if not bcroot :
+	dirname, filename = os.path.split(os.path.abspath(__file__))
+	bcroot = os.path.abspath(dirname + "/../../").strip()
 
 # pair {model name, model loc}
 modelSetsDict = {'cam':'../../composing/camDesc.xml'}
@@ -22,6 +25,8 @@ def getModelSetDict():
         modelName = model.find('name').text
         modelLoc = model.find('location').text
 	modelLoc = modelLoc.replace('$(BCROOT)', bcroot)
+	if os.environ.get('VERBOSE') == 'true' :
+		print modelName, " : ", modelLoc
         modelSetsDict[modelName]=modelLoc
 
 getModelSetDict()

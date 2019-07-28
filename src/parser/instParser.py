@@ -7,7 +7,7 @@
 
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import Document
-import sys
+import sys, os
 sys.path.append('../ir')
 #from DataType import *
 
@@ -46,7 +46,8 @@ class InstParser:
         
         fileLoc = tree.find('file_location')
         self.nmlfile = fileLoc.find('nmlfile').text
-	self.nmlfile = self.nmlfile.replace('$(BCROOT)', bcroot)
+	if self.nmlfile is not None :
+	    self.nmlfile = self.nmlfile.replace('$(BCROOT)', bcroot)
         self.restart_file = fileLoc.find('restart_file').text
 
         dataLoc = tree.find('data_location')
