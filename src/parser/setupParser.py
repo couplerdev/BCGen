@@ -20,12 +20,14 @@ class Setup:
     __slots__=["__root","__isParsed","__couple"]
     def __init__(self, fileName='../../composing/setup.xml',\
       regridFile='../../composing/regriddingFile.xml', fractionFile='../../composing/fractionSet.xml'):
+	self.__isParsed = False
         tree = ET.parse(fileName)
         self.__root = tree.getroot()
         self.__isParsed = False
         self.__couple = []
         self.__coupleFile = './coupler.xml'
         self.__model = {}
+	self.__modelName = {}
         self.__regridDataLoc = RegriddingDataMrg()
         self.__fractionDataLoc = FractionManager()
         self.__regridDataLoc.initByFile(regridFile)
@@ -38,25 +40,36 @@ class Setup:
         for child in modelRoot:
             if 'type' not in child.attrib:
                 res =child.find('res').text
-                modelName = child.find('name').text
+		modelName = child.find('name').text
+		if child.find('inst') is None :
+		    instName = modelName
+		else :
+		    instName = child.find('inst').text
                 resDict[modelName] = res
+	        self.__modelName[instName] = modelName 
+
         for child in modelRoot:
             if 'type' in child.attrib and child.attrib['type'] == 'fake':
+		# fake model has no instance name, its instance name is the same of name
                 name = child.find('name').text
                 #version = child.find('version').text
                 fakeModel = {'name':name}
                 self.__fakeModel[name]=fakeModel
                 continue
             modelName = child.find('name').text
-            self.__model[modelName] = child.find('version').text
+	    if child.find('inst') is None :  #Added for instance
+		instName = modelName
+	    else :
+		instName = child.find('name').text
+            self.__model[instName] = child.find('version').text #Modified for instance
             res = child.find('res').text
-            resDict[modelName] = res
+            resDict[instName] = res  #modified for instance
+	    #resDict[modelName] = res
             ### compute frac relationship frac init , update
             fracType  = child.find('frac').text
             fracTypeList = fracType.split(':')
             updateFlag = False
-            if 'update' in child.find('frac').attrib and \
-              child.find('frac').attrib['update']=="true":
+            if 'update' in child.find('frac').attrib and child.find('frac').attrib['update']=="true":
                 updateFlag = True
             frac = ""
             for fracType in fracTypeList:
@@ -71,8 +84,10 @@ class Setup:
             # parse the srcs
             if child.find('input')!=None and child.find('input').text !=None:
                 attrVect = {}
-                attrVect['model'] = modelName
-                attrVect['name'] = modelName+'2x_'+modelName+'x'
+                attrVect['model'] = instName
+                attrVect['name'] = instName+'2x_'+instName+'x'
+#                attrVect['model'] = modelName
+#                attrVect['name'] = modelName+'2x_'+modelName+'x'
                 attrVect['src'] = []
                 attrVect['fraction'] = {}
                 attrVect['fraction']['init']=fracInit
@@ -91,22 +106,26 @@ class Setup:
                     w_file = ""
                     map_type = "offline"
                     smatType = src.find('field').attrib['type']
-                    srcRes = resDict[srcModel]
+		    srcModelName = self.__modelName[srcModel]
+                    srcRes = resDict[srcModelName]
                     if smatType == "none":
                         map_type = "online"
                     else:
                         if srcRes == res:
                             w_file = "samegrid"
                         else:
-                            w_file = self.__regridDataLoc.query(srcModel, srcRes, modelName, res, smatType )
+                            w_file = self.__regridDataLoc.query(self.__modelName[srcModel], srcRes, modelName, res, smatType )
 
-                    srcAttrVect = srcModel+'2'+'x_'+srcModel+'x'
+                    srcAttrVect = srcModelName+'2'+'x_'+srcModelName+'x'
+#                    srcAttrVect = srcModel+'2'+'x_'+srcModel+'x'
                     srcDict={}
                     srcDict['attrVect'] = srcAttrVect
                     srcDict['field'] = srcField
                     srcSmat = {}
-                    srcSmatName = "mapper_Smat"+srcModel+"2"+modelName
-                    dstAttrVect = srcModel+'2'+'x_'+modelName+'x'
+                    srcSmatName = "mapper_Smat"+srcModel+"2"+instName
+#                    srcSmatName = "mapper_Smat"+srcModel+"2"+modelName
+                    dstAttrVect = srcModelName+'2'+'x_'+instName+'x'
+#                    dstAttrVect = srcModel+'2'+'x_'+modelName+'x'
                     dstAvList.append(dstAttrVect)
                     method = {}
                     phase_0 = {}
@@ -139,7 +158,8 @@ class Setup:
                     fracTypeList = fracTypes.split(":")
                     srcFracList = ""
                     for fracType in fracTypeList:
-                        srcFrac = self.__fractionDataLoc.query(srcModel, types=fracType)
+                        srcFrac = self.__fractionDataLoc.query(self.__modelName[srcModel], types=fracType)
+#                        srcFrac = self.__fractionDataLoc.query(srcModel, types=fracType)
                         fraclist +=":"+srcFrac
                         srcFracList +=srcFrac+":"
                     if "fracs" not in attrVect['fraction']:
@@ -152,10 +172,12 @@ class Setup:
                 attrVect['src']=srcAv
                 attrVect['fraction']['fraclist'] = fraclist
                 mrg = {}
-                mrg['name']='mrg_x2'+modelName
+                mrg['name']='mrg_x2'+instName
+#                mrg['name']='mrg_x2'+modelName
                 mrg['out_args'] = []
                 mrg['in_args'] = []
-                dstAv = 'x2'+modelName+'_'+modelName+'x'
+                dstAv = 'x2'+instName+'_'+instName+'x'
+#                dstAv = 'x2'+modelName+'_'+modelName+'x'
                 mrg['out_args'].append(dstAv)
                 for av in dstAvList:
                     #mrg['args'].append(src['attrVect'])
@@ -163,7 +185,8 @@ class Setup:
                 for av in otherMrgArgs:
                     mrg['in_args'].append(av)
                 mrg['in_args'].append(attrVect['name'])
-                mrg['in_args'].append("fraction_"+modelName)
+                mrg['in_args'].append("fraction_"+instName)
+#                mrg['in_args'].append("fraction_"+modelName)
                 attrVect['mrg'] = mrg
                 
                 self.__couple.append(attrVect)
@@ -298,3 +321,7 @@ class Setup:
     @property
     def fakeModel(self):
         return self.__fakeModel
+
+    @property
+    def modelName(self):
+	return self.__modelName

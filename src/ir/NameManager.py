@@ -49,6 +49,7 @@ class NameManager:
         if objName != "":
             if self.__checkObject[index].has_key(objName):
                 errorInfo = "user define " +objType + " " + objName +" name conflict!"
+		print self.__checkObject
                 raise ValueError(errorInfo)
             else:
                 self.__checkObject[index][objName]=1
@@ -92,6 +93,8 @@ class NameManager:
     def __FindObject(self, obj, index):
          if index<0 or index >= self.__totalDict:
              raise ValueError("index out of range")
+	 print obj, obj.name, ': ', self.__checkObject
+	 print self.__checkObject[index].has_key(obj.name)
          if self.__checkObject[index].has_key(obj.name):
              return True
          else:

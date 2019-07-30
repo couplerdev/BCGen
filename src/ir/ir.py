@@ -96,7 +96,6 @@ class MergeSubroutine(Subroutine):
         return super(MergeSubroutine, self).toString(self.__subroutineName, self.__argList)
 
 class ModelSubroutine(Subroutine):
-
     __slots__=["__name","default","argList","__wrapper", "__subroutineName", "__type"]
     def __init__(self, pattern=True, name="", wrapper="mct", subroutineName="init"):
         super(ModelSubroutine, self).__init__()
@@ -106,7 +105,6 @@ class ModelSubroutine(Subroutine):
         self.__subroutineName = self.__name + self.__type+ "_" + self.__wrapper
         self.default = pattern
 	self.argList = []		
-
 
     @property
     def subroutineName(self):
@@ -200,7 +198,6 @@ class AttrVect(CoupleEntity):
         else:
             self.__atype = 1 #"smat"
 
-    
     @property
     def nx(self):
         return self.__nx
@@ -252,16 +249,17 @@ class AttrVect(CoupleEntity):
         
 
 class Model(CoupleEntity):
-    __slots__ = ['__name','__model_init','__model_run','__model_final',\
+    __slots__ = ['__instName', '__name','__model_init','__model_run','__model_final',\
                  '__manager', '__type', '__attrVects','__gsMaps', '__mappers',\
                  '__gSize', '__ID', '__time','__domain', '__nmlFile', 'fields', \
                  'myFields','metaFile','version','src']
-    def __init__(self,name="", gSize=8):
+    def __init__(self, name="", instName="", gSize=8):
 	super(Model, self).__init__(name=name,_type="Model")
 	self.__model_init = ModelSubroutine() #optional?
 	self.__model_run = ModelSubroutine()		
 	self.__model_final = ModelSubroutine()
 
+	self.__instName = instName
         self.__attrVects = {}   # a2x_aa x2a_aa, a2x_ax, x2a_ax     
         self.__gsMaps = {}
         self.__mappers = {}       
@@ -275,6 +273,10 @@ class Model(CoupleEntity):
         self.__nmlFile = ""
         self.metaFile = "None"
         self.src = ""
+
+    @property
+    def instName(self):
+	return self.__instName
 
 ### debug region
     @property

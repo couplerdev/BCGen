@@ -58,6 +58,7 @@ class Parser():
         self.__deployDistribution = {} # format {id: [first, last, stride]}
         self.__setupModels = {}
         self.__setupFakeModels = {}
+	self.__setupModelNames = {}
         self.__enable_setup = setup
         if setup:
             # setup generate couple with fraction
@@ -66,6 +67,7 @@ class Parser():
             setup.genXml()
             couplerFile = setup.couplerFile
             self.__setupModels = setup.model 
+	    self.__setupModelNames = setup.modelName
             self.__setupFakeModels = setup.fakeModel
         #self.__couplerFile = couplerFile
         #self.__fieldFile = fieldFile
@@ -158,14 +160,29 @@ class Parser():
                     continue
                 elif self.__setupModels[modelName] != modelVersion:
                     continue
-            modelParser.setRoot(child)
-            model = modelParser.model
-            model.ID = index
-            index = index + 1
-            modelCount = modelCount + 1
-            self.__models[model.name] = model
-            self.__NameManager.register.modelDict[model.name] = model
-                    
+	    
+	    if self.__enable_setup :
+		for instName in self.__setupModelNames :
+		    mName = self.__setupModelNames[instName]
+		    if mName == modelName :
+	            	if os.environ.get('VERBOSE') == 'true' :
+		            print 'Parsing model: instName = ', instName, ', modelName = ', mName
+		    	modelParser.setRoot(child, instName)
+	            	model = modelParser.model
+        	    	model.ID = index
+                    	index = index + 1
+                    	modelCount = modelCount + 1
+                    	self.__models[model.name] = model
+                    	self.__NameManager.register.modelDict[model.name] = model
+	    else :
+	        modelParser.setRoot(child)
+		model = modelParser.model
+	        model.ID = index
+        	index = index + 1
+	        modelCount = modelCount + 1
+        	self.__models[model.name] = model
+		self.__NameManager.register.modelDict[model.name] = model
+
         if self.__enable_setup and modelCount != len(self.__setupModels):
             print "modelCount = ", modelCount, " and self.__setupModels = ", self.__setupModel
             raise ComposingError("invalid "+self.__modelFile+\
@@ -367,7 +384,7 @@ class SubroutineParser:
         return self.__subroutine
                 
 class ModelParser:
-    __slots__=['__root', '__model', '__isParsed', '__name',\
+    __slots__=['__root', '__model', '__isParsed', '__name', '__instName', \
                '__gsize','__nx','__ny','__field','__NameManager']
     def __init__(self, NameManager, seqRun, root="",lsize=0,nx=0,ny=0,field="", gsize=0):
         self.__root = root
@@ -377,16 +394,21 @@ class ModelParser:
         self.__ny = ny
         self.__field = field
         self.__name = ""
+	self.__instName = ""
+	self.__instNameSet = False
         self.__NameManager = NameManager
         self.SeqRun = seqRun
 
-    def setRoot(self, root):
+    def setRoot(self, root, instName=""):
         self.__root = root
         self.__isParsed = False
+	if not (instName is None or instName == "") :
+	    self.__instName = instName
+	    self.__instNameSet = True
         
     def __setGsMap(self):
-        srcGsMap = GsMap(grid=self.__name, pes=self.__name)
-        dstGsMap = GsMap(grid=self.__name, pes="x")
+        srcGsMap = GsMap(grid=self.__instName, pes=self.__instName)
+        dstGsMap = GsMap(grid=self.__instName, pes="x")
         srcGsMap.BindToManager(self.__NameManager)
         srcGsMap.nameGenerate()
         dstGsMap.BindToManager(self.__NameManager)
@@ -398,14 +420,15 @@ class ModelParser:
 
     # get attrVect that local in model
     def __setAttrVect(self):
-        comp2x_aa = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, \
-                             src=self.__name, dst="x", grid=self.__name, pes=self.__name)
-        x2comp_aa = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, \
-                             src="x", dst=self.__name, grid=self.__name, pes=self.__name)
-        comp2x_ax = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, \
-                             src=self.__name, dst="x", grid=self.__name, pes="x")
-        x2comp_ax = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, \
-                             src="x", dst=self.__name, grid=self.__name, pes="x")
+	print self.__instName
+        comp2x_aa = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, src=self.__instName, dst="x", grid=self.__instName, pes=self.__instName)
+        x2comp_aa = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, src="x", dst=self.__instName, grid=self.__instName, pes=self.__instName)
+        comp2x_ax = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, src=self.__instName, dst="x", grid=self.__instName, pes="x")
+        x2comp_ax = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, src="x", dst=self.__instName, grid=self.__instName, pes="x")
+#        comp2x_aa = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, src=self.__name, dst="x", grid=self.__name, pes=self.__name)
+#        x2comp_aa = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, src="x", dst=self.__name, grid=self.__name, pes=self.__name)
+#        comp2x_ax = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, src=self.__name, dst="x", grid=self.__name, pes="x")
+#        x2comp_ax = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, src="x", dst=self.__name, grid=self.__name, pes="x")
         comp2x_aa.BindToManager(self.__NameManager)
         comp2x_aa.nameGenerate()
         x2comp_aa.BindToManager(self.__NameManager)
@@ -487,12 +510,12 @@ class ModelParser:
         path  = domain_root.find('path').text
         self.__domain = Domain(field, path)
         '''
-        self.__model.domain['m'] = "domain_"+self.__name+self.__name
-        self.__model.domain['x'] = "domain_"+self.__name+'x'
+        self.__model.domain['m'] = "domain_"+self.__instName+self.__instName
+        self.__model.domain['x'] = "domain_"+self.__instName+'x'
 
     def __setSubroutine(self):    # must be the last to be set
         root =self.__root.find("method")
-        grid = self.__name
+        grid = self.__instName
         args = ["metaData%"+grid, "EClock_"+grid,self.__model.attrVects["x2c_cc"].name, \
               self.__model.attrVects["c2x_cc"].name, "ierr=ierr"]
 
@@ -573,7 +596,9 @@ class ModelParser:
         name = self.__root.find('name').text
         root = self.__root
         self.__name = name
-        self.__model = Model(name=name)
+	if not self.__instNameSet :
+	    self.__instName = name
+        self.__model = Model(name=name, instName=self.__instName)
         self.__model.BindToManager(self.__NameManager)
    
         # set metaFile
@@ -658,6 +683,7 @@ class CouplerParser: ###!!!!
         if self.__root == "":
             raise UnSetError("self.__root not set! Please try setRoot method")
         root = self.__root
+	print root
         modelGrid = root.find("model").text
         if root.find("name")!= None:
             name = root.find("name").text

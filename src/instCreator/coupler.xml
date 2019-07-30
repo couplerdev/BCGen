@@ -15,8 +15,8 @@
 					</frac>
 					<frac>
 						<name>lfrac</name>
-						<mapper>mapper_Smatlnd2atm</mapper>
-						<model>lnd</model>
+						<mapper>mapper_Smatlnd02atm</mapper>
+						<model>lnd0</model>
 					</frac>
 					<frac>
 						<name>ifrac</name>
@@ -55,7 +55,7 @@
 					<attrVect>lnd2x_lndx</attrVect>
 					<field>Sl_fv:Sl_ram1:Sl_snowh:Fall_flxdst1:Fall_flxdst2:Fall_flxdst3:Fall_flxdst4</field>
 					<mapper>
-						<name>mapper_Smatlnd2atm</name>
+						<name>mapper_Smatlnd02atm</name>
 						<type>offline</type>
 						<w_file>samegrid</w_file>
 						<method>
@@ -127,8 +127,8 @@
 				<fracs>
 					<frac>
 						<name>afrac</name>
-						<mapper>mapper_Smatatm2ocn</mapper>
-						<model>atm</model>
+						<mapper>mapper_Smatatm02ocn</mapper>
+						<model>atm0</model>
 					</frac>
 				</fracs>
 			</fraction>
@@ -137,7 +137,7 @@
 					<attrVect>atm2x_atmx</attrVect>
 					<field>Sa_pslv:Faxa_lwdn:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4</field>
 					<mapper>
-						<name>mapper_Smatatm2ocn</name>
+						<name>mapper_Smatatm02ocn</name>
 						<type>offline</type>
 						<w_file>cpl/cpl6/map_fv4x5_to_gx3v7_bilin_da_091218.nc</w_file>
 						<method>
@@ -182,8 +182,8 @@
 				<fracs>
 					<frac>
 						<name>afrac</name>
-						<mapper>mapper_Smatatm2lnd</mapper>
-						<model>atm</model>
+						<mapper>mapper_Smatatm02lnd</mapper>
+						<model>atm0</model>
 					</frac>
 					<frac>
 						<name>rfrac</name>
@@ -197,7 +197,7 @@
 					<attrVect>atm2x_atmx</attrVect>
 					<field>Sa_z:Sa_u:Sa_v:Sa_tbot:Sa_ptem:Sa_shum:Sa_pbot:Faxa_rainc:Faxa_rainl:Faxa_snowc:Faxa_snowl:Faxa_lwdn:Faxa_swndr:Faxa_swvdr:Faxa_swndf:Faxa_swvdf:Faxa_bcphidry:Faxa_bcphodry:Faxa_bcphiwet:Faxa_ocphidry:Faxa_ocphodry:Faxa_ocphiwet:Faxa_dstwet1:Faxa_dstwet2:Faxa_dstwet3:Faxa_dstwet4:Faxa_dstdry1:Faxa_dstdry2:Faxa_dstdry3:Faxa_dstdry4</field>
 					<mapper>
-						<name>mapper_Smatatm2lnd</name>
+						<name>mapper_Smatatm02lnd</name>
 						<type>offline</type>
 						<w_file>samegrid</w_file>
 						<method>
@@ -267,8 +267,8 @@
 				<fracs>
 					<frac>
 						<name>afrac</name>
-						<mapper>mapper_Smatatm2ice</mapper>
-						<model>atm</model>
+						<mapper>mapper_Smatatm02ice</mapper>
+						<model>atm0</model>
 					</frac>
 				</fracs>
 			</fraction>
@@ -277,7 +277,7 @@
 					<attrVect>atm2x_atmx</attrVect>
 					<field>Sa_z:Sa_u</field>
 					<mapper>
-						<name>mapper_Smatatm2ice</name>
+						<name>mapper_Smatatm02ice</name>
 						<type>offline</type>
 						<w_file>cpl/cpl6/map_fv4x5_to_gx3v7_bilin_da_091218.nc</w_file>
 						<method>
@@ -321,8 +321,8 @@
 				<fracs>
 					<frac>
 						<name>lfrac</name>
-						<mapper>mapper_Smatlnd2rof</mapper>
-						<model>lnd</model>
+						<mapper>mapper_Smatlnd02rof</mapper>
+						<model>lnd0</model>
 					</frac>
 				</fracs>
 			</fraction>
@@ -331,7 +331,7 @@
 					<attrVect>lnd2x_lndx</attrVect>
 					<field>Sl_fv:Flrl_rofliq:Flrl_rofice</field>
 					<mapper>
-						<name>mapper_Smatlnd2rof</name>
+						<name>mapper_Smatlnd02rof</name>
 						<type>offline</type>
 						<w_file>lnd/clm2/mappingdata/maps/4x5/map_4x5_nomask_to_0.5x0.5_nomask_aave_da_c110822.nc</w_file>
 						<method>

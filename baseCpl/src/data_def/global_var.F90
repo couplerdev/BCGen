@@ -146,13 +146,13 @@ use field_def
        logical    :: ocn_run
 
        
-       type(map_mod)   :: mapper_Smatatm2ice
-       type(map_mod)   :: mapper_Smatatm2lnd
+       type(map_mod)   :: mapper_Smatatm02ice
+       type(map_mod)   :: mapper_Smatatm02lnd
        type(map_mod)   :: mapper_Smatocn2atm
-       type(map_mod)   :: mapper_Smatlnd2rof
-       type(map_mod)   :: mapper_Smatatm2ocn
+       type(map_mod)   :: mapper_Smatlnd02rof
+       type(map_mod)   :: mapper_Smatatm02ocn
        type(map_mod)   :: mapper_Smatice2atm
-       type(map_mod)   :: mapper_Smatlnd2atm
+       type(map_mod)   :: mapper_Smatlnd02atm
        type(map_mod)   :: mapper_Smatrof2lnd
 
        character(SHR_KIND_CXX) :: flds_x2ocn 

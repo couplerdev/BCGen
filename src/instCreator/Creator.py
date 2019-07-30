@@ -4,6 +4,7 @@
 #   the instCreator create an inst for esm
 #
 import sys, os
+from pprint import pprint
 sys.path.append('../parser')
 sys.path.append('../template')
 sys.path.append('../ir')
@@ -51,6 +52,10 @@ print "Using BCROOT = ", bcroot
 print
 os.environ['BCROOT'] = bcroot
 os.environ['VERBOSE'] = 'false'
+
+def dump(obj) : 
+    for attr in dir(obj) :
+        print "%s : %s" % (attr, getattr(obj, attr))
 
 class InstArgsParser:
     def __init__(self):
@@ -305,6 +310,7 @@ class InstCreator:
         fraction_cfgs = self.fraction_cfgs
         fake_cfgs = self.fakeModel_cfgs 
         conf_cfgs = self.conf_cfgs
+
         manageTmp = TempConfig(templateDirPrefix+"procM_Template.F90", "manage.F90",{"proc_cfgs":proc_cfgs, "conf_cfgs":conf_cfgs})
         deployTmp = TempConfig(templateDirPrefix+"deploymod_Template.F90", "deploy_mod.F90",\
                               {'proc_cfgs':proc_cfgs,'deploy_cfgs':deploy_cfgs})
