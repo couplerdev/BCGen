@@ -60,7 +60,7 @@ class Setup:
 	    if child.find('inst') is None :  #Added for instance
 		instName = modelName
 	    else :
-		instName = child.find('name').text
+		instName = child.find('inst').text
             self.__model[instName] = child.find('version').text #Modified for instance
             res = child.find('res').text
             resDict[instName] = res  #modified for instance
@@ -92,6 +92,9 @@ class Setup:
                 attrVect['fraction'] = {}
                 attrVect['fraction']['init']=fracInit
                 attrVect['fraction']['update']=fracUpdate
+
+#		print attrVect  #DEBUG
+
                 dstAvList = []
                 srcAv = []
                 otherMrgArgs = [] # for fakeModel merge
@@ -116,15 +119,15 @@ class Setup:
                         else:
                             w_file = self.__regridDataLoc.query(self.__modelName[srcModel], srcRes, modelName, res, smatType )
 
-                    srcAttrVect = srcModelName+'2'+'x_'+srcModelName+'x'
-#                    srcAttrVect = srcModel+'2'+'x_'+srcModel+'x'
+#                    srcAttrVect = srcModelName+'2'+'x_'+srcModelName+'x'
+                    srcAttrVect = srcModel+'2'+'x_'+srcModel+'x'
                     srcDict={}
                     srcDict['attrVect'] = srcAttrVect
                     srcDict['field'] = srcField
                     srcSmat = {}
                     srcSmatName = "mapper_Smat"+srcModel+"2"+instName
 #                    srcSmatName = "mapper_Smat"+srcModel+"2"+modelName
-                    dstAttrVect = srcModelName+'2'+'x_'+instName+'x'
+                    dstAttrVect = srcModel+'2'+'x_'+instName+'x'
 #                    dstAttrVect = srcModel+'2'+'x_'+modelName+'x'
                     dstAvList.append(dstAttrVect)
                     method = {}
@@ -188,12 +191,14 @@ class Setup:
                 mrg['in_args'].append("fraction_"+instName)
 #                mrg['in_args'].append("fraction_"+modelName)
                 attrVect['mrg'] = mrg
-                
+               
+#		print attrVect  #DEBUG
+ 
                 self.__couple.append(attrVect)
                 #mrg['args'].append('fraction')
     def dictDom(self,doc, k, v):
-	if os.environ.get('VERBOSE') == 'true'  :
-            print(k, v)
+#	if os.environ.get('VERBOSE') == 'true'  :  #DEBUG
+#            print k, ' = ', v			  #DEBUG
         key = doc.createElement(k)
         value = doc.createTextNode(v)
         key.appendChild(value)
@@ -202,6 +207,8 @@ class Setup:
     def genXml(self):
     
     #    生成coupler.xml
+        if os.environ.get('VERBOSE') == 'true'  :
+	    print 'Begin to generating xml'
     
         doc = Document()
         root = doc.createElement('coupler')
@@ -212,6 +219,8 @@ class Setup:
             model = self.dictDom(doc, 'model', avDict['model'])
             attrVect.appendChild(name)
             attrVect.appendChild(model)
+
+#	    print avDict           #DEBUG
               
             # create fraction dom
             fraction = doc.createElement('fraction')
@@ -219,8 +228,9 @@ class Setup:
             init = self.dictDom(doc, 'init', avDict['fraction']['init'])
             update = self.dictDom(doc, 'update', avDict['fraction']['update'])
             fracs = doc.createElement('fracs')
-	    if os.environ.get('VERBOSE') == 'true'  :
-                print avDict['fraction']
+#	    if os.environ.get('VERBOSE') == 'true'  :                   #DEBUG
+#		print '--------------Fraction-----------------'
+#                print avDict['fraction']
             for frac in avDict['fraction']['fracs']:
                 fracNode = doc.createElement('frac')
                 nameNode = self.dictDom(doc,'name', frac['name'])
@@ -300,10 +310,11 @@ class Setup:
             mrgNode.appendChild(out_args)
             attrVect.appendChild(mrgNode)
             root.appendChild(attrVect)
+
         doc.appendChild(root)
         f = open(self.__coupleFile,'w')
 	if os.environ.get('VERBOSE') == 'true'  :
-            print 'write'
+            print 'Begin writing file: ', self.__coupleFile
         doc.writexml(f, indent='\t',newl='\n',addindent='\t',encoding='utf-8')
     
     @property

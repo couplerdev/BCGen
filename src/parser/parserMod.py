@@ -29,7 +29,8 @@ from fakeModelParser import FakeModelParser
 
 class Parser():
     def __init__(self, setup=True, rest=False, hist=False,fileSpec={}):
-        self.__couplerFile="../../composing/coupler.xml"
+#        self.__couplerFile="../../composing/coupler.xml"
+	self.__couplerFile="./coupler.xml"
         self.__modelFile="../../composing/models.xml"
         self.__scheduleFile="../../composing/schedule.xml"
         self.__deployFile="../../composing/deploy.xml"
@@ -40,7 +41,7 @@ class Parser():
         self.__fakeModelFile = "../../composing/fakeModel.xml"   
 
         if len(fileSpec) != 0 :
-            self.__couplerFile = fileSpec['coupler.xml']
+#            self.__couplerFile = fileSpec['coupler.xml']
             self.__modelFile = fileSpec['models.xml']
             self.__deployFile = fileSpec['deploy.xml']
             self.__fieldFile = fileSpec['field.xml']
@@ -65,7 +66,7 @@ class Parser():
             setup = Setup(fileName=self.__setupFile)
             setup.setupParse()
             setup.genXml()
-            couplerFile = setup.couplerFile
+ #           couplerFile = setup.couplerFile
             self.__setupModels = setup.model 
 	    self.__setupModelNames = setup.modelName
             self.__setupFakeModels = setup.fakeModel
@@ -156,24 +157,30 @@ class Parser():
             if self.__enable_setup:
                 modelName = child.find('name').text
                 modelVersion = child.find('version').text
-                if modelName not in self.__setupModels:
-                    continue
-                elif self.__setupModels[modelName] != modelVersion:
-                    continue
+#                if modelName not in self.__setupModels:
+#                    continue
+#                elif self.__setupModels[modelName] != modelVersion:
+#                    continue
 	    
-	    if self.__enable_setup :
+#	    if self.__enable_setup :
 		for instName in self.__setupModelNames :
 		    mName = self.__setupModelNames[instName]
+#		    print instName, ', ' , mName, ', ', modelName, ', ', modelVersion, ', ', self.__setupModels[instName]
 		    if mName == modelName :
+			if self.__setupModels[instName] != modelVersion:
+	                    continue
+
 	            	if os.environ.get('VERBOSE') == 'true' :
-		            print 'Parsing model: instName = ', instName, ', modelName = ', mName
+		            print 'Parsing model #', index, ': instName = ', instName, ', modelName = ', mName
 		    	modelParser.setRoot(child, instName)
 	            	model = modelParser.model
         	    	model.ID = index
                     	index = index + 1
                     	modelCount = modelCount + 1
                     	self.__models[model.name] = model
+			self.__models[model.instName] = model
                     	self.__NameManager.register.modelDict[model.name] = model
+			self.__NameManager.register.modelDict[model.instName] = model
 	    else :
 	        modelParser.setRoot(child)
 		model = modelParser.model
@@ -184,7 +191,7 @@ class Parser():
 		self.__NameManager.register.modelDict[model.name] = model
 
         if self.__enable_setup and modelCount != len(self.__setupModels):
-            print "modelCount = ", modelCount, " and self.__setupModels = ", self.__setupModel
+            print "modelCount = ", modelCount, " and self.__setupModels = ", self.__setupModels
             raise ComposingError("invalid "+self.__modelFile+\
                     " for some model(s) not supported in this file when setup.xml set them")
     
@@ -214,12 +221,18 @@ class Parser():
         deployParser = DeployParser(self.__NameManager)
         deployParser.setRoot(root)
         deployParser.deployParse(self)
+        if os.environ.get('VERBOSE') == 'true'  :
+	    for deploy in self.__deployDistribution :
+		d = self.__deployDistribution[deploy]
+		print 'component ', d[0], ', first = ', d[1], ', last = ', d[2], ', stride = ', d[3]
 
     def schedule(self):
         #sort seq
         pass
         
     def coupleAttrVectParse(self):
+#        root = self.load(self.__setupFile)
+#	couplerRoot = root.find('coupler')
         root = self.load(self.__couplerFile)
         avParser = CouplerParser(self.__NameManager, self.__seqRun)  ## not implemented now
         for child in root:
@@ -420,7 +433,7 @@ class ModelParser:
 
     # get attrVect that local in model
     def __setAttrVect(self):
-	print self.__instName
+#	print self.__instName
         comp2x_aa = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, src=self.__instName, dst="x", grid=self.__instName, pes=self.__instName)
         x2comp_aa = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, src="x", dst=self.__instName, grid=self.__instName, pes=self.__instName)
         comp2x_ax = AttrVect(field=self.__field, nx=self.__nx, ny=self.__ny, src=self.__instName, dst="x", grid=self.__instName, pes="x")
@@ -498,6 +511,7 @@ class ModelParser:
             sec = interval_root.find('sec').text
         #interval  = Interval(m, d, h, minute, sec)
         self.__model.Time = {"m":m,"d":d,"h":h,"minute":minute,"sec":sec}
+
     def __setDomain(self):
         '''
         root = self.__root
@@ -683,7 +697,7 @@ class CouplerParser: ###!!!!
         if self.__root == "":
             raise UnSetError("self.__root not set! Please try setRoot method")
         root = self.__root
-	print root
+#	print root
         modelGrid = root.find("model").text
         if root.find("name")!= None:
             name = root.find("name").text
@@ -692,6 +706,9 @@ class CouplerParser: ###!!!!
             av.BindToManager(self.__NameManager)
             if not self.__NameManager.FindName(av):
                 raise ConfigError("try to mrg to a unexist attrVect")
+
+        if os.environ.get('VERBOSE') == 'true'  :
+	    print "AttrVect ", self.__attrVect.name, " for ", modelGrid
         
         # fraction parse
         if root.find('fraction')!=None:
@@ -721,8 +738,8 @@ class CouplerParser: ###!!!!
             grid = root.find('model').text
             for src in srcs:
                 srcAttrVectName = src.find("attrVect").text
-                if os.environ.get('VERBOSE') == 'true'  :
-                    print "srcAttrVectName = ", srcAttrVectName
+#                if os.environ.get('VERBOSE') == 'true'  :  #DEBUG
+#                    print "srcAttrVectName = ", srcAttrVectName
                 srcAttrVect = parser.visitByName(srcAttrVectName)
                 if srcAttrVect == None:
                     raise AttributeError("no such attrVect {}".format(srcAttrVectName))
@@ -857,7 +874,7 @@ class DeployParser:
             first = cpl.find("first").text
             last  = cpl.find("last").text
             stride = cpl.find("stride").text
-            deployList = [first , last, stride]
+            deployList = ['cpl', first , last, stride]
             parser.addDistribution(deployList, 1)
         else:
             raise ComposingError("cpl not composed see in composing/deploy.xml")
@@ -870,6 +887,6 @@ class DeployParser:
                 stride = model.find("stride").text
                 ID = parser.models[name].ID
                 ID = ID + 1
-                deployList = [first, last, stride]
+                deployList = [name, first, last, stride]
                 parser.addDistribution(deployList, ID)
 

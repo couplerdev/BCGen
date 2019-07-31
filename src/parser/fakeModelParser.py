@@ -2,7 +2,7 @@
 
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import Document
-import sys
+import sys, os
 sys.path.append('../ir')
 from argTranslator import ArgTranslator
 from ir import Model, AttrVect, Mapper, GsMap, AttrVect
@@ -105,6 +105,8 @@ class FakeModelParser:
         if self.__root == None:
             raise UnSetError("self.__root not set! Try setRoot of FakeModelParser")
         modelName = self.__root.find('name').text
+        if os.environ.get('VERBOSE') == 'true'  :
+	    print 'Parsing fake model: ', modelName
         self.__fakeModel = FakeModel(modelName)
         self.__fakeModel.BindToManager(self.__NameManager)
         self.__fakeModel.nameGenerate()

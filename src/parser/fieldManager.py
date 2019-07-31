@@ -45,7 +45,7 @@ class FieldManager:
                 self.fldsQuery[name] = child.find('field').text
                 val = self.fldsQuery[name].split(':')
                 if os.environ.get('VERBOSE') == 'true'  :
-                    print name,val
+                    print name, ' = ', val
             elif key[0:2]=='x2':
                 model = key[2:]
                 if model in self.model:
@@ -80,6 +80,7 @@ class FieldManager:
                 self.fieldQuery[sname] = fm
     def printf(self):
         if os.environ.get('VERBOSE') == 'true'  :
+#	    print '---------'
             print self.fldsQuery
             print self.fieldQuery
         

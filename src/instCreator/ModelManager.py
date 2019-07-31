@@ -26,7 +26,7 @@ def getModelSetDict():
         modelLoc = model.find('location').text
 	modelLoc = modelLoc.replace('$(BCROOT)', bcroot)
 	if os.environ.get('VERBOSE') == 'true' :
-		print modelName, " : ", modelLoc
+		print 'Model name: ', modelName, ", Model location: ", modelLoc
         modelSetsDict[modelName]=modelLoc
 
 getModelSetDict()

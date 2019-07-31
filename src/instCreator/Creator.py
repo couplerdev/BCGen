@@ -216,7 +216,7 @@ class InstCreator:
         prefix = bcroot+"/composing/"
         self.confXmlPath['instSetup.xml'] = prefix+"instSetup.xml"
         self.confXmlPath['setup.xml'] = prefix+"setup.xml"
-        self.confXmlPath['coupler.xml'] = prefix+"coupler.xml"
+#        self.confXmlPath['coupler.xml'] = prefix+"coupler.xml"
         self.confXmlPath['models.xml'] = prefix+"models.xml"
         self.confXmlPath['deploy.xml'] = prefix+"deploy.xml"
         self.confXmlPath['field.xml'] = prefix+"field.xml"
@@ -234,7 +234,7 @@ class InstCreator:
 
     def getIr(self):
         setupPath = self.confXmlPath['setup.xml']
-        couplerPath = self.confXmlPath['coupler.xml']
+#        couplerPath = self.confXmlPath['coupler.xml']
         modelsPath = self.confXmlPath['models.xml']
         deployPath = self.confXmlPath['deploy.xml']
         fieldPath =  self.confXmlPath['field.xml']
@@ -242,7 +242,7 @@ class InstCreator:
         instSetupPath = self.confXmlPath['instSetup.xml']
         # newly add
         fracSetPath = self.confXmlPath['fractionSet.xml']
-        self.confXmlPath['coupler.xml'] = "./coupler.xml"
+#        self.confXmlPath['coupler.xml'] = "./coupler.xml"
         self.parser = Parser(setup=True, rest=self.args['rest'],\
                              hist=self.args['hist'], fileSpec=self.confXmlPath)
         self.parser.parse()
