@@ -529,9 +529,14 @@ class InstCreator:
         modelsPath = instPath+"/models/"
         os.mkdir(modelsPath)
         for model in self.proc_cfgs:
-            modelDir = modelsPath+model.name
+            modelDir = modelsPath+model.instName
+            if os.environ.get('VERBOSE') == 'true'  :
+    	        print 'Creating ', modelDir  #DEBUG
+#            modelDir = modelsPath+model.name
             os.mkdir(modelDir)
         cplDir = modelsPath+"/cpl"
+        if os.environ.get('VERBOSE') == 'true'  :
+	    print 'Creating ', cplDir #DEBUG
         os.mkdir(cplDir)
 	if os.environ.get('VERBOSE') == 'true'  :
 	    print 'Directories created. Creating and copying files...'

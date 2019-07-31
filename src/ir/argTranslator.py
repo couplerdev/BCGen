@@ -166,7 +166,7 @@ class ArgTranslator:
             else:
                 return self.__transDict[arg.argType].translate(arg)
 
-    def translateFromXml(self, arg):
+    def translateFromXml(self, arg, mapper=None):
         argType = 'none'
         model = 'none'
         translate = True
@@ -181,25 +181,37 @@ class ArgTranslator:
         else:
             if 'model' in arg.attrib:
                 model = arg.attrib['model']
+	        if mapper :
+                    model = mapper[model] if model in mapper else model
             if 'src' in arg.attrib:
                 src = arg.attrib['src']
+	        if mapper :
+            	    src = mapper[src] if src in mapper else src
             if 'dst' in arg.attrib:
                 dst = arg.attrib['dst']
+        	if mapper :
+            	    dst = mapper[dst] if dst in mapper else dst
             if 'matType' in arg.attrib:
                 matType = arg.attrib['matType']
+	        if mapper :
+        	    matType = mapper[matType] if matType in mapper else matType
             if 'field' in arg.attrib:
                 content = arg.attrib['field']
+	        if mapper :
+            	    content = mapper[content] if content in mapper else content
             if 'pes' in arg.attrib:
                 pes = arg.attrib['pes']
-            argType = arg.text
+	        if mapper :
+        	    pes = mapper[pes] if pes in mapper else pes
+	    argType = arg.text
         return self.translateFromArg(Arg(argType=argType, model=model, translate=translate,\
                             content=content, matType=matType, src=src, dst=dst, pes=pes))
 
-    def translate(self, arg):
+    def translate(self, arg, mapper=None):
         if isinstance(arg, Arg):
             return self.translateFromArg(arg)
         else:
-            return self.translateFromXml(arg)    # not safe 
+            return self.translateFromXml(arg, mapper)    # not safe 
        
 
 if __name__ == "__main__":

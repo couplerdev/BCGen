@@ -75,6 +75,8 @@
 		</model>
 		<model type="fake">
 			<name>xao</name>
+			<depend name="atm">atm0</depend>
+			<depend name="ocn">ocn</depend>
 		</model>
 	</models>
 </setup>

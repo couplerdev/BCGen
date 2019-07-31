@@ -48,6 +48,7 @@ class Parser():
             self.__setupFile = fileSpec['setup.xml']
             self.__regriddingFile = fileSpec['regriddingFile.xml']
             self.__fractionFile = fileSpec['fractionSet.xml']
+
             self.__fakeModelFile = fileSpec['fakeModel.xml']
 
         self.__NameManager = NameManager()
@@ -70,6 +71,7 @@ class Parser():
             self.__setupModels = setup.model 
 	    self.__setupModelNames = setup.modelName
             self.__setupFakeModels = setup.fakeModel
+	    print setup.fakeModel
         #self.__couplerFile = couplerFile
         #self.__fieldFile = fieldFile
         #self.__modelFile = modelFile
@@ -177,9 +179,9 @@ class Parser():
         	    	model.ID = index
                     	index = index + 1
                     	modelCount = modelCount + 1
-                    	self.__models[model.name] = model
+#                    	self.__models[model.name] = model
 			self.__models[model.instName] = model
-                    	self.__NameManager.register.modelDict[model.name] = model
+#                    	self.__NameManager.register.modelDict[model.name] = model
 			self.__NameManager.register.modelDict[model.instName] = model
 	    else :
 	        modelParser.setRoot(child)
@@ -207,14 +209,29 @@ class Parser():
                 
     def fakeModelParse(self):
         root = self.load(self.__fakeModelFile)
-        for child in root:
-            fakeModelParser = FakeModelParser(self.__NameManager, self.__seqRun)
-            fakeModelParser.setRoot(child)
-            fakeModel = fakeModelParser.model
+
+        if self.__enable_setup:
+	    for instName in self.__setupFakeModels :
+#		print self.__setupFakeModels[instName] #DEBUG
+		for child in root :
+		    if child.find('name').text == self.__setupFakeModels[instName]['name'] :
+	                fakeModelParser = FakeModelParser(self.__NameManager, self.__seqRun)
+        	        fakeModelParser.setRoot(child)
+			fakeModelParser.setDepends(self.__setupFakeModels[instName]['depends'])
+                	fakeModel = fakeModelParser.model
+	                self.__fakeModels[instName] = fakeModel
+		     
+	else :
+	    for child in root:
+        	fakeModelParser = FakeModelParser(self.__NameManager, self.__seqRun)
+	        fakeModelParser.setRoot(child)
+        	fakeModel = fakeModelParser.model
+		self.__fakeModels[fakeModel.name] = fakeModel
             for dep in fakeModel.deps:
                 if dep not in self.models:
                     raise NotProperConfigError('in fakeModelParse') 
-            self.__fakeModels[fakeModel.name] = fakeModel
+
+#	print self.__fakeModels #DEBUG
 
     def deployParse(self):
         root = self.load(self.__deployFile)
@@ -250,6 +267,10 @@ class Parser():
         self.fldManager.queryBuild(self.__fieldFile)
         for model in self.__models:
             totalFlds = {}
+	    print self.__models[model].fields #DEBUG
+	    print self.__models[model].name, self.__models[model].instName
+	    print self.fldManager.model
+	    print self.fldManager.fldsQuery
             for fld in self.__models[model].fields:
                 fldList = fld.split('_')
                 fldPrex = fldList[0]+'_'+fldList[1]

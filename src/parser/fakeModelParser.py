@@ -20,6 +20,8 @@ class SubroutineParserV:
         self.__subroutine = None
         self.__isParsed = False
         self.__root = None
+        self.__depends = {}
+        self.__dependsSet = False
         self.inArgs = []
         self.outArgs = []
         self.subroutineNode = None
@@ -32,6 +34,10 @@ class SubroutineParserV:
         self.outArgs = []
         self.subroutineNode = None    
 
+    def setDepends(self, depends) :
+        self.__depends = depends
+        self.__dependsSet = True
+
     def appendArgs(self, args):
         for arg in args:
             self.__subroutine.append(arg)
@@ -40,6 +46,10 @@ class SubroutineParserV:
         if self.__root == None:
             raise UnSetError("SubroutineParserV root not set")
         self.__subroutine = Subroutine(argList=[])
+	mapper = {}
+	if self.__dependsSet :
+	    for k, v in self.__depends.iteritems() :
+		mapper[v] = k
         for child in self.__root:
             if child.tag == "name":
                 self.__subroutine.name = child.text
@@ -48,19 +58,22 @@ class SubroutineParserV:
                 #args = []
                 argTranslator = ArgTranslator()
                 for arg in argsNode:
-                    argVar = argTranslator.translate(arg)
+                    argVar = argTranslator.translate(arg, mapper)
+#		    print 'args', argVar #DEBUG
                     self.__subroutine.append(argVar)
             elif child.tag == "in_args":
                 root = self.__root.find("in_args")
                 for sub in root:
                     if sub.tag == "arg":
-                        arg = argTranslator.translate(sub)
+                        arg = argTranslator.translate(sub, mapper)
+#	                print 'in_args', argVar #DEBUG
                         self.inArgs.append(arg)
             elif child.tag == "out_args":
                 root = self.__root.find("out_args")
                 for sub in root:
                     if sub.tag == "arg":
-                        arg = argTranslator.translate(sub)
+                        arg = argTranslator.translate(sub, mapper)
+#	                print 'out_args', argVar #DEBUG
                         self.outArgs.append(arg)
             else:
                 raise NoTagError("No Such tag"+child.tag)
@@ -94,23 +107,30 @@ class FakeModelParser:
         self.__root = root
         self.__isParsed = False
         self.__fakeModel = None
+        self.__depends = {}
+        self.__dependsSet = False
         self.__deps = []
         
     def setRoot(self, root):
         self.__root = root
         self.__isParsed = False
         
+    def setDepends(self, depends) :
+        self.__depends = depends
+        self.__dependsSet = True
 
     def modelParse(self):
         if self.__root == None:
             raise UnSetError("self.__root not set! Try setRoot of FakeModelParser")
         modelName = self.__root.find('name').text
         if os.environ.get('VERBOSE') == 'true'  :
-	    print 'Parsing fake model: ', modelName
+	    print 'Parsing fake model: ', modelName, ' with depends: ', self.__depends
         self.__fakeModel = FakeModel(modelName)
         self.__fakeModel.BindToManager(self.__NameManager)
         self.__fakeModel.nameGenerate()
         deps = self.__root.find('deps').text.split(":")
+	if self.__dependsSet :
+	    deps = [self.__depends[d] if d in self.__depends else d for d in deps]
         flds = self.__root.find('fields').text.split(",")
         self.__fakeModel.deps = deps
         self.__fakeModel.flds = flds
@@ -121,6 +141,8 @@ class FakeModelParser:
             varType = variable.attrib['type']
             varName = variable.find('name').text
             grid = variable.find('grid').text
+	    if self.__dependsSet :
+		grid = self.__depends[grid] if grid in self.__depends else grid
             varObj = FakeVariables(varType, varName, grid)
             method = variable.find('method')
             init = method.find('init') 
@@ -137,6 +159,8 @@ class FakeModelParser:
             for phase in run:
                 subroutineParser = SubroutineParserV()
                 subroutineParser.setRoot(phase)
+		if self.__dependsSet :
+		    subroutineParser.setDepends(self.__depends)
                 subrt = subroutineParser.subroutine
                 if subrt.name == "mapper_comp_map":
                     subrt.append("msgtag=113")

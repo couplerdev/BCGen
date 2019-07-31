@@ -52,9 +52,18 @@ class Setup:
             if 'type' in child.attrib and child.attrib['type'] == 'fake':
 		# fake model has no instance name, its instance name is the same of name
                 name = child.find('name').text
+                if child.find('inst') is None :
+                    instName = name
+                else :
+                    instName = child.find('inst').text
                 #version = child.find('version').text
-                fakeModel = {'name':name}
-                self.__fakeModel[name]=fakeModel
+                fakeModel = {'name':name, 'instName':instName}
+		depends = {}
+		for item in child.iter('depend') :
+#		    print item.attrib['name'], item.text #DEBUG
+		    depends[item.attrib['name']] = item.text
+                fakeModel['depends'] = depends
+                self.__fakeModel[instName]=fakeModel
                 continue
             modelName = child.find('name').text
 	    if child.find('inst') is None :  #Added for instance
