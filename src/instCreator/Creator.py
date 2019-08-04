@@ -107,8 +107,9 @@ class CodeMapper:
         for spec in self.mappers:
             code = codeGenerator(spec.template, spec.codeFile)
             if os.environ.get('VERBOSE') == 'true' :
-                print spec.template
+                print "Processing template: ", spec.template
             for cfg in spec.cfgs:
+#		print cfg, spec.cfgs[cfg]   #DEBUG
                 code.addList(cfg, spec.cfgs[cfg])
             code.generate()
 
@@ -326,11 +327,31 @@ class InstCreator:
 	        for frac in fraction_cfgs:
         		print fraction_cfgs[frac].init.name
 
+	model_cfgs_tmp = {}
+	for m in model_cfgs :
+	    value = model_cfgs[m]
+	    key = m
+	    isSet = False
+	    for p in proc_cfgs :
+		if key == p.name :
+		    key = p.instName
+		    model_cfgs_tmp[key] = value
+		    isSet = True
+	    if not isSet :
+		model_cfgs_tmp[key] = value
+
+#	print model_cfgs_tmp #DEBUG
+
         baseCplTmp = TempConfig(templateDirPrefix+"baseCpl_Template.F90","baseCpl.F90",\
                               {"proc_cfgs":proc_cfgs, "merge_subroutines":merge_subroutines,\
-                               "merge_cfgs":merge_cfgs,"model_cfgs":model_cfgs, \
+                               "merge_cfgs":merge_cfgs,"model_cfgs":model_cfgs_tmp, \
                                "subrt_cfgs":subrt_cfgs,'fraction_cfgs':fraction_cfgs,\
                                "conf_cfgs":conf_cfgs,"fake_cfgs":fake_cfgs})
+#        baseCplTmp = TempConfig(templateDirPrefix+"baseCpl_Template.F90","baseCpl.F90",\
+ #                             {"proc_cfgs":proc_cfgs, "merge_subroutines":merge_subroutines,\
+  #                             "merge_cfgs":merge_cfgs,"model_cfgs":model_cfgs, \
+   #                            "subrt_cfgs":subrt_cfgs,'fraction_cfgs':fraction_cfgs,\
+    #                           "conf_cfgs":conf_cfgs,"fake_cfgs":fake_cfgs})
         if self.args['regen']:
             confList = [searchTmp, manageTmp, deployTmp, baseCplTmp, globalTmp, timeDefTmp, timeCesmTmp, fieldTmp,\
                         baseHistTmp, baseRestTmp]
@@ -390,11 +411,11 @@ class InstCreator:
         # build prerequists libbcpl.a
         currDir = os.getcwd()
         os.chdir(InstCreator.couplerCodePath)
-	print InstCreator.couplerCodePath
+	print InstCreator.couplerCodePath #DEBUG
 	if os.environ['VERBOSE'] == 'true' :
-            cmdBuild = 'make '
+            cmdBuild = 'BCROOT=' + bcroot + ' make '
 	else :
-            cmdBuild = 'make'
+            cmdBuild = 'BCROOT=' + bcroot + 'make'
         if os.system(cmdBuild) != 0 :
 	    # make failed, quit
 	    print "Failed to make, something (maybe path settings in Makefile.conf) is wrong. Please check it."
@@ -412,6 +433,8 @@ class InstCreator:
         for model in self.proc_cfgs:
             name = model.name
             srcLocation = model.src
+
+	    print srcLocation #DEBUG
             
             # check model dir
             # first find the location in default path
@@ -426,6 +449,10 @@ class InstCreator:
                 modelDir=srcLocation
             else:
                 raise WrongPathError("in createMakefile: {}".format(srcLocation))
+
+            if os.environ.get('VERBOSE') == 'true'  :
+                print 'Copying model ', name, ' from ', srcLocation, ' to ', modelDir
+
             metaFile = model.metaFile
             if metaFile == "None":
                 #modelDir = InstCreator.couplerCodePath+"/src/models/"+name
@@ -446,10 +473,15 @@ class InstCreator:
         # mv Cpl comp to models 
         cplDir = InstCreator.couplerCodePath+"/src/models/cpl"
         cmdCpCpl = 'cp '+cplDir+"/* "+self.metaManager.instPath+"/models/cpl"
+        if os.environ.get('VERBOSE') == 'true'  :
+            print 'Copying coupler: ', cmdCpCpl
         os.system(cmdCpCpl)
 
         # build Makefile from template
         from search_set import *
+        if os.environ.get('VERBOSE') == 'true'  :
+            print 'Creating makefiles ...'
+
         #mkCompTmp = TempConfig('./mk/Makefile.build.comp', 'MakefileComp', {'proc_cfgs':self.proc_cfgs})      
         mkExeTmp = TempConfig('./mk/Makefile.build.exe','MakefileExe',{'proc_cfgs':self.proc_cfgs, "model_cfgs":model_cfgs})
         mkConfTmp = TempConfig('./mk/Makefile.conf','Makefile.conf',{'meta_cfgs':self.metaManager})
@@ -529,7 +561,8 @@ class InstCreator:
         modelsPath = instPath+"/models/"
         os.mkdir(modelsPath)
         for model in self.proc_cfgs:
-            modelDir = modelsPath+model.instName
+            modelDir = modelsPath+model.name
+#            modelDir = modelsPath+model.instName
             if os.environ.get('VERBOSE') == 'true'  :
     	        print 'Creating ', modelDir  #DEBUG
 #            modelDir = modelsPath+model.name

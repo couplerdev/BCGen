@@ -241,7 +241,7 @@ class Parser():
         if os.environ.get('VERBOSE') == 'true'  :
 	    for deploy in self.__deployDistribution :
 		d = self.__deployDistribution[deploy]
-		print 'component ', d[0], ', first = ', d[1], ', last = ', d[2], ', stride = ', d[3]
+		print 'component ', d[3], ', first = ', d[0], ', last = ', d[1], ', stride = ', d[2]
 
     def schedule(self):
         #sort seq
@@ -263,14 +263,16 @@ class Parser():
 
     def fieldParse(self):
         for model in self.__models:
-            self.fldManager.addModel(model)
+#            self.fldManager.addModel(model)
+#	    print self.__models[model].name #DEBUG
+	    self.fldManager.addModel(self.__models[model].name)
         self.fldManager.queryBuild(self.__fieldFile)
         for model in self.__models:
             totalFlds = {}
-	    print self.__models[model].fields #DEBUG
-	    print self.__models[model].name, self.__models[model].instName
-	    print self.fldManager.model
-	    print self.fldManager.fldsQuery
+#	    print self.__models[model].fields #DEBUG
+#	    print self.__models[model].name, self.__models[model].instName
+#	    print self.fldManager.model
+#	    print self.fldManager.fldsQuery
             for fld in self.__models[model].fields:
                 fldList = fld.split('_')
                 fldPrex = fldList[0]+'_'+fldList[1]
@@ -895,7 +897,7 @@ class DeployParser:
             first = cpl.find("first").text
             last  = cpl.find("last").text
             stride = cpl.find("stride").text
-            deployList = ['cpl', first , last, stride]
+            deployList = [first , last, stride, 'cpl']
             parser.addDistribution(deployList, 1)
         else:
             raise ComposingError("cpl not composed see in composing/deploy.xml")
@@ -908,6 +910,6 @@ class DeployParser:
                 stride = model.find("stride").text
                 ID = parser.models[name].ID
                 ID = ID + 1
-                deployList = [name, first, last, stride]
+                deployList = [first, last, stride, name]
                 parser.addDistribution(deployList, ID)
 

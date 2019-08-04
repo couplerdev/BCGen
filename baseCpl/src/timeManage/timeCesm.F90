@@ -12,8 +12,8 @@ module time_mod
     !use base_file
     use shr_file_mod
     implicit none
-    integer, parameter :: NUMALARMS = 7+6
-    integer, parameter :: NUMCOMPS = 7
+    integer, parameter :: NUMALARMS = 5+6
+    integer, parameter :: NUMCOMPS = 5
     type(ESMF_Alarm) :: alarm(NUMALARMS)
     integer :: dtime(NUMCOMPS)
     public :: time_clockRegist
@@ -66,13 +66,11 @@ subroutine time_clockRegist(SyncClock, eclock, id)
 end subroutine time_clockRegist
 
 subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
-                          EClock_ocn, &
+                          EClock_lnd, &
                           EClock_atm, &
-                          EClock_atm, &
-                          EClock_ice, &
                           EClock_rof, &
-                          EClock_lnd, &
-                          EClock_lnd, &
+                          EClock_ice, &
+                          EClock_ocn, &
                           restart, restart_file, cal)
 
     implicit none
@@ -82,13 +80,11 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     logical,           intent(in)            :: restart
     character(len=*),  intent(in)            :: restart_file
     type(ESMF_Clock), intent(inout), pointer :: EClock_drv
-    type(ESMF_Clock), intent(inout), pointer :: EClock_ocn
+    type(ESMF_Clock), intent(inout), pointer :: EClock_lnd
     type(ESMF_Clock), intent(inout), pointer :: EClock_atm
-    type(ESMF_Clock), intent(inout), pointer :: EClock_atm
-    type(ESMF_Clock), intent(inout), pointer :: EClock_ice
     type(ESMF_Clock), intent(inout), pointer :: EClock_rof
-    type(ESMF_Clock), intent(inout), pointer :: EClock_lnd
-    type(ESMF_Clock), intent(inout), pointer :: EClock_lnd
+    type(ESMF_Clock), intent(inout), pointer :: EClock_ice
+    type(ESMF_Clock), intent(inout), pointer :: EClock_ocn
     type(ESMF_CalKind_Flag), intent(in), optional  :: cal
     type(ESMF_VM) :: vm
     type(ESMF_Time) :: currTime
@@ -127,20 +123,16 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     integer                 :: curr_tod
     integer                 :: ref_ymd
     integer                 :: ref_tod
-    integer            :: ocn_cpl_dt
-    integer            :: ocn_cpl_offset
+    integer            :: lnd_cpl_dt
+    integer            :: lnd_cpl_offset
     integer            :: atm_cpl_dt
     integer            :: atm_cpl_offset
-    integer            :: atm_cpl_dt
-    integer            :: atm_cpl_offset
-    integer            :: ice_cpl_dt
-    integer            :: ice_cpl_offset
     integer            :: rof_cpl_dt
     integer            :: rof_cpl_offset
-    integer            :: lnd_cpl_dt
-    integer            :: lnd_cpl_offset
-    integer            :: lnd_cpl_dt
-    integer            :: lnd_cpl_offset
+    integer            :: ice_cpl_dt
+    integer            :: ice_cpl_offset
+    integer            :: ocn_cpl_dt
+    integer            :: ocn_cpl_offset
     !logical            :: end_restart
 
     ! local variables
@@ -162,32 +154,26 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
           history_option, history_n, history_ymd,      &
           histavg_option, histavg_n, histavg_ymd,      &
           start_ymd, start_tod, ref_ymd, ref_tod,      &
-          ocn_cpl_dt, ocn_cpl_offset,      &
+          lnd_cpl_dt, lnd_cpl_offset,      &
           atm_cpl_dt, atm_cpl_offset,      &
-          atm_cpl_dt, atm_cpl_offset,      &
-          ice_cpl_dt, ice_cpl_offset,      &
           rof_cpl_dt, rof_cpl_offset,      &
-          lnd_cpl_dt, lnd_cpl_offset,      &
-          lnd_cpl_dt, lnd_cpl_offset,      &
+          ice_cpl_dt, ice_cpl_offset,      &
+          ocn_cpl_dt, ocn_cpl_offset,      &
           end_restart
 
     allocate(SyncClock%ECP(clock_drv)%EClock)
-    allocate(SyncClock%ECP(clock_ocn)%EClock)
+    allocate(SyncClock%ECP(clock_lnd)%EClock)
     allocate(SyncClock%ECP(clock_atm)%EClock)
-    allocate(SyncClock%ECP(clock_atm)%EClock)
-    allocate(SyncClock%ECP(clock_ice)%EClock)
     allocate(SyncClock%ECP(clock_rof)%EClock)
-    allocate(SyncClock%ECP(clock_lnd)%EClock)
-    allocate(SyncClock%ECP(clock_lnd)%EClock)
+    allocate(SyncClock%ECP(clock_ice)%EClock)
+    allocate(SyncClock%ECP(clock_ocn)%EClock)
 
     EClock_drv => SyncClock%ECP(clock_drv)%EClock
-    EClock_ocn => SyncClock%ECP(clock_ocn)%EClock 
+    EClock_lnd => SyncClock%ECP(clock_lnd)%EClock 
     EClock_atm => SyncClock%ECP(clock_atm)%EClock 
-    EClock_atm => SyncClock%ECP(clock_atm)%EClock 
-    EClock_ice => SyncClock%ECP(clock_ice)%EClock 
     EClock_rof => SyncClock%ECP(clock_rof)%EClock 
-    EClock_lnd => SyncClock%ECP(clock_lnd)%EClock 
-    EClock_lnd => SyncClock%ECP(clock_lnd)%EClock 
+    EClock_ice => SyncClock%ECP(clock_ice)%EClock 
+    EClock_ocn => SyncClock%ECP(clock_ocn)%EClock 
 
     !-------------------------------------------------------
     !   init option and conf data from nml file on root
@@ -218,20 +204,16 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
        curr_ymd       = 0
        curr_tod       = 0
     
-       ocn_cpl_dt     = 0
-       ocn_cpl_offset = 0
+       lnd_cpl_dt     = 0
+       lnd_cpl_offset = 0
        atm_cpl_dt     = 0
        atm_cpl_offset = 0
-       atm_cpl_dt     = 0
-       atm_cpl_offset = 0
-       ice_cpl_dt     = 0
-       ice_cpl_offset = 0
        rof_cpl_dt     = 0
        rof_cpl_offset = 0
-       lnd_cpl_dt     = 0
-       lnd_cpl_offset = 0
-       lnd_cpl_dt     = 0
-       lnd_cpl_offset = 0
+       ice_cpl_dt     = 0
+       ice_cpl_offset = 0
+       ocn_cpl_dt     = 0
+       ocn_cpl_offset = 0
        end_restart    = .true.
 
        unitn = shr_file_getUnit()
@@ -281,20 +263,16 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     call shr_mpi_bcast(ref_tod,        mpicom)
     call shr_mpi_bcast(curr_ymd,       mpicom)
     call shr_mpi_bcast(curr_tod,       mpicom)
-    call shr_mpi_bcast(ocn_cpl_dt,     mpicom)
-    call shr_mpi_bcast(ocn_cpl_offset,     mpicom)
+    call shr_mpi_bcast(lnd_cpl_dt,     mpicom)
+    call shr_mpi_bcast(lnd_cpl_offset,     mpicom)
     call shr_mpi_bcast(atm_cpl_dt,     mpicom)
     call shr_mpi_bcast(atm_cpl_offset,     mpicom)
-    call shr_mpi_bcast(atm_cpl_dt,     mpicom)
-    call shr_mpi_bcast(atm_cpl_offset,     mpicom)
-    call shr_mpi_bcast(ice_cpl_dt,     mpicom)
-    call shr_mpi_bcast(ice_cpl_offset,     mpicom)
     call shr_mpi_bcast(rof_cpl_dt,     mpicom)
     call shr_mpi_bcast(rof_cpl_offset,     mpicom)
-    call shr_mpi_bcast(lnd_cpl_dt,     mpicom)
-    call shr_mpi_bcast(lnd_cpl_offset,     mpicom)
-    call shr_mpi_bcast(lnd_cpl_dt,     mpicom)
-    call shr_mpi_bcast(lnd_cpl_offset,     mpicom)
+    call shr_mpi_bcast(ice_cpl_dt,     mpicom)
+    call shr_mpi_bcast(ice_cpl_offset,     mpicom)
+    call shr_mpi_bcast(ocn_cpl_dt,     mpicom)
+    call shr_mpi_bcast(ocn_cpl_offset,     mpicom)
     call shr_mpi_bcast(end_restart,    mpicom)
     if(iam==0)then
         write(*,*)subname//' bcast end'
@@ -316,13 +294,11 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     endif 
 
     flag =  &
-         abs(ocn_cpl_offset)>ocn_cpl_dt .or. &
+         abs(lnd_cpl_offset)>lnd_cpl_dt .or. &
          abs(atm_cpl_offset)>atm_cpl_dt .or. &
-         abs(atm_cpl_offset)>atm_cpl_dt .or. &
-         abs(ice_cpl_offset)>ice_cpl_dt .or. &
          abs(rof_cpl_offset)>rof_cpl_dt .or. &
-         abs(lnd_cpl_offset)>lnd_cpl_dt .or. &
-         abs(lnd_cpl_offset)>lnd_cpl_dt .or. &
+         abs(ice_cpl_offset)>ice_cpl_dt .or. &
+         abs(ocn_cpl_offset)>ocn_cpl_dt .or. &
          (.false.)
     if(flag)then
         write(logUnit, *)trim(subname), ' ERROR: invalid offset'
@@ -352,13 +328,11 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
     !call ESMF_CalendarPrint(esmf_caltype, rc=rc)
     time_cal = ESMF_CalendarCreate(esmf_caltype, rc=rc)
     dtime = 0 
-    dtime(clock_ocn) = ocn_cpl_dt
+    dtime(clock_lnd) = lnd_cpl_dt
     dtime(clock_atm) = atm_cpl_dt
-    dtime(clock_atm) = atm_cpl_dt
-    dtime(clock_ice) = ice_cpl_dt
     dtime(clock_rof) = rof_cpl_dt
-    dtime(clock_lnd) = lnd_cpl_dt
-    dtime(clock_lnd) = lnd_cpl_dt
+    dtime(clock_ice) = ice_cpl_dt
+    dtime(clock_ocn) = ocn_cpl_dt
     dtime(clock_drv) = maxval(dtime)
     dtime(clock_drv) = minval(dtime)
 
@@ -417,13 +391,11 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
 
     !call base_sys_abort('end clock init')
     offset(clock_drv) = 0
-    offset(clock_ocn) = ocn_cpl_offset
+    offset(clock_lnd) = lnd_cpl_offset
     offset(clock_atm) = atm_cpl_offset
-    offset(clock_atm) = atm_cpl_offset
-    offset(clock_ice) = ice_cpl_offset
     offset(clock_rof) = rof_cpl_offset
-    offset(clock_lnd) = lnd_cpl_offset
-    offset(clock_lnd) = lnd_cpl_offset
+    offset(clock_ice) = ice_cpl_offset
+    offset(clock_ocn) = ocn_cpl_offset
 
     do n = 1, max_clocks
         if(abs(offset(n))> dtime(n))then
@@ -439,41 +411,31 @@ subroutine time_clockInit(SyncClock, nmlfile, mpicom, EClock_drv, &
         end if
     end do
     
-    call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_ocn), rc=rc)
+    call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_lnd), rc=rc)
     OffsetTime=  currTime + TimeStep
-    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_ocnrun),&
-                  opt=time_optNSeconds, opt_n=dtime(clock_ocn), RefTime=OffsetTime,&
-                  alarmname=trim(alarm_ocnrun_name))
+    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_lndrun),&
+                  opt=time_optNSeconds, opt_n=dtime(clock_lnd), RefTime=OffsetTime,&
+                  alarmname=trim(alarm_lndrun_name))
     call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_atm), rc=rc)
     OffsetTime=  currTime + TimeStep
     call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_atmrun),&
                   opt=time_optNSeconds, opt_n=dtime(clock_atm), RefTime=OffsetTime,&
                   alarmname=trim(alarm_atmrun_name))
-    call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_atm), rc=rc)
-    OffsetTime=  currTime + TimeStep
-    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_atmrun),&
-                  opt=time_optNSeconds, opt_n=dtime(clock_atm), RefTime=OffsetTime,&
-                  alarmname=trim(alarm_atmrun_name))
-    call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_ice), rc=rc)
-    OffsetTime=  currTime + TimeStep
-    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_icerun),&
-                  opt=time_optNSeconds, opt_n=dtime(clock_ice), RefTime=OffsetTime,&
-                  alarmname=trim(alarm_icerun_name))
     call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_rof), rc=rc)
     OffsetTime=  currTime + TimeStep
     call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_rofrun),&
                   opt=time_optNSeconds, opt_n=dtime(clock_rof), RefTime=OffsetTime,&
                   alarmname=trim(alarm_rofrun_name))
-    call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_lnd), rc=rc)
+    call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_ice), rc=rc)
     OffsetTime=  currTime + TimeStep
-    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_lndrun),&
-                  opt=time_optNSeconds, opt_n=dtime(clock_lnd), RefTime=OffsetTime,&
-                  alarmname=trim(alarm_lndrun_name))
-    call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_lnd), rc=rc)
+    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_icerun),&
+                  opt=time_optNSeconds, opt_n=dtime(clock_ice), RefTime=OffsetTime,&
+                  alarmname=trim(alarm_icerun_name))
+    call ESMF_TimeIntervalSet(TimeStep, s=offset(clock_ocn), rc=rc)
     OffsetTime=  currTime + TimeStep
-    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_lndrun),&
-                  opt=time_optNSeconds, opt_n=dtime(clock_lnd), RefTime=OffsetTime,&
-                  alarmname=trim(alarm_lndrun_name))
+    call time_alarmInit(SyncClock%ECP(clock_drv)%EClock, EAlarm=SyncClock%EAlarm(clock_drv, alarm_ocnrun),&
+                  opt=time_optNSeconds, opt_n=dtime(clock_ocn), RefTime=OffsetTime,&
+                  alarmname=trim(alarm_ocnrun_name))
     print *,'time init end', start_ymd, stop_ymd
     
 end subroutine time_clockInit
@@ -627,26 +589,20 @@ subroutine time_clockAdvance(SyncClock)
     end do
 
     call ESMF_ClockAdvance(SyncClock%ECP(clock_drv)%EClock, rc=rc)
-    if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_ocnrun)))then
-        call ESMF_ClockAdvance(SyncClock%ECP(clock_ocn)%EClock, rc=rc)
+    if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_lndrun)))then
+        call ESMF_ClockAdvance(SyncClock%ECP(clock_lnd)%EClock, rc=rc)
     end if
     if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_atmrun)))then
         call ESMF_ClockAdvance(SyncClock%ECP(clock_atm)%EClock, rc=rc)
-    end if
-    if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_atmrun)))then
-        call ESMF_ClockAdvance(SyncClock%ECP(clock_atm)%EClock, rc=rc)
-    end if
-    if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_icerun)))then
-        call ESMF_ClockAdvance(SyncClock%ECP(clock_ice)%EClock, rc=rc)
     end if
     if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_rofrun)))then
         call ESMF_ClockAdvance(SyncClock%ECP(clock_rof)%EClock, rc=rc)
     end if
-    if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_lndrun)))then
-        call ESMF_ClockAdvance(SyncClock%ECP(clock_lnd)%EClock, rc=rc)
+    if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_icerun)))then
+        call ESMF_ClockAdvance(SyncClock%ECP(clock_ice)%EClock, rc=rc)
     end if
-    if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_lndrun)))then
-        call ESMF_ClockAdvance(SyncClock%ECP(clock_lnd)%EClock, rc=rc)
+    if(ESMF_AlarmIsRinging(SyncClock%EAlarm(clock_drv,alarm_ocnrun)))then
+        call ESMF_ClockAdvance(SyncClock%ECP(clock_ocn)%EClock, rc=rc)
     end if
     if(end_restart)then
         do n = 1, max_clocks

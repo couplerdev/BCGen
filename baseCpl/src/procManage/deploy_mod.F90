@@ -9,9 +9,9 @@ include 'mpif.h'
     integer :: comp(6, 3)
     data comp / & !--- comp_first, comp_last, stride
                                                                                           
-        cpl,ocn,atm,lnd,ice,rof,&
         0,0,0,0,0,0,&
-        3,3,3,3,3,3/
+        3,3,3,3,3,3,&
+        1,1,1,1,1,1/
     public  :: deploy
     public  :: deploy_cpl
     public  :: deploy_readFile
