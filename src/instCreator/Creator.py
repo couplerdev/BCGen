@@ -65,7 +65,7 @@ class InstArgsParser:
         self.argParser = argparse.ArgumentParser()
         self.args = None
         self.argParser.add_argument("-regen", "--regenerate",help="whether to regenerate coupler code", action="store_true")
-        self.argParser.add_argument("-make","--makeCode", help="whether to build code to executabels", action="store_true")
+#        self.argParser.add_argument("-make","--makeCode", help="whether to build code to executabels", action="store_true")
         self.argParser.add_argument("-overwrite","--overwriteDir", help="whether to recreate new inst dir", action="store_true")
         #self.argParser.add_argument("")
         self.argParser.add_argument("-rest","--restart", help="whether do restart", action="store_true")
@@ -82,7 +82,7 @@ class InstArgsParser:
         if self.args.verbose :
                 print "Verbose mode is set."
 		os.environ['VERBOSE']='true'
-        instCreator = InstCreator(regen=self.args.regenerate, make=self.args.makeCode,\
+        instCreator = InstCreator(regen=self.args.regenerate, make=True,\
                                   overwrite=self.args.overwriteDir, restart=self.args.restart, \
                                   history=self.args.history, setupFile=self.args.setupFile, \
 				  caseDir=self.args.caseDir )
@@ -190,7 +190,7 @@ class InstCreator:
         presently, we can't support spec without enough xmls
     '''
     couplerCodePath='/baseCpl'
-    def __init__(self,regen=False, make=False, overwrite=False, restart=False, history=False, setupFile='', caseDir=''):
+    def __init__(self,regen=False, make=True, overwrite=False, restart=False, history=False, setupFile='', caseDir=''):
         InstCreator.BCGenPath = bcroot
         InstCreator.couplerCodePath = bcroot+InstCreator.couplerCodePath
         self.metaManager = MetaManager(InstCreator.BCGenPath)        
@@ -408,24 +408,39 @@ class InstCreator:
                 f.write(stype+'    \'X\'\n')
 
     def createMakefile(self):
+	os.makedirs(self.metaManager.instPath + '/deps/src')
+	for dep in ["ccsm_shr", "logUtils", "data_def", "esm", "utils", "timeManage", "transManage", "procManage", "MrgSubroutine", "utilsAux", "FluxSubroutine"] :
+	    srcDir = InstCreator.couplerCodePath+'/src/'+dep
+	    detDir = self.metaManager.instPath + '/deps/src/'+dep
+	    cmdCopy = 'cp -r ' + srcDir + ' ' + detDir
+            if os.environ.get('VERBOSE') == 'true'  :
+                print 'Copying dependance ', dep, ' from ', srcDir, ' to ', detDir
+	  #  print cmdCopy #DEBUG
+	    os.system(cmdCopy)
+	cmdCopy = 'cp ' +InstCreator.couplerCodePath + '/Makefile ' + self.metaManager.instPath + '/deps'
+	# print cmdCopy #DEBUG
+	os.system(cmdCopy)
+	cmdCopy = 'cp ' +InstCreator.couplerCodePath + '/src/Makefile.conf ' + self.metaManager.instPath + '/deps/src'
+	os.system(cmdCopy)
+
         # build prerequists libbcpl.a
-        currDir = os.getcwd()
-        os.chdir(InstCreator.couplerCodePath)
-	print InstCreator.couplerCodePath #DEBUG
-	if os.environ['VERBOSE'] == 'true' :
-            cmdBuild = 'BCROOT=' + bcroot + ' make '
-	else :
-            cmdBuild = 'BCROOT=' + bcroot + 'make'
-        if os.system(cmdBuild) != 0 :
+#        currDir = os.getcwd()
+#        os.chdir(InstCreator.couplerCodePath)
+#	print InstCreator.couplerCodePath #DEBUG
+#	if os.environ['VERBOSE'] == 'true' :
+#            cmdBuild = 'BCROOT=' + bcroot + ' make '
+#	else :
+#            cmdBuild = 'BCROOT=' + bcroot + 'make'
+#        if os.system(cmdBuild) != 0 :
 	    # make failed, quit
-	    print "Failed to make, something (maybe path settings in Makefile.conf) is wrong. Please check it."
-	    exit(11001)
-        os.chdir(currDir)
+#	    print "Failed to make, something (maybe path settings in Makefile.conf) is wrong. Please check it."
+#	    exit(11001)
+#        os.chdir(currDir)
         # mv libbcpl.a to lib
-        cmdMvObj = 'cp '+InstCreator.couplerCodePath+'/lib/* '+self.metaManager.instPath+'/lib'
-        cmdMv = 'cp '+InstCreator.couplerCodePath+'/lib/libbcpl.a '+self.metaManager.instPath+'/lib'
-        os.system(cmdMv)
-        os.system(cmdMvObj)
+#        cmdMvObj = 'cp '+InstCreator.couplerCodePath+'/lib/* '+self.metaManager.instPath+'/lib'
+#        cmdMv = 'cp '+InstCreator.couplerCodePath+'/lib/libbcpl.a '+self.metaManager.instPath+'/lib'
+#        os.system(cmdMv)
+#        os.system(cmdMvObj)
 
 	# mv required comp togather with its Makefile (may be modified) to models
         # model create but for component like CAM we should build its' namelist
@@ -434,7 +449,7 @@ class InstCreator:
             name = model.name
             srcLocation = model.src
 
-	    print srcLocation #DEBUG
+	    # print srcLocation #DEBUG
             
             # check model dir
             # first find the location in default path

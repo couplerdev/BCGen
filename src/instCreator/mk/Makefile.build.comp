@@ -4,6 +4,7 @@ models=$(shell ls -l ./models | grep ^d|grep -v 'cpl'|awk '{print $$9}')
 
 .PHONY : all
 all :
+	echo "Make deps"; cd ./deps; make; cd -;
 	for dir in $(models);\
 	do\
 		echo $$dir; \

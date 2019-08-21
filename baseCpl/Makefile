@@ -11,13 +11,12 @@ TIMEDIR= timeManage
 COMMDIR = transManage
 PROCDIR = procManage
 MRGDIR = MrgSubroutine
-FLUXDIR = FluxSubroutine
 UTILSDIR = utils
 UTILAUXDIR = utilsAux
 ESMDIR = esm
 LOGUTILDIR =  logUtils 
 FLUXDIR = FluxSubroutine
-models=$(shell ls -l ./src/model|grep ^d|grep -v 'cpl'|awk '{print $$9}')
+#models=$(shell ls -l ./src/model|grep ^d|grep -v 'cpl'|awk '{print $$9}')
 MAIN = ./model/cpl
 DEPS=$(CCSM_SHR)  $(LOGUTILDIR) $(DEFDIR) $(ESMDIR) $(UTILSDIR) $(TIMEDIR) $(COMMDIR) $(PROCDIR) $(MRGDIR) $(UTILAUXDIR) $(FLUXDIR)
 
@@ -46,6 +45,9 @@ all :
 	#$(AR) rcs $(LIB_A) $(SRC)
 	#mv *.a ./lib
 	#rm ./lib/*.o
+	cp ./include/*.mod ../include/
+	cp ./lib/*.o ../lib
+	cp ./lib/*.a ../lib
 
 .PHONY : clean
 clean :

@@ -228,6 +228,7 @@ implicit none
     integer                :: did
     integer, parameter     :: rbuf_size = 100000
     integer               :: ierr
+    integer                :: ni_a, nj_a, ni_b, nj_b
 
     ! debug var
     integer    :: first = 0
@@ -256,6 +257,10 @@ implicit none
    rcode = nf_inq_dimlen(fid, did  , na)
    rcode = nf90_inq_dimid (fid, 'n_b', did)  ! size of output vector
    rcode = nf_inq_dimlen(fid, did  , nb)
+
+   print *, "Matirx size n_s:", ns, &
+         ", input vector n_a:", na, &
+         ", output vector n_b:", nb
   
    if (present(ni_i) .and. present(nj_i) .and. present(ni_o) .and. present(nj_o)) then
       rcode = nf90_inq_dimid (fid, 'ni_a', did)  ! number of lons in input grid
@@ -266,6 +271,21 @@ implicit none
       rcode = nf_inq_dimlen(fid, did  , ni_o)
       rcode = nf90_inq_dimid (fid, 'nj_b', did)  ! number of lats in output grid
       rcode = nf_inq_dimlen(fid, did  , nj_o)
+      print *, &
+            "ni_a: ", ni_i, "nj_a: ", nj_i, &
+            "ni_b: ", ni_o, "nj_b: ", nj_o
+   else
+      rcode = nf90_inq_dimid (fid, 'ni_a', did)  ! number of lons in input grid
+      rcode = nf_inq_dimlen(fid, did  , ni_a)
+      rcode = nf90_inq_dimid (fid, 'nj_a', did)  ! number of lats in input grid
+      rcode = nf_inq_dimlen(fid, did  , nj_a)
+      rcode = nf90_inq_dimid (fid, 'ni_b', did)  ! number of lons in output grid
+      rcode = nf_inq_dimlen(fid, did  , ni_b)
+      rcode = nf90_inq_dimid (fid, 'nj_b', did)  ! number of lats in output grid
+      rcode = nf_inq_dimlen(fid, did  , nj_b)
+      print *, &
+            "ni_a: ", ni_a, "nj_a: ", nj_a, &
+            "ni_b: ", ni_b, "nj_b: ", nj_b
    end if
 
    !if (s_loglev > 0)then
@@ -277,51 +297,51 @@ implicit none
  
    !--- read and load area_a ---
    if (present(areasrc)) then
-   if (mytask == 0) then
-      call mct_aVect_init(areasrc0,' ',areaAV_field,na)
-      rcode = nf90_inq_varid     (fid,'area_a',vid)
-      if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
-      rcode = nf_get_var_double(fid, vid, areasrc0%rAttr)
-      if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
-   endif
-   call mct_aVect_scatter(areasrc0, areasrc, gsmap_src, 0, mpicom, rcode)
-   if (rcode /= 0) then!call mct_die("shr_mct_sMatReaddnc","Error on scatter of areasrc0")
-       write(*,*) 'failed'
-       return
-   end if
-   if (mytask == 0) then
+       if (mytask == 0) then
+          call mct_aVect_init(areasrc0,' ',areaAV_field,na)
+          rcode = nf90_inq_varid     (fid,'area_a',vid)
+          if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
+          rcode = nf_get_var_double(fid, vid, areasrc0%rAttr)
+          if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
+       endif
+       call mct_aVect_scatter(areasrc0, areasrc, gsmap_src, 0, mpicom, rcode)
+       if (rcode /= 0) then!call mct_die("shr_mct_sMatReaddnc","Error on scatter of areasrc0")
+           write(*,*) 'failed'
+           return
+       end if
+       if (mytask == 0) then
 !      if (present(dbug)) then
 !         if (dbug > 2) then
 !            write(6,*) subName,'Size of src ',mct_aVect_lSize(areasrc0)
 !            write(6,*) subName,'min/max src ',minval(areasrc0%rAttr(1,:)),maxval(areasrc0%rAttr(1,:))
 !         endif
 !      end if
-      call mct_aVect_clean(areasrc0)
-   end if
+          call mct_aVect_clean(areasrc0)
+       end if
    end if
    !--- read and load area_b ---
    if (present(areadst)) then
-   if (mytask == 0) then
-      call mct_aVect_init(areadst0,' ',areaAV_field,nb)
-      rcode = nf90_inq_varid(fid,'area_b',vid)
-      if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
-      rcode = nf_get_var_double(fid, vid, areadst0%rAttr)
-      if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
-   endif
-   call mct_aVect_scatter(areadst0, areadst, gsmap_dst, 0, mpicom, rcode)
-   if (rcode /= 0) then!call mct_die("shr_mct_sMatReaddnc","Error on scatter of areadst0")
-        write(*,*)'failed'
-        return 
-   end if
-   if (mytask == 0) then
+       if (mytask == 0) then
+          call mct_aVect_init(areadst0,' ',areaAV_field,nb)
+          rcode = nf90_inq_varid(fid,'area_b',vid)
+          if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
+          rcode = nf_get_var_double(fid, vid, areadst0%rAttr)
+          if (rcode /= NF90_NOERR) write(*,*) nf90_strerror(rcode)
+       endif
+       call mct_aVect_scatter(areadst0, areadst, gsmap_dst, 0, mpicom, rcode)
+       if (rcode /= 0) then!call mct_die("shr_mct_sMatReaddnc","Error on scatter of areadst0")
+            write(*,*)'failed'
+            return 
+       end if
+       if (mytask == 0) then
 !      if (present(dbug)) then
 !         if (dbug > 2) then
 !            write(6,*) subName,'Size of dst ',mct_aVect_lSize(areadst0)
 !            write(6,*) subName,'min/max dst ',minval(areadst0%rAttr(1,:)),maxval(areadst0%rAttr(1,:))
 !         endif
 !      end if
-      call mct_aVect_clean(areadst0)
-   endif
+          call mct_aVect_clean(areadst0)
+       endif
    endif
    if (present(ni_i) .and. present(nj_i) .and. present(ni_o) .and. present(nj_o)) then
       call shr_mpi_bcast(ni_i,mpicom,subName//" MPI in ni_i bcast")
@@ -474,8 +494,12 @@ implicit none
    ! mct_sMat_init must be given the number of rows and columns that
    ! would be in the full matrix.  Nrows= size of output vector=nb.
    ! Ncols = size of input vector = na.
-   print *, nb,na, cnt
+   print *, nb, na, cnt
+   print *, "matrix dimensions src x dst: ", na,' x', nb
+   print *, "number of non-zero elements: ", cnt
+
    call mct_sMat_Init(sMat, nb, na, cnt)
+
    igrow = mct_sMat_indexIA(sMat,'grow')
    igcol = mct_sMat_indexIA(sMat,'gcol')
    iwgt  = mct_sMat_indexRA(sMat,'weight')
@@ -495,6 +519,8 @@ implicit none
       !if (s_loglev > 0) write(s_logunit,F00) "... done reading file"
       !call shr_sys_flush(s_logunit)
    endif
+
+   print *, "* mapper file: ", filename, " is initialized."
 
 end subroutine sMatReaddnc
 
@@ -535,12 +561,14 @@ subroutine sMatPInitnc_mapfile(sMatP, gsmapX_, gsmapY_, filename, maptype, &
 
     lsize = mct_gsMap_lsize(gsmapX_, mpicom)
     call mct_aVect_init(areasrc_map, rList=areaAV_field, lsize=lsize)
- 
+
+    print *,'src lsize:',lsize 
     lsize = mct_gsMap_lsize(gsmapY_, mpicom)
     call mct_aVect_init(areadst_map, rList=areaAV_field, lsize=lsize)
     call MPI_Barrier(mpicom, iret)
-   
-    !print *,'begin readnc:', ni_i, nj_i, ni_o, nj_o
+    print *,'dst lsize:', lsize   
+
+    print *,'begin readnc:', ni_i, nj_i, ni_o, nj_o
     if (present(ni_i) .and. present(nj_i) .and. present(ni_o) .and. present(nj_o)) then
         call sMatReaddnc(sMat, gsmapX_, gsmapY_, Smaptype, areasrc_map, areadst_map, &
                    filename, pe_loc, mpicom, ni_i, nj_i, ni_o, nj_o)
