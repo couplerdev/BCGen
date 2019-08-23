@@ -3086,7 +3086,7 @@ INC_PNETCDF   :=  $pnc_inc
 INC_MPI       :=  $mpi_inc
 SPMD          :=  $spmd
 CCSM_CFLAGS   :=  $make_cppdefs
-CPPDEFS       := -DSPMD -fcray-pointer
+CPPDEFS       := -DSPMD -fcray-pointer -fno-var-tracking
 EOF
 	$fh_in->open("<$file_in") or die "** can't open file: $file_in\n";
         while(<$fh_in>){

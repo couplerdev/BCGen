@@ -5,5 +5,5 @@ pushd build
 make
 popd
 popd
-cp cice/build/libice.a ../../lib
-cp cice/build/compile/*.mod ../../include
+cp -f cice/build/libice.a ../../lib
+cp -f cice/build/compile/*.mod ../../include

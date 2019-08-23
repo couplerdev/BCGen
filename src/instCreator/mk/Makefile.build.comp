@@ -2,9 +2,18 @@ FC = mpif90
 include ./Makefile.conf
 models=$(shell ls -l ./models | grep ^d|grep -v 'cpl'|awk '{print $$9}')
 
-.PHONY : all
-all :
-	echo "Make deps"; cd ./deps; make; cd -;
+.PHONY : all models deps
+all : main
+
+main : models
+	echo "Make main..."; \
+	cd ./models/cpl; \
+	make; \
+	mv main ../../bin; \
+	cd -;
+
+models : deps
+	echo "Make models..."; \
 	for dir in $(models);\
 	do\
 		echo $$dir; \
@@ -13,5 +22,8 @@ all :
 		cd -; \
 	done
 	
-
-
+deps : 
+	echo "Make deps..."; \
+	cd ./deps; \
+	make; \
+	cd -;

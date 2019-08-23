@@ -422,6 +422,8 @@ class InstCreator:
 	os.system(cmdCopy)
 	cmdCopy = 'cp ' +InstCreator.couplerCodePath + '/src/Makefile.conf ' + self.metaManager.instPath + '/deps/src'
 	os.system(cmdCopy)
+	os.makedirs(self.metaManager.instPath + '/deps/include')
+	os.makedirs(self.metaManager.instPath + '/deps/lib')
 
         # build prerequists libbcpl.a
 #        currDir = os.getcwd()

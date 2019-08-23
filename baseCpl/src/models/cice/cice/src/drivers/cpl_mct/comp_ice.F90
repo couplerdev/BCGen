@@ -1811,6 +1811,11 @@ contains
   ! Determine year, month, day and sec to put in filename
   !-----------------------------------------------------------------
 
+  if ( len(trim(restart_file)) == 0) then
+     print *, "restart_file is null, will be set to default 'iced'."
+     restart_file = "iced"
+  end if
+
   year  = yr_spec
   month = mon_spec
   day   = day_spec

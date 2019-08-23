@@ -6,8 +6,8 @@ test = testComms
 
 OBJ_ALL:
 	$(FC) -c  -I$(INCLDIR) -I$(NETCDFINCL) -L$(LIBDIR) -L$(NETCDFLIB) -I$(PIO_INCL) -L$(PIO_LIB) $(SRC)
-	mv *.o $(LIBDIR)
-	mv *.mod $(INCLDIR)
+	cp -f *.o $(LIBDIR)
+	cp -f *.mod $(INCLDIR)
 
 test:
 	$(FC) -o $(test) -I$(INCLDIR) -I$(NETCDFINCL) -L$(NETCDFLIB) -I$(PIO_INCL) -L$(PIO_LIB) \

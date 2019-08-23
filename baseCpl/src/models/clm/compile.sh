@@ -5,5 +5,5 @@ pushd build
 make
 popd
 popd
-cp clm/build/liblnd.a ../../lib
-cp clm/build/compile/*.mod ../../include
+cp -f clm/build/liblnd.a ../../lib
+cp -f clm/build/compile/*.mod ../../include

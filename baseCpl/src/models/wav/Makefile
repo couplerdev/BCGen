@@ -8,9 +8,9 @@ OBJ_ALL = $(SRC: .F90=.o)
 OBJ_ALL : 
 	$(FC) -c  -I$(INCLDIR) -L$(LIBDIR) $(SRC) 
 	$(AR) $(ARFLAG) $(LIB_COMP) ./*.o
-	mv $(LIB_COMP) $(LIBDIR)
-	mv *.o $(LIBDIR)
-	mv *.mod $(INCLDIR)
+	cp -f $(LIB_COMP) $(LIBDIR)
+	cp -f *.o $(LIBDIR)
+	cp -f *.mod $(INCLDIR)
 
 .PHONY : clean
 clean:

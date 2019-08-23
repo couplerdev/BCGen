@@ -5,6 +5,6 @@ OBJ_ALL = $(SRC: .F90=.o)
 
 OBJ_ALL:
 	$(FC) -c -I$(INCLDIR) -L$(LIBDIR) $(SRC)
-	mv *.o $(LIBDIR)
-	mv *.mod $(INCLDIR)
+	cp -f *.o $(LIBDIR)
+	cp -f *.mod $(INCLDIR)
 

@@ -57,9 +57,11 @@ OBJS_ALL: $(SRCS_F90)
 	make install
 
 install:
-	$(MV) *.mod $(INCLDIR)
-	$(CP) ./shr/dtypes.h $(INCLDIR)
-	$(MV) *.o $(LIBDIR)
+#	$(MV) *.mod $(INCLDIR)
+	$(CP) -f *.mod $(INCLDIR)
+	$(CP) -f ./shr/dtypes.h $(INCLDIR)
+	$(CP) -f *.o $(LIBDIR)
+#	$(MV) *.o $(LIBDIR)
 
 	
 clean:

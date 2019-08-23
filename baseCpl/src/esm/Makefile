@@ -5,5 +5,5 @@ FFLAGS = -ffree-line-length-none
 
 OBJ_ALL:
 	$(FC) $(FFLAGS) -c -I$(INCLDIR) -L$(LIBDIR) $(SRC)
-	mv *.mod $(INCLDIR)
-	mv *.o $(LIBDIR)
+	cp -f *.mod $(INCLDIR)
+	cp -f *.o $(LIBDIR)
