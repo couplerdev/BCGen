@@ -128,7 +128,7 @@ contains
     ! Initialize io log unit
     inst_name   = 'ROF'
     inst_index  = 5
-    inst_suffix = '_HQ_5'
+    inst_suffix = '' ! '_HQ_5'
 
     call shr_file_getLogUnit (shrlogunit)
     if (masterproc) then

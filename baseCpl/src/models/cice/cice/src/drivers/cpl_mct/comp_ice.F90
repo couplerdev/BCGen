@@ -229,7 +229,7 @@ contains
 
     inst_name   = 'ICE'
     inst_index  = 3
-    inst_suffix = '_HQ_3'
+    inst_suffix = '' ! '_HQ_3'
 
     call t_startf ('cice_init')
     call cice_init( mpicom_loc )

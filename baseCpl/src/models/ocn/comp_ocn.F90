@@ -163,7 +163,7 @@ subroutine ocn_init_mct(compInfo, EClock, x2o, o2x, ierr)
 
     inst_name = 'OCN'
     inst_index = 4
-    inst_suffix = '_HQ_4'
+    inst_suffix = ''  ! '_HQ_4'
 
     call mpi_comm_rank(mpicom, my_task, ierr)
     call mpi_comm_size(mpicom, npes, ierr)
