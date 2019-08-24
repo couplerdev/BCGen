@@ -30,7 +30,7 @@ all :
 		cd -; \
 	done
 	$(AR) rcs $(LIB_A) ./lib/*.o
-	mv $(LIB_A) $(LIBDIR)
+	cp -f $(LIB_A) $(LIBDIR)
 	#@for dir in $(models);\
 	#do\
 	#	echo $$dir; \

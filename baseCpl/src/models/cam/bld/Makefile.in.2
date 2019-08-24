@@ -27,8 +27,8 @@ OBJS := $(addsuffix .o, $(basename $(SRC)))
 
 LIB_COMP: $(OBJS)
 	$(AR) csr $(LIB_COMP) $(OBJS)
-	mv $(LIB_COMP) ../../../lib
-	mv comp_atm.mod ../../../include
+	cp -f $(LIB_COMP) ../../../lib
+	cp -f comp_atm.mod ../../../include
 
 $(CURDIR)/Depends: $(CURDIR)/Srcfiles  $(CURDIR)/Filepath
 	$(ROOTDIR)/models/cam/bld/mkDepends Filepath Srcfiles > $@

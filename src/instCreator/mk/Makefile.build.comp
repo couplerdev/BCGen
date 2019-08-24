@@ -9,7 +9,7 @@ main : models
 	echo "Make main..."; \
 	cd ./models/cpl; \
 	make; \
-	mv main ../../bin; \
+	cp -f main ../../bin; \
 	cd -;
 
 models : deps
