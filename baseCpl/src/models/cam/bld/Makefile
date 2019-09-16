@@ -1,7 +1,7 @@
 #Make macros for CAM.
 
 UNAMES        :=  LINUX
-ROOTDIR       :=  /data2/workspace/BCGen/baseCpl/src
+ROOTDIR       :=  /share/workspace/BCGen/baseCpl/src
 INC_NETCDF    :=  
 MOD_NETCDF    :=  
 USER_CFLAGS   :=  
