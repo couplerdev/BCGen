@@ -4,21 +4,21 @@ endif()
 
 set(run 0)
 
-if("/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-gitinfo.txt" IS_NEWER_THAN "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-gitclone-lastrun.txt")
+if("/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-gitinfo.txt" IS_NEWER_THAN "/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-gitclone-lastrun.txt")
   set(run 1)
 endif()
 
 if(NOT run)
-  message(STATUS "Avoiding repeated git clone, stamp file is up to date: '/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-gitclone-lastrun.txt'")
+  message(STATUS "Avoiding repeated git clone, stamp file is up to date: '/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-gitclone-lastrun.txt'")
   return()
 endif()
 
 execute_process(
-  COMMAND ${CMAKE_COMMAND} -E remove_directory "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90"
+  COMMAND ${CMAKE_COMMAND} -E remove_directory "/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90"
   RESULT_VARIABLE error_code
   )
 if(error_code)
-  message(FATAL_ERROR "Failed to remove directory: '/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90'")
+  message(FATAL_ERROR "Failed to remove directory: '/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90'")
 endif()
 
 set(git_options)
@@ -53,7 +53,7 @@ set(number_of_tries 0)
 while(error_code AND number_of_tries LESS 3)
   execute_process(
     COMMAND "/usr/bin/git" ${git_options} clone ${git_clone_options} --origin "origin" "https://github.com/PARALLELIO/genf90" "genf90"
-    WORKING_DIRECTORY "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src"
+    WORKING_DIRECTORY "/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src"
     RESULT_VARIABLE error_code
     )
   math(EXPR number_of_tries "${number_of_tries} + 1")
@@ -68,7 +68,7 @@ endif()
 
 execute_process(
   COMMAND "/usr/bin/git" ${git_options} checkout genf90_140121 
-  WORKING_DIRECTORY "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90"
+  WORKING_DIRECTORY "/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90"
   RESULT_VARIABLE error_code
   )
 if(error_code)
@@ -77,32 +77,32 @@ endif()
 
 execute_process(
   COMMAND "/usr/bin/git" ${git_options} submodule init 
-  WORKING_DIRECTORY "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90"
+  WORKING_DIRECTORY "/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90"
   RESULT_VARIABLE error_code
   )
 if(error_code)
-  message(FATAL_ERROR "Failed to init submodules in: '/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90'")
+  message(FATAL_ERROR "Failed to init submodules in: '/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90'")
 endif()
 
 execute_process(
   COMMAND "/usr/bin/git" ${git_options} submodule update --recursive --init 
-  WORKING_DIRECTORY "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90"
+  WORKING_DIRECTORY "/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90"
   RESULT_VARIABLE error_code
   )
 if(error_code)
-  message(FATAL_ERROR "Failed to update submodules in: '/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90'")
+  message(FATAL_ERROR "Failed to update submodules in: '/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90'")
 endif()
 
 # Complete success, update the script-last-run stamp file:
 #
 execute_process(
   COMMAND ${CMAKE_COMMAND} -E copy
-    "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-gitinfo.txt"
-    "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-gitclone-lastrun.txt"
-  WORKING_DIRECTORY "/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90"
+    "/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-gitinfo.txt"
+    "/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-gitclone-lastrun.txt"
+  WORKING_DIRECTORY "/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90"
   RESULT_VARIABLE error_code
   )
 if(error_code)
-  message(FATAL_ERROR "Failed to copy script-last-run stamp file: '/home/hq/git/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-gitclone-lastrun.txt'")
+  message(FATAL_ERROR "Failed to copy script-last-run stamp file: '/root/workspace/BCGen/baseCpl/src/depUtils/ParallelIO/src/flib/genf90/src/genf90-stamp/genf90-gitclone-lastrun.txt'")
 endif()
 
