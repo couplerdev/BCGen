@@ -33,10 +33,10 @@ class Setup:
         self.__regridDataLoc.initByFile(regridFile)
         self.__fractionDataLoc.initByFile(fractionFile)
         self.__fakeModel = {}
+	self.__resDict = {}
 
     def setupParse(self):
         modelRoot = self.__root.find('models')
-        resDict = {}
         for child in modelRoot:
             if 'type' not in child.attrib:
                 res =child.find('res').text
@@ -45,7 +45,7 @@ class Setup:
 		    instName = modelName
 		else :
 		    instName = child.find('inst').text
-                resDict[modelName] = res
+                self.__resDict[instName] = res
 	        self.__modelName[instName] = modelName 
 
         for child in modelRoot:
@@ -72,7 +72,7 @@ class Setup:
 		instName = child.find('inst').text
             self.__model[instName] = child.find('version').text #Modified for instance
             res = child.find('res').text
-            resDict[instName] = res  #modified for instance
+            self.__resDict[instName] = res  #modified for instance
 	    #resDict[modelName] = res
             ### compute frac relationship frac init , update
             fracType  = child.find('frac').text
@@ -119,7 +119,7 @@ class Setup:
                     map_type = "offline"
                     smatType = src.find('field').attrib['type']
 		    srcModelName = self.__modelName[srcModel]
-                    srcRes = resDict[srcModelName]
+                    srcRes = self.__resDict[srcModelName]
                     if smatType == "none":
                         map_type = "online"
                     else:
@@ -345,3 +345,7 @@ class Setup:
     @property
     def modelName(self):
 	return self.__modelName
+    
+    @property
+    def resDict(self) :
+	return self.__resDict

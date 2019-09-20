@@ -26,6 +26,7 @@ from codeWrapper import CodeWrapper, toString
 from setupParser import Setup
 from fieldManager import FieldMeta, FieldManager
 from fakeModelParser import FakeModelParser
+from AvailGrids import findGrid
 
 class Parser():
     def __init__(self, setup=True, rest=False, hist=False,fileSpec={}):
@@ -61,6 +62,7 @@ class Parser():
         self.__setupModels = {}
         self.__setupFakeModels = {}
 	self.__setupModelNames = {}
+	self.__resDict = {}
         self.__enable_setup = setup
         if setup:
             # setup generate couple with fraction
@@ -71,6 +73,7 @@ class Parser():
             self.__setupModels = setup.model 
 	    self.__setupModelNames = setup.modelName
             self.__setupFakeModels = setup.fakeModel
+	    self.__resDict = setup.resDict
 	    print setup.fakeModel
         #self.__couplerFile = couplerFile
         #self.__fieldFile = fieldFile
@@ -173,8 +176,8 @@ class Parser():
 	                    continue
 
 	            	if os.environ.get('VERBOSE') == 'true' :
-		            print 'Parsing model #', index, ': instName = ', instName, ', modelName = ', mName
-		    	modelParser.setRoot(child, instName)
+		            print 'Parsing model #', index, ': instName = ', instName, ', modelName = ', mName, ', modelVersion = ', modelVersion, ", res = ",  self.__resDict[instName]
+		    	modelParser.setRoot(child, instName, self.__resDict[instName])
 	            	model = modelParser.model
         	    	model.ID = index
                     	index = index + 1
@@ -433,10 +436,12 @@ class ModelParser:
 	self.__instName = ""
 	self.__instNameSet = False
         self.__NameManager = NameManager
+	self.__resName = ""
         self.SeqRun = seqRun
 
-    def setRoot(self, root, instName=""):
+    def setRoot(self, root, instName="", resName=''):
         self.__root = root
+	self.__resName = resName
         self.__isParsed = False
 	if not (instName is None or instName == "") :
 	    self.__instName = instName
@@ -652,14 +657,23 @@ class ModelParser:
         self.__model.src = src
 
         if os.environ.get('verbose') == 'true' :
-                print "Model name: ", name, "version:", version, "src:", src, "Metafile path: ", metaFile
+                print "Model name: ", name, "version:", version, "src:", src, "Metafile path: ", metaFile, "res: ", self.__resName
 
         #self.__model.interval = root.find('interval').text
+	resGrid = findGrid(self.__resName)
+	if not resGrid is None :
+	    self.__gsize = resGrid['gsize']
+	    self.__nx = resGrid['nx']
+	    self.__ny = resGrid['ny']
+	else :
+	    #resolution not found
+	    print self.__resName, " is not a valid resolution. ERROR!"
+	    sys.exit(1001)
         root = root.find('attrVect')
         #if root.find('name')? how to handle optional 
-        self.__gsize = root.find("gsize").text
-        self.__nx = root.find("nx").text
-        self.__ny = root.find("ny").text
+#        self.__gsize = root.find("gsize").text
+#        self.__nx = root.find("nx").text
+#        self.__ny = root.find("ny").text
         self.__field = root.find("field").text
         if self.__gsize == 0:
             self.__gsize = self.__nx*self.__ny
