@@ -208,7 +208,7 @@ contains
     scmlat = -999.
     scmlon = -999.
 
-
+    runid = "mycase"
     runtype = "initial"
 
     ! Set nextsw_cday to -1 for continue and branch runs.

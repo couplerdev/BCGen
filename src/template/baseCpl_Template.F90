@@ -122,20 +122,20 @@ subroutine cpl_init()
     integer :: comm_rank
     logical :: restart
     character(SHR_KIND_CL)  :: nmlfile
-    character(SHR_KIND_CL)  :: restart_file
+    character(SHR_KIND_CL)  :: drv_restart_file
     logical :: iamroot
     integer :: lsize
     integer :: rc
     
     call pm_init(metaData)
     call confMeta_getInfo(metaData%conf, nmlfile=nmlfile, restart=restart, &
-         restart_file=restart_file)
+         restart_file=drv_restart_file)
     call time_ClockInit(SyncClock, nmlfile,MPI_COMM_WORLD, EClock_drv, &
     #for $model in $proc_cfgs
          #set $name = $model.name
          EClock_${name}, &
     #end for
-         restart, restart_file, time_cal_default)
+         restart, drv_restart_file, time_cal_default)
     call procMeta_getInfo(metaData%my_proc,ID=GLOID, iamroot=iamroot)
 
     !-------------------------------------------------------------
